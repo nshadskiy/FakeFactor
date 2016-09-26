@@ -1,6 +1,8 @@
 #!/bin/bash
 
 echo "Compiling the framework"
+sh BuildStructure.sh
 cd ../
 make -B
-./ViennaTool/test
+#./Preselection
+./SRHisto
