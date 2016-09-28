@@ -267,6 +267,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   alltau_dRToB->resize(0);
   alltau_mvis->resize(0);
   alltau_mt->resize(0);
+  alltau_svfit->resize(0);
   alltau_Zpt->resize(0);
 
   float m_tau_pt_cut=TAU_PT_CUT;
@@ -303,6 +304,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     alltau_gen_match->push_back(event->addtau_gen_match->at(i));
     alltau_mvis->push_back(event->addtau_mvis->at(i));
     alltau_mt->push_back(event->addtau_mt->at(i));
+    if(use_svfit)alltau_svfit->push_back(event->m_sv); //FIXME: no svfit in addtau collection so far
+    else alltau_svfit->push_back(0.);
     TLorentzVector leg2; leg2.SetPtEtaPhiM(event->addtau_pt->at(i),event->addtau_eta->at(i),event->addtau_phi->at(i),event->addtau_m->at(i));
     TLorentzVector leg1; leg1.SetPtEtaPhiM(event->pt_1,event->eta_1,event->phi_1,event->m_1);
     TLorentzVector Emiss; leg1.SetPtEtaPhiM(event->mvamet,0,event->mvametphi,0);
@@ -366,6 +369,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     alltau_gen_match->insert(alltau_gen_match->begin()+tpos,event->gen_match_2);
     alltau_mvis->insert(alltau_mvis->begin()+tpos,event->m_vis);
     alltau_mt->insert(alltau_mt->begin()+tpos,event->mt_1);
+    if(use_svfit)alltau_svfit->insert(alltau_svfit->begin()+tpos,event->m_sv);
+    else alltau_svfit->insert(alltau_svfit->begin()+tpos,0.);
     TLorentzVector leg2; leg2.SetPtEtaPhiM(event->pt_2,event->eta_2,event->phi_2,event->m_2);
     TLorentzVector leg1; leg1.SetPtEtaPhiM(event->pt_1,event->eta_1,event->phi_1,event->m_1);
     TLorentzVector Emiss; leg1.SetPtEtaPhiM(event->mvamet,0,event->mvametphi,0);
@@ -418,6 +423,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       alltau_gen_match->insert(alltau_gen_match->begin()+tpos,event->gen_match_1);
       alltau_mvis->insert(alltau_mvis->begin()+tpos,event->m_vis);
       alltau_mt->insert(alltau_mt->begin()+tpos,event->mt_1);
+      if(use_svfit)alltau_svfit->insert(alltau_svfit->begin()+tpos,event->m_sv);
+      else alltau_svfit->insert(alltau_svfit->begin()+tpos,0.);
       TLorentzVector leg2; leg2.SetPtEtaPhiM(event->pt_2,event->eta_2,event->phi_2,event->m_2);
       TLorentzVector leg1; leg1.SetPtEtaPhiM(event->pt_1,event->eta_1,event->phi_1,event->m_1);
       TLorentzVector Emiss; leg1.SetPtEtaPhiM(event->mvamet,0,event->mvametphi,0);
@@ -486,23 +493,23 @@ Int_t TNtupleAnalyzer::fitsGenCategory(const Int_t mode)
   if ( ! alltau_gen_match->size() ) return 0;
   Int_t gm=alltau_gen_match->at(0);
  
-  if        (mode & _DY_TT) {
+  if        (mode & _DY && mode & _TTAU) {
     if (gm==tauH) return 1;
-  } else if (mode & _DY_J) {
+  } else if (mode & _DY && mode & _JTAU) {
     if (gm==realJet) return 1;
-  } else if (mode & _DY_L) {
+  } else if (mode & _DY && mode & _LTAU) {
     if ( (gm!=tauH)     && (gm!=realJet)  ) return 1;
-  } else if (mode & _TT_T) {
+  } else if (mode & _TT && mode & _TTAU) {
     if (gm==tauH) return 1;
-  } else if (mode & _TT_J) {
+  } else if (mode & _TT && mode & _JTAU) {
     if (gm==realJet) return 1;
-  } else if (mode & _TT_L) {
+  } else if (mode & _TT && mode & _LTAU) {
     if ( (gm!=tauH)     && (gm!=realJet)  ) return 1;
-  } else if (mode & _VV && mode & _VV_T) {
+  } else if (mode & _VV && mode &_TTAU) {
     if (gm==tauH) return 1;
-  } else if (mode & _VV && mode & _VV_J) {
+  } else if (mode & _VV && mode & _JTAU) {
     if (gm==realJet) return 1;
-  } else if (mode & _VV && mode & _VV_L) {
+  } else if (mode & _VV && mode & _LTAU) {
     if ( (gm!=tauH)     && (gm!=realJet)  ) return 1;
   } else if (mode & _QCD) {
     return 1;
@@ -565,6 +572,7 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   tree->Branch("alltau_dRToB",&alltau_dRToB);
   tree->Branch("alltau_mvis",&alltau_mvis);
   tree->Branch("alltau_mt",&alltau_mt);
+  tree->Branch("alltau_svfit",&alltau_svfit);
   tree->Branch("alltau_Zpt", &alltau_Zpt);
   tree->Branch("tau_iso_ind",&tau_iso_ind);
 
@@ -587,6 +595,7 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   alltau_dRToB=new vector<Double_t>;
   alltau_mvis=new vector<Double_t>;
   alltau_mt=new vector<Double_t>;
+  alltau_svfit=new vector<Double_t>;
   alltau_Zpt=new vector<Double_t>;
 
 }

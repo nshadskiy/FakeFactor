@@ -72,15 +72,15 @@ void SRHisto(int doCalc, int DOCUTS) {
       for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
         TFile outfile ( path_sim+s_SR+"_data"+r2[iv]+"_AI_MCsubtracted.root","RECREATE"  );
         TFile infile( path_sim+s_SR+"_data"+r2[iv]+"_AI.root"  );
-        if(infile.IsZombie() ){cout << path_sim+s_SR+"_data"+r1[iv]+"_AI.root" << " not available" << endl; break;}
+        if(infile.IsZombie() ){cout << path_sim+s_SR+"_data"+r2[iv]+"_AI.root" << " not available" << endl; break;}
         for(int imode=0; imode<nmodes; imode++){
           TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+"_mvis");
           TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_mvis_MCsubtracted"); outhist->Add(inhist,-1);
           for (int is=0; is<nSA; is++){ //loop over samples
             if(ssa[is]=="QCD") continue;
-            TFile tmp(path_sim+s_SR+"_"+ssa[is]+r1[iv]+"_AI.root"  );
-            if(tmp.IsZombie() ){cout << path_sim+s_SR+"_"+ssa[is]+r1[iv]+"_AI.root" << " not available"<<  endl; continue;}
-            TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+r1[iv]);
+            TFile tmp(path_sim+s_SR+"_"+ssa[is]+r2[iv]+"_AI.root"  );
+            if(tmp.IsZombie() ){cout << path_sim+s_SR+"_"+ssa[is]+r2[iv]+"_AI.root" << " not available"<<  endl; continue;}
+            TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+r2[iv]);
             outhist->Add(tmphist);
             tmp.Close();
           }
@@ -98,15 +98,15 @@ void SRHisto(int doCalc, int DOCUTS) {
       for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt
         TFile outfile ( path_sim+s_SR+"_data"+r2[iv]+"_MCsubtracted.root","RECREATE"  );
         TFile infile( path_sim+s_SR+"_data"+r2[iv]+".root"  );
-        if(infile.IsZombie() ){cout << path_sim+s_SR+"_data"+r1[iv]+".root" << " not available" << endl; break;}
+        if(infile.IsZombie() ){cout << path_sim+s_SR+"_data"+r2[iv]+".root" << " not available" << endl; break;}
         for(int imode=0; imode<nmodes; imode++){
-          TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+r1[iv]);
-          TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+r1[iv]+"MCsubtracted"); outhist->Add(inhist,-1);
+          TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+r2[iv]);
+          TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+r2[iv]+"MCsubtracted"); outhist->Add(inhist,-1);
           for (int is=0; is<nSA; is++){ //loop over samples
             if(ssa[is]=="QCD") continue;
-            TFile tmp(path_sim+s_SR+"_"+ssa[is]+r1[iv]+".root"  );
-            if(tmp.IsZombie() ){cout << path_sim+s_SR+"_"+ssa[is]+r1[iv]+".root" << " not available"<<  endl; continue;}
-            TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+r1[iv]);
+            TFile tmp(path_sim+s_SR+"_"+ssa[is]+r2[iv]+".root"  );
+            if(tmp.IsZombie() ){cout << path_sim+s_SR+"_"+ssa[is]+r2[iv]+".root" << " not available"<<  endl; continue;}
+            TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+r2[iv]);
             outhist->Add(tmphist);
             tmp.Close();
           }

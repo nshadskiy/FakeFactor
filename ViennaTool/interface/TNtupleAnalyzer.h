@@ -67,6 +67,7 @@ class TNtupleAnalyzer{
   std::vector<Double_t> *alltau_dRToOtherLep;
   std::vector<Double_t> *alltau_mvis;
   std::vector<Double_t> *alltau_mt;
+  std::vector<Double_t> *alltau_svfit;
   std::vector<Double_t> *alltau_Zpt;
   //    Int_t bin,gen_match_1,gen_match_2,mediumBeta,nAdditionalMu,passes3LVeto, passesDLVeto;
   //    Float_t q_2;

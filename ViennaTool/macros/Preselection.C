@@ -31,21 +31,21 @@ void Preselection() {
   }
   if (num==3||num==0) {
     Analyzer->loadFile(TTfile,"TauCheck");
-    Analyzer->select(preselection_TT_J,_TT_J);
+    Analyzer->select(preselection_TT_J,_TT|_JTAU);
     Analyzer->closeFile();
     tmp=preselection_TT_J;
     compressFile(preselection_TT_J);
   }
   if (num==4||num==0) {
     Analyzer->loadFile(TTfile,"TauCheck");
-    Analyzer->select(preselection_TT_T,_TT_T);
+    Analyzer->select(preselection_TT_T,_TT|_TTAU);
     Analyzer->closeFile();
     tmp=preselection_TT_T;
     compressFile(preselection_TT_T);
   }
   if (num==5||num==0) {
     Analyzer->loadFile(TTfile,"TauCheck");
-    Analyzer->select(preselection_TT_L,_TT_L);
+    Analyzer->select(preselection_TT_L,_TT|_LTAU);
     Analyzer->closeFile();
     compressFile(preselection_TT_L);
   }
@@ -63,19 +63,19 @@ void Preselection() {
   }
   if (num==8||num==0||num==99) {
     Analyzer->loadFile(DY_NJfile,"TauCheck");
-    Analyzer->select(preselection_DY_J,_DY_J);
+    Analyzer->select(preselection_DY_J,_DY|_JTAU);
     Analyzer->closeFile();
     compressFile(preselection_DY_J);
   }
   if (num==9||num==0||num==99) {
     Analyzer->loadFile(DY_NJfile,"TauCheck");
-    Analyzer->select(preselection_DY_TT,_DY_TT);
+    Analyzer->select(preselection_DY_TT,_DY|_TTAU);
     Analyzer->closeFile();
     compressFile(preselection_DY_TT);
   }
   if (num==10||num==0||num==99) {
     Analyzer->loadFile(DY_NJfile,"TauCheck");
-    Analyzer->select(preselection_DY_L,_DY_L);
+    Analyzer->select(preselection_DY_L,_DY|_LTAU);
     Analyzer->closeFile();
     compressFile(preselection_DY_L);
   }
@@ -87,19 +87,19 @@ void Preselection() {
   }
   if ( (num==12||num==0||num==99) && CHAN!=kTAU) {
     Analyzer->loadFile(VVfile,"TauCheck");
-    Analyzer->select(preselection_VV_T,_VV|_VV_T);
+    Analyzer->select(preselection_VV_T,_VV|_TTAU);
     Analyzer->closeFile();
     compressFile(preselection_VV_T);
   }
   if ( (num==13||num==0||num==99) && CHAN!=kTAU) {
     Analyzer->loadFile(VVfile,"TauCheck");
-    Analyzer->select(preselection_VV_J,_VV|_VV_J);
+    Analyzer->select(preselection_VV_J,_VV|_JTAU);
     Analyzer->closeFile();
     compressFile(preselection_VV_J);
   }
   if ( (num==14||num==0||num==99) && CHAN!=kTAU) {
     Analyzer->loadFile(VVfile,"TauCheck");
-    Analyzer->select(preselection_VV_L,_VV|_VV_L);
+    Analyzer->select(preselection_VV_L,_VV|_LTAU);
     Analyzer->closeFile();
     compressFile(preselection_VV_L);
   }
@@ -109,7 +109,7 @@ void Preselection() {
     Analyzer->closeFile();
     compressFile(preselection_QCD);
   }    
-  if (num==21||num>90||num==0) {
+  if (num==19||num>90||num==0) {
     std::cout << "Creating merged tree in file " << preselection_MCsum_woQCD << std::endl;
     TChain* MCch=new TChain("Events");
     MCch->Add(preselection_Wjets);
@@ -119,7 +119,7 @@ void Preselection() {
     TFile* MCf = new TFile(preselection_MCsum_woQCD,"recreate");
     MCch->Merge(MCf,0);
   }
-  if (num==22||num>90||num==0) {
+  if (num==19||num>90||num==0) {
     std::cout << "Creating merged tree in file " << preselection_MCsum << std::endl;
     TChain* MCch=new TChain("Events");
     MCch->Add(preselection_MCsum_woQCD);

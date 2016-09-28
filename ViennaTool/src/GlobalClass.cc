@@ -317,8 +317,8 @@ Int_t GlobalClass::getBin(const Int_t mode, const Int_t ind)
   i_j=getNjetIndex(mode,ind);
 
   if (mode & _W_JETS) {n_p=n_p_Wjets;n_e=n_e_Wjets;n_t=n_t_Wjets;n_j=n_j_Wjets;}
-  else if ( (mode & _DY)  || (mode & _DY_J) || (mode & _DY_TT) ) {n_p=n_p_DY;n_e=n_e_DY;n_t=n_t_DY;n_j=n_j_DY;}
-  else if ( (mode & _TT)  || (mode & _TT_T) || (mode & _TT_J) || (mode & _TT_L) ) {n_p=n_p_TT;n_e=n_e_TT;n_t=n_t_TT;n_j=n_j_TT;}
+  else if ( (mode & _DY) ) {n_p=n_p_DY;n_e=n_e_DY;n_t=n_t_DY;n_j=n_j_DY;}
+  else if ( (mode & _TT) ) {n_p=n_p_TT;n_e=n_e_TT;n_t=n_t_TT;n_j=n_j_TT;}
   else if ( (mode & _QCD) || (mode & _QCDISO) )     {n_p=n_p_QCD;n_e=n_e_QCD;n_t=n_t_QCD;n_j=n_j_QCD;}
   //  else {cout<<"getBin: Define a valid MODE!"<<std::endl;n_p=-99;n_e=-99;n_t=-99;}
   Int_t bin=i_e + i_p*n_e + i_t*n_p*n_e + i_j*n_t*n_p*n_e;
@@ -341,8 +341,8 @@ Int_t GlobalClass::nBins(const Int_t mode)
   }
 
   if (mode & _W_JETS) return(n_e_Wjets*n_p_Wjets*n_t_Wjets*n_m_Wjets*n_j_Wjets);
-  else if ( (mode & _DY)  || (mode & _DY_J) || (mode & _DY_TT) ) return(n_e_DY*n_p_DY*n_t_DY*n_m_DY*n_j_DY);
-  else if ( (mode & _TT)  || (mode & _TT_T) || (mode & _TT_J) || (mode & _TT_L) ) return(n_e_TT*n_p_TT*n_t_TT*n_m_TT*n_j_TT);
+  else if ( (mode & _DY) ) return(n_e_DY*n_p_DY*n_t_DY*n_m_DY*n_j_DY);
+  else if ( (mode & _TT) ) return(n_e_TT*n_p_TT*n_t_TT*n_m_TT*n_j_TT);
   else if ( (mode & _QCD) || (mode & _QCDISO) )   return(n_e_QCD*n_p_QCD*n_t_QCD*n_m_QCD*n_m_QCD*n_j_QCD);
 
   std::cout<<"nBins(mode): No valid mode."<<std::endl;
@@ -358,10 +358,10 @@ Int_t GlobalClass::getPtIndex(const Int_t mode, const Int_t ind)
   if (mode & _W_JETS) {
     for(Int_t i=0;i<n_p_Wjets;i++) if (pt>=pt_cuts_Wjets[i]) i_p++;
     return(--i_p);
-  } else if ( (mode & _DY) || (mode & _DY_J) || (mode & _DY_TT) ) {
+  } else if ( (mode & _DY) ) {
     for(Int_t i=0;i<n_p_DY;i++) if (pt>=pt_cuts_DY[i]) i_p++;
     return(--i_p);
-  } else if ( (mode & _TT) || (mode & _TT_T) || (mode & _TT_J) || (mode & _TT_L) ) {
+  } else if ( (mode & _TT) ) {
     for(Int_t i=0;i<n_p_TT;i++) if (pt>=pt_cuts_TT[i]) i_p++;
     return(--i_p);
   } else if ( (mode & _QCD) || (mode & _QCDISO) ) {
@@ -379,10 +379,10 @@ Int_t GlobalClass::getNjetIndex(const Int_t mode, const Int_t ind)
   if (mode & _W_JETS) {
     for(Int_t i=0;i<n_j_Wjets;i++) if (njet>=njet_cuts_Wjets[i]) i_j++;
     return(--i_j);
-  } else if ( (mode & _DY) || (mode & _DY_J) || (mode & _DY_TT) ) {
+  } else if ( (mode & _DY) ) {
     for(Int_t i=0;i<n_j_DY;i++) if (njet>=njet_cuts_DY[i]) i_j++;
     return(--i_j);
-  } else if ( (mode & _TT) || (mode & _TT_T) || (mode & _TT_J) || (mode & _TT_L) ) {
+  } else if ( (mode & _TT) ) {
     for(Int_t i=0;i<n_j_TT;i++) if (njet>=njet_cuts_TT[i]) i_j++;
     return(--i_j);
   } else if ( (mode & _QCD) || (mode & _QCDISO) ) {
@@ -400,10 +400,10 @@ Int_t GlobalClass::getMtIndex(const Int_t mode, const Int_t ind)
   if (mode & _W_JETS) {
     for(Int_t i=0;i<n_m_Wjets;i++) if (mt>=mt_cuts_Wjets[i]) i_m++;
     return(--i_m);
-  } else if ( (mode & _DY) || (mode & _DY_J) || (mode & _DY_TT) ) {
+  } else if ( (mode & _DY) ) {
     for(Int_t i=0;i<n_m_DY;i++) if (mt>=mt_cuts_DY[i]) i_m++;
     return(--i_m);
-  } else if ( (mode & _TT) || (mode & _TT_T) || (mode & _TT_J) || (mode & _TT_L) ) {
+  } else if ( (mode & _TT) ) {
     for(Int_t i=0;i<n_m_TT;i++) if (mt>=mt_cuts_TT[i]) i_m++;
     return(--i_m);
   } else if ( (mode & _QCD) || (mode & _QCDISO) ) {
@@ -421,10 +421,10 @@ Int_t GlobalClass::getEtaIndex(const Int_t mode, const Int_t ind)
   if (mode & _W_JETS) {
     for(Int_t i=0;i<n_e_Wjets;i++) if (TMath::Abs(eta)>=eta_cuts_Wjets[i]) i_e++;
     return(--i_e);
-  } else if ( (mode & _DY) || (mode & _DY_J) || (mode & _DY_TT) ) {
+  } else if ( (mode & _DY) ) {
     for(Int_t i=0;i<n_e_DY;i++) if (TMath::Abs(eta)>=eta_cuts_DY[i]) i_e++;
     return(--i_e);
-  } else if ( (mode & _TT) || (mode & _TT_T) || (mode & _TT_J) || (mode & _TT_L) ) {
+  } else if ( (mode & _TT) ) {
     for(Int_t i=0;i<n_e_TT;i++) if (TMath::Abs(eta)>=eta_cuts_TT[i]) i_e++;
     return(--i_e);
   } else if ( (mode & _QCD) || (mode & _QCDISO) ) {
@@ -442,10 +442,10 @@ Int_t GlobalClass::getTrackIndex(const Int_t mode, const Int_t ind)
   if (mode & _W_JETS) {
     for(Int_t i=0;i<n_t_Wjets;i++) if (i_decayMode>=decay_cuts_Wjets[i]) i_t++;
     return(--i_t);
-  } else if ( (mode & _DY) || (mode & _DY_J) || (mode & _DY_TT) ) {
+  } else if ( (mode & _DY) ) {
     for(Int_t i=0;i<n_t_DY;i++) if (i_decayMode>=decay_cuts_DY[i]) i_t++;
     return(--i_t);
-  } else if ( (mode & _TT) || (mode & _TT_T) || (mode & _TT_J) || (mode & _TT_L) ) {
+  } else if ( (mode & _TT) ) {
     for(Int_t i=0;i<n_t_TT;i++) if (i_decayMode>=decay_cuts_TT[i]) i_t++;
     return(--i_t);
   } else if ( (mode & _QCD) || (mode & _QCDISO) ) {

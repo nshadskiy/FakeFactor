@@ -4,5 +4,6 @@ echo "Compiling the framework"
 sh BuildStructure.sh
 cd ../
 make -B
-#./Preselection
+./Preselection
 ./SRHisto
+./CRHisto

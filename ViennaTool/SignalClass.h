@@ -66,6 +66,7 @@ public :
    std::vector<double>  *alltau_dRToB;
    std::vector<double>  *alltau_mvis;
    std::vector<double>  *alltau_mt;
+   std::vector<double>  *alltau_svfit;
    std::vector<double>  *alltau_Zpt;
    Int_t           tau_iso_ind;
 
@@ -112,6 +113,7 @@ public :
    TBranch        *b_alltau_dRToB;   //!
    TBranch        *b_alltau_mvis;   //!
    TBranch        *b_alltau_mt;   //!
+   TBranch        *b_alltau_svfit;   //!
    TBranch        *b_alltau_Zpt;   //!
    TBranch        *b_tau_iso_ind;   //!
 
@@ -199,6 +201,7 @@ void SignalClass::Init(TTree *tree)
    alltau_dRToB = 0;
    alltau_mvis = 0;
    alltau_mt = 0;
+   alltau_svfit = 0;
    alltau_Zpt = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
@@ -248,6 +251,7 @@ void SignalClass::Init(TTree *tree)
    fChain->SetBranchAddress("alltau_dRToB", &alltau_dRToB, &b_alltau_dRToB);
    fChain->SetBranchAddress("alltau_mvis", &alltau_mvis, &b_alltau_mvis);
    fChain->SetBranchAddress("alltau_mt", &alltau_mt, &b_alltau_mt);
+   fChain->SetBranchAddress("alltau_svfit", &alltau_svfit, &b_alltau_svfit);
    fChain->SetBranchAddress("alltau_Zpt", &alltau_Zpt, &b_alltau_Zpt);
    fChain->SetBranchAddress("tau_iso_ind", &tau_iso_ind, &b_tau_iso_ind);
    Notify();

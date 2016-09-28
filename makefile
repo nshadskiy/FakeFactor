@@ -3,7 +3,7 @@ INCDIR=.
 ROOTINC=$(shell root-config --incdir)
 ROOTLIB=$(shell root-config --libs)
 
-all: NtupleClass.o SignalClass.o GlobalClass.o TNtupleAnalyzer.o TSelectionAnalyzer.o PlotterClass.o test Preselection SRHisto
+all: NtupleClass.o SignalClass.o GlobalClass.o TNtupleAnalyzer.o TSelectionAnalyzer.o PlotterClass.o test Preselection SRHisto CRHisto
 
 %.o: ViennaTool/%.C
 	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -fpic -c $<
@@ -20,7 +20,10 @@ Preselection: ViennaTool/macros/Preselection.C
 SRHisto: ViennaTool/macros/SRHisto.C
 	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ SignalClass.o GlobalClass.o PlotterClass.o TSelectionAnalyzer.o ViennaTool/macros/SRHisto.C
 
+CRHisto: ViennaTool/macros/CRHisto.C
+	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ SignalClass.o GlobalClass.o PlotterClass.o TSelectionAnalyzer.o ViennaTool/macros/CRHisto.C
+
 
 clean:
-	rm *.o test Preselection SRHisto
+	rm *.o test Preselection SRHisto CRHisto
 

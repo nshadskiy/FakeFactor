@@ -162,30 +162,28 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
   TString description=getDescription(ltext);
   
   TLatex l;
-  if (description != ""){
-    l.SetTextSize(0.04);
-    l.SetNDC();
-    //l.SetTextFont(102);
-    l.DrawLatex(0.75,0.93,"2.3 fb^{-1} (13 TeV)");
-  }
+  l.SetTextSize(0.04);
+  l.SetNDC();
+  //l.SetTextFont(102);
+  l.DrawLatex(0.75,0.93,luminosity+" fb^{-1} (13 TeV)");
 
   TLatex c;
   cout << "Caption: " << caption << endl;
   if (caption != ""){
     c.SetTextSize(0.04);
     c.SetNDC();
-    c.DrawLatex(0.13,0.93,caption);
+    c.DrawLatex(0.18,0.93,caption);
   }
 
   TLatex pre;
-  pre.SetTextSize(0.06);
+  pre.SetTextSize(0.07);
   pre.SetNDC();
-  pre.DrawLatex(0.17,0.86,"CMS");
+  pre.DrawLatex(0.17,0.85,"CMS");
   TLatex pre1;
   pre1.SetTextSize(0.04);
   pre1.SetTextFont(12);
   pre1.SetNDC();
-  pre1.DrawLatex(0.17,0.82,"Preliminary");
+  pre1.DrawLatex(0.17,0.81,"Preliminary");
   
 
   
@@ -263,13 +261,13 @@ void PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,cons
     Pt_cuts=Pt_cuts_Wjets; Eta_cuts=Eta_cuts_Wjets; Decay_cuts=Decay_cuts_Wjets; Njet_cuts=Njet_cuts_Wjets;
     m_color=color_Wjets;
   }
-  else if (mode & _DY || mode & _DY_J){
+  else if (mode & _DY ){
     proc="DY+jets";
     N_p=N_p_DY; N_e=N_e_DY; N_t=N_t_DY; N_j=N_j_Wjets;
     Pt_cuts=Pt_cuts_DY; Eta_cuts=Eta_cuts_DY; Decay_cuts=Decay_cuts_DY; Njet_cuts=Njet_cuts_Wjets;
     m_color=color_DY_J;
   }
-  else if (mode & _TT || mode & _TT_J){
+  else if (mode & _TT ){
     proc="ttbar";
     N_p=N_p_TT; N_e=N_e_TT; N_t=N_t_TT; N_j=N_j_Wjets;
     Pt_cuts=Pt_cuts_TT; Eta_cuts=Eta_cuts_TT; Decay_cuts=Decay_cuts_TT; Njet_cuts=Njet_cuts_Wjets;
@@ -760,13 +758,13 @@ void PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,cons
     Pt_cuts=Pt_cuts_Wjets; Eta_cuts=Eta_cuts_Wjets; Decay_cuts=Decay_cuts_Wjets;
     m_color=color_Wjets;
   }
-  else if (mode & _DY || mode & _DY_J){
+  else if (mode & _DY){
     proc="DY+jets";
     N_p=N_p_DY; N_e=N_e_DY; N_t=N_t_DY;
     Pt_cuts=Pt_cuts_DY; Eta_cuts=Eta_cuts_DY; Decay_cuts=Decay_cuts_DY;
     m_color=color_DY_J;
   }
-  else if (mode & _TT || mode & _TT_J){
+  else if (mode & _TT){
     proc="ttbar";
     N_p=N_p_TT; N_e=N_e_TT; N_t=N_t_TT;
     Pt_cuts=Pt_cuts_TT; Eta_cuts=Eta_cuts_TT; Decay_cuts=Decay_cuts_TT;
