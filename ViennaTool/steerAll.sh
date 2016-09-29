@@ -7,4 +7,5 @@ make -B
 #./Preselection
 #./SRHisto
 #./CRHisto
-./steerFF
+#./steerFF
+./convert_inputs
