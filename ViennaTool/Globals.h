@@ -288,6 +288,7 @@ const TString FF_corr_TT_MCsum_noGen_SR          = "FF_"+s_corr+"_TT_"+s_MCsum+"
 const TString FF_corr_TT_MCsum_noGen_SR_weighted = "FF_"+s_corr+"_TT_"+s_MCsum+"_noGen_"+s_SR+"_"+s_weighted+".root";
 const TString FF_corr_TT_MCsum_Gen               = "FF_"+s_corr+"_TT_"+s_MCsum+"_Gen.root";
 const TString FF_corr_TT_MCsum_Gen_weighted      = "FF_"+s_corr+"_TT_"+s_MCsum+"_Gen_"+s_weighted+".root";
+const TString FF_corr_TT_MC_noGen_nonclosure     = "FF_"+s_corr+"_TT_MC_noGen_nonclosure.root";
 
 const TString FF_corr_QCD_data                   = "FF_"+s_corr+"_QCD_data.root";
 const TString FF_corr_QCD_data_weighted          = "FF_"+s_corr+"_QCD_data_"+s_weighted+".root";
@@ -596,6 +597,7 @@ const TString CR_QCD_mt_TT      = path_sim + s_CR+"_QCD_"+s_mt+"_TT.root";
 const TString CR_QCD_mt_QCD        = path_sim + s_CR+"_QCD_"+s_mt+"_QCD.root";
 
 const TString CR_QCD_mvis_data_MCsubtracted     = path_sim+s_CR+"_QCD_"+s_mvis+"_data_MCsubtracted.root";
+const TString CR_QCD_mvis_AI_data_MCsubtracted   = path_sim+s_CR+"_QCD_"+s_mvis+"_AI_data_MCsubtracted.root";
 const TString CR_QCD_muiso_data_MCsubtracted     = path_sim+s_CR+"_QCD_muiso_data_MCsubtracted.root";
 const TString CR_Wjets_mvis_data_MCsubtracted   = path_sim+s_CR+"_Wjets_"+s_mvis+"_data_MCsubtracted.root";
 // Empty histograms as placeholders
@@ -615,6 +617,7 @@ const TString SR_MCsum_woQCD_pt    = SR_MCsum_woQCD+"_"+s_pt+".root";
 const TString SR_data       = path_sim+s_SR+"_data";
 const TString SR_data_mt    = SR_data+"_"+s_mt+".root";
 const TString SR_data_mvis  = SR_data+"_"+s_mvis+".root";
+const TString SR_data_mvis_AI_MCsubtracted  = SR_data+"_"+s_mvis+"_AI_MCsubtracted.root";
 const TString SR_data_pt    = SR_data+"_"+s_pt+".root";
 
 const TString SS_SR_data       = path_sim+s_SS_SR+"_data";

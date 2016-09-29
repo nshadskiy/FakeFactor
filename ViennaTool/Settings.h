@@ -38,7 +38,7 @@ const int APPLY_TO_ISOTAU=1; //def: 0
 const int USE_ISOTAU=1; //def: 0
 const int USE_MVA_ISO=1; //def: 1
 const int CALC_SS_SR=0; //default: 0   //0.15<QCD_iso<0.25 for QCD FFs
-const int num = 19;
+const int num = 0;
 ///////////////////////////////////////////////////
 //steerFF
 const int doDebugPlots=1;    //1 to also calculate FF in SR; and do bkg estimate with unweighted FF per sample ->for control plots
@@ -49,8 +49,8 @@ const int applyFF_fromCR=1; //1 for default; 0 for debugging
 const int requireGenMatch_whenCalcFF=0; //0 as default
 const int useDYFF_forTT=0; //0 as default
 const int useWJFF_forDY=0; //1 as default
-const int doCalcWeights=1; //calc fractions
-const int doCalc=0; //calc FFs
+const int doCalcWeights=0; //calc fractions
+const int doCalc=1; //calc FFs
 const int calcVTightFF=0;
 //applyFF
 const int doBgEst=1; //calc bkg estimates for different FF contributions

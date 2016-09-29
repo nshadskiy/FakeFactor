@@ -234,11 +234,19 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
 
 }
 
-void PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,const int mode,const TString plotfile, const TString n1, const TString n2, const Double_t* xbins, const Int_t xbins_size, const TString xlabel)
+Int_t PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,const int mode,const TString plotfile, const TString n1, const TString n2, const Double_t* xbins, const Int_t xbins_size, const TString xlabel)
 {
 
   TFile f1(FF_file_CR);
+  if(f1.IsZombie()){
+    cout << "No file " << FF_file_CR << " available" << endl;
+    return 0;
+  }
   TFile f2(FF_file_SR);
+  if(f2.IsZombie()){
+    cout << "No file " << FF_file_SR << " available" << endl;
+    return 0;
+  }
 
   TH1D* FF_CR = (TH1D*) f1.Get("c_t");
   TH1D* FF_SR = (TH1D*) f2.Get("c_t");
@@ -378,6 +386,8 @@ void PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,cons
   f2.Close();
 
   c->Close();
+
+  return 1;
 
 }
 

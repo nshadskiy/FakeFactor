@@ -4,6 +4,7 @@ echo "Compiling the framework"
 sh BuildStructure.sh
 cd ../
 make -B
-./Preselection
-./SRHisto
-./CRHisto
+#./Preselection
+#./SRHisto
+#./CRHisto
+./steerFF

@@ -3,7 +3,7 @@ INCDIR=.
 ROOTINC=$(shell root-config --incdir)
 ROOTLIB=$(shell root-config --libs)
 
-all: NtupleClass.o SignalClass.o GlobalClass.o TNtupleAnalyzer.o TSelectionAnalyzer.o PlotterClass.o test Preselection SRHisto CRHisto
+all: NtupleClass.o SignalClass.o GlobalClass.o TNtupleAnalyzer.o TSelectionAnalyzer.o PlotterClass.o FFCalculator.o test Preselection SRHisto CRHisto steerFF
 
 %.o: ViennaTool/%.C
 	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -fpic -c $<
@@ -22,6 +22,9 @@ SRHisto: ViennaTool/macros/SRHisto.C
 
 CRHisto: ViennaTool/macros/CRHisto.C
 	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ SignalClass.o GlobalClass.o PlotterClass.o TSelectionAnalyzer.o ViennaTool/macros/CRHisto.C
+
+steerFF: ViennaTool/macros/steerFF.C
+	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ SignalClass.o GlobalClass.o PlotterClass.o ../tmp/slc6_amd64_gcc493/src/HTTutilities/Jet2TauFakes/src/HTTutilitiesJet2TauFakes/libHTTutilitiesJet2TauFakes.so ViennaTool/macros/steerFF.C
 
 
 clean:
