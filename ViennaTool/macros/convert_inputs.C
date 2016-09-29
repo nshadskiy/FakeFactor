@@ -141,8 +141,30 @@ void convert_inputs(Int_t categoryMode=0){
     combineWSystematics( d+FF_corr_Wjets_MCsum_noGen_nonclosure_SS_SR, "nonclosure_Wjets_down", d+FF_corr_Wjets_MC_noGen_mtcorr_SS_SR, "mt_corr_Wjets_down", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_down" );
   }
 
+  fnW="weight_Wjets"+catString+SSstring+".root";
+  hn="h_w";
+  fout_nW="frac_wjets.root";
+  //  conv_th1_to_th2( d+fnW , hn , o+fout_n , 1 );
+
+  fnD="weight_DY_J"+catString+SSstring+".root";
+  hn="h_w";
+  fout_nD="frac_dy.root";
+  //  conv_th1_to_th2( d+fnD , hn , o+fout_n , 1 );
+
+  fnT="weight_TT_J"+catString+SSstring+".root";
+  hn="h_w";
+  fout_nT="frac_tt.root";
+  //  conv_th1_to_th2( d+fnT , hn , o+fout_n , 1 );
+
+  fnQ="weight_QCD"+catString+SSstring+".root";
+  hn="h_w";
+  fout_nQ="frac_qcd.root";
+  //  conv_th1_to_th2( d+fnQ , hn , o+fout_n , 1 );
+
+  hnout="h_w_2d";
+
   //stat. unc. of fractions
-  /*std::vector<TString> fn_other_w; fn_other_w.push_back( d+fnD ); fn_other_w.push_back( d+fnT ); fn_other_w.push_back( d+fnQ );
+  std::vector<TString> fn_other_w; fn_other_w.push_back( d+fnD ); fn_other_w.push_back( d+fnT ); fn_other_w.push_back( d+fnQ );
   std::vector<TString> fn_other_d; fn_other_d.push_back( d+fnW ); fn_other_d.push_back( d+fnT ); fn_other_d.push_back( d+fnQ );
   std::vector<TString> fn_other_t; fn_other_t.push_back( d+fnW ); fn_other_t.push_back( d+fnD ); fn_other_t.push_back( d+fnQ );
   std::vector<TString> fn_other_q; fn_other_q.push_back( d+fnW ); fn_other_q.push_back( d+fnD ); fn_other_q.push_back( d+fnT );
@@ -155,7 +177,7 @@ void convert_inputs(Int_t categoryMode=0){
   make_frac_sys( d+fnW , fn_other_w , hn , hnout , hn_other_w , o+fout_nW , 1 );
   make_frac_sys( d+fnD , fn_other_d , hn , hnout , hn_other_d , o+fout_nD , 1 );
   make_frac_sys( d+fnT , fn_other_t , hn , hnout , hn_other_t , o+fout_nT , 1 );
-  make_frac_sys( d+fnQ , fn_other_q , hn , hnout , hn_other_q , o+fout_nQ , 1 );*/
+  make_frac_sys( d+fnQ , fn_other_q , hn , hnout , hn_other_q , o+fout_nQ , 1 );
 
   /*
    *   fn="sys_TT_J_nonclosure_mvis.root";
