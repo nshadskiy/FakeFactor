@@ -18,14 +18,14 @@ const TString inputFF_date = "20160929";
 const Double_t FFW_REL_ERR=0.0;
 const int NERR=5; //number of toys for FF
 ///////////////////////////////////////////////////
-const int inclusive_selection=0; //0: splitting FF procedure in categories defined in Globals.h
+const int inclusive_selection=1; //0: splitting FF procedure in categories defined in Globals.h
 const int useVV=1;
 ///////////////////////////////////////////////////
 //This defines which fractions are taken for FF bkg estimates, one of them has to be chosen
-const int inclusive_frac_mt=0;
+const int inclusive_frac_mt=1;
 const int inclusive_frac_et=0;
 const int inclusive_frac_tt=0;
-const int cat_frac_mt=1;
+const int cat_frac_mt=0;
 const int cat_frac_et=0;
 const int cat_frac_tt=0;
 ///////////////////////////////////////////////////
