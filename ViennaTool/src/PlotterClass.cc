@@ -505,6 +505,7 @@ void PlotterClass::plotBgStackedAgainstData(TString data,TString data_label,std:
   if ( data.Contains("_mt_")   || data.Contains("_mt.")   ) hname+="mt";
   if ( data.Contains("_mvis_") || data.Contains("_mvis.") ) hname+="mvis";
   if ( data.Contains("_pt_")   || data.Contains("_pt.")   ) hname+="pt";
+  if ( data.Contains("_svfit_")   || data.Contains("_svfit.")   ) hname+="svfit";
   //   std::cout << "MF d " << hname << std::endl;
 
   TFile f1(data);
@@ -571,6 +572,7 @@ void PlotterClass::plotBgStackedAgainstData(TString data,TString data_label,std:
   if ( data.Contains("_mt_")   || data.Contains("_mt.")   ) hname+="mt";
   if ( data.Contains("_mvis_") || data.Contains("_mvis.") ) hname+="mvis";
   if ( data.Contains("_pt_")   || data.Contains("_pt.")   ) hname+="pt";
+  if ( data.Contains("_svfit_")   || data.Contains("_svfit.")   ) hname+="svfit";
   //   std::cout << "MF d " << hname << std::endl;
 
   TFile f1(data);

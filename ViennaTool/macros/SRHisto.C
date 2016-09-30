@@ -58,7 +58,11 @@ void SRHisto(int doCalc, int DOCUTS) {
       Analyzer->calcBgEstSim( ps.at(i), PT|NO_SR, categoryMode, tmp.ReplaceAll(r1[2],r2[2]) );
       if(CALC_SS_SR){tmp2=tmp; tmp2.ReplaceAll( "SR_", "SS_SR_" );     Analyzer->calcBgEstSim( ps.at(i),PT|NO_SR|_SS, categoryMode, tmp2 );}  //QCD SS
       //if (DOCUTS) for (unsigned l=0; l<NC; l++){ tmp2=tmp; Analyzer->calcBgEstSim( ps.at(i), PT|NO_SR, categoryMode, tmp2.ReplaceAll("SR_","SR_cuts_"+c_text[l]+"_"), c_cuts[l]  ); }
-      Analyzer->calcBgEstSim( ps.at(i), MVIS|_AI, categoryMode, tmp.ReplaceAll(r2[2], "_mvis_AI") );
+      tmp=fl.at(i); if(!inclusive_selection){tmp.ReplaceAll( ".root",categories[icat]+".root" );} Analyzer->calcBgEstSim( ps.at(i), MVIS|_AI, categoryMode, tmp.ReplaceAll(r2[0], "_mvis_AI") );
+      if(use_svfit){
+        tmp=fl.at(i); if(!inclusive_selection){tmp.ReplaceAll( ".root",categories[icat]+".root" );}
+        Analyzer->calcBgEstSim( ps.at(i), SVFIT, categoryMode, tmp.ReplaceAll(r2[0], "_svfit"));
+      }
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////

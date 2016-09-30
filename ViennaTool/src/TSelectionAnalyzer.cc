@@ -72,6 +72,12 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
     looseSR_tt = new TH1D("hh_ltt_pt","Loose events in tt SR"+suff,nbins_pt,hist_min_pt,hist_max_pt);
     allSR   = new TH1D("hh_a_pt",  "All events in SR"+suff,nbins_pt,hist_min_pt,hist_max_pt);
   }
+  else if (mode & SVFIT) {                                      
+    tightSR = new TH1D("hh_t_svfit","Tight events in SR"+suff,nbins_svfit,hist_min_svfit,hist_max_svfit);
+    looseSR = new TH1D("hh_l_svfit","Loose events in SR"+suff,nbins_svfit,hist_min_svfit,hist_max_svfit);
+    looseSR_tt = new TH1D("hh_ltt_svfit","Loose events in tt SR"+suff,nbins_svfit,hist_min_svfit,hist_max_svfit);
+    allSR   = new TH1D("hh_a_svfit",  "All events in SR"+suff,nbins_svfit,hist_min_svfit,hist_max_svfit);
+  }
   
   else {
     std::cout<<"ERROR: no valid mode given. Exiting TNtupleAnalyzer::calcBgEstSim..."<<std::endl;

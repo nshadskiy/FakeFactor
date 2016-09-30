@@ -8,4 +8,6 @@ make -B
 #./SRHisto
 #./CRHisto
 #./steerFF
-./convert_inputs
+#./convert_inputs
+./ApplyFF
+./ApplyUncertainties

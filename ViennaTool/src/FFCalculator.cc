@@ -1572,6 +1572,7 @@ void FFCalculator::applyFF(TString outfile, const std::vector<Int_t> mode, const
     if( mode.at(ni) & MVIS ) outstring = outfile+"_mvis.root";
     else if( mode.at(ni) & MT ) outstring = outfile+"_mt.root";
     else if( mode.at(ni) & PT )outstring = outfile+"_pt.root";
+    else if( mode.at(ni) & SVFIT )outstring = outfile+"_svfit.root";
     else{
       cout << "Error: Wrong mode specified in FFCalculator::applyFF" << endl;
       exit(0);
@@ -1587,6 +1588,7 @@ void FFCalculator::applyFF(TString outfile, const std::vector<Int_t> mode, const
     if( mode.at(ni) & MVIS) fakefactor_histo = new TH1D("hh_t_mvis","",nbins_mvis,hist_min_mvis,hist_max_mvis);
     else if( mode.at(ni) & MT) fakefactor_histo = new TH1D("hh_t_mt","",nbins_mt,hist_min_mt,hist_max_mt);
     else if( mode.at(ni) & PT) fakefactor_histo = new TH1D("hh_t_pt","",nbins_pt,hist_min_pt,hist_max_pt);
+    else if( mode.at(ni) & SVFIT) fakefactor_histo = new TH1D("hh_t_svfit","",nbins_svfit,hist_min_svfit,hist_max_svfit);
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
       
@@ -1619,6 +1621,7 @@ void FFCalculator::applyFF(TString outfile, const std::vector<Int_t> mode, const
       if( mode.at(ni) & MVIS) FFerr[i] = new TH1D(hn, "",nbins_mvis,hist_min_mvis,hist_max_mvis);
       if( mode.at(ni) & MT) FFerr[i] = new TH1D(hn, "",nbins_mt,hist_min_mt,hist_max_mt);
       if( mode.at(ni) & PT) FFerr[i] = new TH1D(hn, "",nbins_pt,hist_min_pt,hist_max_pt);
+      if( mode.at(ni) & SVFIT) FFerr[i] = new TH1D(hn, "",nbins_svfit,hist_min_svfit,hist_max_svfit);
       for (int xb=1; xb<fakefactor_histo->GetNbinsX(); xb++){
         Double_t binc=r3.Gaus( fakefactor_histo->GetBinContent(xb) , fakefactor_histo->GetBinError(xb)  );
         FFerr[i]->SetBinContent( xb , binc );
@@ -1742,19 +1745,23 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
   //Int_t nfrac
   Double_t pt_def=50; Int_t dm_def=0; Double_t mt_def=50; Double_t mvis_def=50; Double_t muiso_def=0.025;
   vector<string> nominal_syst;
-  //nominal_syst.push_back("ff_w"); nominal_syst.push_back("ff_qcd_os"); nominal_syst.push_back("ff_tt");
-  nominal_syst.push_back("ff_comb"); 
+  if(CHAN==kTAU){nominal_syst.push_back("ff_comb"); }
+  else{nominal_syst.push_back("ff_w"); nominal_syst.push_back("ff_qcd_os"); nominal_syst.push_back("ff_tt");}
   Int_t nsyst=nominal_syst.size();
-  //vector<Int_t> errmode; errmode.push_back(0); errmode.push_back(0); errmode.push_back(1); errmode.push_back(1); errmode.push_back(2); errmode.push_back(2); //This tells which systematic errors belong together
-  vector<Int_t> errmode; errmode.push_back(0); errmode.push_back(0);
+  vector<Int_t> errmode;
+  if(CHAN==kTAU){errmode.push_back(0); errmode.push_back(0);}
+  else {errmode.push_back(0); errmode.push_back(0); errmode.push_back(1); errmode.push_back(1); errmode.push_back(2); errmode.push_back(2);} //This tells which systematic errors belong together
   Int_t nerr=errmode.size();
-  //vector<string> syst_err_up; syst_err_up.push_back("ff_w_syst_up"); syst_err_up.push_back("ff_w_stat_up"); syst_err_up.push_back("ff_qcd_syst_up"); syst_err_up.push_back("ff_qcd_stat_up"); syst_err_up.push_back("ff_tt_syst_up"); syst_err_up.push_back("ff_tt_stat_up");
-  //vector<string> syst_err_down; syst_err_down.push_back("ff_w_syst_down"); syst_err_down.push_back("ff_w_stat_down"); syst_err_down.push_back("ff_qcd_syst_down"); syst_err_down.push_back("ff_qcd_stat_down"); syst_err_down.push_back("ff_tt_syst_down"); syst_err_down.push_back("ff_tt_stat_down");
-
-  vector<string> syst_err_up; syst_err_up.push_back("ff_qcd_syst_up"); syst_err_up.push_back("ff_qcd_stat_up"); 
-  vector<string> syst_err_down; syst_err_down.push_back("ff_qcd_syst_down"); syst_err_down.push_back("ff_qcd_stat_down"); 
+  vector<string> syst_err_up; vector<string> syst_err_down;
+  if(CHAN==kTAU){
+    syst_err_up.push_back("ff_qcd_syst_up"); syst_err_up.push_back("ff_qcd_stat_up");
+    syst_err_down.push_back("ff_qcd_syst_down"); syst_err_down.push_back("ff_qcd_stat_down"); 
+  }
+  else{
+    syst_err_up.push_back("ff_w_syst_up"); syst_err_up.push_back("ff_w_stat_up"); syst_err_up.push_back("ff_qcd_syst_up"); syst_err_up.push_back("ff_qcd_stat_up"); syst_err_up.push_back("ff_tt_syst_up"); syst_err_up.push_back("ff_tt_stat_up");
+    syst_err_down.push_back("ff_w_syst_down"); syst_err_down.push_back("ff_w_stat_down"); syst_err_down.push_back("ff_qcd_syst_down"); syst_err_down.push_back("ff_qcd_stat_down"); syst_err_down.push_back("ff_tt_syst_down"); syst_err_down.push_back("ff_tt_stat_down");
+  }
   
-
   Double_t fillVal;
   vector<Double_t> inputs;
 
@@ -1856,7 +1863,8 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
     Double_t min_bin, max_bin;
     if( mode.at(mi) & MVIS ) { outstring = outfile+"_mvis.root"; nbins=nbins_mvis; min_bin=hist_min_mvis; max_bin=hist_max_mvis; } 
     else if( mode.at(mi) & MT ) { outstring = outfile+"_mt.root"; nbins=nbins_mt; min_bin=hist_min_mt; max_bin=hist_max_mt; } 
-    else if( mode.at(mi) & PT ) { outstring = outfile+"_pt.root"; nbins=nbins_pt; min_bin=hist_min_pt; max_bin=hist_max_pt; } 
+    else if( mode.at(mi) & PT ) { outstring = outfile+"_pt.root"; nbins=nbins_pt; min_bin=hist_min_pt; max_bin=hist_max_pt; }
+    else if( mode.at(mi) & SVFIT ) { outstring = outfile+"_svfit.root"; nbins=nbins_svfit; min_bin=hist_min_svfit; max_bin=hist_max_svfit; }
     else{
       cout << "Error: Wrong mode specified in FFCalculator::getSystUncertainties" << endl;
       exit(0);
@@ -1871,6 +1879,11 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
     if( mode.at(mi) & MVIS) {histname="hh_t_mvis"; fakefactor_histo[0] = new TH1D(histname,"",nbins_mvis,hist_min_mvis,hist_max_mvis);}
     else if( mode.at(mi) & MT) {histname="hh_t_mt"; fakefactor_histo[0] = new TH1D(histname,"",nbins_mt,hist_min_mt,hist_max_mt);}
     else if( mode.at(mi) & PT) {histname="hh_t_pt"; fakefactor_histo[0] = new TH1D(histname,"",nbins_pt,hist_min_pt,hist_max_pt);}
+    else if( mode.at(mi) & SVFIT) {histname="hh_t_svfit"; fakefactor_histo[0] = new TH1D(histname,"",nbins_svfit,hist_min_svfit,hist_max_svfit);}
+    else{
+      cout << "Error: Wrong mode specified in FFCalculator::getSystUncertainties" << endl;
+      exit(0);
+    }
 
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
@@ -1884,28 +1897,29 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
         fakefactor_histo[0]->Fill(fillVal, ffvalue*event_s->weight_sf);
       }
     }
-    /*fakefactor_histo_Wjets[0] = (TH1D*)fakefactor_histo[0]->Clone("Wjets_err");
+    fakefactor_histo_Wjets[0] = (TH1D*)fakefactor_histo[0]->Clone("Wjets_err");
     fakefactor_histo_DY[0] = (TH1D*)fakefactor_histo[0]->Clone("DY_err");
     fakefactor_histo_QCD[0] = (TH1D*)fakefactor_histo[0]->Clone("QCD_err");
     fakefactor_histo_TT[0] = (TH1D*)fakefactor_histo[0]->Clone("TT_err");
 
     FakeFactor* ff_w = (FakeFactor*)ff_file->Get(nominal_syst.at(0).c_str());
     FakeFactor* ff_qcd = (FakeFactor*)ff_file->Get(nominal_syst.at(1).c_str());
-    FakeFactor* ff_tt = (FakeFactor*)ff_file->Get(nominal_syst.at(2).c_str());*/
+    FakeFactor* ff_tt = (FakeFactor*)ff_file->Get(nominal_syst.at(2).c_str());
 
     for (int itoys=0; itoys<NERR; itoys++){
       TString hn="ff_toyerr_"; if (itoys<10) hn+="0"; hn+=itoys;
       if( mode.at(mi) & MVIS) fakefactor_histo[itoys+1] = new TH1D(hn, "",nbins_mvis,hist_min_mvis,hist_max_mvis);
       if( mode.at(mi) & MT) fakefactor_histo[itoys+1] = new TH1D(hn, "",nbins_mt,hist_min_mt,hist_max_mt);
       if( mode.at(mi) & PT) fakefactor_histo[itoys+1] = new TH1D(hn, "",nbins_pt,hist_min_pt,hist_max_pt);
+      if( mode.at(mi) & SVFIT) fakefactor_histo[itoys+1] = new TH1D(hn, "",nbins_svfit,hist_min_svfit,hist_max_svfit);
     }
-    /*for (int itoys=0; itoys<NERR; itoys++){
+    for (int itoys=0; itoys<NERR; itoys++){
       TString hn="ff_toyerr_"; if (itoys<10) hn+="0"; hn+=itoys;
       fakefactor_histo_Wjets[itoys+1] = (TH1D*)fakefactor_histo[itoys+1]->Clone(hn+"Wjets");
       fakefactor_histo_DY[itoys+1] = (TH1D*)fakefactor_histo[itoys+1]->Clone(hn+"DY");
       fakefactor_histo_QCD[itoys+1] = (TH1D*)fakefactor_histo[itoys+1]->Clone(hn+"QCD");
       fakefactor_histo_TT[itoys+1] = (TH1D*)fakefactor_histo[itoys+1]->Clone(hn+"TT");
-      }*/
+    }
     double toyvalues[NERR];    
     for (int itoys=0; itoys<NERR; itoys++) toyvalues[itoys] = r3.Gaus(0,1);
     for (int itoys=0; itoys<NERR; itoys++) cout << toyvalues[itoys] << endl;
@@ -1935,27 +1949,37 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         for (int itoys=0; itoys<NERR; itoys++){
           Double_t toyffvalue=0; Double_t toyffvalue_Wjets=0; Double_t toyffvalue_QCD=0; Double_t toyffvalue_DY=0; Double_t toyffvalue_TT=0;
-          /*toyffvalue += (ff_w->value(inputs,"frac_w"))*( ff_w->value(inputs)+toyvalues[itoys]*ff_err_toys[0][0][mvis_lookup][mt_lookup][pt_lookup][dm_lookup][njet_lookup][muiso_lookup] );
-          toyffvalue += (ff_qcd->value(inputs,"frac_qcd"))*( ff_qcd->value(inputs)+toyvalues[itoys]*ff_err_toys[0][1][mvis_lookup][mt_lookup][pt_lookup][dm_lookup][njet_lookup][muiso_lookup] );
-          toyffvalue += (ff_tt->value(inputs,"frac_tt"))*( ff_tt->value(inputs)+toyvalues[itoys]*ff_err_toys[0][2][mvis_lookup][mt_lookup][pt_lookup][dm_lookup][njet_lookup][muiso_lookup] );
-          toyffvalue += (ff_w->value(inputs,"frac_dy"))*( ff_w->value(inputs)+toyvalues[itoys]*ff_err_toys[0][0][mvis_lookup][mt_lookup][pt_lookup][dm_lookup][njet_lookup][muiso_lookup] );
+          if(CHAN!=kTAU){
+            toyffvalue += (ff_w->value(inputs,"frac_w"))*( ff_w->value(inputs)+toyvalues[itoys]*ff_err_toys[0][0][mvis_lookup][mt_lookup][pt_lookup][dm_lookup][njet_lookup][muiso_lookup] );
+            toyffvalue += (ff_qcd->value(inputs,"frac_qcd"))*( ff_qcd->value(inputs)+toyvalues[itoys]*ff_err_toys[0][1][mvis_lookup][mt_lookup][pt_lookup][dm_lookup][njet_lookup][muiso_lookup] );
+            toyffvalue += (ff_tt->value(inputs,"frac_tt"))*( ff_tt->value(inputs)+toyvalues[itoys]*ff_err_toys[0][2][mvis_lookup][mt_lookup][pt_lookup][dm_lookup][njet_lookup][muiso_lookup] );
+            toyffvalue += (ff_w->value(inputs,"frac_dy"))*( ff_w->value(inputs)+toyvalues[itoys]*ff_err_toys[0][0][mvis_lookup][mt_lookup][pt_lookup][dm_lookup][njet_lookup][muiso_lookup] );
+            
+            toyffvalue_Wjets += (ff_w->value(inputs,"frac_w"))*( ff_w->value(inputs)+toyvalues[itoys]*ff_err_toys[0][0][mvis_lookup][mt_lookup][pt_lookup][dm_lookup][njet_lookup][muiso_lookup] );
+            toyffvalue_Wjets += ff_qcd->value(inputs)*ff_qcd->value(inputs,"frac_qcd") + ff_tt->value(inputs)*ff_tt->value(inputs,"frac_tt") + ff_w->value(inputs)*ff_w->value(inputs,"frac_dy");
+            toyffvalue_QCD   += (ff_qcd->value(inputs,"frac_qcd"))*( ff_qcd->value(inputs)+toyvalues[itoys]*ff_err_toys[0][1][mvis_lookup][mt_lookup][pt_lookup][dm_lookup][njet_lookup][muiso_lookup] );
+            toyffvalue_QCD   += ff_w->value(inputs)*ff_w->value(inputs,"frac_w") + ff_tt->value(inputs)*ff_tt->value(inputs,"frac_tt") + ff_w->value(inputs)*ff_w->value(inputs,"frac_dy");
+            toyffvalue_DY    += (ff_w->value(inputs,"frac_dy"))*( ff_w->value(inputs)+toyvalues[itoys]*ff_err_toys[0][0][mvis_lookup][mt_lookup][pt_lookup][dm_lookup][njet_lookup][muiso_lookup] );
+            toyffvalue_DY    += ff_qcd->value(inputs)*ff_qcd->value(inputs,"frac_qcd") + ff_tt->value(inputs)*ff_tt->value(inputs,"frac_tt") + ff_w->value(inputs)*ff_w->value(inputs,"frac_w");
+            toyffvalue_TT    += (ff_tt->value(inputs,"frac_tt"))*( ff_tt->value(inputs)+toyvalues[itoys]*ff_err_toys[0][2][mvis_lookup][mt_lookup][pt_lookup][dm_lookup][njet_lookup][muiso_lookup] );
+            toyffvalue_TT    += ff_qcd->value(inputs)*ff_qcd->value(inputs,"frac_qcd") + ff_w->value(inputs)*ff_w->value(inputs,"frac_w") + ff_w->value(inputs)*ff_w->value(inputs,"frac_dy");
 
-          toyffvalue_Wjets += (ff_w->value(inputs,"frac_w"))*( ff_w->value(inputs)+toyvalues[itoys]*ff_err_toys[0][0][mvis_lookup][mt_lookup][pt_lookup][dm_lookup][njet_lookup][muiso_lookup] );
-          toyffvalue_Wjets += ff_qcd->value(inputs)*ff_qcd->value(inputs,"frac_qcd") + ff_tt->value(inputs)*ff_tt->value(inputs,"frac_tt") + ff_w->value(inputs)*ff_w->value(inputs,"frac_dy");
-          toyffvalue_QCD   += (ff_qcd->value(inputs,"frac_qcd"))*( ff_qcd->value(inputs)+toyvalues[itoys]*ff_err_toys[0][1][mvis_lookup][mt_lookup][pt_lookup][dm_lookup][njet_lookup][muiso_lookup] );
-          toyffvalue_QCD   += ff_w->value(inputs)*ff_w->value(inputs,"frac_w") + ff_tt->value(inputs)*ff_tt->value(inputs,"frac_tt") + ff_w->value(inputs)*ff_w->value(inputs,"frac_dy");
-          toyffvalue_DY    += (ff_w->value(inputs,"frac_dy"))*( ff_w->value(inputs)+toyvalues[itoys]*ff_err_toys[0][0][mvis_lookup][mt_lookup][pt_lookup][dm_lookup][njet_lookup][muiso_lookup] );
-          toyffvalue_DY    += ff_qcd->value(inputs)*ff_qcd->value(inputs,"frac_qcd") + ff_tt->value(inputs)*ff_tt->value(inputs,"frac_tt") + ff_w->value(inputs)*ff_w->value(inputs,"frac_w");
-          toyffvalue_TT    += (ff_tt->value(inputs,"frac_tt"))*( ff_tt->value(inputs)+toyvalues[itoys]*ff_err_toys[0][2][mvis_lookup][mt_lookup][pt_lookup][dm_lookup][njet_lookup][muiso_lookup] );
-          toyffvalue_TT    += ff_qcd->value(inputs)*ff_qcd->value(inputs,"frac_qcd") + ff_w->value(inputs)*ff_w->value(inputs,"frac_w") + ff_w->value(inputs)*ff_w->value(inputs,"frac_dy");*/
+            fakefactor_histo[itoys+1]->Fill(fillVal, toyffvalue*event_s->weight_sf);
+            fakefactor_histo_Wjets[itoys+1]->Fill(fillVal, toyffvalue_Wjets*event_s->weight_sf);
+            fakefactor_histo_DY[itoys+1]->Fill(fillVal, toyffvalue_DY*event_s->weight_sf);
+            fakefactor_histo_QCD[itoys+1]->Fill(fillVal, toyffvalue_QCD*event_s->weight_sf);
+            fakefactor_histo_TT[itoys+1]->Fill(fillVal, toyffvalue_TT*event_s->weight_sf);
+          }
+          else{
+            toyffvalue += ( ff->value(inputs)+toyvalues[itoys]*ff_err_toys[0][0][mvis_lookup][mt_lookup][pt_lookup][dm_lookup][njet_lookup][muiso_lookup] );
+            fakefactor_histo[itoys+1]->Fill(fillVal, toyffvalue*event_s->weight_sf);
+            fakefactor_histo_Wjets[itoys+1]->Fill(fillVal, event_s->weight_sf);
+            fakefactor_histo_DY[itoys+1]->Fill(fillVal, event_s->weight_sf);
+            fakefactor_histo_QCD[itoys+1]->Fill(fillVal, event_s->weight_sf);
+            fakefactor_histo_TT[itoys+1]->Fill(fillVal, event_s->weight_sf);
+          }
 
-
-          toyffvalue += ( ff->value(inputs)+toyvalues[itoys]*ff_err_toys[0][0][mvis_lookup][mt_lookup][pt_lookup][dm_lookup][njet_lookup][muiso_lookup] );
-          fakefactor_histo[itoys+1]->Fill(fillVal, toyffvalue*event_s->weight_sf);
-          /*fakefactor_histo_Wjets[itoys+1]->Fill(fillVal, toyffvalue_Wjets*event_s->weight_sf);
-          fakefactor_histo_DY[itoys+1]->Fill(fillVal, toyffvalue_DY*event_s->weight_sf);
-          fakefactor_histo_QCD[itoys+1]->Fill(fillVal, toyffvalue_QCD*event_s->weight_sf);
-          fakefactor_histo_TT[itoys+1]->Fill(fillVal, toyffvalue_TT*event_s->weight_sf);*/
+          
         }       
       }
     }
@@ -1972,7 +1996,7 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
       fakefactor_histo[0]->SetBinError( ie,  sqrt(staterr*staterr + toyerr*toyerr )  );
     }
 
-    /*h_wErr=this->calcToyError(fakefactor_histo_Wjets);
+    h_wErr=this->calcToyError(fakefactor_histo_Wjets);
     cout << "---------Wjets-----------------" << endl;
     for (Int_t ie=0; ie<=nbins; ie++){
       Double_t staterr= fakefactor_histo_Wjets[0]->GetBinError(ie);
@@ -2006,26 +2030,26 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
       Double_t toyerr= h_wErr->GetBinError(ie);
       cout << ie << ".bin: " << fakefactor_histo_TT[0]->GetBinContent(ie) << "+-" << staterr << "(stat)+-" << toyerr << "(syst)" << endl;
       fakefactor_histo_TT[0]->SetBinError( ie,  sqrt(staterr*staterr + toyerr*toyerr )  );
-      }*/
+    }
     
       
     for (int i=0; i<NERR; i++){
       delete fakefactor_histo[i+1];
-      /*delete fakefactor_histo_Wjets[i+1];
+      delete fakefactor_histo_Wjets[i+1];
       delete fakefactor_histo_DY[i+1];
       delete fakefactor_histo_QCD[i+1];
-      delete fakefactor_histo_TT[i+1];*/
+      delete fakefactor_histo_TT[i+1];
     }
     fakefactor_histo[0]->Write();
-    /*fakefactor_histo_Wjets[0]->Write();
+    fakefactor_histo_Wjets[0]->Write();
     fakefactor_histo_DY[0]->Write();
     fakefactor_histo_QCD[0]->Write();
-    fakefactor_histo_TT[0]->Write();*/
+    fakefactor_histo_TT[0]->Write();
     delete fakefactor_histo[0];
-    /*delete fakefactor_histo_Wjets[0];
+    delete fakefactor_histo_Wjets[0];
     delete fakefactor_histo_DY[0];
     delete fakefactor_histo_QCD[0];
-    delete fakefactor_histo_TT[0];*/
+    delete fakefactor_histo_TT[0];
     f->Close();
     
   }//loop over modes

@@ -505,6 +505,7 @@ Double_t GlobalClass::selVal(const Int_t mode, const Int_t ind){
   else if (mode & PT)   {return event_s->alltau_pt->at(ind);}
   else if (mode & MUISO) {return event_s->lep_iso;}
   else if (mode & ZPT)   {return event_s->alltau_Zpt->at(ind);}
+  else if (mode & SVFIT) {return event_s->alltau_svfit->at(ind);}
   else{ std::cout << "selVal: Warning: no valid variable given!" << std::endl; return -1; }
 }
 

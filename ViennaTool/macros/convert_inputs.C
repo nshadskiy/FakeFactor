@@ -60,87 +60,90 @@ void convert_inputs(Int_t categoryMode=0){
   //const TString o="ff_2d/"+s_chan[CHAN]+"/mc_incl/";
   //catString.ReplaceAll("incl","");
 
-  fn="FF_corr_Wjets_MCsum_noGen"+SSstring+".root";
-  fn3d="FF_corr_Wjets_MCsum_noGen"+SSstring+".root";
-  hn="c_t";
-  hnout="FakeFactors_Data_HighMT_2D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode";
-  hnout3d="FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode";
-  fout_n="FakeFactors_Data_W_2D.root";
-  fout_n3d="FakeFactors_Data_W_3D.root";
-  //conv_th1_to_th2( d+fn , hn , hnout , o+fout_n , 0 );
-  if(CHAN!=kTAU)conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
-  
-  fn="FF_corr_DY_MCsum_noGen.root";
-  hn="c_t";
-  hnout="c_t_2d";
-  fout_n="ff_dy.root";
-  conv_th1_to_th2( d+fn , hn , o+fout_n , hnout , 0 );
-
-  fn="FF_corr_TT_MCsum_noGen.root";
-  hn="c_t";
-  fout_n="FakeFactors_Data_TT_2D.root";
-  fout_n3d="FakeFactors_Data_TT_3D.root";
-  hnout="FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode";
-  hnout3d="FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode";
-  //conv_th1_to_th2( d+fn , hn , o+fout_n , hnout , 0 );
-  if(CHAN!=kTAU)conv_th1_to_th3( d+fn , hn , hnout3d, o+fout_n3d , 0 );
-
-  fn="FF_corr_QCD_MCsum_noGen"+AIstring+vtightString+".root";
-  fn3d="FF_corr_QCD_MCsum_noGen"+AIstring+vtightString+".root";
-  hn="c_t";
-  hnout="FakeFactors_Data_QCDSS_2D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode";
-  hnout3d="FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode";
-  fout_n="FakeFactors_Data_QCD_2D.root";
-  fout_n3d="FakeFactors_Data_QCD_3D.root";
-  //conv_th1_to_th2( d+fn , hn , hnout , o+fout_n , 0 );
-  conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
-
-  if(!CALC_SS_SR){
-    convert_corrections( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD", o+"Correction_Data_QCD_MVis.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction");
-    if(CHAN!=kTAU){      
-      convert_corrections( d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_QCD", o+"Correction_Data_QCD_MuIso.root", "QCD_SS_Data_FFSSMuMediumData_isomu_correction");
-      convert_corrections( d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD", o+"Correction_Data_QCD_OSSS.root", "QCD_SS_Data_FFSSMuMediumData_OSSS_correction");
-      //convert_corrections( d+"FF_corr_QCD_only_noGen_nonclosure.root", "nonclosure_QCD_MC", o+"Correction_Data_QCD_MVis.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction");
-      //convert_corrections( d+"FF_corr_QCD_only_noGen_muisocorr.root", "muiso_QCD", o+"Correction_Data_QCD_MuIso.root", "QCD_SS_Data_FFSSMuMediumData_isomu_correction");
-      //convert_corrections( d+"FF_corr_QCD_only_noGen_OSSS.root", "OSSS_corr_QCD", o+"Correction_Data_QCD_OSSS.root", "QCD_SS_Data_FFSSMuMediumData_OSSS_correction");
-      convert_corrections( d+FF_corr_Wjets_MCsum_noGen_nonclosure, "nonclosure_Wjets", o+"Correction_Data_W_MVis.root", "W_OS_Data_FFOSData_mvis_correction");
-      //convert_corrections( d+"FF_corr_Wjets_MC_noGen_nonclosure.root", "nonclosure_Wjets_MC", o+"Correction_Data_W_MVis.root", "W_OS_Data_FFOSData_mvis_correction");
-      convert_corrections( d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets", o+"Correction_MC_W_MT.root", "W_OS_MC_FFOSMC_mt_correction");
-      convert_corrections( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC", o+"Correction_MC_TT_MVis.root", "TT_OS_MC_mvis_correction");
-    }
-  }
-  else{
-    convert_corrections( d+FF_corr_QCD_MCsum_noGen_nonclosure_AI, "nonclosure_QCD", o+"Correction_Data_QCD_MVis.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction");
-    convert_corrections( d+FF_corr_QCD_MCsum_noGen_muisocorr_AI, "muiso_QCD", o+"Correction_Data_QCD_MuIso.root", "QCD_SS_Data_FFSSMuMediumData_isomu_correction");
-    convert_corrections( d+FF_corr_Wjets_MCsum_noGen_nonclosure_SS_SR, "nonclosure_Wjets", o+"Correction_Data_W_MVis.root", "W_OS_Data_FFOSData_mvis_correction");
-    convert_corrections( d+FF_corr_Wjets_MC_noGen_mtcorr_SS_SR, "mt_corr_Wjets", o+"Correction_MC_W_MT.root", "W_OS_MC_FFOSMC_mt_correction");
-  }
-  //convert_corrections( d+"FF_corr_Wjets_MC_noGen_mtcorr_SS_SR.root", "mt_corr_Wjets", o+"Correction_MC_W_MT.root", "W_OS_MC_FFOSMC_mt_correction");
-
-  if(!CALC_SS_SR){
-    combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_up", d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_corr_QCD_up", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up");
-    combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_down", d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_corr_QCD_down", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down");
-    if(CHAN!=kTAU){
-      
-      combineWSystematics( d+FF_corr_Wjets_MCsum_noGen_nonclosure, "nonclosure_Wjets_up", d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets_up", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_up" );
-      combineWSystematics( d+FF_corr_Wjets_MCsum_noGen_nonclosure, "nonclosure_Wjets_down", d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets_down", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_down" );
-      if(CHAN==kMU)combineTTSystematics( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC_up", o+"uncertainties_TT.root", "uncertainties_TT_MVis_up" );
-      if(CHAN==kMU)combineTTSystematics( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC_down", o+"uncertainties_TT.root", "uncertainties_TT_MVis_down" );
-      //combineQCDSystematics( d+"FF_corr_QCD_only_noGen_nonclosure.root", "nonclosure_QCD_MC_up", d+"FF_corr_QCD_only_noGen_muisocorr.root", "muiso_corr_QCD_up", d+"FF_corr_QCD_only_noGen_OSSS.root", "OSSS_corr_QCD_up",o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up");
-      //combineQCDSystematics( d+"FF_corr_QCD_only_noGen_nonclosure.root", "nonclosure_QCD_MC_down", d+"FF_corr_QCD_only_noGen_muisocorr.root", "muiso_corr_QCD_down", d+"FF_corr_QCD_only_noGen_OSSS.root", "OSSS_corr_QCD_up", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down");
-      
-      //combineWSystematics( d+"FF_corr_Wjets_MC_noGen_nonclosure.root", "nonclosure_Wjets_MC_up", d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets_up", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_up" );
-      //combineWSystematics( d+"FF_corr_Wjets_MC_noGen_nonclosure.root", "nonclosure_Wjets_MC_down", d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets_down", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_down" );
-    }
-  }
-  else{
-    combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure_AI, "nonclosure_QCD_up", d+FF_corr_QCD_MCsum_noGen_muisocorr_AI, "muiso_corr_QCD_up", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up");
-    combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure_AI, "nonclosure_QCD_down", d+FF_corr_QCD_MCsum_noGen_muisocorr_AI, "muiso_corr_QCD_down", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down");
+  if(inclusive_selection){
+    fn="FF_corr_Wjets_MCsum_noGen"+SSstring+".root";
+    fn3d="FF_corr_Wjets_MCsum_noGen"+SSstring+".root";
+    hn="c_t";
+    hnout="FakeFactors_Data_HighMT_2D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode";
+    hnout3d="FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode";
+    fout_n="FakeFactors_Data_W_2D.root";
+    fout_n3d="FakeFactors_Data_W_3D.root";
+    //conv_th1_to_th2( d+fn , hn , hnout , o+fout_n , 0 );
+    if(CHAN!=kTAU)conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
     
-    combineWSystematics( d+FF_corr_Wjets_MCsum_noGen_nonclosure_SS_SR, "nonclosure_Wjets_up", d+FF_corr_Wjets_MC_noGen_mtcorr_SS_SR, "mt_corr_Wjets_up", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_up" );
-    combineWSystematics( d+FF_corr_Wjets_MCsum_noGen_nonclosure_SS_SR, "nonclosure_Wjets_down", d+FF_corr_Wjets_MC_noGen_mtcorr_SS_SR, "mt_corr_Wjets_down", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_down" );
-  }
+    fn="FF_corr_DY_MCsum_noGen.root";
+    hn="c_t";
+    hnout="c_t_2d";
+    fout_n="ff_dy.root";
+    conv_th1_to_th2( d+fn , hn , o+fout_n , hnout , 0 );
+    
+    fn="FF_corr_TT_MCsum_noGen.root";
+    hn="c_t";
+    fout_n="FakeFactors_Data_TT_2D.root";
+    fout_n3d="FakeFactors_Data_TT_3D.root";
+    hnout="FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode";
+    hnout3d="FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode";
+    //conv_th1_to_th2( d+fn , hn , o+fout_n , hnout , 0 );
+    if(CHAN!=kTAU)conv_th1_to_th3( d+fn , hn , hnout3d, o+fout_n3d , 0 );
+    
+    fn="FF_corr_QCD_MCsum_noGen"+AIstring+vtightString+".root";
+    fn3d="FF_corr_QCD_MCsum_noGen"+AIstring+vtightString+".root";
+    hn="c_t";
+    hnout="FakeFactors_Data_QCDSS_2D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode";
+    hnout3d="FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode";
+    fout_n="FakeFactors_Data_QCD_2D.root";
+    fout_n3d="FakeFactors_Data_QCD_3D.root";
+    //conv_th1_to_th2( d+fn , hn , hnout , o+fout_n , 0 );
+    conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
+    
+    if(!CALC_SS_SR){
+      convert_corrections( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD", o+"Correction_Data_QCD_MVis.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction");
+      if(CHAN!=kTAU){      
+        convert_corrections( d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_QCD", o+"Correction_Data_QCD_MuIso.root", "QCD_SS_Data_FFSSMuMediumData_isomu_correction");
+        convert_corrections( d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD", o+"Correction_Data_QCD_OSSS.root", "QCD_SS_Data_FFSSMuMediumData_OSSS_correction");
+        //convert_corrections( d+"FF_corr_QCD_only_noGen_nonclosure.root", "nonclosure_QCD_MC", o+"Correction_Data_QCD_MVis.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction");
+        //convert_corrections( d+"FF_corr_QCD_only_noGen_muisocorr.root", "muiso_QCD", o+"Correction_Data_QCD_MuIso.root", "QCD_SS_Data_FFSSMuMediumData_isomu_correction");
+        //convert_corrections( d+"FF_corr_QCD_only_noGen_OSSS.root", "OSSS_corr_QCD", o+"Correction_Data_QCD_OSSS.root", "QCD_SS_Data_FFSSMuMediumData_OSSS_correction");
+        convert_corrections( d+FF_corr_Wjets_MCsum_noGen_nonclosure, "nonclosure_Wjets", o+"Correction_Data_W_MVis.root", "W_OS_Data_FFOSData_mvis_correction");
+        //convert_corrections( d+"FF_corr_Wjets_MC_noGen_nonclosure.root", "nonclosure_Wjets_MC", o+"Correction_Data_W_MVis.root", "W_OS_Data_FFOSData_mvis_correction");
+        convert_corrections( d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets", o+"Correction_MC_W_MT.root", "W_OS_MC_FFOSMC_mt_correction");
+        convert_corrections( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC", o+"Correction_MC_TT_MVis.root", "TT_OS_MC_mvis_correction");
+      }
+    }
+    else{
+      convert_corrections( d+FF_corr_QCD_MCsum_noGen_nonclosure_AI, "nonclosure_QCD", o+"Correction_Data_QCD_MVis.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction");
+      convert_corrections( d+FF_corr_QCD_MCsum_noGen_muisocorr_AI, "muiso_QCD", o+"Correction_Data_QCD_MuIso.root", "QCD_SS_Data_FFSSMuMediumData_isomu_correction");
+      convert_corrections( d+FF_corr_Wjets_MCsum_noGen_nonclosure_SS_SR, "nonclosure_Wjets", o+"Correction_Data_W_MVis.root", "W_OS_Data_FFOSData_mvis_correction");
+      convert_corrections( d+FF_corr_Wjets_MC_noGen_mtcorr_SS_SR, "mt_corr_Wjets", o+"Correction_MC_W_MT.root", "W_OS_MC_FFOSMC_mt_correction");
+    }
+    //convert_corrections( d+"FF_corr_Wjets_MC_noGen_mtcorr_SS_SR.root", "mt_corr_Wjets", o+"Correction_MC_W_MT.root", "W_OS_MC_FFOSMC_mt_correction");
+    
+    if(!CALC_SS_SR){
+      combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_up", d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_corr_QCD_up", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up");
+      combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_down", d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_corr_QCD_down", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down");
+      if(CHAN!=kTAU){
+        
+        combineWSystematics( d+FF_corr_Wjets_MCsum_noGen_nonclosure, "nonclosure_Wjets_up", d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets_up", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_up" );
+        combineWSystematics( d+FF_corr_Wjets_MCsum_noGen_nonclosure, "nonclosure_Wjets_down", d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets_down", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_down" );
+        if(CHAN==kMU)combineTTSystematics( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC_up", o+"uncertainties_TT.root", "uncertainties_TT_MVis_up" );
+        if(CHAN==kMU)combineTTSystematics( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC_down", o+"uncertainties_TT.root", "uncertainties_TT_MVis_down" );
+        //combineQCDSystematics( d+"FF_corr_QCD_only_noGen_nonclosure.root", "nonclosure_QCD_MC_up", d+"FF_corr_QCD_only_noGen_muisocorr.root", "muiso_corr_QCD_up", d+"FF_corr_QCD_only_noGen_OSSS.root", "OSSS_corr_QCD_up",o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up");
+        //combineQCDSystematics( d+"FF_corr_QCD_only_noGen_nonclosure.root", "nonclosure_QCD_MC_down", d+"FF_corr_QCD_only_noGen_muisocorr.root", "muiso_corr_QCD_down", d+"FF_corr_QCD_only_noGen_OSSS.root", "OSSS_corr_QCD_up", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down");
+        
+        //combineWSystematics( d+"FF_corr_Wjets_MC_noGen_nonclosure.root", "nonclosure_Wjets_MC_up", d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets_up", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_up" );
+        //combineWSystematics( d+"FF_corr_Wjets_MC_noGen_nonclosure.root", "nonclosure_Wjets_MC_down", d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets_down", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_down" );
+      }
+    }
+    else{
+      combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure_AI, "nonclosure_QCD_up", d+FF_corr_QCD_MCsum_noGen_muisocorr_AI, "muiso_corr_QCD_up", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up");
+      combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure_AI, "nonclosure_QCD_down", d+FF_corr_QCD_MCsum_noGen_muisocorr_AI, "muiso_corr_QCD_down", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down");
+      
+      combineWSystematics( d+FF_corr_Wjets_MCsum_noGen_nonclosure_SS_SR, "nonclosure_Wjets_up", d+FF_corr_Wjets_MC_noGen_mtcorr_SS_SR, "mt_corr_Wjets_up", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_up" );
+      combineWSystematics( d+FF_corr_Wjets_MCsum_noGen_nonclosure_SS_SR, "nonclosure_Wjets_down", d+FF_corr_Wjets_MC_noGen_mtcorr_SS_SR, "mt_corr_Wjets_down", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_down" );
+    }
 
+  }
+    
   fnW="weight_Wjets"+catString+SSstring+".root";
   hn="h_w";
   fout_nW="frac_wjets.root";

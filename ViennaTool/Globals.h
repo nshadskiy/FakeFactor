@@ -31,6 +31,7 @@
 #define ZPT     134217728
 #define NJETS   268435456
 #define NBJETS  536870912
+#define SVFIT  1073741824
 
 //int max:     4294967295
 
@@ -93,6 +94,7 @@ const TString s_nb           ="nb";
 const TString s_drb          ="drb";
 const TString s_mvis         ="mvis";
 const TString s_pt           ="pt";
+const TString s_svfit        ="svfit";
 const TString s_muiso        ="muiso";
 const TString s_Wjets        ="Wjets";
 const TString s_QCD          ="QCD";
@@ -608,6 +610,7 @@ const TString SR_MCsum         = path_sim+s_SR+"_"+s_MCsum;
 const TString SR_MCsum_mt      = SR_MCsum+"_"+s_mt+".root";
 const TString SR_MCsum_mvis    = SR_MCsum+"_"+s_mvis+".root";
 const TString SR_MCsum_pt      = SR_MCsum+"_"+s_pt+".root";
+const TString SR_MCsum_svfit      = SR_MCsum+"_"+s_svfit+".root";
 
 const TString SR_MCsum_woQCD       = path_sim+s_SR+"_"+s_MCsum+"_woQCD";
 const TString SR_MCsum_woQCD_mt    = SR_MCsum_woQCD+"_"+s_mt+".root";
@@ -619,6 +622,7 @@ const TString SR_data_mt    = SR_data+"_"+s_mt+".root";
 const TString SR_data_mvis  = SR_data+"_"+s_mvis+".root";
 const TString SR_data_mvis_AI_MCsubtracted  = SR_data+"_"+s_mvis+"_AI_MCsubtracted.root";
 const TString SR_data_pt    = SR_data+"_"+s_pt+".root";
+const TString SR_data_svfit    = SR_data+"_"+s_svfit+".root";
 
 const TString SS_SR_data       = path_sim+s_SS_SR+"_data";
 const TString SS_SR_data_mt    = SS_SR_data+"_"+s_mt+".root";
@@ -701,9 +705,10 @@ const Int_t N_j_DY = sizeof(Njet_cuts_DY)/sizeof(Int_t);
 const Int_t N_j_TT = sizeof(Njet_cuts_TT)/sizeof(Int_t);
 const Int_t N_j_QCD = sizeof(Njet_cuts_QCD)/sizeof(Int_t);
 
-const Int_t nbins_mt=25;     const Double_t hist_min_mt=0.;   const Double_t hist_max_mt=250.;
-const Int_t nbins_mvis=25;   const Double_t hist_min_mvis=0.; const Double_t hist_max_mvis=250.;
-const Int_t nbins_pt=25;     const Double_t hist_min_pt=20.;  const Double_t hist_max_pt=100.;
+const Int_t nbins_svfit=35;  const Double_t hist_min_svfit=0.; const Double_t hist_max_svfit=350.;
+const Int_t nbins_mt=25;     const Double_t hist_min_mt=0.;    const Double_t hist_max_mt=250.;
+const Int_t nbins_mvis=25;   const Double_t hist_min_mvis=0.;  const Double_t hist_max_mvis=250.;
+const Int_t nbins_pt=25;     const Double_t hist_min_pt=20.;   const Double_t hist_max_pt=100.;
 
 //binning constants: weight
 const Double_t w_mt_v[]={0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250};
