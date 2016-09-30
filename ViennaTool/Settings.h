@@ -6,8 +6,8 @@
 
 
 const TString user="jbrandstetter";
-const TString analysis="FakeFactor_2015";
-const TString luminosity="2.3";
+const TString analysis="FakeFactor_2016";
+const TString luminosity="1.";
 
 const int CHAN = kMU; //kMU,kEL,kTAU
 const int use_svfit = 1;
