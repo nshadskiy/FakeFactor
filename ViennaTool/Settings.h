@@ -9,7 +9,7 @@ const TString user="jbrandstetter";
 const TString analysis="FakeFactor_2016";
 const TString luminosity="1.";
 
-const int CHAN = ktest; //kMU,kEL,kTAU
+const int CHAN = kMU; //kMU,kEL,kTAU
 const int use_svfit = 1;
 const TString ver = "v3";
 const TString inputFF_dir = "~/public/Htautau/FakeRate/";
