@@ -2670,7 +2670,10 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   gsk.set_kernelDistance( "lin" );
   gsk.set_doWidthInBins(1);
   gsk.setWidth(1.5);
-  gsk.set_lastBinFrom(200);
+  Double_t lastBin;
+  if(CHAN==kMU) lastBin=200;
+  if(CHAN==kEL) lastBin=180;
+  gsk.set_lastBinFrom(lastBin);
   gsk.getSmoothHisto();
   TH1D *h2=gsk.returnSmoothedHisto();
   h2->Write();
