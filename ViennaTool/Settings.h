@@ -11,7 +11,7 @@ const TString luminosity="1.";
 
 const int CHAN = kMU; //kMU,kEL,kTAU
 const int use_svfit = 1;
-const TString ver = "v3";
+const TString ver = "v1";
 const TString inputFF_dir = "~/public/Htautau/FakeRate/";
 const TString inputFF_date = "20160929";
 //const Double_t FFW_REL_ERR=0.2; //place holder
@@ -22,11 +22,11 @@ const int inclusive_selection=0; //0: splitting FF procedure in categories defin
 const int useVV=1;
 ///////////////////////////////////////////////////
 //This defines which fractions are taken for FF bkg estimates, one of them has to be chosen
-const int inclusive_frac_mt=0;
+const int inclusive_frac_mt=1;
 const int inclusive_frac_et=0;
 const int inclusive_frac_tt=0;
 const int cat_frac_mt=0;
-const int cat_frac_et=1;
+const int cat_frac_et=0;
 const int cat_frac_tt=0;
 ///////////////////////////////////////////////////
 const int DEBUG=1; //set to 1 for additional output
