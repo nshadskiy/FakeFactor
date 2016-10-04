@@ -29,21 +29,21 @@ void Preselection() {
     tmp=preselection_TT;
     compressFile(preselection_TT);
   }
-  if (num==3||num==0) {
+  if (num==2 || num==3||num==0) {
     Analyzer->loadFile(TTfile,"TauCheck");
     Analyzer->select(preselection_TT_J,_TT|_JTAU);
     Analyzer->closeFile();
     tmp=preselection_TT_J;
     compressFile(preselection_TT_J);
   }
-  if (num==4||num==0) {
+  if (num==2 || num==4||num==0) {
     Analyzer->loadFile(TTfile,"TauCheck");
     Analyzer->select(preselection_TT_T,_TT|_TTAU);
     Analyzer->closeFile();
     tmp=preselection_TT_T;
     compressFile(preselection_TT_T);
   }
-  if (num==5||num==0) {
+  if (num==2 || num==5||num==0) {
     Analyzer->loadFile(TTfile,"TauCheck");
     Analyzer->select(preselection_TT_L,_TT|_LTAU);
     Analyzer->closeFile();
@@ -85,19 +85,19 @@ void Preselection() {
     Analyzer->closeFile();
     compressFile(preselection_VV);
   }
-  if ( (num==12||num==0||num==99) && CHAN!=kTAU) {
+  if ( (num==11 || num==12||num==0||num==99) && CHAN!=kTAU) {
     Analyzer->loadFile(VVfile,"TauCheck");
     Analyzer->select(preselection_VV_T,_VV|_TTAU);
     Analyzer->closeFile();
     compressFile(preselection_VV_T);
   }
-  if ( (num==13||num==0||num==99) && CHAN!=kTAU) {
+  if ( (num==11 || num==13||num==0||num==99) && CHAN!=kTAU) {
     Analyzer->loadFile(VVfile,"TauCheck");
     Analyzer->select(preselection_VV_J,_VV|_JTAU);
     Analyzer->closeFile();
     compressFile(preselection_VV_J);
   }
-  if ( (num==14||num==0||num==99) && CHAN!=kTAU) {
+  if ( (num==11 || num==14||num==0||num==99) && CHAN!=kTAU) {
     Analyzer->loadFile(VVfile,"TauCheck");
     Analyzer->select(preselection_VV_L,_VV|_LTAU);
     Analyzer->closeFile();

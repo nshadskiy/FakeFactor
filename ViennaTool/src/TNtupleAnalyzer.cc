@@ -68,10 +68,13 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   //////////////////////////////////////////////////////////////////////////
   //////////weight_sf contains top pT reweighting for TT samples and Z reweighting for DY samples
   //////////////////////////////////////////////////////////////////////////
-  weight = event->puweight*event->effweight*event->stitchedWeight*event->genweight;
+  weight=1;
+  if(!preselectionFile.Contains("preselection_data"))weight = event->puweight*event->effweight*event->stitchedWeight*event->genweight*luminosity;
+  if(preselectionFile.Contains("preselection_TT") || preselectionFile.Contains("preselection_VV")) weight=weight*1000;
+  if(preselectionFile.Contains("preselection_QCD")) weight=weight*0.42;
   weight_sf= weight; //event->evtWeight; no Zpt and top pT reweighting
-  if( preselectionFile.Contains("DY") ){
-    weight = weight*0.95;
+  if( event->gen_match_2==5 ){
+    weight = weight*0.83;
     //weight_sf = weight_sf*0.95;
     weight_sf = weight; //no Zpt
   }

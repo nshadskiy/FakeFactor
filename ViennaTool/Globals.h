@@ -127,17 +127,17 @@ const TString path_img_mc        = path_img+"mc_"+s_chan[CHAN]+"/";
 const TString path_img_mc_woQCD  = path_img+"mc_woQCD_"+s_chan[CHAN]+"/";
 
 //Input directories
-const TString indir = "/data/higgs/data_2015/ntuples_"+ver+"/"+s_chan[CHAN]+"/ntuples_"+curr_svfit[use_svfit]+"_merged/";
+const TString indir = "/data/higgs/data_2016/ntuples_"+ver+"/"+s_chan[CHAN]+"/ntuples_"+curr_svfit[use_svfit]+"_merged/";
 
-const TString datafiles[3] = { indir + "BASIS_ntuple_SingleMuon_16Dec_mt_"+ver+".root" , indir + "BASIS_ntuple_SingleElectron_16Dec_et_"+ver+".root" , indir + "BASIS_ntuple_Tau_16Dec_tt_"+ver+".root" };
+const TString datafiles[3] = { indir + "BASIS_ntuple_SingleMuonRun2016_Okt16_mt_"+ver+".root" , indir + "BASIS_ntuple_SingleElectron_16Dec_et_"+ver+".root" , indir + "BASIS_ntuple_Tau_16Dec_tt_"+ver+".root" };
 const TString datafile   = datafiles[CHAN];
 
-const TString DY_NJfile  = indir + "BASIS_ntuple_DYXJetsToLL_lowMass_merged_MCFall15_"+s_chan[CHAN]+"_"+ver+".root";
+const TString DY_NJfile  = indir + "BASIS_ntuple_DYXJetsToLL_lowMass_merged_MCSpring16_"+s_chan[CHAN]+"_"+ver+".root";
 const TString DYfile     = DY_NJfile;
-const TString Wjetsfile  = indir + "BASIS_ntuple_WXJets_merged_MCFall15_"+s_chan[CHAN]+"_"+ver+".root";
-const TString QCDfile    = indir + "BASIS_ntuple_QCD_Pt20toInf_MuEnrichedPt15_MCFall15_"+s_chan[CHAN]+"_"+ver+".root";
-const TString VVfile     = indir + "BASIS_ntuple_VV_MCFall15_"+s_chan[CHAN]+"_"+ver+".root";
-const TString TTfile     = indir + "BASIS_ntuple_TT_MCFall15_"+s_chan[CHAN]+"_"+ver+".root";
+const TString Wjetsfile  = indir + "BASIS_ntuple_WXJets_merged_MCSpring16_"+s_chan[CHAN]+"_"+ver+".root";
+const TString QCDfile    = indir + "BASIS_ntuple_QCD_Pt20toInf_MuEnrichedPt15_MCSpring16_"+s_chan[CHAN]+"_"+ver+".root";
+const TString VVfile     = indir + "BASIS_ntuple_ST_MCSpring16_"+s_chan[CHAN]+"_"+ver+".root";
+const TString TTfile     = indir + "BASIS_ntuple_TT_powheg_MCSpring16_160919_"+s_chan[CHAN]+"_"+ver+".root";
 
 
 // Preselection files

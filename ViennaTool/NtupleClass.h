@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Tue Sep 27 18:20:03 2016 by ROOT version 6.02/13
+// Sun Oct  2 23:14:11 2016 by ROOT version 6.02/13
 // from TTree TauCheck/TauCheck
-// found on file: /data/higgs/data_2015/ntuples_v3/mt/ntuples_SVFIT_merged/BASIS_ntuple_TT_MCFall15_mt_v3.root
+// found on file: /data/higgs/data_2016/ntuples_v1/mt/ntuples_woSVFIT_merged/BASIS_ntuple_QCD_Pt20toInf_MuEnrichedPt15_MCSpring16_mt_v1.root
 //////////////////////////////////////////////////////////
 
 #ifndef NtupleClass_h
@@ -244,6 +244,8 @@ public :
    Float_t         metcov01;
    Float_t         metcov10;
    Float_t         metcov11;
+   Float_t         m_sv;
+   Float_t         pt_sv;
    Float_t         mjj;
    Float_t         jdeta;
    Int_t           njetingap;
@@ -274,12 +276,15 @@ public :
    Float_t         brawf_2;
    Float_t         bmva_2;
    Float_t         bcsv_2;
-   Float_t         m_sv;
-   Float_t         m_sv_unc;
-   Float_t         mt_sv;
-   Float_t         mt_sv_unc;
-   Float_t         pt_sv;
-   Float_t         pt_sv_unc;
+   std::vector<double>  *DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_pt;
+   std::vector<double>  *DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_pt;
+   std::vector<double>  *DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_pt;
+   std::vector<double>  *DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_eta;
+   std::vector<double>  *DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_eta;
+   std::vector<double>  *DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_eta;
+   std::vector<double>  *DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_phi;
+   std::vector<double>  *DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_phi;
+   std::vector<double>  *DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_phi;
 
    // List of branches
    TBranch        *b_fileEntry;   //!
@@ -502,6 +507,8 @@ public :
    TBranch        *b_metcov01;   //!
    TBranch        *b_metcov10;   //!
    TBranch        *b_metcov11;   //!
+   TBranch        *b_m_sv;   //!
+   TBranch        *b_pt_sv;   //!
    TBranch        *b_mjj;   //!
    TBranch        *b_jdeta;   //!
    TBranch        *b_njetingap;   //!
@@ -532,12 +539,15 @@ public :
    TBranch        *b_brawf_2;   //!
    TBranch        *b_bmva_2;   //!
    TBranch        *b_bcsv_2;   //!
-   TBranch        *b_m_sv;   //!
-   TBranch        *b_m_sv_unc;   //!
-   TBranch        *b_mt_sv;   //!
-   TBranch        *b_mt_sv_unc;   //!
-   TBranch        *b_pt_sv;   //!
-   TBranch        *b_pt_sv_unc;   //!
+   TBranch        *b_DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_pt;   //!
+   TBranch        *b_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_pt;   //!
+   TBranch        *b_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_pt;   //!
+   TBranch        *b_DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_eta;   //!
+   TBranch        *b_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_eta;   //!
+   TBranch        *b_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_eta;   //!
+   TBranch        *b_DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_phi;   //!
+   TBranch        *b_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_phi;   //!
+   TBranch        *b_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_phi;   //!
 
    NtupleClass(TTree *tree=0);
    virtual ~NtupleClass();
@@ -558,9 +568,9 @@ NtupleClass::NtupleClass(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/higgs/data_2015/ntuples_v3/mt/ntuples_SVFIT_merged/BASIS_ntuple_TT_MCFall15_mt_v3.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/higgs/data_2016/ntuples_v1/mt/ntuples_woSVFIT_merged/BASIS_ntuple_QCD_Pt20toInf_MuEnrichedPt15_MCSpring16_mt_v1.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/data/higgs/data_2015/ntuples_v3/mt/ntuples_SVFIT_merged/BASIS_ntuple_TT_MCFall15_mt_v3.root");
+         f = new TFile("/data/higgs/data_2016/ntuples_v1/mt/ntuples_woSVFIT_merged/BASIS_ntuple_QCD_Pt20toInf_MuEnrichedPt15_MCSpring16_mt_v1.root");
       }
       f->GetObject("TauCheck",tree);
 
@@ -645,6 +655,15 @@ void NtupleClass::Init(TTree *tree)
    addtau_gen_match = 0;
    addtau_mt = 0;
    addtau_mvis = 0;
+   DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_pt = 0;
+   DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_pt = 0;
+   DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_pt = 0;
+   DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_eta = 0;
+   DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_eta = 0;
+   DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_eta = 0;
+   DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_phi = 0;
+   DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_phi = 0;
+   DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_phi = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
@@ -871,6 +890,8 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("metcov01", &metcov01, &b_metcov01);
    fChain->SetBranchAddress("metcov10", &metcov10, &b_metcov10);
    fChain->SetBranchAddress("metcov11", &metcov11, &b_metcov11);
+   fChain->SetBranchAddress("m_sv", &m_sv, &b_m_sv);
+   fChain->SetBranchAddress("pt_sv", &pt_sv, &b_pt_sv);
    fChain->SetBranchAddress("mjj", &mjj, &b_mjj);
    fChain->SetBranchAddress("jdeta", &jdeta, &b_jdeta);
    fChain->SetBranchAddress("njetingap", &njetingap, &b_njetingap);
@@ -901,12 +922,15 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("brawf_2", &brawf_2, &b_brawf_2);
    fChain->SetBranchAddress("bmva_2", &bmva_2, &b_bmva_2);
    fChain->SetBranchAddress("bcsv_2", &bcsv_2, &b_bcsv_2);
-   fChain->SetBranchAddress("m_sv", &m_sv, &b_m_sv);
-   fChain->SetBranchAddress("m_sv_unc", &m_sv_unc, &b_m_sv_unc);
-   fChain->SetBranchAddress("mt_sv", &mt_sv, &b_mt_sv);
-   fChain->SetBranchAddress("mt_sv_unc", &mt_sv_unc, &b_mt_sv_unc);
-   fChain->SetBranchAddress("pt_sv", &pt_sv, &b_pt_sv);
-   fChain->SetBranchAddress("pt_sv_unc", &pt_sv_unc, &b_pt_sv_unc);
+   fChain->SetBranchAddress("DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_pt", &DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_pt, &b_DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_pt);
+   fChain->SetBranchAddress("DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_pt", &DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_pt, &b_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_pt);
+   fChain->SetBranchAddress("DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_pt", &DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_pt, &b_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_pt);
+   fChain->SetBranchAddress("DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_eta", &DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_eta, &b_DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_eta);
+   fChain->SetBranchAddress("DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_eta", &DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_eta, &b_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_eta);
+   fChain->SetBranchAddress("DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_eta", &DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_eta, &b_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_eta);
+   fChain->SetBranchAddress("DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_phi", &DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_phi, &b_DoubleMediumIsoPFTau32_Trk1_eta2p1_Reg_phi);
+   fChain->SetBranchAddress("DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_phi", &DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_phi, &b_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_phi);
+   fChain->SetBranchAddress("DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_phi", &DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_phi, &b_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_phi);
    Notify();
 }
 

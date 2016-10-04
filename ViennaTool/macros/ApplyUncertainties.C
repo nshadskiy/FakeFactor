@@ -345,7 +345,7 @@ void ApplyFF() {
         if(DOMC)data=SR_MCsum_svfit;
         //if(DOMC)data="sim/mt_backup/SR_MCsum_pt.root";
         if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
-        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_svfit_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+s_svfit+plotEnding,"Bkg estimation with FF "+plotEnding,"m_{SV} [GeV]",_COLOR_FF);
+        if(use_svfit)Analyzer->plotBgStackedAgainstData(data,"data",proc_list_svfit_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+s_svfit+plotEnding,"Bkg estimation with FF "+plotEnding,"m_{SV} [GeV]",_COLOR_FF);
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         cout << "---------------------------------------------------" << endl;
         cout << "Plotting splitted FFs" << endl;
@@ -406,7 +406,7 @@ void ApplyFF() {
         if(DOMC)data=SR_MCsum_svfit;
         else data=SR_data_svfit;
         if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
-        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_svfit_ff,  vlabel_bkg_check, proc_list_svfit_subtract, pi+"data_vs_ff_"+s_svfit+plotEnding,"Bkg estimation with FF "+plotEnding,"m_{SV} [GeV]",_COLOR_CHECK);
+        if(use_svfit)Analyzer->plotBgStackedAgainstData(data,"data",proc_list_svfit_ff,  vlabel_bkg_check, proc_list_svfit_subtract, pi+"data_vs_ff_"+s_svfit+plotEnding,"Bkg estimation with FF "+plotEnding,"m_{SV} [GeV]",_COLOR_CHECK);
         
       }
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

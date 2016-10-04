@@ -88,7 +88,7 @@ void CalcFF() {
 
   Int_t m_corr=0, m_ttcorr=0; if (applyFF_fromCR){ m_corr=_WCORR; m_ttcorr=_TTCORR;}
   
-  if (doCalc){
+  if (doCalc & inclusive_selection){
 
     if (doCalc==1){
 
@@ -134,6 +134,7 @@ void CalcFF() {
         
       }
       else cout << "FIXME: Reasonable corrections for MC closure if enough statistics" << endl;
+      
 
       //These are the setting for tt
       //if(CHAN==kTAU) Analyzer->calcFFCorr(_QCD|m_gen_match,   m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCD_MCsum_noGen, p+weight_QCD);
@@ -149,7 +150,7 @@ void CalcFF() {
       if(CHAN==kMU){
         cout << "Calculating TT corrections" << endl;
         Analyzer->loadFile(preselection_TT_J,"Events");
-        Analyzer->calcFFCorr(_TT|m_gen_match,                    preselection_TT_J,   empty_vec_tstring,    p+FF_TT_J_only,  p+weight_TT_J);
+        Analyzer->calcFFCorr(_TT|m_gen_match,                    preselection_TT_J,   empty_vec_tstring,    pmc+FF_TT_J_only,  p+weight_TT_J);
         Analyzer->calc_nonclosure(_TT|SR,                            pmc+FF_TT_J_only,  SR_TT_J_mvis_sim, p+FF_corr_TT_MC_noGen_nonclosure, 1, 0);
         //...done
       }

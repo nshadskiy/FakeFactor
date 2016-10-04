@@ -4,10 +4,10 @@ import os
 
 #Meta-data
 channel="mt"
-version='20160929'
+version='20161004'
 tag='v0.2.1'
-categories = ['incl','_0jet','_1jet','_1jetZ050','_1jetZ50100','_1jetZ100','_2jet','_2jetVBF','_anyb']
-#categories = ['incl']
+#categories = ['incl','_0jet','_1jet','_1jetZ050','_1jetZ50100','_1jetZ100','_2jet','_2jetVBF','_anyb']
+categories = ['incl']
 
 for x in range(0,len(categories)):
 
@@ -34,25 +34,25 @@ for x in range(0,len(categories)):
         leaves=[
             Leaf(
                 name='ff_raw_qcd',
-                file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                 object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode',
                 vars=['tau_pt','tau_decay','njets']
             ),
             Leaf(
                 name='mviscorr_qcd',
-                file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                 object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
                 vars=['mvis']
             ),
             Leaf(
                 name='isocorr_qcd',
-                file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MuIso.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MuIso.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                 object='QCD_SS_Data_FFSSMuMediumData_isomu_correction',
                 vars=['mu_iso']
             ),
             Leaf(
                 name='OSSS_corr_qcd',
-                file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_OSSS.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_OSSS.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                 object='QCD_SS_Data_FFSSMuMediumData_OSSS_correction',
                 vars=['mvis']
             )
@@ -68,7 +68,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='frac_qcd',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_qcd.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_qcd.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='h_w_2d',
                      vars=['mt','tau_decay']
                  ),
@@ -87,7 +87,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_qcd_up',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/uncertainties_QCD_W.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/uncertainties_QCD_W.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='uncertainties_QCD_MVis_Iso_SS2OS_up',
                      vars=['mvis', 'mu_iso']
                  ),
@@ -105,7 +105,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_qcd_down',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/uncertainties_QCD_W.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/uncertainties_QCD_W.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='uncertainties_QCD_MVis_Iso_SS2OS_down',
                      vars=['mvis', 'mu_iso']
                  ),
@@ -125,7 +125,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_qcd_up',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -144,7 +144,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_qcd_down',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -163,19 +163,19 @@ for x in range(0,len(categories)):
         leaves=[
             Leaf(
                 name='ff_raw_w',
-                file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                 object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode',
                 vars=['tau_pt','tau_decay','njets']
             ),
             Leaf(
                 name='mviscorr_w',
-                file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_W_MVis.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_W_MVis.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                 object='W_OS_Data_FFOSData_mvis_correction',
                 vars=['mvis']
             ),
             Leaf(
                 name='mtcorr_w',
-                file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/Correction_MC_W_MT.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/Correction_MC_W_MT.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                 object='W_OS_MC_FFOSMC_mt_correction',
                 vars=['mt']
             )
@@ -191,7 +191,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='frac_w',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_wjets.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_wjets.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='h_w_2d',
                      vars=['mt','tau_decay']
                  ),
@@ -210,7 +210,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='frac_dy',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_dy.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_dy.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='h_w_2d',
                      vars=['mt','tau_decay']
                  ),
@@ -229,7 +229,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_w_up',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/uncertainties_QCD_W.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/uncertainties_QCD_W.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='uncertainties_W_MVis_MT_up',
                      vars=['mvis', 'mt']
                  ),
@@ -247,7 +247,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_w_down',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/uncertainties_QCD_W.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/uncertainties_QCD_W.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='uncertainties_W_MVis_MT_down',
                      vars=['mvis', 'mt']
                  ),
@@ -265,7 +265,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_w_up',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -283,7 +283,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_w_down',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -302,13 +302,13 @@ for x in range(0,len(categories)):
         leaves=[
             Leaf(
             name='ff_raw_tt',
-                file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                 object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode',
                 vars=['tau_pt','tau_decay','njets']
             ),
             Leaf(
                 name='mviscorr_tt',
-                file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/Correction_MC_TT_MVis.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/Correction_MC_TT_MVis.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                 object='TT_OS_MC_mvis_correction',
                 vars=['mvis']
             ),
@@ -324,7 +324,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='frac_tt',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_tt.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_tt.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='h_w_2d',
                      vars=['mt','tau_decay']
                  ),
@@ -343,7 +343,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_tt_up',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='uncertainties_TT_MVis_up',
                      vars=['mvis']
                  ),
@@ -361,7 +361,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_tt_down',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='uncertainties_TT_MVis_down',
                      vars=['mvis']
                  ),
@@ -379,7 +379,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_up',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -397,7 +397,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_down',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -421,25 +421,25 @@ for x in range(0,len(categories)):
             # Fractions
             Leaf(
                 name='frac_qcd',
-                file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_qcd.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_qcd.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                 object='h_w_2d',
                 vars=['mt','tau_decay']
             ),
             Leaf(
                 name='frac_w',
-                file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_wjets.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_wjets.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                 object='h_w_2d',
                 vars=['mt','tau_decay']
             ),
             Leaf(
                 name='frac_dy',
-                file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_dy.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_dy.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                 object='h_w_2d',
                 vars=['mt','tau_decay']
             ),
             Leaf(
                 name='frac_tt',
-                file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_tt.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_tt.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                 object='h_w_2d',
                 vars=['mt','tau_decay']
             ),
@@ -455,7 +455,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_qcd_up',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/uncertainties_QCD_W.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/uncertainties_QCD_W.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='uncertainties_QCD_MVis_Iso_SS2OS_up',
                      vars=['mvis', 'mu_iso']
                  ),
@@ -473,7 +473,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_qcd_down',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/uncertainties_QCD_W.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/uncertainties_QCD_W.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='uncertainties_QCD_MVis_Iso_SS2OS_down',
                      vars=['mvis', 'mu_iso']
                  ),
@@ -491,7 +491,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_qcd_up',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -509,7 +509,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_qcd_down',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -527,7 +527,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_w_up',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/uncertainties_QCD_W.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/uncertainties_QCD_W.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='uncertainties_W_MVis_MT_up',
                      vars=['mvis', 'mt']
                  ),
@@ -545,7 +545,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_w_down',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/uncertainties_QCD_W.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/uncertainties_QCD_W.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='uncertainties_W_MVis_MT_down',
                      vars=['mvis', 'mt']
                  ),
@@ -563,7 +563,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_w_up',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -581,7 +581,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_w_down',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -599,7 +599,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_tt_up',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='uncertainties_TT_MVis_up',
                      vars=['mvis']
                  ),
@@ -617,7 +617,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_tt_down',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='uncertainties_TT_MVis_down',
                      vars=['mvis']
                  ),
@@ -635,7 +635,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_up',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -653,7 +653,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_down',
-                     file='{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -700,7 +700,7 @@ for x in range(0,len(categories)):
     
     
     
-    file = ROOT.TFile.Open("{HOME}/public/Htautau/FakeRate/{VERSION}/{CHANNEL}/{CATEGORY}/fakeFactors_{VERSION}.root".format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category), "recreate")
+    file = ROOT.TFile.Open("{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/fakeFactors_{VERSION}.root".format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category), "recreate")
     # Write meta-data
     version_ts = ROOT.TString(version)
     tag_ts     = ROOT.TString(tag)

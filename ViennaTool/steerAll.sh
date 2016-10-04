@@ -5,9 +5,9 @@ sh BuildStructure.sh
 cd ../
 make -B
 #./Preselection
-./SRHisto
+#./SRHisto
 #./CRHisto
 #./steerFF
 #./convert_inputs
-#./ApplyFF
-#./ApplyUncertainties
+./ApplyFF
+./ApplyUncertainties
