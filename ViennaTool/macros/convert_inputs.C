@@ -107,7 +107,7 @@ void convert_inputs(Int_t categoryMode=0){
         convert_corrections( d+FF_corr_Wjets_MCsum_noGen_nonclosure, "nonclosure_Wjets", o+"Correction_Data_W_MVis.root", "W_OS_Data_FFOSData_mvis_correction");
         //convert_corrections( d+"FF_corr_Wjets_MC_noGen_nonclosure.root", "nonclosure_Wjets_MC", o+"Correction_Data_W_MVis.root", "W_OS_Data_FFOSData_mvis_correction");
         convert_corrections( d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets", o+"Correction_MC_W_MT.root", "W_OS_MC_FFOSMC_mt_correction");
-        convert_corrections( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC", o+"Correction_MC_TT_MVis.root", "TT_OS_MC_mvis_correction");
+        if(CHAN==kMU)convert_corrections( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC", o+"Correction_MC_TT_MVis.root", "TT_OS_MC_mvis_correction");
       }
     }
     else{

@@ -176,7 +176,7 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
   looseSR->Write();
   looseSR_tt->Write();
   allSR->Write();
-  f.Close();
+  f.Delete();
 
   delete tightSR;delete looseSR;delete looseSR_tt;delete allSR;
   delete tchain;delete event_s;

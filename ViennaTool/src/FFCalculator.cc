@@ -2465,6 +2465,7 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
   output_h->Draw("E");
   g->Draw("same LP");
   output_h->Draw("E same");
+  output_h->SetTitle("iso(#mu) correction");
   output_h->SetXTitle("iso(#mu)");
   output_h->SetYTitle("Ratio");
   output_h->SetMaximum(2.);
@@ -2616,7 +2617,6 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
   output_h->SetTitle("OS/SS ratio");
   output_h->SetXTitle("m_{vis}[GeV]");
   output_h->SetYTitle("Ratio");
-  output_h->SetTitle("");
   output_h->SetMaximum(2.);
   output_h->SetMinimum(0.);
   c2->SetName("OSSS_corr"+sample+"_c");
@@ -2698,9 +2698,9 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   output_h->Draw("E");
   g->Draw("same LP");
   output_h->Draw("E same");
+  output_h->SetTitle("m_{T} correction");
   output_h->SetXTitle("m_{T}[GeV]");
   output_h->SetYTitle("Ratio");
-  output_h->SetTitle("");
   output_h->SetMaximum(2.);
   output_h->SetMinimum(0.);
   c2->SetName("mt_corr"+sample+"_c");

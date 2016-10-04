@@ -9,7 +9,7 @@ const TString user="jbrandstetter";
 const TString analysis="FakeFactor_2015";
 const TString luminosity="2.3";
 
-const int CHAN = kEL; //kMU,kEL,kTAU
+const int CHAN = kMU; //kMU,kEL,kTAU
 const int use_svfit = 1;
 const TString ver = "v3";
 const TString inputFF_dir = "~/public/Htautau/FakeRate/";
@@ -18,15 +18,15 @@ const TString inputFF_date = "20160929";
 const Double_t FFW_REL_ERR=0.0;
 const int NERR=5; //number of toys for FF
 ///////////////////////////////////////////////////
-const int inclusive_selection=0; //0: splitting FF procedure in categories defined in Globals.h
+const int inclusive_selection=1; //0: splitting FF procedure in categories defined in Globals.h
 const int useVV=1;
 ///////////////////////////////////////////////////
 //This defines which fractions are taken for FF bkg estimates, one of them has to be chosen
-const int inclusive_frac_mt=0;
+const int inclusive_frac_mt=1;
 const int inclusive_frac_et=0;
 const int inclusive_frac_tt=0;
 const int cat_frac_mt=0;
-const int cat_frac_et=1;
+const int cat_frac_et=0;
 const int cat_frac_tt=0;
 ///////////////////////////////////////////////////
 const int DEBUG=1; //set to 1 for additional output
@@ -49,7 +49,7 @@ const int applyFF_fromCR=1; //1 for default; 0 for debugging
 const int requireGenMatch_whenCalcFF=0; //0 as default
 const int useDYFF_forTT=0; //0 as default
 const int useWJFF_forDY=0; //1 as default
-const int doCalcWeights=0; //calc fractions
+const int doCalcWeights=1; //calc fractions
 const int doCalc=1; //calc FFs
 const int calcVTightFF=0;
 //applyFF
@@ -57,7 +57,7 @@ const int doBgEst=1; //calc bkg estimates for different FF contributions
 const int doCalcUncertainties=0; //calc uncertainties (at the moment only TT)
 const int doPlots=0;  //these plots don't have any systematic uncertainties, so default is 0
 //applyUncertainties
-const int doApplyUncertainties=0; //apply public uncertainties to FF bkg estimates
+const int doApplyUncertainties=1; //apply public uncertainties to FF bkg estimates
 const int doFinalPlots=1; //final plots of bkg estimates with FFs, comparisons with run1 and MCsum, ...
 const int doComparePlots=0;
 const int doSSSRPlots=0;

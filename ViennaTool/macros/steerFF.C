@@ -88,7 +88,7 @@ void CalcFF() {
 
   Int_t m_corr=0, m_ttcorr=0; if (applyFF_fromCR){ m_corr=_WCORR; m_ttcorr=_TTCORR;}
   
-  if (doCalc){
+  if (doCalc && inclusive_selection){
 
     if (doCalc==1){
 
@@ -96,7 +96,7 @@ void CalcFF() {
       /////////////2. Calc FF
       ///////////////////////////////////////////////////////////////////////////////////////
       cout << endl << "################### Calculating FFs         ###############" << endl << endl;
-      Analyzer->calcFFCorr(_W_JETS|m_gen_match,                    m_preselection_data,   pre_sub_wj,    p+FF_corr_Wjets_MCsum_noGen,  p+weight_Wjets);
+      /*Analyzer->calcFFCorr(_W_JETS|m_gen_match,                    m_preselection_data,   pre_sub_wj,    p+FF_corr_Wjets_MCsum_noGen,  p+weight_Wjets);
 
       if (useWJFF_forDY) Analyzer->calcFFCorr(_W_JETS|m_gen_match, m_preselection_data,   pre_sub_wj,    p+FF_corr_DY_MCsum_noGen,     p+weight_DY_J);
       else               Analyzer->calcFFCorr(_DY|m_gen_match ,    m_preselection_data,   pre_sub_dy,    p+FF_corr_DY_MCsum_noGen,     p+weight_DY_J); //DY_J using FF from DY->mumu CR
@@ -116,7 +116,7 @@ void CalcFF() {
         //Analyzer->calc_nonclosure(_QCD,                            p+FF_corr_QCD_MCsum_noGen,  p+weight_QCD,  CR_QCD_mvis_data,  p+FF_corr_QCD_MCsum_noGen_closure, p+FF_corr_QCD_MCsum_noGen_nonclosure);
         //if(CHAN==kTAU) Analyzer->calcFFCorr(_QCD|m_gen_match|SR,   m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCD_MCsum_noGen_OS, p+weight_QCD);
         Analyzer->calcFFCorr(_QCDISO|m_gen_match,                  m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCDISO_MCsum_noGen, p+weight_QCD);
-      }
+        }*/
 
       cout << "Calculating QCD and W+jets corrections" << endl;
       if(!DOMC){
