@@ -42,6 +42,7 @@ void SRHisto(int doCalc, int DOCUTS) {
 
     TString tmp,tmp2;
     for (unsigned i=0; i<ps.size(); i++){
+    //for (unsigned i=0; i<1; i++){
       if ( !doCalc ) break;
       tmp=fl.at(i); //avoid editing fl
       Int_t categoryMode=0;

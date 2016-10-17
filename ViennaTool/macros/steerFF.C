@@ -88,7 +88,7 @@ void CalcFF() {
 
   Int_t m_corr=0, m_ttcorr=0; if (applyFF_fromCR){ m_corr=_WCORR; m_ttcorr=_TTCORR;}
   
-  if (doCalc & inclusive_selection){
+  if (inclusive_selection){
 
     if (doCalc==1){
 
@@ -117,7 +117,9 @@ void CalcFF() {
         //if(CHAN==kTAU) Analyzer->calcFFCorr(_QCD|m_gen_match|SR,   m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCD_MCsum_noGen_OS, p+weight_QCD);
         Analyzer->calcFFCorr(_QCDISO|m_gen_match,                  m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCDISO_MCsum_noGen, p+weight_QCD);
       }
+    }
 
+    if (doCalcCorrections==1){
       cout << "Calculating QCD and W+jets corrections" << endl;
       if(!DOMC){
         Analyzer->loadFile(m_preselection_data,"Events");
@@ -156,7 +158,7 @@ void CalcFF() {
       }
 
       if(CHAN==kMU){
-        Analyzer->plotFF(p+"FF_corr_QCD_MCsum_noGen.root",    "fakefactor/mc_mt/FF_corr_QCD_MCsum_noGen.root",    _QCD, pi+"ff_QCD_data_vs_MC"   ,"FF in QCD (data #mu#tau)", "FF in QCD (sim #mu#tau)");
+        /*Analyzer->plotFF(p+"FF_corr_QCD_MCsum_noGen.root",    "fakefactor/mc_mt/FF_corr_QCD_MCsum_noGen.root",    _QCD, pi+"ff_QCD_data_vs_MC"   ,"FF in QCD (data #mu#tau)", "FF in QCD (sim #mu#tau)");
         Analyzer->plotFF(p+"FF_corr_Wjets_MCsum_noGen.root",    "fakefactor/mc_mt/FF_corr_Wjets_MCsum_noGen.root",    _W_JETS, pi+"ff_Wjets_data_vs_MC"   ,"FF in Wjets (data #mu#tau)", "FF in Wjets (sim #mu#tau)");
         Analyzer->plotFF(p+"FF_corr_DY_MCsum_noGen.root",    "fakefactor/mc_mt/FF_corr_DY_MCsum_noGen.root",    _DY, pi+"ff_DY_J_data_vs_MC"   ,"FF in DY (data #mu#tau)", "FF in DY (sim #mu#tau)");
         Analyzer->plotFF(p+"FF_corr_TT_MCsum_noGen.root",    "fakefactor/mc_mt/FF_corr_TT_MCsum_noGen.root",    _TT, pi+"ff_TT_data_vs_MC"   ,"FF in TT (data #mu#tau)", "FF in TT (sim #mu#tau)");
@@ -165,6 +167,10 @@ void CalcFF() {
         Analyzer->plotFF(p+"FF_corr_Wjets_MCsum_noGen.root",    "fakefactor/data_et/FF_corr_Wjets_MCsum_noGen.root",    _W_JETS, pi+"ff_Wjets_data_mt_vs_et"   ,"FF in Wjets (data #mu#tau)", "FF in Wjets (data e#tau)");
         Analyzer->plotFF(p+"FF_corr_DY_MCsum_noGen.root",    "fakefactor/data_et/FF_corr_DY_MCsum_noGen.root",    _DY, pi+"ff_DY_J_data_mt_vs_et"   ,"FF in DY (data #mu#tau)", "FF in DY (data e#tau)");
         Analyzer->plotFF(p+"FF_corr_TT_MCsum_noGen.root",    "fakefactor/data_et/FF_corr_TT_MCsum_noGen.root",    _TT, pi+"ff_TT_data_mt_vs_et"   ,"FF in TT (data #mu#tau)", "FF in TT (data e#tau)");
+
+        Analyzer->plotFF(p+"FF_corr_QCD_MCsum_noGen.root",    "../../../CMSSW_7_6_3/src/ViennaTool/fakefactor/data_mt/FF_corr_QCD_MCsum_noGen.root",    _QCD, pi+"ff_QCD_data2016_vs_data2015"   ,"FF in QCD (2016 #mu#tau)", "FF in QCD (2015 #mu#tau)");
+        Analyzer->plotFF(p+"FF_corr_Wjets_MCsum_noGen.root",    "../../../CMSSW_7_6_3/src/ViennaTool/fakefactor/data_mt/FF_corr_Wjets_MCsum_noGen.root",    _W_JETS, pi+"ff_Wjets_data2016_vs_data2015"   ,"FF in Wjets (2016 #mu#tau)", "FF in Wjets (2015 #mu#tau)");
+        Analyzer->plotFF(p+"FF_corr_TT_MCsum_noGen.root",    "../../../CMSSW_7_6_3/src/ViennaTool/fakefactor/data_mt/FF_corr_TT_MCsum_noGen.root",    _TT, pi+"ff_TT_data2016_vs_data2015"   ,"FF in TT (2016 #mu#tau)", "FF in TT (2015 #mu#tau)");*/
       }
       
       

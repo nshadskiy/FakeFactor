@@ -9,5 +9,8 @@ make -B
 #./CRHisto
 #./steerFF
 #./convert_inputs
-./ApplyFF
+#./ApplyFF
+#cp ViennaTool/fakefactor/data_mt/FFestimate_mt.root ViennaTool/fakefactor/data_mt/FFestimate_wUncertainties_mt.root
+#cp ViennaTool/fakefactor/data_mt/FFestimate_mvis.root ViennaTool/fakefactor/data_mt/FFestimate_wUncertainties_mvis.root
+#cp ViennaTool/fakefactor/data_mt/FFestimate_pt.root ViennaTool/fakefactor/data_mt/FFestimate_wUncertainties_pt.root
 ./ApplyUncertainties

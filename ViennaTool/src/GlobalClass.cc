@@ -119,7 +119,7 @@ Int_t GlobalClass::isInSR(const Int_t mode, const Int_t ind)
     if ( mode & _AI && event_s->lep_iso<TAU1_ISO_CUT ) return 1;
     else if ( !(mode & _AI) && event_s->lep_iso>TAU1_ISO_CUT ) return 1; //0.5 for tight, >9 for vtight
   }else{
-    if ( mode & _AI && event_s->lep_iso>0.1 && event_s->lep_iso<0.2 ) return 1; //for QCD OS/SS check
+    if ( mode & _AI && event_s->lep_iso>0.15 && event_s->lep_iso<0.25 ) return 1; //for QCD OS/SS check
     else if ( !(mode & _AI) && (event_s->lep_iso<LEP_ISO_CUT) || ( mode & MUISO ) ) return 1;
   }
 
@@ -190,7 +190,7 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
     returnVal=1;
   else if ((mode & _QCDISO)                     &&
 	   (  (  CALC_SS_SR && event_s->alltau_mt->at(ind)<MT_CUT   && ( ( event_s->lep_iso > 0.05 && event_s->lep_iso<0.15 ) || ( mode & MUISO ) ) ) || //TRY
-	      ( !CALC_SS_SR && event_s->alltau_mt->at(ind)<MT_CUT   &&   ( event_s->lep_iso > 0.10 && event_s->lep_iso<0.20 )                     ) ) && //TRY
+	      ( !CALC_SS_SR && event_s->alltau_mt->at(ind)<MT_CUT   &&   ( event_s->lep_iso > 0.15 && event_s->lep_iso<0.25 )                     ) ) && //TRY
 	   //	   (  (  CALC_SS_SR && event_s->alltau_mt->at(ind)<MT_CUT   && ( event_s->lep_iso<LEP_ISO_CUT || ( mode & MUISO ) ) ) || //DEFAULT
 	   //	      ( !CALC_SS_SR                                     && event_s->lep_iso>LEP_ISO_CUT )   ) && //DEFAULT
 	   event_s->passesDLVeto             &&
@@ -210,8 +210,8 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
     returnVal=1;
   else if ((mode & _QCD)                  &&
 	   (  ( !CALC_SS_SR && !(mode & _AI) && event_s->alltau_mt->at(ind)<MT_CUT   && ( ( event_s->lep_iso > 0.05 && event_s->lep_iso<0.15 ) || ( mode & MUISO ) ) ) || //TRY
-	      (  (CALC_SS_SR) && event_s->alltau_mt->at(ind)<MT_CUT   &&  ( ( event_s->lep_iso > 0.1 && event_s->lep_iso<0.2 ) || ( mode & MUISO) )                    ) || //TRY
-              (  mode & _AI && event_s->alltau_mt->at(ind)<MT_CUT   &&   ( event_s->lep_iso > 0.10 && event_s->lep_iso<0.20 )                     ) ) && //TRY
+	      (  (CALC_SS_SR) && event_s->alltau_mt->at(ind)<MT_CUT   &&  ( ( event_s->lep_iso > 0.15 && event_s->lep_iso<0.25 ) || ( mode & MUISO) )                    ) || //TRY
+              (  mode & _AI && event_s->alltau_mt->at(ind)<MT_CUT   &&   ( event_s->lep_iso > 0.15 && event_s->lep_iso<0.25 )                     ) ) && //TRY
 	   //	   (  ( !CALC_SS_SR && event_s->alltau_mt->at(ind)<MT_CUT   && ( event_s->lep_iso<LEP_ISO_CUT || ( mode & MUISO ) ) ) || //DEFAULT
 	   //	      (  CALC_SS_SR                                     && event_s->lep_iso>LEP_ISO_CUT )   ) && //DEFAULT
 	   event_s->passesDLVeto             &&

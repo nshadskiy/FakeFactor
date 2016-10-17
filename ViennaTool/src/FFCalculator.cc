@@ -153,18 +153,20 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
     std::cout<< "Processing " << fnames.at(i) << " with \t" << nentries << " events."<<std::endl;
     for(Int_t jentry=0;jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
+      Double_t fracWeight=event_s->weight_sf;
+      if(event_s->alltau_gen_match->at(0)==5) fracWeight=fracWeight*1.2;
       if ( !fulfillCategory(mode) ) continue;
       if ( this->isInSR(NO_SR) ){
-	if (this->isLoose()) h_n.at(i)->Fill(this->getWeightBin(),event_s->weight_sf);
-	else if (this->isTight()) h_n_tight.at(i)->Fill(this->getWeightBin(),event_s->weight_sf);
-        if (this->isLoose_tt()) h_n_tt.at(i)->Fill(this->getWeightBin(),event_s->weight_sf);
+	if (this->isLoose()) h_n.at(i)->Fill(this->getWeightBin(),fracWeight);
+	else if (this->isTight()) h_n_tight.at(i)->Fill(this->getWeightBin(),fracWeight);
+        if (this->isLoose_tt()) h_n_tt.at(i)->Fill(this->getWeightBin(),fracWeight);
       }
       if ( this->isInSR( NO_SR | _SS ) && this->isLoose() ) 
-        h_ss->Fill(this->getWeightBin(),event_s->weight_sf *(-2*(i<PS_SIZE)+1)    ); //-1 for MC, +1 for data
+        h_ss->Fill(this->getWeightBin(),fracWeight *(-2*(i<PS_SIZE)+1)    ); //-1 for MC, +1 for data
       if ( CHAN==kTAU && this->isInSR( NO_SR ) && this->isLoose() ) 
-        h_qcd_rest->Fill(this->getWeightBin(),event_s->weight_sf *(-2*(i<PS_SIZE)+1)    ); //-1 for MC, +1 for data
+        h_qcd_rest->Fill(this->getWeightBin(),fracWeight *(-2*(i<PS_SIZE)+1)    ); //-1 for MC, +1 for data
       else if( CHAN!=kTAU && this->isInSR( NO_SR ) && this->isLoose() ) 
-        h_qcd_rest->Fill(this->getWeightBin(),event_s->weight_sf *(-2*(i<PS_SIZE)+1)    ); //-1 for MC, +1 for data
+        h_qcd_rest->Fill(this->getWeightBin(),fracWeight *(-2*(i<PS_SIZE)+1)    ); //-1 for MC, +1 for data
     }
     cout << "Name: " << fnames.at(i) << " " << h_ss->Integral() << endl;
     cout << "Name: " << fnames.at(i) << " " << h_qcd_rest->Integral() << endl;
@@ -2289,9 +2291,9 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   gsk.set_kernelDistance( "err" );
   gsk.set_doWidthInBins(1);
   gsk.set_doErrors(1);
-  if(mode & _QCD) gsk.set_lastBinFrom(200);
+  if(mode & _QCD) gsk.set_lastBinFrom(150);
   Double_t fitWidth;
-  if(mode & _QCD) fitWidth=1.5; else if(mode & _W_JETS) fitWidth=3.; else fitWidth=2.;
+  if(mode & _QCD) fitWidth=1.; else if(mode & _W_JETS) fitWidth=1.5; else fitWidth=1.;
   cout << "FitWidth: " << fitWidth << endl;
   gsk.setWidth(fitWidth);
   //gsk.set_doWidthInBins(0);
@@ -2437,7 +2439,7 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
   gsk.set_doWidthInBins(1);
   gsk.set_doErrors(1);
   Double_t fitWidth;
-  if(!CALC_SS_SR) fitWidth=0.75; else fitWidth=0.5;
+  if(!CALC_SS_SR) fitWidth=1.2; else fitWidth=0.5;
   cout << "FitWidth: " << fitWidth << endl;
   gsk.setWidth(fitWidth);
   gsk.getSmoothHisto();
@@ -2465,7 +2467,7 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
   output_h->Draw("E");
   g->Draw("same LP");
   output_h->Draw("E same");
-  output_h->SetTitle("iso(#mu) correction")
+  output_h->SetTitle("iso(#mu) correction");
   output_h->SetXTitle("iso(#mu)");
   output_h->SetYTitle("Ratio");
   output_h->SetMaximum(2.);
@@ -2571,7 +2573,8 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
   gsk.set_kernelDistance( "err" );
   gsk.set_doWidthInBins(1);
   gsk.set_doErrors(1);
-  gsk.setWidth( 3. );
+  gsk.setWidth( 1.5 );
+  if(mode & _QCD) gsk.set_lastBinFrom(170);
   gsk.getSmoothHisto();
   TH1D *h2=gsk.returnSmoothedHisto();
   h2->Write();
@@ -2669,7 +2672,7 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   gsk.set_doIgnoreZeroBins(1);
   gsk.set_kernelDistance( "lin" );
   gsk.set_doWidthInBins(1);
-  gsk.setWidth(1.5);
+  gsk.setWidth(1.);
   Double_t lastBin;
   if(CHAN==kMU) lastBin=200;
   if(CHAN==kEL) lastBin=180;

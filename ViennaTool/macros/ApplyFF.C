@@ -86,10 +86,10 @@ void ApplyFF() {
         vector<Int_t> mode_w; mode_w.push_back(_W_JETS|NO_SR|MT); mode_w.push_back(_W_JETS|MVIS); mode_w.push_back(_W_JETS|NO_SR|PT); if(use_svfit){mode_w.push_back(_W_JETS|SVFIT);}
         vector<Int_t> mode_d; mode_d.push_back(_DY|NO_SR|MT); mode_d.push_back(_DY|MVIS); mode_d.push_back(_DY|NO_SR|PT); if(use_svfit){mode_d.push_back(_DY|SVFIT);}
         vector<Int_t> mode_comb; mode_comb.push_back(NO_SR|MT); mode_comb.push_back(MVIS); mode_comb.push_back(NO_SR|PT); if(use_svfit){mode_comb.push_back(_TT|SVFIT);}
-        Analyzer->applyFF(p+"FFestimate_QCD", mode_q, categoryMode);
+        /*Analyzer->applyFF(p+"FFestimate_QCD", mode_q, categoryMode);
         Analyzer->applyFF(p+"FFestimate_Wjets", mode_w, categoryMode);
         Analyzer->applyFF(p+"FFestimate_tt_J", mode_t, categoryMode);
-        Analyzer->applyFF(p+"FFestimate_DY_J", mode_d, categoryMode);
+        Analyzer->applyFF(p+"FFestimate_DY_J", mode_d, categoryMode);*/
         Analyzer->applyFF(p+"FFestimate", mode_comb, categoryMode);
         
         //vector<Int_t> mode_t; mode_t.push_back(_TT_J|NO_SR|MT); mode_t.push_back(_TT_J|MVIS); mode_t.push_back(_TT_J|NO_SR|PT);
