@@ -19,7 +19,8 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   if(DOMC) m_preselection_data=preselection_MCsum;
   TString m_path_img=path_img_data;
 
-  const int ivar[nVAR]={MT|NO_SR,MVIS,PT,MUISO};
+  const int nVARused = nVARCR; //mt,mvis,pt,muiso
+  const int ivar[4]={MT|NO_SR,MVIS,PT,MUISO};
 
   const int icr[nCR]=        {_W_JETS , _DY  , _TT  , _QCD};
   const TString scr[nCR]=    {s_Wjets, s_DY , s_TT , s_QCD};
@@ -44,12 +45,12 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   for (int ic=0; ic<nCR; ic++){ //loop over CRs
     if ( !doCalc ) break;
     // nVAR is set to 3, one has to increase the number if muiso or zpt or any other variable is required
-    for (int iv=0; iv<nVAR; iv++){ //loop over mt, mvis, pt
+    for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt
       for (int is=0; is<nSA; is++){ //loop over samples
-	Analyzer->getCRHisto(path_presel+s_preselection+"_"+ssa[is]+".root", ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_"+ssa[is]+".root"  );
+	Analyzer->getCRHisto(path_presel+s_preselection+"_"+ssa[is]+".root", ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root"  );
       }
-      if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_data.root"  );
-      else Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_MCsum.root"  );
+      if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_data.root"  );
+      else Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_MCsum.root"  );
     }
   }
 
@@ -58,10 +59,10 @@ void CRHisto(int doCalc, int nCR, int nQU) {
     if ( !doCalc ) break;
     for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
       for (int is=0; is<nSA; is++){ //loop over samples
-	Analyzer->getCRHisto(path_presel+s_preselection+"_"+ssa[is]+".root", ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_AI_"+ssa[is]+".root"  );
+	Analyzer->getCRHisto(path_presel+s_preselection+"_"+ssa[is]+".root", ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_"+ssa[is]+".root"  );
       }
-      if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_AI_data.root"  );
-      else Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_AI_MCsum.root"  );
+      if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_data.root"  );
+      else Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_MCsum.root"  );
     }
   }
 
@@ -70,10 +71,10 @@ void CRHisto(int doCalc, int nCR, int nQU) {
     if ( !doCalc ) break;
     for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
       for (int is=0; is<nSA; is++){ //loop over samples
-	Analyzer->getCRHisto(path_presel+s_preselection+"_"+ssa[is]+".root", ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_SS_"+ssa[is]+".root"  );
+	Analyzer->getCRHisto(path_presel+s_preselection+"_"+ssa[is]+".root", ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_"+ssa[is]+".root"  );
       }
-      if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_SS_data.root"  );
-      else Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_SS_MCsum.root"  );
+      if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_data.root"  );
+      else Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_MCsum.root"  );
     }
   }
 
@@ -91,15 +92,15 @@ void CRHisto(int doCalc, int nCR, int nQU) {
     for (int ic=3; ic<nCR; ic++){ //loop over CRs
       if ( !doCalc ) break;
       for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
-        TFile outfile ( path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_AI_data_MCsubtracted.root","RECREATE"  );
-        TFile infile( path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_AI_data.root"  );
+        TFile outfile ( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_data_MCsubtracted.root","RECREATE"  );
+        TFile infile( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_data.root"  );
         for(int imode=0; imode<nmodes; imode++){
-          TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+"_"+tvar[iv]);
-          TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+tvar[iv]+"_MCsubtracted"); outhist->Add(inhist,-1);
+          TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+"_"+tvarCR[iv]);
+          TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+tvarCR[iv]+"_MCsubtracted"); outhist->Add(inhist,-1);
           for (int is=0; is<nSA; is++){ //loop over samples
             if(scr[ic] == ssa[is]) continue;
-            TFile tmp(path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_AI_"+ssa[is]+".root"  );
-            TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+"_"+tvar[iv]);
+            TFile tmp(path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_"+ssa[is]+".root"  );
+            TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+"_"+tvarCR[iv]);
             outhist->Add(tmphist);
             tmp.Close();
           }
@@ -118,15 +119,15 @@ void CRHisto(int doCalc, int nCR, int nQU) {
     for (int ic=0; ic<1; ic++){ //loop over CRs
       if ( !doCalc ) break;
       for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
-        TFile outfile ( path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_SS_data_MCsubtracted.root","RECREATE"  );
-        TFile infile( path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_SS_data.root"  );
+        TFile outfile ( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_data_MCsubtracted.root","RECREATE"  );
+        TFile infile( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_data.root"  );
         for(int imode=0; imode<nmodes; imode++){
-          TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+"_"+tvar[iv]);
-          TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+tvar[iv]+"_MCsubtracted"); outhist->Add(inhist,-1);
+          TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+"_"+tvarCR[iv]);
+          TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+tvarCR[iv]+"_MCsubtracted"); outhist->Add(inhist,-1);
           for (int is=0; is<nSA; is++){ //loop over samples
             if(scr[ic] == ssa[is]) continue;
-            TFile tmp(path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_SS_"+ssa[is]+".root"  );
-            TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+"_"+tvar[iv]);
+            TFile tmp(path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_"+ssa[is]+".root"  );
+            TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+"_"+tvarCR[iv]);
             outhist->Add(tmphist);
             tmp.Close();
           }
@@ -145,16 +146,16 @@ void CRHisto(int doCalc, int nCR, int nQU) {
     for (int ic=0; ic<nCR; ic++){ //loop over CRs
       if ( !doCalc ) break;
       // nVAR is set to 3, one has to increase the number if muiso or zpt or any other variable is required
-      for (int iv=0; iv<nVAR; iv++){ //loop over mt, mvis, pt
-        TFile outfile ( path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_data_MCsubtracted.root","RECREATE"  );
-        TFile infile( path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_data.root"  );
+      for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt
+        TFile outfile ( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_data_MCsubtracted.root","RECREATE"  );
+        TFile infile( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_data.root"  );
         for(int imode=0; imode<nmodes; imode++){
-          TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+"_"+tvar[iv]);
-          TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+tvar[iv]+"_MCsubtracted"); outhist->Add(inhist,-1);
+          TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+"_"+tvarCR[iv]);
+          TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+tvarCR[iv]+"_MCsubtracted"); outhist->Add(inhist,-1);
           for (int is=0; is<nSA; is++){ //loop over samples
             if(scr[ic] == ssa[is]) continue;
-            TFile tmp(path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_"+ssa[is]+".root"  );
-            TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+"_"+tvar[iv]);
+            TFile tmp(path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root"  );
+            TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+"_"+tvarCR[iv]);
             if(ivar[iv] & MUISO){
               for(int i=1; i<tmphist->GetNbinsX();i++){
                 if(tmphist->GetBinContent(i) > 3){
@@ -178,16 +179,16 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   else{
     for (int ic=0; ic<nCR; ic++){ //loop over CRs
       if ( !doCalc ) break;
-      for (int iv=0; iv<nVAR+1; iv++){ //loop over mt, mvis, pt
-        TFile outfile ( path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_MCsum_MCsubtracted.root","RECREATE"  );
-        TFile infile( path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_MCsum.root"  );
+      for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt
+        TFile outfile ( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_MCsum_MCsubtracted.root","RECREATE"  );
+        TFile infile( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_MCsum.root"  );
         for(int imode=0; imode<nmodes; imode++){
-          TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+"_"+tvar[iv]);
-          TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+tvar[iv]+"_MCsubtracted"); outhist->Add(inhist,-1);
+          TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+"_"+tvarCR[iv]);
+          TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+tvarCR[iv]+"_MCsubtracted"); outhist->Add(inhist,-1);
           for (int is=0; is<nSA; is++){ //loop over samples
             if(scr[ic] == ssa[is]) continue;
-            TFile tmp(path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_"+ssa[is]+".root"  );
-            TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+"_"+tvar[iv]);
+            TFile tmp(path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root"  );
+            TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+"_"+tvarCR[iv]);
             outhist->Add(tmphist);
             tmp.Close();
           }
@@ -207,11 +208,11 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   std::vector<TString> ty; for (int it=0; it<nSA; it++) ty.push_back(vsuff[it]);
 
   for (int ic=0; ic<nCR; ic++){ //loop over CRs
-    for (int iv=0; iv<nVAR-1; iv++){ //loop over mt, mvis, pt
+    for (int iv=0; iv<nVARused-1; iv++){ //loop over mt, mvis, pt
       for (int iq=0; iq<nQU; iq++){ //loop over loose/tight
 	std::vector<TString> cr; 
-	for (int is=0; is<nSA; is++){ cr.push_back(path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_"+ssa[is]+".root"); }
-	Analyzer->plotCR(cr, ty, path_sim+s_CR+"_"+scr[ic]+"_"+tvar[iv]+"_data.root", squ[iq], scr[ic]    , m_path_img+s_CR+"_"+scr[ic]+"_"+squ[iq]+"_"+tvar[iv], tvar_l[iv] ); 
+	for (int is=0; is<nSA; is++){ cr.push_back(path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root"); }
+	Analyzer->plotCR(cr, ty, path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_data.root", squ[iq], scr[ic]    , m_path_img+s_CR+"_"+scr[ic]+"_"+squ[iq]+"_"+tvarCR[iv], tvarCR_l[iv] ); 
       }
     }
   }

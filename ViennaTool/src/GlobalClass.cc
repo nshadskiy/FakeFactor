@@ -56,8 +56,8 @@ Int_t GlobalClass::isLoose(const Int_t mode, const Int_t ind) //default: 0,0
 
   if (USE_MVA_ISO){
     //    if ( event_s->alltau_vlooseMVA->at(ind) && !event_s->alltau_tightMVA->at(ind)) return 1;
-    if ( calcVTightFF && !event_s->alltau_vtightMVA->at(ind)) return 1; 
-    if ( !calcVTightFF && !event_s->alltau_tightMVA->at(ind)) return 1; 
+    if ( calcVTightFF && !event_s->alltau_vtightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1; 
+    if ( !calcVTightFF && !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1; 
   } else{
     if (event_s->alltau_beta->at(ind)<100 && !event_s->alltau_mediumBeta->at(ind)) return 1;
   }
@@ -188,16 +188,6 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
 	   //	   event_s->mu2_iso<0.3               &&
 	   event_s->bpt_1>=20)
     returnVal=1;
-  else if ((mode & _QCDISO)                     &&
-	   (  (  CALC_SS_SR && event_s->alltau_mt->at(ind)<MT_CUT   && ( ( event_s->lep_iso > 0.05 && event_s->lep_iso<0.15 ) || ( mode & MUISO ) ) ) || //TRY
-	      ( !CALC_SS_SR && event_s->alltau_mt->at(ind)<MT_CUT   &&   ( event_s->lep_iso > 0.15 && event_s->lep_iso<0.25 )                     ) ) && //TRY
-	   //	   (  (  CALC_SS_SR && event_s->alltau_mt->at(ind)<MT_CUT   && ( event_s->lep_iso<LEP_ISO_CUT || ( mode & MUISO ) ) ) || //DEFAULT
-	   //	      ( !CALC_SS_SR                                     && event_s->lep_iso>LEP_ISO_CUT )   ) && //DEFAULT
-	   event_s->passesDLVeto             &&
-	   event_s->passes3LVeto             &&
-	   event_s->lep_q*event_s->alltau_q->at(ind)>=0. 
-	   )
-    returnVal=1;
   else if ((mode &_QCD && mode & SR && CHAN==kTAU)                   &&
            (event_s->lep_iso>TAU1_ISO_CUT) &&
            (event_s->lep_q*event_s->alltau_q->at(ind)<=0.)
@@ -302,7 +292,7 @@ Int_t GlobalClass::getBin(const Int_t mode, const Int_t ind)
     if (mode & NB)    return this->getIndex(p_nb_v,p_nb_n+1,event_s->nbtag);
     if (mode & DRB)   return this->getIndex(p_drb_v,p_drb_n+1,event_s->alltau_dRToB->at(ind) );
     //if (mode & DETA)  return this->getIndex(p_absdeta_v,p_absdeta_n+1,fabs(event_s->alltau_eta->at(ind)-event_s->lep_eta) );
-    if (mode & NJETS)  return this->getIndex(p_njets_v,p_njets_n+1,event_s->njets);
+    //if (mode & NJETS)  return this->getIndex(p_njets_v,p_njets_n+1,event_s->njets);
     //if (mode & NBJETS)  return this->getIndex(p_nbjets_v,p_nbjets_n+1,event_s->nbtag);
     
     //    if (mode & DRB){ cout << "X " << endl; cout << "X " << event_s->alltau_dRToB->size() << " " << ind << endl;  return this->getIndex(p_drb_v,p_drb_n+1,event_s->alltau_dRToB->at(ind) ); }
@@ -319,7 +309,7 @@ Int_t GlobalClass::getBin(const Int_t mode, const Int_t ind)
   if (mode & _W_JETS) {n_p=n_p_Wjets;n_e=n_e_Wjets;n_t=n_t_Wjets;n_j=n_j_Wjets;}
   else if ( (mode & _DY) ) {n_p=n_p_DY;n_e=n_e_DY;n_t=n_t_DY;n_j=n_j_DY;}
   else if ( (mode & _TT) ) {n_p=n_p_TT;n_e=n_e_TT;n_t=n_t_TT;n_j=n_j_TT;}
-  else if ( (mode & _QCD) || (mode & _QCDISO) )     {n_p=n_p_QCD;n_e=n_e_QCD;n_t=n_t_QCD;n_j=n_j_QCD;}
+  else if ( (mode & _QCD) )     {n_p=n_p_QCD;n_e=n_e_QCD;n_t=n_t_QCD;n_j=n_j_QCD;}
   //  else {cout<<"getBin: Define a valid MODE!"<<std::endl;n_p=-99;n_e=-99;n_t=-99;}
   Int_t bin=i_e + i_p*n_e + i_t*n_p*n_e + i_j*n_t*n_p*n_e;
   // std::cout<<i_e<<" "<<i_p<<" "<<i_t<<" "<<bin<<" "<<std::endl;
@@ -343,7 +333,7 @@ Int_t GlobalClass::nBins(const Int_t mode)
   if (mode & _W_JETS) return(n_e_Wjets*n_p_Wjets*n_t_Wjets*n_m_Wjets*n_j_Wjets);
   else if ( (mode & _DY) ) return(n_e_DY*n_p_DY*n_t_DY*n_m_DY*n_j_DY);
   else if ( (mode & _TT) ) return(n_e_TT*n_p_TT*n_t_TT*n_m_TT*n_j_TT);
-  else if ( (mode & _QCD) || (mode & _QCDISO) )   return(n_e_QCD*n_p_QCD*n_t_QCD*n_m_QCD*n_m_QCD*n_j_QCD);
+  else if ( (mode & _QCD) )   return(n_e_QCD*n_p_QCD*n_t_QCD*n_m_QCD*n_m_QCD*n_j_QCD);
 
   std::cout<<"nBins(mode): No valid mode."<<std::endl;
   return -99;
@@ -364,7 +354,7 @@ Int_t GlobalClass::getPtIndex(const Int_t mode, const Int_t ind)
   } else if ( (mode & _TT) ) {
     for(Int_t i=0;i<n_p_TT;i++) if (pt>=pt_cuts_TT[i]) i_p++;
     return(--i_p);
-  } else if ( (mode & _QCD) || (mode & _QCDISO) ) {
+  } else if ( (mode & _QCD) ) {
     for(Int_t i=0;i<n_p_QCD;i++) if (pt>=pt_cuts_QCD[i]) i_p++;
     return(--i_p);
   } else {cout<<"Define a valid mode!"<<std::endl;return(-99);}
@@ -385,7 +375,7 @@ Int_t GlobalClass::getNjetIndex(const Int_t mode, const Int_t ind)
   } else if ( (mode & _TT) ) {
     for(Int_t i=0;i<n_j_TT;i++) if (njet>=njet_cuts_TT[i]) i_j++;
     return(--i_j);
-  } else if ( (mode & _QCD) || (mode & _QCDISO) ) {
+  } else if ( (mode & _QCD) ) {
     for(Int_t i=0;i<n_j_QCD;i++) if (njet>=njet_cuts_QCD[i]) i_j++;
     return(--i_j);
   } else {cout<<"Define a valid mode!"<<std::endl;return(-99);}
@@ -406,7 +396,7 @@ Int_t GlobalClass::getMtIndex(const Int_t mode, const Int_t ind)
   } else if ( (mode & _TT) ) {
     for(Int_t i=0;i<n_m_TT;i++) if (mt>=mt_cuts_TT[i]) i_m++;
     return(--i_m);
-  } else if ( (mode & _QCD) || (mode & _QCDISO) ) {
+  } else if ( (mode & _QCD) ) {
     for(Int_t i=0;i<n_m_QCD;i++) if (mt>=mt_cuts_QCD[i]) i_m++;
     return(--i_m);
   } else {cout<<"Define a valid mode!"<<std::endl;return(-99);}
@@ -427,7 +417,7 @@ Int_t GlobalClass::getEtaIndex(const Int_t mode, const Int_t ind)
   } else if ( (mode & _TT) ) {
     for(Int_t i=0;i<n_e_TT;i++) if (TMath::Abs(eta)>=eta_cuts_TT[i]) i_e++;
     return(--i_e);
-  } else if ( (mode & _QCD) || (mode & _QCDISO) ) {
+  } else if ( (mode & _QCD) ) {
     for(Int_t i=0;i<n_e_QCD;i++) if (TMath::Abs(eta)>=eta_cuts_QCD[i]) i_e++;
     return(--i_e);
   } else {cout<<"Define a valid mode!"<<std::endl;return(-99);}
@@ -448,7 +438,7 @@ Int_t GlobalClass::getTrackIndex(const Int_t mode, const Int_t ind)
   } else if ( (mode & _TT) ) {
     for(Int_t i=0;i<n_t_TT;i++) if (i_decayMode>=decay_cuts_TT[i]) i_t++;
     return(--i_t);
-  } else if ( (mode & _QCD) || (mode & _QCDISO) ) {
+  } else if ( (mode & _QCD) ) {
     for(Int_t i=0;i<n_t_QCD;i++) if (i_decayMode>=decay_cuts_QCD[i]) i_t++;
     return(--i_t);
   } else {cout<<"Define a valid mode!"<<std::endl;return(-99);}
@@ -500,13 +490,20 @@ Int_t GlobalClass::passesCuts(const Int_t cuts, const Int_t ind){
 }
 
 Double_t GlobalClass::selVal(const Int_t mode, const Int_t ind){
-  if      (mode & MT)   {return event_s->alltau_mt->at(ind);}
+
+  if      (mode & M2T)   {return event_s->alltau_mt2->at(ind);}
   else if (mode & MVIS) {return event_s->alltau_mvis->at(ind);}
   else if (mode & PT)   {return event_s->alltau_pt->at(ind);}
   else if (mode & MUISO) {return event_s->lep_iso;}
   else if (mode & ZPT)   {return event_s->alltau_Zpt->at(ind);}
   else if (mode & SVFIT) {return event_s->alltau_svfit->at(ind);}
+  else if (mode & MT) {return event_s->alltau_mt->at(ind);}
+  else if (mode & LEPPT) {return event_s->lep_pt;}
+  else if (mode & MVAMET) {return event_s->mvamet;}
+  else if (mode & ETA)   {return event_s->alltau_eta->at(ind);}
+  else if (mode & MMTOT) {return TMath::Sqrt( TMath::Power(event_s->alltau_mt->at(ind),2) + TMath::Power(event_s->alltau_mt2->at(ind),2) + 2*event_s->lep_pt*event_s->alltau_pt->at(ind)*(1-TMath::Cos( TVector2::Phi_mpi_pi( event_s->lep_phi-event_s->alltau_phi->at(ind) ) ) ) );}
   else{ std::cout << "selVal: Warning: no valid variable given!" << std::endl; return -1; }
+
 }
 
 Int_t GlobalClass::getPInd( Int_t dm ){

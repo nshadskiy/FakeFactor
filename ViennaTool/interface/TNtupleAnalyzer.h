@@ -38,6 +38,7 @@ class TNtupleAnalyzer{
   double mt_leplep,m_leplep, lep_dR, bpt_1, weight, sf, weight_sf, mu2_iso;//,mu1_eta, mu1_phi, mu2_eta, mu2_phi;
   int passes3LVeto, passesDLVeto,njets,nbtag;
   double mjj,jdeta;
+  double mvamet;
   double otherLep_pt,otherLep_eta,otherLep_phi,otherLep_m,otherLep_iso;
   int    otherLep_q;
   double lep_pt,lep_eta,lep_phi,lep_m,lep_iso;
@@ -67,6 +68,7 @@ class TNtupleAnalyzer{
   std::vector<Double_t> *alltau_dRToOtherLep;
   std::vector<Double_t> *alltau_mvis;
   std::vector<Double_t> *alltau_mt;
+  std::vector<Double_t> *alltau_mt2;
   std::vector<Double_t> *alltau_svfit;
   std::vector<Double_t> *alltau_Zpt;
   //    Int_t bin,gen_match_1,gen_match_2,mediumBeta,nAdditionalMu,passes3LVeto, passesDLVeto;

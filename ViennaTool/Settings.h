@@ -33,6 +33,7 @@ const int DEBUG=1; //set to 1 for additional output
 const int ALLPLOTS=0; //set to 1 for PDFs etc
 const int DOQCD=1; //set to 1 to include QCD estimate, 0 for w/o; only works for MC
 const int DOMC=0; //set to 1 for MC, 0 for data
+const int doCuts=0;
 const int MULTITAU=0;
 const int APPLY_TO_ISOTAU=1; //def: 0
 const int USE_ISOTAU=1; //def: 0

@@ -113,9 +113,6 @@ void CalcFF() {
         cout << "Calculating QCD FFs" << endl;
         Analyzer->calcFFCorr(_QCD|m_gen_match,                     m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCD_MCsum_noGen,    p+weight_QCD);
         Analyzer->calcFFCorr(_QCD|m_gen_match|_AI,                     m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCD_MCsum_noGen_AI,    p+weight_QCD);
-        //Analyzer->calc_nonclosure(_QCD,                            p+FF_corr_QCD_MCsum_noGen,  p+weight_QCD,  CR_QCD_mvis_data,  p+FF_corr_QCD_MCsum_noGen_closure, p+FF_corr_QCD_MCsum_noGen_nonclosure);
-        //if(CHAN==kTAU) Analyzer->calcFFCorr(_QCD|m_gen_match|SR,   m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCD_MCsum_noGen_OS, p+weight_QCD);
-        Analyzer->calcFFCorr(_QCDISO|m_gen_match,                  m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCDISO_MCsum_noGen, p+weight_QCD);
       }
     }
 

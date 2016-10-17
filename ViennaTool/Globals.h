@@ -95,6 +95,7 @@ const TString s_nb           ="nb";
 const TString s_drb          ="drb";
 const TString s_mvis         ="mvis";
 const TString s_pt           ="pt";
+const TString s_eta           ="eta";
 const TString s_svfit        ="svfit";
 const TString s_muiso        ="muiso";
 const TString s_mt2          ="mt2";

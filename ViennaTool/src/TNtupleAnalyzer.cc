@@ -69,13 +69,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   //////////weight_sf contains top pT reweighting for TT samples and Z reweighting for DY samples
   //////////////////////////////////////////////////////////////////////////
   weight=1;
-  if(!preselectionFile.Contains("preselection_data"))weight = event->puweight*event->effweight*event->stitchedWeight*luminosity;
+  if(!preselectionFile.Contains("preselection_data"))weight = event->puweight*event->effweight*event->stitchedWeight*luminosity*event->genweight;
   weight_sf= weight; //event->evtWeight; no Zpt and top pT reweighting
-  if( event->gen_match_2==5 ){
-    weight = weight*0.83;
-    //weight_sf = weight_sf*0.95;
-    weight_sf = weight; //no Zpt
-  }
   
   passes3LVeto=event->passesThirdLepVeto;
   if ( CHAN == kMU  ) passesDLVeto=event->passesDiMuonVeto;
@@ -86,6 +81,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   nbtag=event->nbtag;
   njets=event->njets;
   mjj=event->mjj;
+  mvamet=event->mvamet;
   jdeta=event->jdeta;
   mu2_iso=-999;  
   m_leplep=-999;  
@@ -96,6 +92,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
   lep_pt=event->pt_1;
   lep_eta=event->eta_1;
+  lep_phi=event->phi_1;
   //  lep_phi=event->phi_1; //not saved
   //  lep_m=event->m_1;
   lep_iso=event->iso_1;
@@ -268,6 +265,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   alltau_dRToB->resize(0);
   alltau_mvis->resize(0);
   alltau_mt->resize(0);
+  alltau_mt2->resize(0);
   alltau_svfit->resize(0);
   alltau_Zpt->resize(0);
 
@@ -304,7 +302,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     alltau_lepVeto->push_back(event->addtau_passesTauLepVetos->at(i));
     alltau_gen_match->push_back(event->addtau_gen_match->at(i));
     alltau_mvis->push_back(event->addtau_mvis->at(i));
-    alltau_mt->push_back(event->addtau_mt->at(i));
+    alltau_mt->push_back(event->mt_1);
+    alltau_mt2->push_back(event->mt_2);
     if(use_svfit)alltau_svfit->push_back(event->m_sv); //FIXME: no svfit in addtau collection so far
     else alltau_svfit->push_back(0.);
     TLorentzVector leg2; leg2.SetPtEtaPhiM(event->addtau_pt->at(i),event->addtau_eta->at(i),event->addtau_phi->at(i),event->addtau_m->at(i));
@@ -370,6 +369,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     alltau_gen_match->insert(alltau_gen_match->begin()+tpos,event->gen_match_2);
     alltau_mvis->insert(alltau_mvis->begin()+tpos,event->m_vis);
     alltau_mt->insert(alltau_mt->begin()+tpos,event->mt_1);
+    alltau_mt2->insert(alltau_mt2->begin()+tpos,event->mt_2);
     if(use_svfit)alltau_svfit->insert(alltau_svfit->begin()+tpos,event->m_sv);
     else alltau_svfit->insert(alltau_svfit->begin()+tpos,0.);
     TLorentzVector leg2; leg2.SetPtEtaPhiM(event->pt_2,event->eta_2,event->phi_2,event->m_2);
@@ -423,7 +423,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       alltau_lepVeto->insert(alltau_lepVeto->begin()+tpos,event->passesTauLepVetos);
       alltau_gen_match->insert(alltau_gen_match->begin()+tpos,event->gen_match_1);
       alltau_mvis->insert(alltau_mvis->begin()+tpos,event->m_vis);
-      alltau_mt->insert(alltau_mt->begin()+tpos,event->mt_1);
+      alltau_mt->insert(alltau_mt->begin()+tpos,event->mt_2);
+      alltau_mt2->insert(alltau_mt2->begin()+tpos,event->mt_1);
       if(use_svfit)alltau_svfit->insert(alltau_svfit->begin()+tpos,event->m_sv);
       else alltau_svfit->insert(alltau_svfit->begin()+tpos,0.);
       TLorentzVector leg2; leg2.SetPtEtaPhiM(event->pt_2,event->eta_2,event->phi_2,event->m_2);
@@ -461,6 +462,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       lep_dR=-99; //needed for mZ in ee/mumu CR; not needed for tautau
       lep_pt=event->pt_2;
       lep_eta=event->eta_2;
+      lep_phi=event->phi_2;
       lep_q=event->q_2;
       lep_iso=10*event->byVTightIsolationMVArun2v1DBoldDMwLT_2; 
       //FIXME: should be vtight once we have calculated the FF for vtight. Now 1 for just tight; 11 for tight & vtight; 10 for just vtight (probably not possible)
@@ -468,6 +470,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       lep_dR=-99; //needed for mZ in ee/mumu CR; not needed for tautau
       lep_pt=event->pt_1;
       lep_eta=event->eta_1;
+      lep_phi=event->phi_1;
       lep_q=event->q_1;
       lep_iso=10*event->byVTightIsolationMVArun2v1DBoldDMwLT_1; //FIXME: should be vtight once we have calculated the FF for vtight
     }
