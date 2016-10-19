@@ -228,6 +228,9 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
     }
   }
 
+  c1->cd(1);
+  gPad->SetLogy();
+  c1->SaveAs(imagefilename+"_log.png");
   //  c1->Print(pdfFile);                                                                                                     
   c1->Close();
 
@@ -500,15 +503,20 @@ void PlotterClass::plotBgStackedAgainstData(TString data,TString data_label,std:
   std::cout << "In plotBgStackedAgainstData, producing " << imagefile << ".png" << std::endl;
   std::cout << "Input data file: " << data << " , first proc: " << proc_list.at(0) << std::endl;
 
+  
   TString hname="hh_";
   if ( description.Contains("looseSR") ) hname+="l_";
   else hname+="t_";
-  if ( data.Contains("_mt_")   || data.Contains("_mt.")   ) hname+="mt";
-  if ( data.Contains("_mvis_") || data.Contains("_mvis.") ) hname+="mvis";
-  if ( data.Contains("_pt_")   || data.Contains("_pt.")   ) hname+="pt";
-  if ( data.Contains("_svfit_")   || data.Contains("_svfit.")   ) hname+="svfit";
-  //   std::cout << "MF d " << hname << std::endl;
-
+  if ( data.Contains("_mt2_")   || data.Contains("_mt2.")   ) hname+="mt2";
+  else if ( data.Contains("_mt_")   || data.Contains("_mt.")   ) hname+="mt";
+  else if ( data.Contains("_mvis_") || data.Contains("_mvis.") ) hname+="mvis";
+  else if ( data.Contains("_pt_")   || data.Contains("_pt.")   ) hname+="pt";
+  else if ( data.Contains("_svfit_")   || data.Contains("_svfit.")   ) hname+="svfit";
+  else if ( data.Contains("_lepPt_")   || data.Contains("_lepPt.")   ) hname+="lepPt";
+  else if ( data.Contains("_mvamet_")   || data.Contains("_mvamet.")   ) hname+="mvamet";
+  else if ( data.Contains("_eta_")   || data.Contains("_eta.")   ) hname+="eta";
+  else if ( data.Contains("_mttot_")   || data.Contains("_mttot.")   ) hname+="mttot";
+  
   TFile f1(data);
   if ( f1.IsZombie()  ){ std::cout << "ERROR: Data file does not exist: \"" << data << "\"." << std::endl; return; }
 
@@ -570,12 +578,16 @@ void PlotterClass::plotBgStackedAgainstData(TString data,TString data_label,std:
   TString hname="hh_";
   if ( description.Contains("looseSR") ) hname+="l_";
   else hname+="t_";
-  if ( data.Contains("_mt_")   || data.Contains("_mt.")   ) hname+="mt";
-  if ( data.Contains("_mvis_") || data.Contains("_mvis.") ) hname+="mvis";
-  if ( data.Contains("_pt_")   || data.Contains("_pt.")   ) hname+="pt";
-  if ( data.Contains("_svfit_")   || data.Contains("_svfit.")   ) hname+="svfit";
-  //   std::cout << "MF d " << hname << std::endl;
-
+  if ( data.Contains("_mt2_")   || data.Contains("_mt2.")   ) hname+="mt2";
+  else if ( data.Contains("_mt_")   || data.Contains("_mt.")   ) hname+="mt";
+  else if ( data.Contains("_mvis_") || data.Contains("_mvis.") ) hname+="mvis";
+  else if ( data.Contains("_pt_")   || data.Contains("_pt.")   ) hname+="pt";
+  else if ( data.Contains("_mt2_")   || data.Contains("_mt2.")   ) hname+="mt2";
+  else if ( data.Contains("_lepPt_")   || data.Contains("_lepPt.")   ) hname+="lepPt";
+  else if ( data.Contains("_mvamet_")   || data.Contains("_mvamet.")   ) hname+="mvamet";
+  else if ( data.Contains("_eta_")   || data.Contains("_eta.")   ) hname+="eta";
+  else if ( data.Contains("_mttot_")   || data.Contains("_mttot.")   ) hname+="mttot";
+  
   TFile f1(data);
   if ( f1.IsZombie()  ){ std::cout << "ERROR: Data file does not exist: \"" << data << "\"." << std::endl; return; }
 

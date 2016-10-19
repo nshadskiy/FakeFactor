@@ -75,9 +75,10 @@ void convert_inputs(Int_t categoryMode=0){
     hn="c_t";
     hnout="c_t_2d";
     fout_n="ff_dy.root";
-    conv_th1_to_th2( d+fn , hn , o+fout_n , hnout , 0 );
+    if(CHAN!=kTAU)conv_th1_to_th2( d+fn , hn , o+fout_n , hnout , 0 );
     
     fn="FF_corr_TT_MCsum_noGen.root";
+    //fn="FF_TT_J_only.root";
     hn="c_t";
     fout_n="FakeFactors_Data_TT_2D.root";
     fout_n3d="FakeFactors_Data_TT_3D.root";
@@ -206,7 +207,10 @@ void conv_th1_to_th2( const TString fn , const TString hn , const TString hnout 
 
 void conv_th1_to_th3( const TString fn , const TString hn, const TString hnout, const TString fout_n, const Int_t njetbinned ){
 
-  make_3Dhisto( fn, hn, hnout, fout_n, N_p_Wjets, N_t_Wjets, N_j_Wjets, Pt_cuts_Wjets, Decay_cuts_Wjets, Njet_cuts_Wjets, njetbinned );
+  if(fn.Contains("_Wjets")) make_3Dhisto( fn, hn, hnout, fout_n, N_p_Wjets, N_t_Wjets, N_j_Wjets, Pt_cuts_Wjets, Decay_cuts_Wjets, Njet_cuts_Wjets, njetbinned );
+  else if(fn.Contains("_QCD")) make_3Dhisto( fn, hn, hnout, fout_n, N_p_QCD, N_t_QCD, N_j_QCD, Pt_cuts_QCD, Decay_cuts_QCD, Njet_cuts_QCD, njetbinned );
+  else if(fn.Contains("_TT")) make_3Dhisto( fn, hn, hnout, fout_n, N_p_TT, N_t_TT, N_j_TT, Pt_cuts_TT, Decay_cuts_TT, Njet_cuts_TT, njetbinned );
+  else make_3Dhisto( fn, hn, hnout, fout_n, N_p_Wjets, N_t_Wjets, N_j_Wjets, Pt_cuts_Wjets, Decay_cuts_Wjets, Njet_cuts_Wjets, njetbinned );
   
 }
 

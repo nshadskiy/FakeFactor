@@ -497,6 +497,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
       TString qcd_rest=m_fit[i];
       qcd_rest.ReplaceAll("_QCD","_QCD_rest");
       htmp_check=(TH1D*) f.Get(qcd_rest);
+      for(int i=1;i<htmp_check->GetNbinsX();i++){ if(htmp_check->GetBinContent(i)<0) htmp_check->SetBinContent(i,0);}
     } 
     else htmp_check=(TH1D*) f.Get(m_fit[i]);
     for(int i=1;i<htmp_check->GetNbinsX();i++){ if(htmp_check->GetBinContent(i)<0) htmp_check->SetBinContent(i,0);}
@@ -505,8 +506,9 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
     for (int i=0; i<NSUM; i++){
       htmp_check=(TH1D*) f.Get(m_sum[i]);
       h_check.push_back(htmp_check);
+      for(int i=1;i<htmp_check->GetNbinsX();i++){ if(htmp_check->GetBinContent(i)<0) htmp_check->SetBinContent(i,0);}
     }
-    h_check.push_back(h_rest);
+    //h_check.push_back(h_rest);
     TH1D *h_all;
     for(int iall=0;iall<h_check.size();iall++){
       if (iall==0) h_all=(TH1D*) h_check.at(0)->Clone();
@@ -557,7 +559,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
     
     TH1D* h_restI=new TH1D( *h_rest );
     h_restI->Divide(h_rest,res_data,1,1,"B");
-    h_normI->Add(h_restI);
+    //h_normI->Add(h_restI);
     
     for (Int_t j=0; j<NFIT; j++)  h_w.at(j     )->Divide( res.at(j)    , h_normI , 1,1,"B");
     for (Int_t j=0; j<NSUM; j++){ 
@@ -577,7 +579,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
 
   }
   
-  for (int i=0; i<NW; i++){
+  for (int i=0; i<NW-1; i++){
     if ( !DOQCD && m_type[i].Contains("QCD") ) continue;
     TString wname=m_path_w+"weight_"+m_type[i]+isolation;
     if(!inclusive_selection){
@@ -592,7 +594,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
   }
 
   THStack* hs = new THStack("w","");
-  for (int i=0; i<NW; i++){
+  for (int i=0; i<NW-1; i++){
     if ( !DOQCD&& m_type[i].Contains("QCD") ) continue;
     h_w.at(i)->SetFillColor(m_color[i]);
     hs->Add(h_w.at(i),"hist");
@@ -642,7 +644,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
     std::vector<TH1D*> h_w_split[w_dm_n];
     for (int is=0; is<w_dm_n; is++){
       h_w_split[is].resize(NW);
-      for (int j=0; j<NW; j++){
+      for (int j=0; j<NW-1; j++){
         if ( !DOQCD&& m_type[j].Contains("QCD") ) continue;
         h_w_split[is].at(j) = new TH1D("h_w_split"+mode+sNum[j]+sNum[is]+isolation ,"",w_mt_n,w_mt_v);
         h_w_split[is].at(j)->SetFillColor(m_color[j]);
@@ -686,7 +688,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
   c1->Close();
   
   delete hs;
-  for (int i=0; i<NW; i++){
+  for (int i=0; i<NW-1; i++){
     delete h_w.at(i);
   }
   
@@ -1856,7 +1858,8 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
   for(Int_t mi=0; mi<NV; mi++){
 
     r3.SetSeed(1);
-    TH1D *fakefactor_histo[NERR+1]; TH1D *fakefactor_histo_Wjets[NERR+1]; TH1D *fakefactor_histo_DY[NERR+1]; TH1D *fakefactor_histo_QCD[NERR+1]; TH1D *fakefactor_histo_TT[NERR+1]; 
+    TH1D *fakefactor_histo[NERR+1]; TH1D *fakefactor_histo_Wjets[NERR+1]; TH1D *fakefactor_histo_DY[NERR+1]; TH1D *fakefactor_histo_QCD[NERR+1]; TH1D *fakefactor_histo_TT[NERR+1];
+    loadFile(preselection_data,"Events");
     Int_t nentries = Int_t(event_s->fChain->GetEntries());
     cout << nentries << endl;
     cout << "Cuts: " << cuts << endl;
@@ -1867,6 +1870,11 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
     else if( mode.at(mi) & MT ) { outstring = outfile+"_mt.root"; nbins=nbins_mt; min_bin=hist_min_mt; max_bin=hist_max_mt; } 
     else if( mode.at(mi) & PT ) { outstring = outfile+"_pt.root"; nbins=nbins_pt; min_bin=hist_min_pt; max_bin=hist_max_pt; }
     else if( mode.at(mi) & SVFIT ) { outstring = outfile+"_svfit.root"; nbins=nbins_svfit; min_bin=hist_min_svfit; max_bin=hist_max_svfit; }
+    else if( mode.at(mi) & M2T ) { outstring = outfile+"_mt2.root"; nbins=nbins_mt2; min_bin=hist_min_mt2; max_bin=hist_max_mt2; }
+    else if( mode.at(mi) & MVAMET ) { outstring = outfile+"_mvamet.root"; nbins=nbins_mvamet; min_bin=hist_min_mvamet; max_bin=hist_max_mvamet; }
+    else if( mode.at(mi) & LEPPT ) { outstring = outfile+"_lepPt.root"; nbins=nbins_lepPt; min_bin=hist_min_lepPt; max_bin=hist_max_lepPt; }
+    else if( mode.at(mi) & ETA ) { outstring = outfile+"_eta.root"; nbins=nbins_eta; min_bin=hist_min_eta; max_bin=hist_max_eta; }
+    else if( mode.at(mi) & MMTOT ) { outstring = outfile+"_mttot.root"; nbins=nbins_mttot; min_bin=hist_min_mttot; max_bin=hist_max_mttot; }
     else{
       cout << "Error: Wrong mode specified in FFCalculator::getSystUncertainties" << endl;
       exit(0);
@@ -1882,6 +1890,11 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
     else if( mode.at(mi) & MT) {histname="hh_t_mt"; fakefactor_histo[0] = new TH1D(histname,"",nbins_mt,hist_min_mt,hist_max_mt);}
     else if( mode.at(mi) & PT) {histname="hh_t_pt"; fakefactor_histo[0] = new TH1D(histname,"",nbins_pt,hist_min_pt,hist_max_pt);}
     else if( mode.at(mi) & SVFIT) {histname="hh_t_svfit"; fakefactor_histo[0] = new TH1D(histname,"",nbins_svfit,hist_min_svfit,hist_max_svfit);}
+    else if( mode.at(mi) & M2T) {histname="hh_t_mt2"; fakefactor_histo[0] = new TH1D(histname,"",nbins_mt2,hist_min_mt2,hist_max_mt2);}
+    else if( mode.at(mi) & MVAMET) {histname="hh_t_mvamet"; fakefactor_histo[0] = new TH1D(histname,"",nbins_mvamet,hist_min_mvamet,hist_max_mvamet);}
+    else if( mode.at(mi) & LEPPT) {histname="hh_t_lepPt"; fakefactor_histo[0] = new TH1D(histname,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);}
+    else if( mode.at(mi) & ETA) {histname="hh_t_eta"; fakefactor_histo[0] = new TH1D(histname,"",nbins_eta,hist_min_eta,hist_max_eta);}
+    else if( mode.at(mi) & MMTOT) {histname="hh_t_mttot"; fakefactor_histo[0] = new TH1D(histname,"",nbins_mttot,hist_min_mttot,hist_max_mttot);}
     else{
       cout << "Error: Wrong mode specified in FFCalculator::getSystUncertainties" << endl;
       exit(0);
@@ -1914,6 +1927,11 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
       if( mode.at(mi) & MT) fakefactor_histo[itoys+1] = new TH1D(hn, "",nbins_mt,hist_min_mt,hist_max_mt);
       if( mode.at(mi) & PT) fakefactor_histo[itoys+1] = new TH1D(hn, "",nbins_pt,hist_min_pt,hist_max_pt);
       if( mode.at(mi) & SVFIT) fakefactor_histo[itoys+1] = new TH1D(hn, "",nbins_svfit,hist_min_svfit,hist_max_svfit);
+      if( mode.at(mi) & M2T) fakefactor_histo[itoys+1] = new TH1D(hn,"",nbins_mt2,hist_min_mt2,hist_max_mt2);
+      if( mode.at(mi) & MVAMET) fakefactor_histo[itoys+1] = new TH1D(hn,"",nbins_mvamet,hist_min_mvamet,hist_max_mvamet);
+      if( mode.at(mi) & LEPPT) fakefactor_histo[itoys+1] = new TH1D(hn,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+      if( mode.at(mi) & ETA) fakefactor_histo[itoys+1] = new TH1D(hn,"",nbins_eta,hist_min_eta,hist_max_eta);
+      if( mode.at(mi) & MMTOT) fakefactor_histo[itoys+1] = new TH1D(hn,"",nbins_mttot,hist_min_mttot,hist_max_mttot);
     }
     for (int itoys=0; itoys<NERR; itoys++){
       TString hn="ff_toyerr_"; if (itoys<10) hn+="0"; hn+=itoys;
@@ -1986,6 +2004,13 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
       }
     }
     //delete ff_w; delete ff_qcd; delete ff_tt;
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    cout << fakefactor_histo[0]->Integral() << endl;
+    this->subtractBackground(fakefactor_histo[0], fname, mode.at(mi), categoryMode);
+    cout << fakefactor_histo[0]->Integral() << endl;
+    f->cd();
+    
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -2293,7 +2318,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   gsk.set_doErrors(1);
   if(mode & _QCD) gsk.set_lastBinFrom(150);
   Double_t fitWidth;
-  if(mode & _QCD) fitWidth=1.; else if(mode & _W_JETS) fitWidth=1.5; else fitWidth=1.;
+  if(mode & _QCD) fitWidth=2.; else if(mode & _W_JETS) fitWidth=3.; else fitWidth=2.;
   cout << "FitWidth: " << fitWidth << endl;
   gsk.setWidth(fitWidth);
   //gsk.set_doWidthInBins(0);
@@ -2439,7 +2464,7 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
   gsk.set_doWidthInBins(1);
   gsk.set_doErrors(1);
   Double_t fitWidth;
-  if(!CALC_SS_SR) fitWidth=1.2; else fitWidth=0.5;
+  if(!CALC_SS_SR) fitWidth=1.; else fitWidth=0.5;
   cout << "FitWidth: " << fitWidth << endl;
   gsk.setWidth(fitWidth);
   gsk.getSmoothHisto();
@@ -2573,7 +2598,7 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
   gsk.set_kernelDistance( "err" );
   gsk.set_doWidthInBins(1);
   gsk.set_doErrors(1);
-  gsk.setWidth( 1.5 );
+  gsk.setWidth( 2.5 );
   if(mode & _QCD) gsk.set_lastBinFrom(170);
   gsk.getSmoothHisto();
   TH1D *h2=gsk.returnSmoothedHisto();
@@ -2746,3 +2771,62 @@ Double_t FFCalculator::return_yvalue(Double_t xvalue, TGraphAsymmErrors* g){
   
 }
 
+void FFCalculator::subtractBackground(TH1D* fakefactor_histo, TString fname, const Int_t mode, const Int_t categoryMode, Int_t cuts, Int_t tau_ind){
+
+  vector<TString> restNames;
+  restNames.push_back(preselection_DY_TT); restNames.push_back(preselection_DY_L); restNames.push_back(preselection_TT_T); restNames.push_back(preselection_TT_L);
+  if(useVV) restNames.push_back(preselection_VV_T); restNames.push_back(preselection_VV_L);
+
+
+  TFile* ff_file;
+  ff_file = TFile::Open(fname);
+  FakeFactor* ff    = (FakeFactor*)ff_file->Get("ff_comb");
+  vector<Double_t> inputs;
+  
+  
+  TString histname="background";
+  TH1D* background; 
+  if( mode & MVIS) {background = new TH1D(histname,"",nbins_mvis,hist_min_mvis,hist_max_mvis);}
+  else if( mode & MT) {background = new TH1D(histname,"",nbins_mt,hist_min_mt,hist_max_mt);}
+  else if( mode & PT) {background = new TH1D(histname,"",nbins_pt,hist_min_pt,hist_max_pt);}
+  else if( mode & SVFIT) {background = new TH1D(histname,"",nbins_svfit,hist_min_svfit,hist_max_svfit);}
+  else if( mode & M2T) {background = new TH1D(histname,"",nbins_mt2,hist_min_mt2,hist_max_mt2);}
+  else if( mode & MVAMET) {background = new TH1D(histname,"",nbins_mvamet,hist_min_mvamet,hist_max_mvamet);}
+  else if( mode & LEPPT) {background = new TH1D(histname,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);}
+  else if( mode & ETA) {background = new TH1D(histname,"",nbins_eta,hist_min_eta,hist_max_eta);}
+  else if( mode & MMTOT) {background = new TH1D(histname,"",nbins_mttot,hist_min_mttot,hist_max_mttot);}
+  else{
+    cout << "Error: Wrong mode specified in FFCalculator::getSystUncertainties" << endl;
+    exit(0);
+  }
+
+  for (unsigned i=0; i<restNames.size(); i++){
+
+    Double_t fillVal;
+    loadFile(restNames.at(i),"Events");
+    Int_t nentries=Int_t(event_s->fChain->GetEntries());
+    cout << "Subtracting non fake background in SR for " <<  restNames.at(i) << " with " << nentries << " events." << endl;
+
+    for (Int_t jentry=0; jentry<nentries;jentry++) {
+      event_s->GetEntry(jentry);
+      if (   this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind)  && ( !cuts || this->passesCuts(cuts,tau_ind) )  ) { //!cuts for performance
+        if ( !fulfillCategory(categoryMode) ) continue;
+        fillVal=this->selVal(mode,tau_ind);
+        inputs.clear();
+        this->getInputs(inputs, tau_ind);
+        double ffvalue;
+        ffvalue = ffvalue = ff->value(inputs);
+        background->Fill(fillVal, event_s->weight_sf*ffvalue);
+      }
+    }
+    cout << background->Integral() << endl;
+  }
+
+  
+  fakefactor_histo->Add(background,-1);
+  
+  delete background; delete ff;
+  ff_file->Close();
+  
+  
+}

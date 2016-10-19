@@ -71,7 +71,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   weight=1;
   if(!preselectionFile.Contains("preselection_data"))weight = event->puweight*event->effweight*event->stitchedWeight*luminosity*event->genweight;
   weight_sf= weight; //event->evtWeight; no Zpt and top pT reweighting
-  
+
   passes3LVeto=event->passesThirdLepVeto;
   if ( CHAN == kMU  ) passesDLVeto=event->passesDiMuonVeto;
   if ( CHAN == kEL  ) passesDLVeto=event->passesDiElectronVeto;
@@ -302,8 +302,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     alltau_lepVeto->push_back(event->addtau_passesTauLepVetos->at(i));
     alltau_gen_match->push_back(event->addtau_gen_match->at(i));
     alltau_mvis->push_back(event->addtau_mvis->at(i));
-    alltau_mt->push_back(event->mt_1);
-    alltau_mt2->push_back(event->mt_2);
+    alltau_mt->push_back(event->mt_1); //mt of lepton and MVAMET
+    alltau_mt2->push_back(event->addtau_mt->at(i)); 
     if(use_svfit)alltau_svfit->push_back(event->m_sv); //FIXME: no svfit in addtau collection so far
     else alltau_svfit->push_back(0.);
     TLorentzVector leg2; leg2.SetPtEtaPhiM(event->addtau_pt->at(i),event->addtau_eta->at(i),event->addtau_phi->at(i),event->addtau_m->at(i));
@@ -544,6 +544,7 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   tree->Branch("nbtag",&nbtag);
   tree->Branch("mjj",&mjj);
   tree->Branch("jdeta",&jdeta);
+  tree->Branch("mvamet",&mvamet);
   tree->Branch("m_leplep",&m_leplep);
   tree->Branch("lep_dR",&lep_dR);
   tree->Branch("mt_leplep",&mt_leplep);
@@ -553,6 +554,7 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   tree->Branch("otherLep_iso",&otherLep_iso);
   tree->Branch("lep_pt" ,&lep_pt);
   tree->Branch("lep_eta",&lep_eta);
+  tree->Branch("lep_phi",&lep_phi);
   tree->Branch("lep_q"  ,&lep_q);
   tree->Branch("lep_iso",&lep_iso);
   tree->Branch("n_iso_lep",&n_iso_lep);
@@ -576,6 +578,7 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   tree->Branch("alltau_dRToB",&alltau_dRToB);
   tree->Branch("alltau_mvis",&alltau_mvis);
   tree->Branch("alltau_mt",&alltau_mt);
+  tree->Branch("alltau_mt2",&alltau_mt2);
   tree->Branch("alltau_svfit",&alltau_svfit);
   tree->Branch("alltau_Zpt", &alltau_Zpt);
   tree->Branch("tau_iso_ind",&tau_iso_ind);
@@ -599,6 +602,7 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   alltau_dRToB=new vector<Double_t>;
   alltau_mvis=new vector<Double_t>;
   alltau_mt=new vector<Double_t>;
+  alltau_mt2=new vector<Double_t>;
   alltau_svfit=new vector<Double_t>;
   alltau_Zpt=new vector<Double_t>;
 

@@ -60,6 +60,8 @@ class FFCalculator : public GlobalClass, public PlotterClass{
   void getInputs(std::vector<double>&inputs, Int_t ind);
   void getSystUncertainties(const Int_t mode, TString ffname, const std::vector<TString> syst_file, TString outfile);
 
+  void subtractBackground(TH1D* fakefactor_histo, TString fname, const Int_t mode, const Int_t categoryMode, Int_t cuts=0, Int_t tau_ind=0);
+
   void calc_nonclosure(const Int_t mode, const TString raw_ff, const TString compare_file, const TString ff_output, const Int_t doPlot=1, const Int_t subtractMC=1, const Int_t tau_ind=0 );
   void calc_muisocorr(const Int_t mode, const TString raw_ff, const TString CR_file, const TString nonclosure_corr, const TString ff_output, const Int_t doPlot=1, const Int_t subtractMC=1, const Int_t tau_ind=0 );
   void calc_mtcorr(const Int_t mode, const TString raw_ff, const TString CR_file, const TString nonclosure_corr, const TString ff_output, const Int_t tau_ind=0 );
