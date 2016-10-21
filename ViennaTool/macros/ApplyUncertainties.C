@@ -54,13 +54,13 @@ void ApplyFF() {
       if(inclusive_selection && icat>0) continue;
       Analyzer->loadFile(m_preselection_data,"Events");
       vector<Int_t> mode_comb;
-      //mode_comb.push_back(NO_SR|MT);
-      //mode_comb.push_back(MVIS);
-      //mode_comb.push_back(NO_SR|PT); if(use_svfit){mode_comb.push_back(SVFIT);}
-      mode_comb.push_back(M2T);
-      mode_comb.push_back(LEPPT); mode_comb.push_back(MVAMET);
-      mode_comb.push_back(ETA);
-      mode_comb.push_back(MMTOT);
+      mode_comb.push_back(NO_SR|MT);
+      mode_comb.push_back(MVIS);
+      mode_comb.push_back(PT); if(use_svfit){mode_comb.push_back(SVFIT);}
+      //mode_comb.push_back(M2T);
+      //mode_comb.push_back(LEPPT); mode_comb.push_back(MVAMET);
+      //mode_comb.push_back(ETA);
+      //mode_comb.push_back(MMTOT);
       
       Int_t categoryMode=0;
       if(inclusive_frac_mt) categoryMode=_INCLFRAC_MT;
@@ -375,19 +375,19 @@ void ApplyFF() {
         if(DOMC)data=SR_MCsum_mt2;
         //if(DOMC)data="sim/mt_backup/SR_MCsum_pt.root";
         if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
-        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mt2_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+tvar[3]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[3],_COLOR_FF);
+        //Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mt2_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+tvar[3]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[3],_COLOR_FF);
 
         data=SR_data_lepPt;
         if(DOMC)data=SR_MCsum_lepPt;
         //if(DOMC)data="sim/mt_backup/SR_MCsum_pt.root";
         if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
-        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_lepPt_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+tvar[4]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[4],_COLOR_FF);
+        //Analyzer->plotBgStackedAgainstData(data,"data",proc_list_lepPt_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+tvar[4]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[4],_COLOR_FF);
 
         data=SR_data_mvamet;
         if(DOMC)data=SR_MCsum_mvamet;
         //if(DOMC)data="sim/mt_backup/SR_MCsum_pt.root";
         if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
-        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mvamet_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+tvar[5]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[5],_COLOR_FF);
+        //Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mvamet_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+tvar[5]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[5],_COLOR_FF);
         
         data=SR_data_svfit;
         if(DOMC)data=SR_MCsum_svfit;
@@ -399,13 +399,13 @@ void ApplyFF() {
         if(DOMC)data=SR_MCsum_eta;
         //if(DOMC)data="sim/mt_backup/SR_MCsum_pt.root";
         if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
-        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_eta_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+s_eta+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[6],_COLOR_FF);
+        //Analyzer->plotBgStackedAgainstData(data,"data",proc_list_eta_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+s_eta+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[6],_COLOR_FF);
 
         data=SR_data_mttot;
         if(DOMC)data=SR_MCsum_mttot;
         //if(DOMC)data="sim/mt_backup/SR_MCsum_pt.root";
         if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
-        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mttot_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+s_mttot+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[7],_COLOR_FF);
+        //Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mttot_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+s_mttot+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[7],_COLOR_FF);
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         cout << "---------------------------------------------------" << endl;
         cout << "Plotting splitted FFs" << endl;

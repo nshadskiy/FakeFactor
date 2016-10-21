@@ -670,10 +670,10 @@ Double_t Pt_cuts_TT[] = {20.,30.,40.,60.,80.,100.,150.};
 Double_t Pt_cuts_QCD[]   = {20.,30.,40.,60.,80.,100.,150.};
 */
 
-const Double_t Pt_cuts_Wjets[] = {20.,25.,30.,40.,50.,60.};//lower boundaries of the pt bins, there are no data with pt<20.
+const Double_t Pt_cuts_Wjets[] = {20.,22.5,25.,27.5,30.,35.,40.,50.,60.};//lower boundaries of the pt bins, there are no data with pt<20.
 const Double_t Pt_cuts_DY[]    = {20.,25.,30.,40.};
 const Double_t Pt_cuts_TT[]    = {20.,25.,30.,40.}; 
-const Double_t Pt_cuts_QCD[]   = {20.,25.,30.,40.};
+const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.};
 
 /*const Double_t Pt_cuts_Wjets[] = {20.,25.,30.,40.,60};//lower boundaries of the pt bins, there are no data with pt<20.
 const Double_t Pt_cuts_DY[]    = {20.,25.,30.,40.,60.};

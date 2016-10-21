@@ -4,10 +4,10 @@ import os
 
 #Meta-data
 channel="mt"
-version='20161018'
+version='20161020'
 tag='v0.2.1'
-#categories = ['incl','_0jet','_1jet','_1jetZ050','_1jetZ50100','_1jetZ100','_2jet','_2jetVBF','_anyb']
-categories = ['incl']
+categories = ['incl','_0jet','_1jet','_1jetZ050','_1jetZ50100','_1jetZ100','_2jet','_2jetVBF','_anyb']
+#categories = ['incl']
 
 for x in range(0,len(categories)):
 

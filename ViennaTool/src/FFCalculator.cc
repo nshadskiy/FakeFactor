@@ -154,7 +154,6 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
     for(Int_t jentry=0;jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
       Double_t fracWeight=event_s->weight_sf;
-      if(event_s->alltau_gen_match->at(0)==5) fracWeight=fracWeight*1.2;
       if ( !fulfillCategory(mode) ) continue;
       if ( this->isInSR(NO_SR) ){
 	if (this->isLoose()) h_n.at(i)->Fill(this->getWeightBin(),fracWeight);
@@ -488,7 +487,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
   Int_t fit_result=this->doTemplateFit(h_data, h_templates, m_path_img, res, res_data, mode);
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////// This is a first version how to intercept categories in which the fit doesn't converge, histograms for QCD and the "rest" still need to be added
-  if(fit_result!=0 || CHAN==kTAU || CALC_SS_SR || (CHAN==kMU && ( mode & _2JET || mode & _2JETVBF || mode & _1JETZ100 || mode & _ANYB) ) || (CHAN==kEL && ( mode & _1JET || mode & _1JETZ100 || mode & _ANYB || mode & _2JETVBF ) )  ){
+  if( !doFit || fit_result!=0 || CHAN==kTAU || !inclusive_selection ){
     std::vector<TH1D*> h_check; //if fit doesn't converge, this vector contains all the necessary histograms
     TH1D* htmp_check;
     for (int i=0; i<NFIT; i++){

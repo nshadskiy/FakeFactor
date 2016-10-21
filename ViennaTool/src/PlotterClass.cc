@@ -65,6 +65,10 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
   hdata->SetMarkerStyle(8);
   hdata->SetMarkerSize(1.3);
 
+  for(int i=0; i<hdata->GetNbinsX(); i++){
+    if(imagefilename.Contains("mvis") && i>6 && i<=10) hdata->SetBinContent(i,-10);
+  }
+
   hmc->SetFillColor(kBlack);
   hmc->SetFillStyle(3013);
   hmc->SetXTitle(xLabel);
@@ -119,7 +123,7 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
   TString hd_name=hdata->GetName();
   if ( !hs ){ //non-stacked plot
     hmc->Draw("");
-    hdata->Draw("same"); //CR dots
+    hdata->Draw("COLZ same"); //CR dots
     hmc->GetYaxis()->SetTitleOffset(1.25);
     hmc->GetXaxis()->SetLabelSize(0);
     hmc->SetMinimum(0.);

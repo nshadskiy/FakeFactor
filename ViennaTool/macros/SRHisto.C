@@ -43,7 +43,7 @@ void SRHisto() {
     const TString r2[nVARused]={ "_mt", "_mvis", "_pt","_mt2","_lepPt","_mvamet","_eta", "_mttot"};
 
     TString tmp,tmp2;
-    for (unsigned i=0; i<ps.size(); i++){
+    for (unsigned i=8; i<ps.size(); i++){
       if ( !doCalc ) break;
       tmp=fl.at(i); //avoid editing fl
       Int_t categoryMode=0;
@@ -52,13 +52,13 @@ void SRHisto() {
         categoryMode=catMode[icat];
       }
       if(!DOCUTS)Analyzer->calcBgEstSim( ps.at(i), MT|NO_SR, categoryMode, tmp.ReplaceAll(r1[0], r2[0]) );
-      if(DOCUTS) for (unsigned l=0; l<NC; l++){ tmp2=tmp.ReplaceAll(r1[0], r2[0]); Analyzer->calcBgEstSim( ps.at(i), MT|NO_SR, categoryMode, tmp2.ReplaceAll("SR_","SR_cuts_"+c_text[l]+"_"), c_cuts[l]  ); }       
+        if(DOCUTS) for (unsigned l=0; l<NC; l++){ tmp2=tmp.ReplaceAll(r1[0], r2[0]); Analyzer->calcBgEstSim( ps.at(i), MT|NO_SR, categoryMode, tmp2.ReplaceAll("SR_","SR_cuts_"+c_text[l]+"_"), c_cuts[l]  ); }       
       //if(CALC_SS_SR){tmp2=tmp; tmp2.ReplaceAll( "SR_", "SS_SR_" );     Analyzer->calcBgEstSim( ps.at(i), MT|NO_SR|_SS, categoryMode, tmp2 );}  //QCD SS
       if(!DOCUTS)Analyzer->calcBgEstSim( ps.at(i), MVIS, categoryMode, tmp.ReplaceAll(r1[1],r2[1]) );
       if(DOCUTS) for (unsigned l=0; l<NC; l++){ tmp2=tmp.ReplaceAll(r1[1], r2[1]); Analyzer->calcBgEstSim( ps.at(i), MVIS, categoryMode, tmp2.ReplaceAll("SR_","SR_cuts_"+c_text[l]+"_"), c_cuts[l]  ); }
       //if(CALC_SS_SR){tmp2=tmp; tmp2.ReplaceAll( "SR_", "SS_SR_" );     Analyzer->calcBgEstSim( ps.at(i), MVIS| _SS, categoryMode, tmp2 );}  //QCD SS
-      if(!DOCUTS)Analyzer->calcBgEstSim( ps.at(i), PT|NO_SR, categoryMode, tmp.ReplaceAll(r1[2],r2[2]) );
-      if(DOCUTS) for (unsigned l=0; l<NC; l++){ tmp2=tmp.ReplaceAll(r1[2], r2[2]); Analyzer->calcBgEstSim( ps.at(i), PT|NO_SR, categoryMode, tmp2.ReplaceAll("SR_","SR_cuts_"+c_text[l]+"_"), c_cuts[l]  ); }
+      if(!DOCUTS)Analyzer->calcBgEstSim( ps.at(i), PT, categoryMode, tmp.ReplaceAll(r1[2],r2[2]) );
+      if(DOCUTS) for (unsigned l=0; l<NC; l++){ tmp2=tmp.ReplaceAll(r1[2], r2[2]); Analyzer->calcBgEstSim( ps.at(i), PT, categoryMode, tmp2.ReplaceAll("SR_","SR_cuts_"+c_text[l]+"_"), c_cuts[l]  ); }
       //if(CALC_SS_SR){tmp2=tmp; tmp2.ReplaceAll( "SR_", "SS_SR_" );     Analyzer->calcBgEstSim( ps.at(i),PT|NO_SR|_SS, categoryMode, tmp2 );}  //QCD SS
       if(!DOCUTS)Analyzer->calcBgEstSim( ps.at(i), M2T, categoryMode, tmp.ReplaceAll(r1[3],r2[3]) );
       if(DOCUTS) for (unsigned l=0; l<NC; l++){ tmp2=tmp.ReplaceAll(r1[3], r2[3]); Analyzer->calcBgEstSim( ps.at(i), M2T, categoryMode, tmp2.ReplaceAll("SR_","SR_cuts_"+c_text[l]+"_"), c_cuts[l]  ); }

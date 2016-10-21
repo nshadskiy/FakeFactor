@@ -13,7 +13,7 @@ const int CHAN = kMU; //kMU,kEL,kTAU
 const int use_svfit = 0;
 const TString ver = "v3";
 const TString inputFF_dir = "~/public/Htautau/FakeRate2016/";
-const TString inputFF_date = "20161018";
+const TString inputFF_date = "20161020";
 //const Double_t FFW_REL_ERR=0.2; //place holder
 const Double_t FFW_REL_ERR=0.0;
 const int NERR=5; //number of toys for FF
@@ -22,16 +22,16 @@ const int inclusive_selection=0; //0: splitting FF procedure in categories defin
 const int useVV=1;
 ///////////////////////////////////////////////////
 //This defines which fractions are taken for FF bkg estimates, one of them has to be chosen
-const int inclusive_frac_mt=1;
+const int inclusive_frac_mt=0;
 const int inclusive_frac_et=0;
 const int inclusive_frac_tt=0;
-const int cat_frac_mt=0;
+const int cat_frac_mt=1;
 const int cat_frac_et=0;
 const int cat_frac_tt=0;
 ///////////////////////////////////////////////////
 const int DEBUG=1; //set to 1 for additional output
 const int ALLPLOTS=0; //set to 1 for PDFs etc
-const int DOQCD=0; //set to 1 to include QCD estimate, 0 for w/o; only works for MC
+const int DOQCD=1; //set to 1 to include QCD estimate, 0 for w/o; only works for MC
 const int DOMC=0; //set to 1 for MC, 0 for data
 const int doCuts=0;
 const int MULTITAU=0;
@@ -39,7 +39,7 @@ const int APPLY_TO_ISOTAU=1; //def: 0
 const int USE_ISOTAU=1; //def: 0
 const int USE_MVA_ISO=1; //def: 1
 const int CALC_SS_SR=0; //default: 0   //0.15<QCD_iso<0.25 for QCD FFs
-const int num = 0;
+const int num = 11;
 ///////////////////////////////////////////////////
 //steerFF
 const int doDebugPlots=1;    //1 to also calculate FF in SR; and do bkg estimate with unweighted FF per sample ->for control plots
@@ -50,8 +50,9 @@ const int applyFF_fromCR=1; //1 for default; 0 for debugging
 const int requireGenMatch_whenCalcFF=0; //0 as default
 const int useDYFF_forTT=0; //0 as default
 const int useWJFF_forDY=0; //1 as default
-const int doCalcWeights=0; //calc fractions
-const int doCalc=1; //calc FFs
+const int doCalcWeights=1; //calc fractions
+const int doFit=0;
+const int doCalc=0; //calc FFs
 const int doCalcCorrections=0;
 const int calcVTightFF=0;
 //applyFF

@@ -50,13 +50,13 @@ void CalcFF() {
   if(useVV) {ps.push_back(preselection_VV_T); ps.push_back(preselection_VV_L);}
 
   std::vector<TString> pre_sub_wj; pre_sub_wj.push_back(preselection_DY); pre_sub_wj.push_back(preselection_TT); if(useVV) {ps.push_back(preselection_VV);}
-  if (DOQCD) pre_sub_wj.push_back(preselection_QCD);
+  //if (DOQCD) pre_sub_wj.push_back(preselection_QCD); no MC QCD for 2016!!!
 
   std::vector<TString> pre_sub_dy; pre_sub_dy.push_back(preselection_Wjets); pre_sub_dy.push_back(preselection_TT); pre_sub_dy.push_back(preselection_DY_TT); pre_sub_dy.push_back(preselection_DY_L); if(useVV) {ps.push_back(preselection_VV);}
-  if (DOQCD) pre_sub_dy.push_back(preselection_QCD);
+  //if (DOQCD) pre_sub_dy.push_back(preselection_QCD);
 
   std::vector<TString> pre_sub_tt; pre_sub_tt.push_back(preselection_DY); pre_sub_tt.push_back(preselection_Wjets); pre_sub_tt.push_back(preselection_TT_T); pre_sub_tt.push_back(preselection_TT_L); if(useVV) {ps.push_back(preselection_VV);}
-  if (DOQCD) pre_sub_tt.push_back(preselection_QCD);
+  //if (DOQCD) pre_sub_tt.push_back(preselection_QCD);
 
   std::vector<TString> pre_sub_qcd;
   pre_sub_qcd.push_back(preselection_DY); pre_sub_qcd.push_back(preselection_Wjets); pre_sub_qcd.push_back(preselection_TT); //decide if VV is needed here
@@ -98,20 +98,16 @@ void CalcFF() {
       cout << endl << "################### Calculating FFs         ###############" << endl << endl;
       Analyzer->calcFFCorr(_W_JETS|m_gen_match,                    m_preselection_data,   pre_sub_wj,    p+FF_corr_Wjets_MCsum_noGen,  p+weight_Wjets);
 
-      if (useWJFF_forDY) Analyzer->calcFFCorr(_W_JETS|m_gen_match, m_preselection_data,   pre_sub_wj,    p+FF_corr_DY_MCsum_noGen,     p+weight_DY_J);
-      else               Analyzer->calcFFCorr(_DY|m_gen_match ,    m_preselection_data,   pre_sub_dy,    p+FF_corr_DY_MCsum_noGen,     p+weight_DY_J); //DY_J using FF from DY->mumu CR
-
-      //Analyzer->calcFFCorr(_DY|m_gen_match,                        m_preselection_data,   pre_sub_dy,    p+FF_corr_DY_MCsum_noGen,     p+weight_DY_J);
-      //DY_J using FF from  W+jets CR
-      //Analyzer->calcFFCorr(_W_JETS|m_gen_match,                          m_preselection_data,   pre_sub_wj,    p+FF_corr_DY_MCsum_noGen,     p+weight_DY_J);
+      //if (useWJFF_forDY) Analyzer->calcFFCorr(_W_JETS|m_gen_match, m_preselection_data,   pre_sub_wj,    p+FF_corr_DY_MCsum_noGen,     p+weight_DY_J);
+      //else               Analyzer->calcFFCorr(_DY|m_gen_match ,    m_preselection_data,   pre_sub_dy,    p+FF_corr_DY_MCsum_noGen,     p+weight_DY_J); //DY_J using FF from DY->mumu CR
 
       cout << "Calculating TT FFs" << endl;
-      if (useDYFF_forTT) Analyzer->calcFFCorr(_DY|m_gen_match,     m_preselection_data,   pre_sub_dy,    p+FF_corr_TT_MCsum_noGen,  p+weight_TT_J);
-      else               Analyzer->calcFFCorr( _TT|m_gen_match,    m_preselection_data,   pre_sub_tt,    p+FF_corr_TT_MCsum_noGen,  p+weight_TT_J);
+      //if (useDYFF_forTT) Analyzer->calcFFCorr(_DY|m_gen_match,     m_preselection_data,   pre_sub_dy,    p+FF_corr_TT_MCsum_noGen,  p+weight_TT_J);
+      //else               Analyzer->calcFFCorr( _TT|m_gen_match,    m_preselection_data,   pre_sub_tt,    p+FF_corr_TT_MCsum_noGen,  p+weight_TT_J);
 
       cout << "Calculating QCD FFs" << endl;
       Analyzer->calcFFCorr(_QCD|m_gen_match,                     m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCD_MCsum_noGen,    p+weight_QCD);
-      Analyzer->calcFFCorr(_QCD|m_gen_match|_AI,                     m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCD_MCsum_noGen_AI,    p+weight_QCD);
+      //Analyzer->calcFFCorr(_QCD|m_gen_match|_AI,                     m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCD_MCsum_noGen_AI,    p+weight_QCD);
     }
 
     if (doCalcCorrections==1){
@@ -121,8 +117,8 @@ void CalcFF() {
         Analyzer->calc_nonclosure(_QCD,                            p+FF_corr_QCD_MCsum_noGen,  CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure);
         Analyzer->calc_nonclosure(_W_JETS,                            p+FF_corr_Wjets_MCsum_noGen,  CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure);
         Analyzer->calc_muisocorr(_QCD|MUISO,                       p+FF_corr_QCD_MCsum_noGen,  CR_QCD_muiso_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure, p+FF_corr_QCD_MCsum_noGen_muisocorr);
-        Analyzer->calc_nonclosure(_QCD|_AI,                            p+FF_corr_QCD_MCsum_noGen_AI,  CR_QCD_mvis_AI_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_AI, 0);
-        Analyzer->calc_OSSScorr(_QCD|_AI,                       p+FF_corr_QCD_MCsum_noGen_AI,  SR_data_mvis_AI_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_AI, p+FF_corr_QCD_MCsum_noGen_OSSScorr);
+        //Analyzer->calc_nonclosure(_QCD|_AI,                            p+FF_corr_QCD_MCsum_noGen_AI,  CR_QCD_mvis_AI_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_AI, 0);
+        //Analyzer->calc_OSSScorr(_QCD|_AI,                       p+FF_corr_QCD_MCsum_noGen_AI,  SR_data_mvis_AI_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_AI, p+FF_corr_QCD_MCsum_noGen_OSSScorr);
         
         Analyzer->calcFFCorr(_W_JETS|m_gen_match,                    preselection_Wjets,   empty_vec_tstring,    p+FF_corr_Wjets_MC_noGen,  p+weight_Wjets);
         Analyzer->loadFile(preselection_Wjets,"Events");
@@ -146,9 +142,9 @@ void CalcFF() {
       //mvis correction for TT
       if(CHAN==kMU){
         cout << "Calculating TT corrections" << endl;
-        Analyzer->loadFile(preselection_TT_J,"Events");
-        Analyzer->calcFFCorr(_TT|m_gen_match,                    preselection_TT_J,   empty_vec_tstring,    pmc+FF_TT_J_only,  p+weight_TT_J);
-        Analyzer->calc_nonclosure(_TT|SR,                            pmc+FF_TT_J_only,  SR_TT_J_mvis_sim, p+FF_corr_TT_MC_noGen_nonclosure, 1, 0);
+        //Analyzer->loadFile(preselection_TT_J,"Events");
+        //Analyzer->calcFFCorr(_TT|m_gen_match,                    preselection_TT_J,   empty_vec_tstring,    pmc+FF_TT_J_only,  p+weight_TT_J);
+        //Analyzer->calc_nonclosure(_TT|SR,                            pmc+FF_TT_J_only,  SR_TT_J_mvis_sim, p+FF_corr_TT_MC_noGen_nonclosure, 1, 0);
         //...done
       }
 

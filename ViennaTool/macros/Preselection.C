@@ -55,25 +55,25 @@ void Preselection() {
     Analyzer->closeFile();
     compressFile(preselection_Wjets);
   }
-  if (num==7||num==0||num==99) {
+  if (num==11||num==0||num==99) {
     Analyzer->loadFile(DY_NJfile,"TauCheck");
     Analyzer->select(preselection_DY,0);
     Analyzer->closeFile();
     compressFile(preselection_DY);
   }
-  if (num==8||num==0||num==99) {
+  if (num==11||num==0||num==99) {
     Analyzer->loadFile(DY_NJfile,"TauCheck");
     Analyzer->select(preselection_DY_J,_DY|_JTAU);
     Analyzer->closeFile();
     compressFile(preselection_DY_J);
   }
-  if (num==9||num==0||num==99) {
+  if (num==11||num==0||num==99) {
     Analyzer->loadFile(DY_NJfile,"TauCheck");
     Analyzer->select(preselection_DY_TT,_DY|_TTAU);
     Analyzer->closeFile();
     compressFile(preselection_DY_TT);
   }
-  if (num==10||num==0||num==99) {
+  if (num==11||num==0||num==99) {
     Analyzer->loadFile(DY_NJfile,"TauCheck");
     Analyzer->select(preselection_DY_L,_DY|_LTAU);
     Analyzer->closeFile();
