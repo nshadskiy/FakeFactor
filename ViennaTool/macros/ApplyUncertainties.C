@@ -30,16 +30,16 @@ void ApplyFF() {
 
 
   
-  FFCalculator* Analyzer = new FFCalculator(N_p_Wjets,N_p_DY,N_p_TT,N_p_QCD,
+  FFCalculator* Analyzer = new FFCalculator(N_p_Wjets,N_p_DY,N_p_TT_SR,N_p_TT_CR,N_p_QCD,N_p_QCD_AI,
                                             N_e_Wjets,N_e_DY,N_e_TT,N_e_QCD,
                                             N_t_Wjets,N_t_DY,N_t_TT,N_t_QCD,
                                             N_m_Wjets,N_m_DY,N_m_TT,N_m_QCD,
-                                            N_j_Wjets,N_j_DY,N_j_TT,N_j_QCD,
-                                            Pt_cuts_Wjets,Pt_cuts_DY,Pt_cuts_TT,Pt_cuts_QCD,
+                                            N_j_Wjets,N_j_DY,N_j_TT_SR,N_j_TT_CR,N_j_QCD,
+                                            Pt_cuts_Wjets,Pt_cuts_DY,Pt_cuts_TT_SR,Pt_cuts_TT_CR,Pt_cuts_QCD,Pt_cuts_QCD_AI,
                                             Eta_cuts_Wjets,Eta_cuts_DY,Eta_cuts_TT,Eta_cuts_QCD,
                                             Decay_cuts_Wjets,Decay_cuts_DY,Decay_cuts_TT,Decay_cuts_QCD,
                                             Mt_cuts_Wjets,Mt_cuts_DY,Mt_cuts_TT,Mt_cuts_QCD,
-                                            Njet_cuts_Wjets,Njet_cuts_DY,Njet_cuts_TT,Njet_cuts_QCD
+                                            Njet_cuts_Wjets,Njet_cuts_DY,Njet_cuts_TT_SR,Njet_cuts_TT_CR,Njet_cuts_QCD
                                             );
 
   Analyzer->init();
@@ -48,19 +48,19 @@ void ApplyFF() {
   if (doApplyUncertainties) {
     cout << endl << "################### Applying uncertainties  ###############" << endl << endl;
 
-    for(Int_t icat=0; icat<nCAT; icat++){
+    //for(Int_t icat=0; icat<nCAT; icat++){
       //if(icat==2 || icat==3 || icat==4 || icat==6) continue;      
-    //for(Int_t icat=2; icat<5; icat++){
+    for(Int_t icat=6; icat<nCAT; icat++){
       if(inclusive_selection && icat>0) continue;
       Analyzer->loadFile(m_preselection_data,"Events");
       vector<Int_t> mode_comb;
       mode_comb.push_back(NO_SR|MT);
       mode_comb.push_back(MVIS);
       mode_comb.push_back(PT); if(use_svfit){mode_comb.push_back(SVFIT);}
-      //mode_comb.push_back(M2T);
-      //mode_comb.push_back(LEPPT); mode_comb.push_back(MVAMET);
-      //mode_comb.push_back(ETA);
-      //mode_comb.push_back(MMTOT);
+      mode_comb.push_back(M2T);
+      mode_comb.push_back(LEPPT); mode_comb.push_back(MVAMET);
+      mode_comb.push_back(ETA);
+      mode_comb.push_back(MMTOT);
       
       Int_t categoryMode=0;
       if(inclusive_frac_mt) categoryMode=_INCLFRAC_MT;
@@ -326,11 +326,11 @@ void ApplyFF() {
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
-        TString data=SR_data_mt;
+        TString data=SR_data_mt; TString signalFile=SR_signal_mt_sim;
         if(DOMC)data=SR_MCsum_mt;
         //if(DOMC)data="sim/mt_backup/SR_MCsum_mt.root";
-        if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );       
-        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mt_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+tvar[0]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[0],_COLOR_FF);
+        if(!inclusive_selection) {data.ReplaceAll( ".root",categories[icat]+".root" );signalFile.ReplaceAll( ".root",categories[icat]+".root" );}              
+        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mt_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+tvar[0]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[0],signalFile,_COLOR_FF);
 
         if(!inclusive_selection) bsum.ReplaceAll( ".root",categories[icat]+".root" );
         bsum=SR_MCsum_mvis; 
@@ -359,53 +359,53 @@ void ApplyFF() {
         bsum.ReplaceAll( "SR_MCsum", "SR_Bkgsum_run1" ); //bsum.ReplaceAll( "_"+s_mvis , "_"+tvar[1] );
         //Analyzer->plotBgStackedAgainstData(bsum,"Bkg a la run 1",proc_list_bkg_pt,  vlabel_bkg,pi+"run1_vs_ff_"+tvar[2]+plotEnding,"Bkg sum run 1 vs FF "+plotEnding,tvar_l[2],_COLOR_RUN1);
         
-        data=SR_data_mvis;
+        data=SR_data_mvis; signalFile=SR_signal_mvis_sim;
         //if(DOMC)data=SR_MCsum_mvis;
         if(DOMC)data="sim/mt/SR_MCsum_mvis.root";
-        if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
-        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mvis_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+tvar[1]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[1],_COLOR_FF);
+        if(!inclusive_selection) {data.ReplaceAll( ".root",categories[icat]+".root" );signalFile.ReplaceAll( ".root",categories[icat]+".root" );} 
+        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mvis_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+tvar[1]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[1],signalFile,_COLOR_FF);
 
-        data=SR_data_pt;
+        data=SR_data_pt; signalFile=SR_signal_pt_sim;
         if(DOMC)data=SR_MCsum_pt;
         //if(DOMC)data="sim/mt_backup/SR_MCsum_pt.root";
-        if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
-        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_pt_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+tvar[2]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[2],_COLOR_FF);
+        if(!inclusive_selection) {data.ReplaceAll( ".root",categories[icat]+".root" );signalFile.ReplaceAll( ".root",categories[icat]+".root" );} 
+        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_pt_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+tvar[2]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[2],signalFile,_COLOR_FF);
 
-        data=SR_data_mt2;
+        data=SR_data_mt2; signalFile=SR_signal_mt2_sim;
         if(DOMC)data=SR_MCsum_mt2;
         //if(DOMC)data="sim/mt_backup/SR_MCsum_pt.root";
-        if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
-        //Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mt2_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+tvar[3]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[3],_COLOR_FF);
+        if(!inclusive_selection) {data.ReplaceAll( ".root",categories[icat]+".root" );signalFile.ReplaceAll( ".root",categories[icat]+".root" );} 
+        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mt2_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+tvar[3]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[3],signalFile,_COLOR_FF);
 
-        data=SR_data_lepPt;
+        data=SR_data_lepPt; signalFile=SR_signal_lepPt_sim;
         if(DOMC)data=SR_MCsum_lepPt;
         //if(DOMC)data="sim/mt_backup/SR_MCsum_pt.root";
-        if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
-        //Analyzer->plotBgStackedAgainstData(data,"data",proc_list_lepPt_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+tvar[4]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[4],_COLOR_FF);
+        if(!inclusive_selection) {data.ReplaceAll( ".root",categories[icat]+".root" );signalFile.ReplaceAll( ".root",categories[icat]+".root" );} 
+        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_lepPt_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+tvar[4]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[4],signalFile,_COLOR_FF);
 
-        data=SR_data_mvamet;
+        data=SR_data_mvamet; signalFile=SR_signal_mvamet_sim;
         if(DOMC)data=SR_MCsum_mvamet;
         //if(DOMC)data="sim/mt_backup/SR_MCsum_pt.root";
-        if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
-        //Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mvamet_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+tvar[5]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[5],_COLOR_FF);
+        if(!inclusive_selection) {data.ReplaceAll( ".root",categories[icat]+".root" );signalFile.ReplaceAll( ".root",categories[icat]+".root" );} 
+        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mvamet_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+tvar[5]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[5],signalFile,_COLOR_FF);
         
-        data=SR_data_svfit;
-        if(DOMC)data=SR_MCsum_svfit;
+        data=SR_data_svfit; signalFile=SR_signal_svfit_sim;
+        if(DOMC)data=SR_MCsum_svfit; 
         //if(DOMC)data="sim/mt_backup/SR_MCsum_pt.root";
-        if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
-        if(use_svfit)Analyzer->plotBgStackedAgainstData(data,"data",proc_list_svfit_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+s_svfit+plotEnding,"Bkg estimation with FF "+plotEnding,"m_{SV} [GeV]",_COLOR_FF);
+        if(!inclusive_selection) {data.ReplaceAll( ".root",categories[icat]+".root" );signalFile.ReplaceAll( ".root",categories[icat]+".root" );} 
+        if(use_svfit)Analyzer->plotBgStackedAgainstData(data,"data",proc_list_svfit_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+s_svfit+plotEnding,"Bkg estimation with FF "+plotEnding,"m_{SV} [GeV]",signalFile,_COLOR_FF);
 
-        data=SR_data_eta;
+        data=SR_data_eta; signalFile=SR_signal_eta_sim;
         if(DOMC)data=SR_MCsum_eta;
         //if(DOMC)data="sim/mt_backup/SR_MCsum_pt.root";
-        if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
-        //Analyzer->plotBgStackedAgainstData(data,"data",proc_list_eta_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+s_eta+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[6],_COLOR_FF);
+        if(!inclusive_selection) {data.ReplaceAll( ".root",categories[icat]+".root" );signalFile.ReplaceAll( ".root",categories[icat]+".root" );} 
+        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_eta_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+s_eta+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[6],signalFile,_COLOR_FF);
 
-        data=SR_data_mttot;
+        data=SR_data_mttot; signalFile=SR_signal_mttot_sim;
         if(DOMC)data=SR_MCsum_mttot;
         //if(DOMC)data="sim/mt_backup/SR_MCsum_pt.root";
-        if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
-        //Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mttot_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+s_mttot+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[7],_COLOR_FF);
+        if(!inclusive_selection) {data.ReplaceAll( ".root",categories[icat]+".root" );signalFile.ReplaceAll( ".root",categories[icat]+".root" );} 
+        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mttot_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+s_mttot+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[7],signalFile,_COLOR_FF);
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         cout << "---------------------------------------------------" << endl;
         cout << "Plotting splitted FFs" << endl;

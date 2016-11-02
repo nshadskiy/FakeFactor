@@ -30,16 +30,16 @@ void ApplyFF() {
 
 
   
-  FFCalculator* Analyzer = new FFCalculator(N_p_Wjets,N_p_DY,N_p_TT,N_p_QCD,
+  FFCalculator* Analyzer = new FFCalculator(N_p_Wjets,N_p_DY,N_p_TT_SR,N_p_TT_CR,N_p_QCD,N_p_QCD_AI,
                                             N_e_Wjets,N_e_DY,N_e_TT,N_e_QCD,
                                             N_t_Wjets,N_t_DY,N_t_TT,N_t_QCD,
                                             N_m_Wjets,N_m_DY,N_m_TT,N_m_QCD,
-                                            N_j_Wjets,N_j_DY,N_j_TT,N_j_QCD,
-                                            Pt_cuts_Wjets,Pt_cuts_DY,Pt_cuts_TT,Pt_cuts_QCD,
+                                            N_j_Wjets,N_j_DY,N_j_TT_SR,N_j_TT_CR,N_j_QCD,
+                                            Pt_cuts_Wjets,Pt_cuts_DY,Pt_cuts_TT_SR,Pt_cuts_TT_CR,Pt_cuts_QCD,Pt_cuts_QCD_AI,
                                             Eta_cuts_Wjets,Eta_cuts_DY,Eta_cuts_TT,Eta_cuts_QCD,
                                             Decay_cuts_Wjets,Decay_cuts_DY,Decay_cuts_TT,Decay_cuts_QCD,
                                             Mt_cuts_Wjets,Mt_cuts_DY,Mt_cuts_TT,Mt_cuts_QCD,
-                                            Njet_cuts_Wjets,Njet_cuts_DY,Njet_cuts_TT,Njet_cuts_QCD
+                                            Njet_cuts_Wjets,Njet_cuts_DY,Njet_cuts_TT_SR,Njet_cuts_TT_CR,Njet_cuts_QCD
                                             );
 
   Analyzer->init();

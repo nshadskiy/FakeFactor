@@ -4,9 +4,9 @@ import os
 
 #Meta-data
 channel="mt"
-version='20161020'
+version='20161023'
 tag='v0.2.1'
-categories = ['incl','_0jet','_1jet','_1jetZ050','_1jetZ50100','_1jetZ100','_2jet','_2jetVBF','_anyb']
+categories = ['incl','_0jetLow','_0jetHigh','_1jetLow','_1jetHigh','_vbfLow','_vbfHigh','_2jet','_anyb']
 #categories = ['incl']
 
 for x in range(0,len(categories)):
@@ -345,7 +345,7 @@ for x in range(0,len(categories)):
                      name='sys_tt_up',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='uncertainties_TT_MVis_up',
-                     vars=['mvis']
+                     vars=['tau_decay','mvis']
                  ),
                  tt.find('ff_tt')
              ]
@@ -363,7 +363,7 @@ for x in range(0,len(categories)):
                      name='sys_tt_down',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='uncertainties_TT_MVis_down',
-                     vars=['mvis']
+                     vars=['tau_decay','mvis']
                  ),
                  tt.find('ff_tt')
              ]
@@ -601,7 +601,7 @@ for x in range(0,len(categories)):
                      name='sys_tt_up',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='uncertainties_TT_MVis_up',
-                     vars=['mvis']
+                     vars=['tau_decay','mvis']
                  ),
                  comb.find('ff_tt')
              ]
@@ -619,7 +619,7 @@ for x in range(0,len(categories)):
                      name='sys_tt_down',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='uncertainties_TT_MVis_down',
-                     vars=['mvis']
+                     vars=['tau_decay','mvis']
                  ),
                  comb.find('ff_tt')
              ]

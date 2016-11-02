@@ -13,8 +13,8 @@ void SRHisto() {
 
   const Int_t DOCUTS = doCuts;
   
-  for(Int_t icat=0; icat<nCAT; icat++){
-    //for(Int_t icat=4; icat<5; icat++){
+  for(Int_t icat=7; icat<nCAT; icat++){
+  //for(Int_t icat=6; icat<nCAT; icat++){
     if(inclusive_selection && icat>0) continue;
   
     TSelectionAnalyzer *Analyzer = new TSelectionAnalyzer();
@@ -27,6 +27,7 @@ void SRHisto() {
     if( CHAN!=kTAU ) {ps.push_back(preselection_VV_T); ps.push_back(preselection_VV_J); ps.push_back(preselection_VV_L);}
     ps.push_back(preselection_DY_TT); ps.push_back(preselection_DY_J); ps.push_back(preselection_DY_L); 
     ps.push_back(preselection_QCD);
+    ps.push_back(preselection_signal);
     //  if (DOQCD) ps.push_back(preselection_QCD);
 
     std::vector<TString> fl;
@@ -35,6 +36,7 @@ void SRHisto() {
     if( CHAN!=kTAU ) {fl.push_back(SR_VV_T_mt_sim); fl.push_back(SR_VV_J_mt_sim); fl.push_back(SR_VV_L_mt_sim);}
     fl.push_back(SR_DY_TT_mt_sim); fl.push_back(SR_DY_J_mt_sim); fl.push_back(SR_DY_L_mt_sim); 
     fl.push_back(SR_QCD_mt_sim);
+    fl.push_back(SR_signal_mt_sim);
     
     //  if (DOQCD) fl.push_back(SR_QCD_mt_sim);
 
@@ -43,7 +45,7 @@ void SRHisto() {
     const TString r2[nVARused]={ "_mt", "_mvis", "_pt","_mt2","_lepPt","_mvamet","_eta", "_mttot"};
 
     TString tmp,tmp2;
-    for (unsigned i=8; i<ps.size(); i++){
+    for (unsigned i=0; i<ps.size(); i++){
       if ( !doCalc ) break;
       tmp=fl.at(i); //avoid editing fl
       Int_t categoryMode=0;
@@ -82,7 +84,7 @@ void SRHisto() {
       //Get AI mvis histos with MC subtracted
       TString modes[] = {"l","t","ltt"};
       Int_t nmodes = 3;
-      int nSA; if(useVV){nSA=nSAMPLES;}else{nSA=nSAMPLES-3;}
+      int nSA; if(useVV){nSA=nSAMPLES-1;}else{nSA=nSAMPLES-4;} //signal sample is also subtracted
       const TString *ssa=vsuff;
       if(!DOMC){
         if ( !doCalc ) break;

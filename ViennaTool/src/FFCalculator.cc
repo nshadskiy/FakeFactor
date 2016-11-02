@@ -5,16 +5,18 @@
 
 using namespace std;
 
-FFCalculator::FFCalculator(Int_t N_p_Wjets,Int_t N_p_DY,Int_t N_p_TT,Int_t N_p_QCD,
+FFCalculator::FFCalculator(//Int_t N_p_Wjets,Int_t N_p_DY,Int_t N_p_TT,Int_t N_p_QCD, Int_t N_p_QCD_AI,
+                           Int_t N_p_Wjets,Int_t N_p_DY,Int_t N_p_TT_SR,Int_t N_p_TT_CR,Int_t N_p_QCD, Int_t N_p_QCD_AI,
                            Int_t N_eta_Wjets,Int_t N_eta_DY,Int_t N_eta_TT,Int_t N_eta_QCD,
                            Int_t N_t_Wjets,Int_t N_t_DY,Int_t N_t_TT,Int_t N_t_QCD,
                            Int_t N_m_Wjets,Int_t N_m_DY,Int_t N_m_TT,Int_t N_m_QCD,
-                           Int_t N_j_Wjets,Int_t N_j_DY,Int_t N_j_TT,Int_t N_j_QCD,
-                           const Double_t Pt_cuts_Wjets[],const Double_t Pt_cuts_DY[],const Double_t Pt_cuts_TT[],const Double_t Pt_cuts_QCD[],
+                           //Int_t N_j_Wjets,Int_t N_j_DY,Int_t N_j_TT,Int_t N_j_QCD,
+                           Int_t N_j_Wjets,Int_t N_j_DY,Int_t N_j_TT_SR,Int_t N_j_TT_CR,Int_t N_j_QCD,
+                           const Double_t Pt_cuts_Wjets[],const Double_t Pt_cuts_DY[],const Double_t Pt_cuts_TT_SR[],const Double_t Pt_cuts_TT_CR[],const Double_t Pt_cuts_QCD[],const Double_t Pt_cuts_QCD_AI[],
                            const Double_t Eta_cuts_Wjets[],const Double_t Eta_cuts_DY[],const Double_t Eta_cuts_TT[],const Double_t Eta_cuts_QCD[],
                            const Int_t Decay_cuts_Wjets[],const Int_t Decay_cuts_DY[],const Int_t Decay_cuts_TT[],const Int_t Decay_cuts_QCD[],
                            const Double_t Mt_cuts_Wjets[],const Double_t Mt_cuts_DY[],const Double_t Mt_cuts_TT[],const Double_t Mt_cuts_QCD[],
-                           const Int_t Njet_cuts_Wjets[],const Int_t Njet_cuts_DY[],const Int_t Njet_cuts_TT[],const Int_t Njet_cuts_QCD[])
+                           const Int_t Njet_cuts_Wjets[],const Int_t Njet_cuts_DY[],const Int_t Njet_cuts_TT_SR[],const Int_t Njet_cuts_TT_CR[],const Int_t Njet_cuts_QCD[])
 {
   if (DEBUG) cout<<"Analyzer created."<<std::endl;
   //Initialise constants
@@ -26,14 +28,25 @@ FFCalculator::FFCalculator(Int_t N_p_Wjets,Int_t N_p_DY,Int_t N_p_TT,Int_t N_p_Q
   pt_cuts_DY=(Double_t*)malloc(n_p_DY*sizeof(Double_t));
   for(Int_t i=0;i<n_p_DY;i++) pt_cuts_DY[i]=Pt_cuts_DY[i];
 
-  n_p_TT=N_p_TT;
-  pt_cuts_TT=(Double_t*)malloc(n_p_TT*sizeof(Double_t));
-  for(Int_t i=0;i<n_p_TT;i++) pt_cuts_TT[i]=Pt_cuts_TT[i];
+  //n_p_TT=N_p_TT;
+  //pt_cuts_TT=(Double_t*)malloc(n_p_TT*sizeof(Double_t));
+  //for(Int_t i=0;i<n_p_TT;i++) pt_cuts_TT[i]=Pt_cuts_TT[i];
+
+  n_p_TT_SR=N_p_TT_SR;
+  pt_cuts_TT_SR=(Double_t*)malloc(n_p_TT_SR*sizeof(Double_t));
+  for(Int_t i=0;i<n_p_TT_SR;i++) pt_cuts_TT_SR[i]=Pt_cuts_TT_SR[i];
+
+  n_p_TT_CR=N_p_TT_CR;
+  pt_cuts_TT_CR=(Double_t*)malloc(n_p_TT_CR*sizeof(Double_t));
+  for(Int_t i=0;i<n_p_TT_CR;i++) pt_cuts_TT_CR[i]=Pt_cuts_TT_CR[i];
 
   n_p_QCD=N_p_QCD;
   pt_cuts_QCD=(Double_t*)malloc(n_p_QCD*sizeof(Double_t));
   for(Int_t i=0;i<n_p_QCD;i++) pt_cuts_QCD[i]=Pt_cuts_QCD[i];
 
+  n_p_QCD_AI=N_p_QCD_AI;
+  pt_cuts_QCD_AI=(Double_t*)malloc(n_p_QCD_AI*sizeof(Double_t));
+  for(Int_t i=0;i<n_p_QCD_AI;i++) pt_cuts_QCD_AI[i]=Pt_cuts_QCD_AI[i];
 
   n_t_Wjets=N_t_Wjets;
   decay_cuts_Wjets=(Int_t*)malloc(n_t_Wjets*sizeof(Int_t));
@@ -94,9 +107,17 @@ FFCalculator::FFCalculator(Int_t N_p_Wjets,Int_t N_p_DY,Int_t N_p_TT,Int_t N_p_Q
   njet_cuts_DY=(Int_t*)malloc(n_j_DY*sizeof(Double_t));
   for(Int_t i=0;i<n_j_DY;i++) njet_cuts_DY[i]=Njet_cuts_DY[i];
 
-  n_j_TT=N_j_TT;
-  njet_cuts_TT=(Int_t*)malloc(n_j_TT*sizeof(Double_t));
-  for(Int_t i=0;i<n_j_TT;i++) njet_cuts_TT[i]=Njet_cuts_TT[i];
+  //n_j_TT=N_j_TT;
+  //njet_cuts_TT=(Int_t*)malloc(n_j_TT*sizeof(Double_t));
+  //for(Int_t i=0;i<n_j_TT;i++) njet_cuts_TT[i]=Njet_cuts_TT[i];
+
+  n_j_TT_SR=N_j_TT_SR;
+  njet_cuts_TT_SR=(Int_t*)malloc(n_j_TT_SR*sizeof(Double_t));
+  for(Int_t i=0;i<n_j_TT_SR;i++) njet_cuts_TT_SR[i]=Njet_cuts_TT_SR[i];
+
+  n_j_TT_CR=N_j_TT_CR;
+  njet_cuts_TT_CR=(Int_t*)malloc(n_j_TT_CR*sizeof(Double_t));
+  for(Int_t i=0;i<n_j_TT_CR;i++) njet_cuts_TT_CR[i]=Njet_cuts_TT_CR[i];
 
   n_j_QCD=N_j_QCD;
   njet_cuts_QCD=(Int_t*)malloc(n_j_QCD*sizeof(Double_t));
@@ -818,6 +839,7 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
 
   TH1D counter_histo_proto("c_h","Counter histogram",this->nBins(mode),-0.5,this->nBins(mode)-0.5);
   TH1D* counter_histo_loose_CR = (TH1D*) counter_histo_proto.Clone("c_l");
+  TH1D* weighted_bin_center_loose= (TH1D*) counter_histo_proto.Clone("bins_weighted");
   TH1D* counter_histo_loose_CR_tt = (TH1D*) counter_histo_proto.Clone("c_ltt");
   TH1D* counter_histo_tight_CR = (TH1D*) counter_histo_proto.Clone("c_t");
   TH1D* fakefactor_histo = (TH1D*) counter_histo_proto.Clone("c_f");
@@ -841,6 +863,7 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
   int nT=0;
   int nL=0;
   int nLtt=0;
+  Double_t bin_values[this->getNjets(mode)*this->getNtracks(mode)][this->getNpts(mode)]={{0}}; Double_t bin_counters[this->getNjets(mode)*this->getNtracks(mode)][this->getNpts(mode)]={};
   loadFile(pre_main,"Events");
   //Commence loop over tree
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
@@ -858,6 +881,14 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
 	if      (nT) {counter_histo_tight_CR->Fill(this->getBin(mode,i),event_s->weight_sf);}
 	else if (nL) {counter_histo_loose_CR->Fill(this->getBin(mode,i),event_s->weight_sf);}
         if (nLtt) {counter_histo_loose_CR_tt->Fill(this->getBin(mode,i),event_s->weight_sf);}
+
+        if(nL){
+          Int_t pT_index=this->getPtIndex(mode,i);
+          Int_t njet_index=this->getNjetIndex(mode,i);
+          Int_t dm_index=this->getTrackIndex(mode,i);
+          bin_values[dm_index+this->getNtracks(mode)*njet_index][pT_index]=bin_values[dm_index+this->getNtracks(mode)*njet_index][pT_index]+event_s->alltau_pt->at(i)*event_s->weight_sf;
+          bin_counters[dm_index+this->getNtracks(mode)*njet_index][pT_index]=bin_counters[dm_index+this->getNtracks(mode)*njet_index][pT_index]+event_s->weight_sf;
+        }
       }
     }
   }//end loop over entries
@@ -878,6 +909,14 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
 	  if (nT) {counter_histo_tight_CR_cont.at(is)->Fill(this->getBin(mode,i),event_s->weight_sf);}
 	  else if (nL) {counter_histo_loose_CR_cont.at(is)->Fill(this->getBin(mode,i),event_s->weight_sf);}
           if (nLtt) {counter_histo_loose_CR_tt_cont.at(is)->Fill(this->getBin(mode,i),event_s->weight_sf);}
+
+          if(nL){
+            Int_t pT_index=this->getPtIndex(mode,i);
+            Int_t njet_index=this->getNjetIndex(mode,i);
+            Int_t dm_index=this->getTrackIndex(mode,i);
+            bin_values[dm_index+this->getNtracks(mode)*njet_index][pT_index]=bin_values[dm_index+this->getNtracks(mode)*njet_index][pT_index]+event_s->alltau_pt->at(i)*event_s->weight_sf*(-1);
+            bin_counters[dm_index+this->getNtracks(mode)*njet_index][pT_index]=bin_counters[dm_index+this->getNtracks(mode)*njet_index][pT_index]+event_s->weight_sf*(-1);
+          }
 	}
       }
     }
@@ -911,33 +950,24 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
   fakefactor_histo_tt->SetName("c_t_tt");
   fakefactor_histo_tt->Write();
 
-  TH1D *FFerr_uw[NERR];
-  TRandom3 r3_uw;
-  for (int i=0; i<NERR; i++){
-    TString hn="c_t_"; if (i<10) hn+="0"; hn+=i;
-    FFerr_uw[i] = new TH1D(hn, "",this->nBins(mode),-0.5,-0.5+this->nBins(mode));
-    for (int xb=1; xb<fakefactor_histo->GetNbinsX(); xb++){     //FF bins
-      Double_t binc=r3_uw.Gaus( fakefactor_histo->GetBinContent(xb) , fakefactor_histo->GetBinError(xb)  );
-      FFerr_uw[i]->SetBinContent( xb , binc );
+
+  for(Int_t ijets=0;ijets<this->getNjets(mode);ijets++){
+    for(Int_t idm=0;idm<this->getNtracks(mode);idm++){
+      for(Int_t ipt=0;ipt<this->getNpts(mode);ipt++){
+        cout << "Weighted: " << bin_values[idm+ijets*this->getNtracks(mode)][ipt] << endl;
+        cout << "Counted: " << bin_counters[idm+ijets*this->getNtracks(mode)][ipt] << endl;
+        cout << "Ratio: " << bin_values[idm+ijets*this->getNtracks(mode)][ipt]/bin_counters[idm+ijets*this->getNtracks(mode)][ipt] << endl;
+        weighted_bin_center_loose->SetBinContent(ipt+this->getNpts(mode)*idm + (this->getNpts(mode)*this->getNtracks(mode))*ijets + 1,bin_values[idm+ijets*this->getNtracks(mode)][ipt]/bin_counters[idm+ijets*this->getNtracks(mode)][ipt] ); 
+      }      
     }
   }
+  weighted_bin_center_loose->Write();
+                                               
+                                               
 
-  /*
-  TH2D *FFerr_uw[NERR];
-  TRandom3 r3_uw;
-  for (int i=0; i<NERR; i++){
-    TString hn="c_t_"; if (i<10) hn+="0"; hn+=i;
-    FFerr_uw[i] = new TH2D(hn, "",this->nBins(mode),-0.5,-0.5+this->nBins(mode),nbins_weight,min_weight,max_weight);
-    for (int xb=1; xb<fakefactor_histo->GetNbinsX(); xb++){     //FF bins
-      for (int yb=1; yb<=fakefactor_histo->GetNbinsY(); yb++){   //weight bins
-	Double_t binc=r3_uw.Gaus( fakefactor_histo->GetBinContent(xb,yb) , fakefactor_histo->GetBinError(xb,yb)  );
-	FFerr_uw[i]->SetBinContent( xb , yb, binc );
-      }
-    }
-  }
-  */
+                                               
 
-  for (int i=0; i<NERR; i++){ FFerr_uw[i]->Write(); delete FFerr_uw[i]; }
+  
   f.Close();
 
   if (DEBUG){  

@@ -129,149 +129,119 @@ if [ ! -d "ff_2d" ]; then
         if [ ! -d "ff_2d/mt/incl" ]; then
             mkdir -p ff_2d/mt/incl;
         fi
-        if [ ! -d "ff_2d/mt/_0jet" ]; then
-            mkdir -p ff_2d/mt/_0jet;
+        if [ ! -d "ff_2d/mt/_0jetLow" ]; then
+            mkdir -p ff_2d/mt/_0jetLow;
         fi
-        if [ ! -d "ff_2d/mt/_1jet" ]; then
-            mkdir -p ff_2d/mt/_1jet;
+        if [ ! -d "ff_2d/mt/_0jetHigh" ]; then
+            mkdir -p ff_2d/mt/_0jetHigh;
         fi
-        if [ ! -d "ff_2d/mt/_1jetZ050" ]; then
-            mkdir -p ff_2d/mt/_1jetZ050;
+        if [ ! -d "ff_2d/mt/_1jetLow" ]; then
+            mkdir -p ff_2d/mt/_1jetLow;
         fi
-        if [ ! -d "ff_2d/mt/_1jetZ50100" ]; then
-            mkdir -p ff_2d/mt/_1jetZ50100;
+        if [ ! -d "ff_2d/mt/_1jetHigh" ]; then
+            mkdir -p ff_2d/mt/_1jetHigh;
         fi
-        if [ ! -d "ff_2d/mt/_1jetZ100" ]; then
-            mkdir -p ff_2d/mt/_1jetZ100;
+        if [ ! -d "ff_2d/mt/_vbfLow" ]; then
+            mkdir -p ff_2d/mt/_vbfLow;
         fi
-        if [ ! -d "ff_2d/mt/_2jet" ]; then
-            mkdir -p ff_2d/mt/_2jet;
-        fi
-        if [ ! -d "ff_2d/mt/_2jetVBF" ]; then
-            mkdir -p ff_2d/mt/_2jetVBF;
-        fi
-        if [ ! -d "ff_2d/mt/_anyb" ]; then
-            mkdir -p ff_2d/mt/_anyb;
+        if [ ! -d "ff_2d/mt/_vbfHigh" ]; then
+            mkdir -p ff_2d/mt/_vbfHigh;
         fi
     else
         mkdir -p ff_2d/mt/incl;
-        mkdir -p ff_2d/mt/_0jet;
-        mkdir -p ff_2d/mt/_1jet;
-        mkdir -p ff_2d/mt/_1jetZ050;
-        mkdir -p ff_2d/mt/_1jetZ50100;
-        mkdir -p ff_2d/mt/_1jetZ100;
-        mkdir -p ff_2d/mt/_2jet;
-        mkdir -p ff_2d/mt/_2jetVBF;
-        mkdir -p ff_2d/mt/_anyb;
+        mkdir -p ff_2d/mt/_0jetLow;
+        mkdir -p ff_2d/mt/_0jetHigh;
+        mkdir -p ff_2d/mt/_1jetLow;
+        mkdir -p ff_2d/mt/_1jetHigh;
+        mkdir -p ff_2d/mt/_vbfLow;
+        mkdir -p ff_2d/mt/_vbfHigh;
     fi
     if [ ! -d "ff_2d/et" ]; then
         if [ ! -d "ff_2d/et/incl" ]; then
             mkdir -p ff_2d/et/incl;
         fi
-        if [ ! -d "ff_2d/et/_0jet" ]; then
-            mkdir -p ff_2d/et/_0jet;
+        if [ ! -d "ff_2d/et/_0jetLow" ]; then
+            mkdir -p ff_2d/et/_0jetLow;
         fi
-        if [ ! -d "ff_2d/et/_1jet" ]; then
-            mkdir -p ff_2d/et/_1jet;
+        if [ ! -d "ff_2d/et/_0jetHigh" ]; then
+            mkdir -p ff_2d/et/_0jetHigh;
         fi
-        if [ ! -d "ff_2d/et/_1jetZ050" ]; then
-            mkdir -p ff_2d/et/_1jetZ050;
+        if [ ! -d "ff_2d/et/_1jetLow" ]; then
+            mkdir -p ff_2d/et/_1jetLow;
         fi
-        if [ ! -d "ff_2d/et/_1jetZ50100" ]; then
-            mkdir -p ff_2d/et/_1jetZ50100;
+        if [ ! -d "ff_2d/et/_1jetHigh" ]; then
+            mkdir -p ff_2d/et/_1jetHigh;
         fi
-        if [ ! -d "ff_2d/et/_1jetZ100" ]; then
-            mkdir -p ff_2d/et/_1jetZ100;
+        if [ ! -d "ff_2d/et/_vbfLow" ]; then
+            mkdir -p ff_2d/et/_vbfLow;
         fi
-        if [ ! -d "ff_2d/et/_2jet" ]; then
-            mkdir -p ff_2d/et/_2jet;
-        fi
-        if [ ! -d "ff_2d/et/_2jetVBF" ]; then
-            mkdir -p ff_2d/et/_2jetVBF;
-        fi
-        if [ ! -d "ff_2d/et/_anyb" ]; then
-            mkdir -p ff_2d/et/_anyb;
+        if [ ! -d "ff_2d/et/_vbfHigh" ]; then
+            mkdir -p ff_2d/et/_vbfHigh;
         fi
     else
         mkdir -p ff_2d/et/incl;
-        mkdir -p ff_2d/et/_0jet;
-        mkdir -p ff_2d/et/_1jet;
-        mkdir -p ff_2d/et/_1jetZ050;
-        mkdir -p ff_2d/et/_1jetZ50100;
-        mkdir -p ff_2d/et/_1jetZ100;
-        mkdir -p ff_2d/et/_2jet;
-        mkdir -p ff_2d/et/_2jetVBF;
-        mkdir -p ff_2d/et/_anyb;
+        mkdir -p ff_2d/et/_0jetLow;
+        mkdir -p ff_2d/et/_0jetHigh;
+        mkdir -p ff_2d/et/_1jetLow;
+        mkdir -p ff_2d/et/_1jetHigh;
+        mkdir -p ff_2d/et/_vbfLow;
+        mkdir -p ff_2d/et/_vbfHigh;
     fi
     if [ ! -d "ff_2d/tt" ]; then
         if [ ! -d "ff_2d/tt/incl" ]; then
             mkdir -p ff_2d/tt/incl;
         fi
-        if [ ! -d "ff_2d/tt/_0jet" ]; then
-            mkdir -p ff_2d/tt/_0jet;
+        if [ ! -d "ff_2d/tt/_0jetLow" ]; then
+            mkdir -p ff_2d/tt/_0jetLow;
         fi
-        if [ ! -d "ff_2d/tt/_1jet" ]; then
-            mkdir -p ff_2d/tt/_1jet;
+        if [ ! -d "ff_2d/tt/_0jetHigh" ]; then
+            mkdir -p ff_2d/tt/_0jetHigh;
         fi
-        if [ ! -d "ff_2d/tt/_1jetZ050" ]; then
-            mkdir -p ff_2d/tt/_1jetZ050;
+        if [ ! -d "ff_2d/tt/_1jetLow" ]; then
+            mkdir -p ff_2d/tt/_1jetLow;
         fi
-        if [ ! -d "ff_2d/tt/_1jetZ50100" ]; then
-            mkdir -p ff_2d/tt/_1jetZ50100;
+        if [ ! -d "ff_2d/tt/_1jetHigh" ]; then
+            mkdir -p ff_2d/tt/_1jetHigh;
         fi
-        if [ ! -d "ff_2d/tt/_1jetZ100" ]; then
-            mkdir -p ff_2d/tt/_1jetZ100;
+        if [ ! -d "ff_2d/tt/_vbfLow" ]; then
+            mkdir -p ff_2d/tt/_vbfLow;
         fi
-        if [ ! -d "ff_2d/tt/_2jet" ]; then
-            mkdir -p ff_2d/tt/_2jet;
-        fi
-        if [ ! -d "ff_2d/tt/_2jetVBF" ]; then
-            mkdir -p ff_2d/tt/_2jetVBF;
-        fi
-        if [ ! -d "ff_2d/tt/_anyb" ]; then
-            mkdir -p ff_2d/tt/_anyb;
+        if [ ! -d "ff_2d/tt/_vbfHigh" ]; then
+            mkdir -p ff_2d/tt/_vbfHigh;
         fi
     else
         mkdir -p ff_2d/tt/incl;
-        mkdir -p ff_2d/tt/_0jet;
-        mkdir -p ff_2d/tt/_1jet;
-        mkdir -p ff_2d/tt/_1jetZ050;
-        mkdir -p ff_2d/tt/_1jetZ50100;
-        mkdir -p ff_2d/tt/_1jetZ100;
-        mkdir -p ff_2d/tt/_2jet;
-        mkdir -p ff_2d/tt/_2jetVBF;
-        mkdir -p ff_2d/tt/_anyb;
+        mkdir -p ff_2d/tt/_0jetLow;
+        mkdir -p ff_2d/tt/_0jetHigh;
+        mkdir -p ff_2d/tt/_1jetLow;
+        mkdir -p ff_2d/tt/_1jetHigh;
+        mkdir -p ff_2d/tt/_vbfLow;
+        mkdir -p ff_2d/tt/_vbfHigh;
     fi
     
     
 else
     mkdir -p ff_2d/mt/incl;
-    mkdir -p ff_2d/mt/_0jet;
-    mkdir -p ff_2d/mt/_1jet;
-    mkdir -p ff_2d/mt/_1jetZ050;
-    mkdir -p ff_2d/mt/_1jetZ50100;
-    mkdir -p ff_2d/mt/_1jetZ100;
-    mkdir -p ff_2d/mt/_2jet;
-    mkdir -p ff_2d/mt/_2jetVBF;
-    mkdir -p ff_2d/mt/_anyb;
+    mkdir -p ff_2d/mt/_0jetLow;
+    mkdir -p ff_2d/mt/_0jetHigh;
+    mkdir -p ff_2d/mt/_1jetLow;
+    mkdir -p ff_2d/mt/_1jetHigh;
+    mkdir -p ff_2d/mt/_vbfLow;
+    mkdir -p ff_2d/mt/_vbfHigh;
     mkdir -p ff_2d/et/incl;
-    mkdir -p ff_2d/et/_0jet;
-    mkdir -p ff_2d/et/_1jet;
-    mkdir -p ff_2d/et/_1jetZ050;
-    mkdir -p ff_2d/et/_1jetZ50100;
-    mkdir -p ff_2d/et/_1jetZ100;
-    mkdir -p ff_2d/et/_2jet;
-    mkdir -p ff_2d/et/_2jetVBF;
-    mkdir -p ff_2d/et/_anyb;
+    mkdir -p ff_2d/et/_0jetLow;
+    mkdir -p ff_2d/et/_0jetHigh;
+    mkdir -p ff_2d/et/_1jetLow;
+    mkdir -p ff_2d/et/_1jetHigh;
+    mkdir -p ff_2d/et/_vbfLow;
+    mkdir -p ff_2d/et/_vbfHigh;
     mkdir -p ff_2d/tt/incl;
-    mkdir -p ff_2d/tt/_0jet;
-    mkdir -p ff_2d/tt/_1jet;
-    mkdir -p ff_2d/tt/_1jetZ050;
-    mkdir -p ff_2d/tt/_1jetZ50100;
-    mkdir -p ff_2d/tt/_1jetZ100;
-    mkdir -p ff_2d/tt/_2jet;
-    mkdir -p ff_2d/tt/_2jetVBF;
-    mkdir -p ff_2d/tt/_anyb;
+    mkdir -p ff_2d/tt/_0jetLow;
+    mkdir -p ff_2d/tt/_0jetHigh;
+    mkdir -p ff_2d/tt/_1jetLow;
+    mkdir -p ff_2d/tt/_1jetHigh;
+    mkdir -p ff_2d/tt/_vbfLow;
+    mkdir -p ff_2d/tt/_vbfHigh;
     
 fi
 

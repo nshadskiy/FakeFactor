@@ -83,6 +83,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   mjj=event->mjj;
   mvamet=event->mvamet;
   jdeta=event->jdeta;
+  njetingap20=event->njetingap20;
   mu2_iso=-999;  
   m_leplep=-999;  
   lep_dR=-999;
@@ -464,15 +465,14 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       lep_eta=event->eta_2;
       lep_phi=event->phi_2;
       lep_q=event->q_2;
-      lep_iso=10*event->byVTightIsolationMVArun2v1DBoldDMwLT_2; 
-      //FIXME: should be vtight once we have calculated the FF for vtight. Now 1 for just tight; 11 for tight & vtight; 10 for just vtight (probably not possible)
+      lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2v1DBoldDMwLT_2==1) || (calcVTightFF==0 && event->byTightIsolationMVArun2v1DBoldDMwLT_2==1) )  ? 10 : 0;
     } else{
       lep_dR=-99; //needed for mZ in ee/mumu CR; not needed for tautau
       lep_pt=event->pt_1;
       lep_eta=event->eta_1;
       lep_phi=event->phi_1;
       lep_q=event->q_1;
-      lep_iso=10*event->byVTightIsolationMVArun2v1DBoldDMwLT_1; //FIXME: should be vtight once we have calculated the FF for vtight
+      lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2v1DBoldDMwLT_1==1) || (calcVTightFF==0 && event->byTightIsolationMVArun2v1DBoldDMwLT_1==1) )  ? 10 : 0;
     }
   }
 
@@ -544,6 +544,7 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   tree->Branch("nbtag",&nbtag);
   tree->Branch("mjj",&mjj);
   tree->Branch("jdeta",&jdeta);
+  tree->Branch("njetingap20", &njetingap20);
   tree->Branch("mvamet",&mvamet);
   tree->Branch("m_leplep",&m_leplep);
   tree->Branch("lep_dR",&lep_dR);

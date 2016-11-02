@@ -55,25 +55,25 @@ void Preselection() {
     Analyzer->closeFile();
     compressFile(preselection_Wjets);
   }
-  if (num==11||num==0||num==99) {
+  if (num==7 ||num==0||num==99) {
     Analyzer->loadFile(DY_NJfile,"TauCheck");
     Analyzer->select(preselection_DY,0);
     Analyzer->closeFile();
     compressFile(preselection_DY);
   }
-  if (num==11||num==0||num==99) {
+  if (num==8 || num==7 ||num==0||num==99) {
     Analyzer->loadFile(DY_NJfile,"TauCheck");
     Analyzer->select(preselection_DY_J,_DY|_JTAU);
     Analyzer->closeFile();
     compressFile(preselection_DY_J);
   }
-  if (num==11||num==0||num==99) {
+  if (num==9 || num==7 ||num==0||num==99) {
     Analyzer->loadFile(DY_NJfile,"TauCheck");
     Analyzer->select(preselection_DY_TT,_DY|_TTAU);
     Analyzer->closeFile();
     compressFile(preselection_DY_TT);
   }
-  if (num==11||num==0||num==99) {
+  if (num==10 || num==7 ||num==0||num==99) {
     Analyzer->loadFile(DY_NJfile,"TauCheck");
     Analyzer->select(preselection_DY_L,_DY|_LTAU);
     Analyzer->closeFile();
@@ -108,7 +108,13 @@ void Preselection() {
     Analyzer->select(preselection_QCD,_QCD);
     Analyzer->closeFile();
     compressFile(preselection_QCD);
-  }    
+  }
+  if( num==20 || num==0 ){
+    Analyzer->loadFile(SIGNALfile,"TauCheck");
+    Analyzer->select(preselection_signal,0);
+    Analyzer->closeFile();
+    compressFile(preselection_signal);
+  }
   if (num==19||num>90||num==0) {
     std::cout << "Creating merged tree in file " << preselection_MCsum_woQCD << std::endl;
     TChain* MCch=new TChain("Events");

@@ -77,15 +77,15 @@ void convert_inputs(Int_t categoryMode=0){
     fout_n="ff_dy.root";
     if(CHAN!=kTAU)conv_th1_to_th2( d+fn , hn , o+fout_n , hnout , 0 );
     
-    fn="FF_corr_TT_MCsum_noGen.root";
-    //fn="FF_TT_J_only.root";
+    //fn="FF_corr_TT_MCsum_noGen.root";
+    fn="FF_TT_J_only_SR.root";
     hn="c_t";
     fout_n="FakeFactors_Data_TT_2D.root";
     fout_n3d="FakeFactors_Data_TT_3D.root";
     hnout="FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode";
     hnout3d="FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode";
     //conv_th1_to_th2( d+fn , hn , o+fout_n , hnout , 0 );
-    if(CHAN!=kTAU)conv_th1_to_th3( d+fn , hn , hnout3d, o+fout_n3d , 0 );
+    if(CHAN!=kTAU)conv_th1_to_th3( d+fn , hn , hnout3d, o+fout_n3d );
     
     fn="FF_corr_QCD_MCsum_noGen"+AIstring+vtightString+".root";
     fn3d="FF_corr_QCD_MCsum_noGen"+AIstring+vtightString+".root";
@@ -209,7 +209,7 @@ void conv_th1_to_th3( const TString fn , const TString hn, const TString hnout, 
 
   if(fn.Contains("_Wjets")) make_3Dhisto( fn, hn, hnout, fout_n, N_p_Wjets, N_t_Wjets, N_j_Wjets, Pt_cuts_Wjets, Decay_cuts_Wjets, Njet_cuts_Wjets, njetbinned );
   else if(fn.Contains("_QCD")) make_3Dhisto( fn, hn, hnout, fout_n, N_p_QCD, N_t_QCD, N_j_QCD, Pt_cuts_QCD, Decay_cuts_QCD, Njet_cuts_QCD, njetbinned );
-  else if(fn.Contains("_TT")) make_3Dhisto( fn, hn, hnout, fout_n, N_p_TT, N_t_TT, N_j_TT, Pt_cuts_TT, Decay_cuts_TT, Njet_cuts_TT, njetbinned );
+  else if(fn.Contains("_TT")) make_3Dhisto( fn, hn, hnout, fout_n, N_p_TT_SR, N_t_TT, N_j_TT_SR, Pt_cuts_TT_SR, Decay_cuts_TT, Njet_cuts_TT_SR, njetbinned );
   else make_3Dhisto( fn, hn, hnout, fout_n, N_p_Wjets, N_t_Wjets, N_j_Wjets, Pt_cuts_Wjets, Decay_cuts_Wjets, Njet_cuts_Wjets, njetbinned );
   
 }
@@ -217,6 +217,16 @@ void conv_th1_to_th3( const TString fn , const TString hn, const TString hnout, 
 void make_3Dhisto( const TString fn , const TString hn , const TString hnout , const TString fout_n , const Int_t N_D1, const Int_t N_D2, const Int_t N_D3, const Double_t V1[], const Int_t V2[], const Int_t V3[] , Int_t njetbinned ){
 
   cout << "make_3D_histo \t" << fn << "\t" << hn << "\t" << fout_n << "\t" << endl;
+
+  
+  const TString d="ViennaTool/fakefactor/data_"+s_chan[CHAN]+"/";
+  TFile *f_data_CR=new TFile(d+"FF_corr_TT_MCsum_noGen.root");
+  TH1D *h_data_CR= (TH1D*)f_data_CR->Get("c_t");
+  TFile *f_MC_CR=new TFile(d+"FF_TT_J_only.root");
+  TH1D *h_MC_CR= (TH1D*)f_MC_CR->Get("c_t");
+
+  Double_t scale_factors[]={abs(h_data_CR->GetBinContent(1)/h_MC_CR->GetBinContent(1)), abs(h_data_CR->GetBinContent(2)/h_MC_CR->GetBinContent(2))};
+  if(!fn.Contains("TT")) {scale_factors[0]=1; scale_factors[1]=1;}
 
   Double_t d1[N_D1+1];
   Double_t d2[N_D2+1];
@@ -250,6 +260,17 @@ void make_3Dhisto( const TString fn , const TString hn , const TString hnout , c
       for (int j=0; j<N_D2; j++){
         for (int k=0; k<N_D3; k++){
           double cont=h->GetBinContent( i+N_D1*j + (N_D1*N_D2)*k + 1 );
+          if(j==0) {
+            cout << "Content: " << cont << endl;
+            cont=cont*scale_factors[0];
+            cout << "Content after applying scalefactors: " << cont << endl;
+          }
+          if(j==1) {
+            cout << "Content: " << cont << endl;
+            cont=cont*scale_factors[1];
+            cout << "Content after applying scalefactors: " << cont << endl;
+          }
+          if(j>2) cout << "Decay mode has more than 2 bins" << endl;
           /*cout << "i: " << i << endl;
           cout << "j: " << j << endl;
           cout << "k: " << k << endl;
@@ -451,15 +472,15 @@ TH1D* extract_binerr_histo( TString fn , TString hn ){
 
 TString getCatString(Int_t categoryMode){
 
-  if ( categoryMode & _0JET ) return categories[0];
-  if ( categoryMode & _1JET ) return categories[1];
-  if ( categoryMode & _1JETZ050 ) return categories[2];
-  if ( categoryMode & _1JETZ50100 ) return categories[3];
-  if ( categoryMode & _1JETZ100 ) return categories[4];
-  if ( categoryMode & _2JET ) return categories[5];
-  if ( categoryMode & _2JETVBF ) return categories[6];
+  if ( categoryMode & _0JETLOW ) return categories[0];
+  if ( categoryMode & _0JETHIGH ) return categories[1];
+  if ( categoryMode & _1JETLOW ) return categories[2];
+  if ( categoryMode & _1JETHIGH ) return categories[3];
+  if ( categoryMode & _VBFLOW ) return categories[4];
+  if ( categoryMode & _VBFHIGH ) return categories[5];
+  if ( categoryMode & _2JET ) return categories[6];
   if ( categoryMode & _ANYB ) return categories[7];
-
+  
   return "incl";
   
 }
@@ -540,17 +561,35 @@ void combineWSystematics( const TString fW_nonclosure, const TString sys_nonclos
 
 void combineTTSystematics( const TString fTT_nonclosure, const TString sys_nonclosure, const TString fout, const TString tout){
 
+  const TString d="ViennaTool/fakefactor/data_"+s_chan[CHAN]+"/";
+  
   TFile *f_nonclosure=new TFile(fTT_nonclosure);
   TGraphAsymmErrors *sys_nonclosure_t=(TGraphAsymmErrors*)f_nonclosure->Get(sys_nonclosure);
 
-  TH1D *out_t = new TH1D(tout, tout, sys_nonclosure_t->GetN(), sys_nonclosure_t->GetX()[0], sys_nonclosure_t->GetX()[sys_nonclosure_t->GetN()-1]);
-  for(Int_t i=0; i<sys_nonclosure_t->GetN(); i++){
-    out_t->SetBinContent(i,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) ));
+  TFile *f_data_CR=new TFile(d+"FF_corr_TT_MCsum_noGen.root");
+  TH1D *h_data_CR= (TH1D*)f_data_CR->Get("c_t");
+  TFile *f_MC_CR=new TFile(d+"FF_TT_J_only.root");
+  TH1D *h_MC_CR= (TH1D*)f_MC_CR->Get("c_t");
+
+  Double_t scale_factors[]={abs(h_data_CR->GetBinContent(1)-h_MC_CR->GetBinContent(1))/h_MC_CR->GetBinContent(1), abs(h_data_CR->GetBinContent(2)-h_MC_CR->GetBinContent(2))/h_MC_CR->GetBinContent(2)};
+  cout << "///////////////////////////////////////////////////////" << endl;
+  cout << "TT data/MC scale factors (decay mode):" << endl;
+  cout << "Data: " << h_data_CR->GetBinContent(1) << " and MC: " << h_MC_CR->GetBinContent(1) << " -> " << scale_factors[0] << endl;
+  cout << "Data: " << h_data_CR->GetBinContent(2) << " and MC: " << h_MC_CR->GetBinContent(2) << " -> " << scale_factors[1] << endl;
+  
+
+  TH2D *out_t = new TH2D(tout, tout, 2,0,2,sys_nonclosure_t->GetN(), sys_nonclosure_t->GetX()[0], sys_nonclosure_t->GetX()[sys_nonclosure_t->GetN()-1]);
+  for(Int_t i=0; i<2; i++){
+    for(Int_t j=0; j<sys_nonclosure_t->GetN(); j++){
+      out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2)+TMath::Power(scale_factors[i],2) ));
+    }
   }
   TFile *fout_f=new TFile(fout,"UPDATE");
   fout_f->cd();
   out_t->Write();
   fout_f->Close();
+  f_data_CR->Close();
+  f_MC_CR->Close();
 
 }
   

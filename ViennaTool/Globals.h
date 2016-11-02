@@ -9,8 +9,8 @@
 #define _TTAU          32
 #define _JTAU          64
 #define _LTAU         128
-#define NO_SR         256
-#define DOALL         512
+#define DOALL         256
+#define NO_SR         512
 #define GEN_MATCH    1024
 #define VSVAR        2048
 #define MT           4096
@@ -54,13 +54,13 @@
 
 //be very careful to not overlap with other marks -> use category mark extra
 #define _INCL         1
-#define _0JET         2
-#define _1JET         4
-#define _1JETZ050     8
-#define _1JETZ50100  16
-#define _1JETZ100    32
-#define _2JET        64
-#define _2JETVBF    128
+#define _0JETLOW      2
+#define _0JETHIGH     4
+#define _1JETLOW      8
+#define _1JETHIGH    16
+#define _VBFLOW      32
+#define _VBFHIGH     64
+#define _2JET       128
 #define _ANYB       256
 
 #define _INCLFRAC_MT     1024
@@ -143,6 +143,7 @@ const TString Wjetsfile  = indir + "BASIS_ntuple_WXJets_merged_MCSpring16_"+s_ch
 const TString QCDfile    = indir + "BASIS_ntuple_QCD_Pt_20toInf_MuEnrichedPt15_pythia8_MCSpring16_160929_"+s_chan[CHAN]+"_"+ver+".root";
 const TString VVfile     = indir + "BASIS_ntuple_VV_MCSpring16_"+s_chan[CHAN]+"_"+ver+".root";
 const TString TTfile     = indir + "BASIS_ntuple_TT_powheg_MCSpring16_160919_"+s_chan[CHAN]+"_"+ver+".root";
+const TString SIGNALfile = indir + "BASIS_ntuple_SIGNAL_M125_powheg_MCSpring16_reHLT_"+s_chan[CHAN]+"_"+ver+".root";
 
 
 // Preselection files
@@ -164,6 +165,7 @@ const TString preselection_MCsum         = path_presel+"preselection_"+s_MCsum+"
 const TString preselection_MCsum_woQCD   = path_presel+"preselection_"+s_MCsum+"_woQCD.root";
 const TString preselection_QCD           = path_presel+"preselection_QCD.root";
 const TString preselection_QCD_Pt        = path_presel+"preselection_QCD_Pt.root";
+const TString preselection_signal        = path_presel+"preselection_signal.root";
 
 const TString fit_formula                = "fit_formula.root";
 
@@ -639,6 +641,17 @@ const TString SR_data_svfit    = SR_data+"_"+s_svfit+".root";
 const TString SR_data_eta    = SR_data+"_"+s_eta+".root";
 const TString SR_data_mttot    = SR_data+"_"+s_mttot+".root";
 
+const TString SR_signal       = path_sim+s_SR+"_signal";
+const TString SR_signal_mt_sim    = SR_signal+"_"+s_mt+".root";
+const TString SR_signal_mvis_sim  = SR_signal+"_"+s_mvis+".root";
+const TString SR_signal_pt_sim    = SR_signal+"_"+s_pt+".root";
+const TString SR_signal_mt2_sim    = SR_signal+"_"+s_mt2+".root";
+const TString SR_signal_lepPt_sim    = SR_signal+"_"+s_lepPt+".root";
+const TString SR_signal_mvamet_sim    = SR_signal+"_"+s_mvamet+".root";
+const TString SR_signal_svfit_sim    = SR_signal+"_"+s_svfit+".root";
+const TString SR_signal_eta_sim    = SR_signal+"_"+s_eta+".root";
+const TString SR_signal_mttot_sim    = SR_signal+"_"+s_mttot+".root";
+
 const TString SS_SR_data       = path_sim+s_SS_SR+"_data";
 const TString SS_SR_data_mt    = SS_SR_data+"_"+s_mt+".root";
 const TString SS_SR_data_mvis  = SS_SR_data+"_"+s_mvis+".root";
@@ -672,8 +685,11 @@ Double_t Pt_cuts_QCD[]   = {20.,30.,40.,60.,80.,100.,150.};
 
 const Double_t Pt_cuts_Wjets[] = {20.,22.5,25.,27.5,30.,35.,40.,50.,60.};//lower boundaries of the pt bins, there are no data with pt<20.
 const Double_t Pt_cuts_DY[]    = {20.,25.,30.,40.};
-const Double_t Pt_cuts_TT[]    = {20.,25.,30.,40.}; 
+//const Double_t Pt_cuts_TT[]    = {20.,25.,30.,40.};
+const Double_t Pt_cuts_TT_SR[]     = {20.,22.5,25.,27.5,30.,35.,40.,50.,60.};
+const Double_t Pt_cuts_TT_CR[]     = {20.};
 const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.};
+const Double_t Pt_cuts_QCD_AI[] ={20.,25.,30.,40};
 
 /*const Double_t Pt_cuts_Wjets[] = {20.,25.,30.,40.,60};//lower boundaries of the pt bins, there are no data with pt<20.
 const Double_t Pt_cuts_DY[]    = {20.,25.,30.,40.,60.};
@@ -682,8 +698,11 @@ const Double_t Pt_cuts_QCD[]   = {20.,25.,30.,40.,60.};*/
 
 const Int_t N_p_Wjets = sizeof(Pt_cuts_Wjets)/sizeof(Double_t);
 const Int_t N_p_DY = sizeof(Pt_cuts_DY)/sizeof(Double_t);
-const Int_t N_p_TT = sizeof(Pt_cuts_TT)/sizeof(Double_t);
+//const Int_t N_p_TT = sizeof(Pt_cuts_TT)/sizeof(Double_t);
+const Int_t N_p_TT_SR = sizeof(Pt_cuts_TT_SR)/sizeof(Double_t);
+const Int_t N_p_TT_CR = sizeof(Pt_cuts_TT_CR)/sizeof(Double_t);
 const Int_t N_p_QCD = sizeof(Pt_cuts_QCD)/sizeof(Double_t);
+const Int_t N_p_QCD_AI = sizeof(Pt_cuts_QCD_AI)/sizeof(Double_t);
 
 const Double_t Eta_cuts_Wjets[] = {0.};//these are the lower boundaries of the |eta| bins
 const Double_t Eta_cuts_DY[]    = {0.};
@@ -707,7 +726,9 @@ const Int_t N_t_QCD = sizeof(Decay_cuts_QCD)/sizeof(Int_t);
 
 const Int_t Njet_cuts_Wjets[] = {0,1};
 const Int_t Njet_cuts_DY[] = {0,1};
-const Int_t Njet_cuts_TT[] = {0};
+//const Int_t Njet_cuts_TT[] = {0};
+const Int_t Njet_cuts_TT_SR[] = {0,1};
+const Int_t Njet_cuts_TT_CR[] = {0};
 const Int_t Njet_cuts_QCD[] = {0,1};
 
 /*const Int_t Njet_cuts_Wjets[] = {0};
@@ -717,7 +738,9 @@ const Int_t Njet_cuts_QCD[] = {0};*/
 
 const Int_t N_j_Wjets = sizeof(Njet_cuts_Wjets)/sizeof(Int_t);
 const Int_t N_j_DY = sizeof(Njet_cuts_DY)/sizeof(Int_t);
-const Int_t N_j_TT = sizeof(Njet_cuts_TT)/sizeof(Int_t);
+const Int_t N_j_TT_SR = sizeof(Njet_cuts_TT_SR)/sizeof(Int_t);
+const Int_t N_j_TT_CR = sizeof(Njet_cuts_TT_CR)/sizeof(Int_t);
+//const Int_t N_j_TT = sizeof(Njet_cuts_TT)/sizeof(Int_t);
 const Int_t N_j_QCD = sizeof(Njet_cuts_QCD)/sizeof(Int_t);
 
 const Int_t nbins_svfit=35;  const Double_t hist_min_svfit=0.; const Double_t hist_max_svfit=350.;
@@ -847,8 +870,8 @@ const Int_t c_cuts[NC]={NP1,NP3,PT1,PT2,PT3,ETA1,ETA2,ETA3};
 static const std::vector<TString> empty_vec_tstring;
 
 const Int_t nCAT=8;
-const TString categories[nCAT] = { "_0jet", "_1jet", "_1jetZ050", "_1jetZ50100", "_1jetZ100", "_2jet", "_2jetVBF", "_anyb"};
-const Int_t catMode[nCAT] = {_0JET, _1JET, _1JETZ050, _1JETZ50100, _1JETZ100, _2JET, _2JETVBF, _ANYB };
+const TString categories[nCAT] = { "_0jetLow", "_0jetHigh", "_1jetLow", "_1jetHigh", "_vbfLow", "_vbfHigh","_2jet","_anyb"};
+const Int_t catMode[nCAT] = {_0JETLOW, _0JETHIGH, _1JETLOW, _1JETHIGH, _VBFLOW, _VBFHIGH, _2JET, _ANYB};
 
 //const Int_t nCAT=4;
 //const TString categories[nCAT] = { "_0jet", "_1jet", "_2jet", "_anyb"};
