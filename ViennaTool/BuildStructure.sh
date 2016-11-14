@@ -147,6 +147,13 @@ if [ ! -d "ff_2d" ]; then
         if [ ! -d "ff_2d/mt/_vbfHigh" ]; then
             mkdir -p ff_2d/mt/_vbfHigh;
         fi
+        if [ ! -d "ff_2d/mt/_2jet" ]; then
+            mkdir -p ff_2d/mt/_2jet;
+        fi
+        if [ ! -d "ff_2d/mt/_anyb" ]; then
+            mkdir -p ff_2d/mt/_anyb;
+        fi
+        
     else
         mkdir -p ff_2d/mt/incl;
         mkdir -p ff_2d/mt/_0jetLow;
@@ -155,6 +162,8 @@ if [ ! -d "ff_2d" ]; then
         mkdir -p ff_2d/mt/_1jetHigh;
         mkdir -p ff_2d/mt/_vbfLow;
         mkdir -p ff_2d/mt/_vbfHigh;
+        mkdir -p ff_2d/mt/_2jet;
+        mkdir -p ff_2d/mt/_anyb;
     fi
     if [ ! -d "ff_2d/et" ]; then
         if [ ! -d "ff_2d/et/incl" ]; then
@@ -178,6 +187,12 @@ if [ ! -d "ff_2d" ]; then
         if [ ! -d "ff_2d/et/_vbfHigh" ]; then
             mkdir -p ff_2d/et/_vbfHigh;
         fi
+        if [ ! -d "ff_2d/et/_2jet" ]; then
+            mkdir -p ff_2d/et/_2jet;
+        fi
+        if [ ! -d "ff_2d/et/_anyb" ]; then
+            mkdir -p ff_2d/et/_anyb;
+        fi
     else
         mkdir -p ff_2d/et/incl;
         mkdir -p ff_2d/et/_0jetLow;
@@ -186,6 +201,8 @@ if [ ! -d "ff_2d" ]; then
         mkdir -p ff_2d/et/_1jetHigh;
         mkdir -p ff_2d/et/_vbfLow;
         mkdir -p ff_2d/et/_vbfHigh;
+        mkdir -p ff_2d/et/_2jet;
+        mkdir -p ff_2d/et/_anyb;
     fi
     if [ ! -d "ff_2d/tt" ]; then
         if [ ! -d "ff_2d/tt/incl" ]; then
@@ -209,6 +226,12 @@ if [ ! -d "ff_2d" ]; then
         if [ ! -d "ff_2d/tt/_vbfHigh" ]; then
             mkdir -p ff_2d/tt/_vbfHigh;
         fi
+        if [ ! -d "ff_2d/tt/_2jet" ]; then
+            mkdir -p ff_2d/tt/_2jet;
+        fi
+        if [ ! -d "ff_2d/tt/_anyb" ]; then
+            mkdir -p ff_2d/tt/_anyb;
+        fi
     else
         mkdir -p ff_2d/tt/incl;
         mkdir -p ff_2d/tt/_0jetLow;
@@ -217,6 +240,8 @@ if [ ! -d "ff_2d" ]; then
         mkdir -p ff_2d/tt/_1jetHigh;
         mkdir -p ff_2d/tt/_vbfLow;
         mkdir -p ff_2d/tt/_vbfHigh;
+        mkdir -p ff_2d/tt/_2jet;
+        mkdir -p ff_2d/tt/_anyb;
     fi
     
     
@@ -228,6 +253,8 @@ else
     mkdir -p ff_2d/mt/_1jetHigh;
     mkdir -p ff_2d/mt/_vbfLow;
     mkdir -p ff_2d/mt/_vbfHigh;
+    mkdir -p ff_2d/mt/_2jet;
+    mkdir -p ff_2d/mt/_anyb;
     mkdir -p ff_2d/et/incl;
     mkdir -p ff_2d/et/_0jetLow;
     mkdir -p ff_2d/et/_0jetHigh;
@@ -235,6 +262,8 @@ else
     mkdir -p ff_2d/et/_1jetHigh;
     mkdir -p ff_2d/et/_vbfLow;
     mkdir -p ff_2d/et/_vbfHigh;
+    mkdir -p ff_2d/et/_2jet;
+    mkdir -p ff_2d/et/_anyb;
     mkdir -p ff_2d/tt/incl;
     mkdir -p ff_2d/tt/_0jetLow;
     mkdir -p ff_2d/tt/_0jetHigh;
@@ -242,6 +271,8 @@ else
     mkdir -p ff_2d/tt/_1jetHigh;
     mkdir -p ff_2d/tt/_vbfLow;
     mkdir -p ff_2d/tt/_vbfHigh;
+    mkdir -p ff_2d/tt/_2jet;
+    mkdir -p ff_2d/tt/_anyb;
     
 fi
 

@@ -769,7 +769,7 @@ TString PlotterClass::getCaption(TString ltext)
   else if(tmpstring.str().find("VBFLow")!=string::npos) returnstring+=" VBF_high category";
   else if(tmpstring.str().find("VBFHigh")!=string::npos) returnstring+=" VBF_high category";
   else if(tmpstring.str().find("2jet")!=string::npos) returnstring+=" 2jet category";
-  else if(tmpstring.str().find("anyb")!=string::npos) returnstring+=" anyb";
+  else if(tmpstring.str().find("anyb")!=string::npos) returnstring+=" #geq1bjet";
   else returnstring+=" inclusive category";
 
   return returnstring;
@@ -777,11 +777,17 @@ TString PlotterClass::getCaption(TString ltext)
 
 void PlotterClass::doBlinding(TH1D* hdata, TH1D *hsum, TH1D *hsignal){
 
-  for(int i=1; i<hdata->GetNbinsX(); i++){
+  for(int i=1; i<=hdata->GetNbinsX(); i++){
     Double_t s=hsignal->GetBinContent(i);
     Double_t b=hsum->GetBinContent(i);
-    if(s/TMath::Sqrt(b+TMath::Power(b*epsilon,2))  > 0.5 ) hdata->SetBinContent(i,-10);
-    else if(hdata->GetBinContent(i)==0) hdata->SetBinContent(i,0);
+    if(s/TMath::Sqrt(b+TMath::Power(b*epsilon,2))  > 0.5 ){
+      cout << "Blinding here!!" << endl;
+      hdata->SetBinContent(i,-10);
+    }
+    else if(hdata->GetBinContent(i)==0) {
+      cout << "No bin content here!!" << endl;
+      hdata->SetBinContent(i,0.00001);
+    }
   }
   
 }

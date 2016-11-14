@@ -50,17 +50,17 @@ void ApplyFF() {
 
     //for(Int_t icat=0; icat<nCAT; icat++){
       //if(icat==2 || icat==3 || icat==4 || icat==6) continue;      
-    for(Int_t icat=6; icat<nCAT; icat++){
+    for(Int_t icat=7; icat<nCAT; icat++){
       if(inclusive_selection && icat>0) continue;
       Analyzer->loadFile(m_preselection_data,"Events");
       vector<Int_t> mode_comb;
       mode_comb.push_back(NO_SR|MT);
-      mode_comb.push_back(MVIS);
+      /*mode_comb.push_back(MVIS);
       mode_comb.push_back(PT); if(use_svfit){mode_comb.push_back(SVFIT);}
       mode_comb.push_back(M2T);
       mode_comb.push_back(LEPPT); mode_comb.push_back(MVAMET);
       mode_comb.push_back(ETA);
-      mode_comb.push_back(MMTOT);
+      mode_comb.push_back(MMTOT);*/
       
       Int_t categoryMode=0;
       if(inclusive_frac_mt) categoryMode=_INCLFRAC_MT;
@@ -87,8 +87,7 @@ void ApplyFF() {
   ///////////////////////////////////////////////////////////////////////////////////////
   if (doFinalPlots){
     cout << endl << "################### Doing final plots  ###############" << endl << endl;
-    Analyzer->loadFile(preselection_data,"Events");
-
+   
     std::vector<TString> vlabel_all;
     std::vector<TString> vlabel_bkg;
     std::vector<TString> vlabel_ff;
@@ -270,7 +269,7 @@ void ApplyFF() {
       if ( true ){
         TString bsum=SR_MCsum_mt;
         if(!inclusive_selection) bsum.ReplaceAll( ".root",categories[icat]+".root" );
-        Analyzer->plotBgStackedAgainstData(bsum,"MC sum",proc_list_bkg_mt,  vlabel_all,pi+"MCsum_vs_ff_"+tvar[0]+plotEnding,"MC sum run 1 vs FF "+plotEnding,tvar_l[0],_COLOR);
+        //Analyzer->plotBgStackedAgainstData(bsum,"MC sum",proc_list_bkg_mt,  vlabel_all,pi+"MCsum_vs_ff_"+tvar[0]+plotEnding,"MC sum run 1 vs FF "+plotEnding,tvar_l[0],_COLOR);
 
         std::vector<TString> proc_list_bkg_mt;
         for (unsigned iv=0; iv<proc_list_mt.size(); iv++){ if ( !proc_list_mt.at(iv).Contains("DY_TT") ) proc_list_bkg_mt.push_back( proc_list_mt.at(iv) ); }
@@ -278,53 +277,7 @@ void ApplyFF() {
         bsum=SR_MCsum_mt;
         if(!inclusive_selection) bsum.ReplaceAll( ".root",categories[icat]+".root" );
         bsum.ReplaceAll( "SR_MCsum", "SR_Bkgsum_run1" ); //bsum.ReplaceAll( "_"+s_mt , "_"+tvar[0] );
-        
-        //Analyzer->plotBgStackedAgainstData(bsum,"Bkg a la run 1",proc_list_bkg_mt,  vlabel_bkg,pi+"run1_vs_ff_"+tvar[0]+plotEnding,"Bkg sum run 1 vs FF "+plotEnding,tvar_l[0],_COLOR_RUN1);
-        //control plots for et channel////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        std::vector<TString> proc_list_mt_check;
-        proc_list_mt_check.push_back(p+"FFestimate_Wjets_mt"+fracString+".root"); proc_list_mt_check.push_back(p+"FFestimate_tt_J_mt"+fracString+".root"); proc_list_mt_check.push_back(p+"FFestimate_DY_J_mt"+fracString+".root"); proc_list_mt_check.push_back(p+"FFestimate_QCD_mt"+fracString+".root");
-        std::vector<TString> proc_list_mvis_check;
-        proc_list_mvis_check.push_back(p+"FFestimate_Wjets_mvis"+fracString+".root"); proc_list_mvis_check.push_back(p+"FFestimate_tt_J_mvis"+fracString+".root"); proc_list_mvis_check.push_back(p+"FFestimate_DY_J_mvis"+fracString+".root"); proc_list_mvis_check.push_back(p+"FFestimate_QCD_mvis"+fracString+".root");
-        std::vector<TString> proc_list_pt_check;
-        proc_list_pt_check.push_back(p+"FFestimate_Wjets_pt"+fracString+".root"); proc_list_pt_check.push_back(p+"FFestimate_tt_J_pt"+fracString+".root"); proc_list_pt_check.push_back(p+"FFestimate_DY_J_pt"+fracString+".root"); proc_list_pt_check.push_back(p+"FFestimate_QCD_pt"+fracString+".root");
-        if(inclusive_selection && s_chan[CHAN]=="et"){
-        
-	  //plotting et samples with mt fakefactor et fractions vs mt fractions
-	  /*TString check="fakefactor/data_et/FFestimate_wUncertainties_mt.root";
-	  Analyzer->plotBgStackedAgainstData(check,"etfrac",proc_list_mt_check,  vlabel_bkg_check,pi+"mtfrac_ff_"+tvar[0],"mt/et frac for et FFs",tvar_l[0],_COLOR_CHECK);
-                
-	  check="fakefactor/data_et/FFestimate_wUncertainties_mvis.root";
-	  Analyzer->plotBgStackedAgainstData(check,"etfrac",proc_list_mvis_check,  vlabel_bkg_check,pi+"mtfrac_ff_"+tvar[1],"mt/et frac for et FFs",tvar_l[1],_COLOR_CHECK);
-        
-	  //plotting et vs mt fake factors
-	  Analyzer->plotFF("fakefactor/mc_woQCD_et/FF_DY_J_only.root",    "fakefactor/mc_mt/FF_DY_J_only.root",    _DY, pi+"FF_DY_mt_vs_et"   ,"DY m_{T}(#mu#mu), e#tau", "DY m_{T}(#mu#mu), #mu#tau",PTDM_BINS,nFIT_BINS+1);
-	  Analyzer->plotFF("fakefactor/mc_woQCD_et/FF_TT_J_only.root",    "fakefactor/mc_mt/FF_TT_J_only.root",    _TT, pi+"FF_TT_mt_vs_et"   ,"TT , e#tau", "TT, #mu#tau",PTDM_BINS,nPTDM_BINS+1);
-	  Analyzer->plotFF("fakefactor/mc_woQCD_et/FF_Wjets_only.root",    "fakefactor/mc_mt/FF_Wjets_only.root",    _W_JETS, pi+"FF_Wjets_mt_vs_et"   ,"Wjets , e#tau", "Wjets, #mu#tau",PTDM_BINS,nFIT_BINS+1);
-	  Analyzer->plotFF("fakefactor/data_et/FF_corr_Wjets_MCsum_noGen.root",    "fakefactor/data_mt/FF_corr_Wjets_MCsum_noGen.root",    _W_JETS, pi+"FF_data_Wjets_mt_vs_et"   ,"Wjets , e#tau", "Wjets, #mu#tau",PTDMJET_BINS,nPTDMJET_BINS+1);
-	  Analyzer->plotFF("fakefactor/data_et/FF_corr_TT_MCsum_noGen.root",    "fakefactor/data_mt/FF_corr_TT_MCsum_noGen.root",    _TT, pi+"FF_data_TT_mt_vs_et"   ,"TT , e#tau", "TT, #mu#tau",PTDMJET_BINS,nPTDMJET_BINS+1);
-	  Analyzer->plotFF("fakefactor/data_et/FF_corr_DY_MCsum_noGen.root",    "fakefactor/data_mt/FF_corr_DY_MCsum_noGen.root",    _DY, pi+"FF_data_DY_J_mt_vs_et"   ,"DY , e#tau", "DY, #mu#tau",PTDMJET_BINS,nPTDMJET_BINS+1);
-	  Analyzer->plotFF("fakefactor/data_et/FF_corr_QCD_MCsum_noGen.root",    "fakefactor/data_mt/FF_corr_QCD_MCsum_noGen.root",    _QCD, pi+"FF_data_QCD_mt_vs_et"   ,"QCD , e#tau", "QCD, #mu#tau",PTDMJET_BINS,nPTDMJET_BINS+1);*/
-        }
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        TString toCompare="sim/tt/SR_cuts_1p_data_mt.root";
-        std::vector<TString> others;
-        std::vector<TString> others_name;
-        others.push_back("sim/tt/SR_cuts_1p_Wjets_mt.root");
-        others_name.push_back("MC Wjets");
-        //Analyzer->makeComparePlots(toCompare,"data",others, others_name,pi+"SR_loose_mt_data_vs_WjetsMC_1p","loose_mt","m_T",_COLOR);
-        //Analyzer->makeComparePlots(toCompare,"data",others, others_name,pi+"SR_tight_mt_data_vs_WjetsMC_1p","tight_mt","m_T",_COLOR);
-        //Analyzer->makeComparePlots(toCompare,"data",others, others_name,pi+"SR_antiiso_mt_data_vs_WjetsMC_1p","antiiso_mt","m_T",_COLOR);
-        toCompare="sim/tt/SR_cuts_3p_data_mt.root";
-        others.clear();
-        others_name.clear();
-        others.push_back("sim/tt/SR_cuts_3p_Wjets_mt.root");
-        others_name.push_back("MC Wjets");
-        //Analyzer->makeComparePlots(toCompare,"data",others, others_name,pi+"SR_loose_mt_data_vs_WjetsMC_3p","loose_mt","m_T",_COLOR);
-        //Analyzer->makeComparePlots(toCompare,"data",others, others_name,pi+"SR_tight_mt_data_vs_WjetsMC_3p","tight_mt","m_T",_COLOR);
-        //Analyzer->makeComparePlots(toCompare,"data",others, others_name,pi+"SR_antiiso_mt_data_vs_WjetsMC_3p","antiiso_mt","m_T",_COLOR);
-        
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       
         
         TString data=SR_data_mt; TString signalFile=SR_signal_mt_sim;
         if(DOMC)data=SR_MCsum_mt;
@@ -408,66 +361,68 @@ void ApplyFF() {
         Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mttot_ff,  vlabel_bkg_ff,pi+"bkg_ff_"+s_mttot+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[7],signalFile,_COLOR_FF);
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         cout << "---------------------------------------------------" << endl;
-        cout << "Plotting splitted FFs" << endl;
-        proc_list_mt_ff.clear();
-        proc_list_mvis_ff.clear();
-        proc_list_pt_ff.clear();
-        proc_list_svfit_ff.clear();
-        std::vector<TString> proc_list_mt_subtract; std::vector<TString> proc_list_mvis_subtract; std::vector<TString> proc_list_pt_subtract; std::vector<TString> proc_list_svfit_subtract;
-        proc_list_mt_ff.push_back(p+"FFestimate_Wjets_mt"+fracString+".root");
-        if (DOQCD)   proc_list_mt_ff.push_back(p+"FFestimate_QCD_mt"+fracString+".root");
-        proc_list_mt_ff.push_back(p+"FFestimate_tt_J_mt"+fracString+".root");
-        proc_list_mt_subtract.push_back(SR_TT_T_mt_sim);
-        proc_list_mt_subtract.push_back(SR_TT_L_mt_sim);
-        proc_list_mt_ff.push_back(p+"FFestimate_DY_J_mt"+fracString+".root");
-        proc_list_mt_subtract.push_back(SR_DY_TT_mt_sim);
-        proc_list_mt_subtract.push_back(SR_DY_L_mt_sim);
-        if (useVV)   proc_list_mt_subtract.push_back(SR_VV_T_mt_sim);
-        if (useVV)   proc_list_mt_subtract.push_back(SR_VV_L_mt_sim);
-        if(!inclusive_selection) {
-          for( Int_t ilist=0;ilist<proc_list_mt_ff.size();ilist++ ) proc_list_mt_ff.at(ilist).ReplaceAll( "_catfrac_mt", categories[icat]+"_catfrac_mt" );
-          for( Int_t ilist=0;ilist<proc_list_mt_ff.size();ilist++ ) proc_list_mt_ff.at(ilist).ReplaceAll( "_catfrac_et", categories[icat]+"_catfrac_et" );
-          for( Int_t ilist=0;ilist<proc_list_mt_ff.size();ilist++ ) proc_list_mt_ff.at(ilist).ReplaceAll( "_catfrac_tt", categories[icat]+"_catfrac_tt" );
-          for( Int_t ilist=0;ilist<proc_list_mt_subtract.size();ilist++ ) proc_list_mt_subtract.at(ilist).ReplaceAll( ".root", categories[icat]+".root" );
+        if(plotSplittedFFs){
+          cout << "Plotting splitted FFs" << endl;
+          proc_list_mt_ff.clear();
+          proc_list_mvis_ff.clear();
+          proc_list_pt_ff.clear();
+          proc_list_svfit_ff.clear();
+          std::vector<TString> proc_list_mt_subtract; std::vector<TString> proc_list_mvis_subtract; std::vector<TString> proc_list_pt_subtract; std::vector<TString> proc_list_svfit_subtract;
+          proc_list_mt_ff.push_back(p+"FFestimate_Wjets_mt"+fracString+".root");
+          if (DOQCD)   proc_list_mt_ff.push_back(p+"FFestimate_QCD_mt"+fracString+".root");
+          proc_list_mt_ff.push_back(p+"FFestimate_tt_J_mt"+fracString+".root");
+          proc_list_mt_subtract.push_back(SR_TT_T_mt_sim);
+          proc_list_mt_subtract.push_back(SR_TT_L_mt_sim);
+          proc_list_mt_ff.push_back(p+"FFestimate_DY_J_mt"+fracString+".root");
+          proc_list_mt_subtract.push_back(SR_DY_TT_mt_sim);
+          proc_list_mt_subtract.push_back(SR_DY_L_mt_sim);
+          if (useVV)   proc_list_mt_subtract.push_back(SR_VV_T_mt_sim);
+          if (useVV)   proc_list_mt_subtract.push_back(SR_VV_L_mt_sim);
+          if(!inclusive_selection) {
+            for( Int_t ilist=0;ilist<proc_list_mt_ff.size();ilist++ ) proc_list_mt_ff.at(ilist).ReplaceAll( "_catfrac_mt", categories[icat]+"_catfrac_mt" );
+            for( Int_t ilist=0;ilist<proc_list_mt_ff.size();ilist++ ) proc_list_mt_ff.at(ilist).ReplaceAll( "_catfrac_et", categories[icat]+"_catfrac_et" );
+            for( Int_t ilist=0;ilist<proc_list_mt_ff.size();ilist++ ) proc_list_mt_ff.at(ilist).ReplaceAll( "_catfrac_tt", categories[icat]+"_catfrac_tt" );
+            for( Int_t ilist=0;ilist<proc_list_mt_subtract.size();ilist++ ) proc_list_mt_subtract.at(ilist).ReplaceAll( ".root", categories[icat]+".root" );
+          }
+          if(DOMC)data=SR_MCsum_mt;
+          else data=SR_data_mt;
+          if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
+          Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mt_ff,  vlabel_bkg_check, proc_list_mt_subtract, pi+"data_vs_ff_"+tvar[0]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[0],_COLOR_CHECK);
+          
+          for (unsigned iv=0; iv<proc_list_mt_ff.size(); iv++){
+            proc_list_mvis_ff.push_back(proc_list_mt_ff.at(iv)); proc_list_pt_ff.push_back(proc_list_mt_ff.at(iv)); proc_list_svfit_ff.push_back(proc_list_mt_ff.at(iv));
+            if( proc_list_mvis_ff.at(iv).Contains("mt") && !proc_list_mvis_ff.at(iv).Contains("catfrac") )proc_list_mvis_ff.at(iv).ReplaceAll("mt.","mvis.");
+            else proc_list_mvis_ff.at(iv).ReplaceAll("_mt_","_mvis_");
+            if( proc_list_pt_ff.at(iv).Contains("mt") && !proc_list_pt_ff.at(iv).Contains("catfrac") ) proc_list_pt_ff.at(iv).ReplaceAll("mt.","pt.");
+            else proc_list_pt_ff.at(iv).ReplaceAll("_mt_","_pt_");
+            if( proc_list_svfit_ff.at(iv).Contains("mt") && !proc_list_svfit_ff.at(iv).Contains("catfrac") ) proc_list_svfit_ff.at(iv).ReplaceAll("mt.","svfit.");
+            else proc_list_svfit_ff.at(iv).ReplaceAll("_mt_","_svfit_");
+          }
+          
+          for (unsigned iv=0; iv<proc_list_mt_subtract.size(); iv++){
+            proc_list_mvis_subtract.push_back(proc_list_mt_subtract.at(iv)); proc_list_pt_subtract.push_back(proc_list_mt_subtract.at(iv)); proc_list_svfit_subtract.push_back(proc_list_mt_subtract.at(iv));
+            if( proc_list_mvis_subtract.at(iv).Contains("mt.") && !proc_list_mvis_subtract.at(iv).Contains("catfrac") )proc_list_mvis_subtract.at(iv).ReplaceAll("mt.","mvis.");
+            else proc_list_mvis_subtract.at(iv).ReplaceAll("_mt_","_mvis_");
+            if( proc_list_pt_subtract.at(iv).Contains("mt.") && !proc_list_pt_subtract.at(iv).Contains("catfrac") ) proc_list_pt_subtract.at(iv).ReplaceAll("mt.","pt.");
+            else proc_list_pt_subtract.at(iv).ReplaceAll("_mt_","_pt_");
+            if( proc_list_svfit_subtract.at(iv).Contains("mt.") && !proc_list_svfit_subtract.at(iv).Contains("catfrac") ) proc_list_svfit_subtract.at(iv).ReplaceAll("mt.","svfit.");
+            else proc_list_svfit_subtract.at(iv).ReplaceAll("_mt_","_svfit_");
+          }
+          
+          if(DOMC)data=SR_MCsum_mvis;
+          else data=SR_data_mvis;
+          if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
+          Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mvis_ff,  vlabel_bkg_check, proc_list_mvis_subtract, pi+"data_vs_ff_"+tvar[1]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[1],_COLOR_CHECK);
+          if(DOMC)data=SR_MCsum_pt;
+          else data=SR_data_pt;
+          if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
+          Analyzer->plotBgStackedAgainstData(data,"data",proc_list_pt_ff,  vlabel_bkg_check, proc_list_pt_subtract, pi+"data_vs_ff_"+tvar[2]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[2],_COLOR_CHECK);
+          if(DOMC)data=SR_MCsum_svfit;
+          else data=SR_data_svfit;
+          if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
+          if(use_svfit)Analyzer->plotBgStackedAgainstData(data,"data",proc_list_svfit_ff,  vlabel_bkg_check, proc_list_svfit_subtract, pi+"data_vs_ff_"+s_svfit+plotEnding,"Bkg estimation with FF "+plotEnding,"m_{SV} [GeV]",_COLOR_CHECK);
+          
         }
-        if(DOMC)data=SR_MCsum_mt;
-        else data=SR_data_mt;
-        if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
-        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mt_ff,  vlabel_bkg_check, proc_list_mt_subtract, pi+"data_vs_ff_"+tvar[0]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[0],_COLOR_CHECK);
-
-        for (unsigned iv=0; iv<proc_list_mt_ff.size(); iv++){
-          proc_list_mvis_ff.push_back(proc_list_mt_ff.at(iv)); proc_list_pt_ff.push_back(proc_list_mt_ff.at(iv)); proc_list_svfit_ff.push_back(proc_list_mt_ff.at(iv));
-          if( proc_list_mvis_ff.at(iv).Contains("mt") && !proc_list_mvis_ff.at(iv).Contains("catfrac") )proc_list_mvis_ff.at(iv).ReplaceAll("mt.","mvis.");
-          else proc_list_mvis_ff.at(iv).ReplaceAll("_mt_","_mvis_");
-          if( proc_list_pt_ff.at(iv).Contains("mt") && !proc_list_pt_ff.at(iv).Contains("catfrac") ) proc_list_pt_ff.at(iv).ReplaceAll("mt.","pt.");
-          else proc_list_pt_ff.at(iv).ReplaceAll("_mt_","_pt_");
-          if( proc_list_svfit_ff.at(iv).Contains("mt") && !proc_list_svfit_ff.at(iv).Contains("catfrac") ) proc_list_svfit_ff.at(iv).ReplaceAll("mt.","svfit.");
-          else proc_list_svfit_ff.at(iv).ReplaceAll("_mt_","_svfit_");
-        }
-
-        for (unsigned iv=0; iv<proc_list_mt_subtract.size(); iv++){
-          proc_list_mvis_subtract.push_back(proc_list_mt_subtract.at(iv)); proc_list_pt_subtract.push_back(proc_list_mt_subtract.at(iv)); proc_list_svfit_subtract.push_back(proc_list_mt_subtract.at(iv));
-          if( proc_list_mvis_subtract.at(iv).Contains("mt.") && !proc_list_mvis_subtract.at(iv).Contains("catfrac") )proc_list_mvis_subtract.at(iv).ReplaceAll("mt.","mvis.");
-          else proc_list_mvis_subtract.at(iv).ReplaceAll("_mt_","_mvis_");
-          if( proc_list_pt_subtract.at(iv).Contains("mt.") && !proc_list_pt_subtract.at(iv).Contains("catfrac") ) proc_list_pt_subtract.at(iv).ReplaceAll("mt.","pt.");
-          else proc_list_pt_subtract.at(iv).ReplaceAll("_mt_","_pt_");
-          if( proc_list_svfit_subtract.at(iv).Contains("mt.") && !proc_list_svfit_subtract.at(iv).Contains("catfrac") ) proc_list_svfit_subtract.at(iv).ReplaceAll("mt.","svfit.");
-          else proc_list_svfit_subtract.at(iv).ReplaceAll("_mt_","_svfit_");
-        }
-
-        if(DOMC)data=SR_MCsum_mvis;
-        else data=SR_data_mvis;
-        if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
-        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_mvis_ff,  vlabel_bkg_check, proc_list_mvis_subtract, pi+"data_vs_ff_"+tvar[1]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[1],_COLOR_CHECK);
-        if(DOMC)data=SR_MCsum_pt;
-        else data=SR_data_pt;
-        if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
-        Analyzer->plotBgStackedAgainstData(data,"data",proc_list_pt_ff,  vlabel_bkg_check, proc_list_pt_subtract, pi+"data_vs_ff_"+tvar[2]+plotEnding,"Bkg estimation with FF "+plotEnding,tvar_l[2],_COLOR_CHECK);
-        if(DOMC)data=SR_MCsum_svfit;
-        else data=SR_data_svfit;
-        if(!inclusive_selection) data.ReplaceAll( ".root",categories[icat]+".root" );
-        if(use_svfit)Analyzer->plotBgStackedAgainstData(data,"data",proc_list_svfit_ff,  vlabel_bkg_check, proc_list_svfit_subtract, pi+"data_vs_ff_"+s_svfit+plotEnding,"Bkg estimation with FF "+plotEnding,"m_{SV} [GeV]",_COLOR_CHECK);
-        
       }
       ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       
@@ -548,8 +503,6 @@ void ApplyFF() {
   }
 
 
-  
-  
   delete Analyzer;
 
   

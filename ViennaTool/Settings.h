@@ -39,8 +39,9 @@ const int MULTITAU=0;
 const int APPLY_TO_ISOTAU=1; //def: 0
 const int USE_ISOTAU=1; //def: 1
 const int USE_MVA_ISO=1; //def: 1
-const int CALC_SS_SR=0; //default: 0   //0.15<QCD_iso<0.25 for QCD FFs
+const int CALC_SS_SR=1; //default: 0   //0.15<QCD_iso<0.25 for QCD FFs
 const int num = 0;
+const int doSRHisto = 0;
 ///////////////////////////////////////////////////
 //steerFF
 const int doDebugPlots=1;    //1 to also calculate FF in SR; and do bkg estimate with unweighted FF per sample ->for control plots
@@ -52,10 +53,16 @@ const int requireGenMatch_whenCalcFF=0; //0 as default
 const int useDYFF_forTT=0; //0 as default
 const int useWJFF_forDY=0; //1 as default
 const int doCalcWeights=0; //calc fractions
-const int doFit=0;
+const int doFit=0; //template fit for fractions, default: 0
 const int doCalc=1; //calc FFs
 const int doCalcCorrections=0;
 const int calcVTightFF=0;
+//////////////////////////////////////////////////
+const int fit_pT_bins = 1; //use fitted pT bins as input for ff
+const double fitMin = 20;
+const double fitMax = 200;
+const int fitBins = 200;
+//////////////////////////////////////////////////
 //applyFF
 const int doBgEst=1; //calc bkg estimates for different FF contributions
 const int doCalcUncertainties=0; //calc uncertainties (at the moment only TT)
@@ -63,6 +70,7 @@ const int doPlots=0;  //these plots don't have any systematic uncertainties, so 
 //applyUncertainties
 const int doApplyUncertainties=1; //apply public uncertainties to FF bkg estimates
 const int doFinalPlots=1; //final plots of bkg estimates with FFs, comparisons with run1 and MCsum, ...
+const int plotSplittedFFs=0;
 const int doComparePlots=0;
 const int doSSSRPlots=0;
 ///////////////////////////////////////////////////

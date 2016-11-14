@@ -2032,7 +2032,7 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
         }       
       }
     }
-    //delete ff_w; delete ff_qcd; delete ff_tt;
+    if(CHAN!=kTAU){delete ff_w; delete ff_qcd; delete ff_tt;}
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     cout << fakefactor_histo[0]->Integral() << endl;
@@ -2157,7 +2157,7 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
   delete[] ff_err_comp;
   
   
-  delete ff;
+  delete ff; 
   ff_file->Close();
 }
 

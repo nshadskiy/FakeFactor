@@ -5,13 +5,14 @@
 #include "TString.h"
 #include "ViennaTool/Globals.h"
 #include "ViennaTool/interface/GaussianKernelSmoother.h"
+#include <sstream>
 
 void conv_th1_to_th2( const TString fn , const TString hn , const TString hnout , const TString fout_n , const int opt );
 void conv_th1_to_th3( const TString fn , const TString hn, const TString hnout, const TString fout_n , const Int_t njetbinned=1 );
 //void conv_th1_to_th2( const TString fn , const TString hn , const TString fout_n , const Int_t N_D1, const Int_t N_D2, const Double_t V1[], const Int_t V2[], const int ntoys=0 );
 void make_frac_sys( const TString fn , const std::vector<TString> fn_other , const TString hn , const TString hnout , const std::vector<TString> hn_other , const TString fout_n , const int opt );
 void make_frac_sys( const TString fn , const std::vector<TString> fn_other , const TString hn , const TString hnout , const std::vector<TString> hn_other , const TString fout_n , const Int_t N_D1, const Int_t N_D2, const Double_t V1[], const Int_t V2[], const int ntoys=0 );
-void make_3Dhisto( const TString fn , const TString hn , const TString hnout , const TString fout_n , const Int_t N_D1, const Int_t N_D2, const Int_t N_D3, const Double_t V1[], const Int_t V2[], const Int_t V3[], Int_t njetbinned=1 );
+void make_3Dhisto( TString fn , const TString hn , const TString hnout , const TString fout_n , const Int_t N_D1, const Int_t N_D2, const Int_t N_D3, const Double_t V1[], const Int_t V2[], const Int_t V3[], Int_t njetbinned=1 );
 void copy_th1( const TString fn , const TString hn , const TString fout_n );
 void smooth_th1( const TString fn , const TString hn , const TString fout_n , const int useBinErrors=0 );
 TH1D* extract_binerr_histo( TString fn , TString hn );
@@ -214,20 +215,25 @@ void conv_th1_to_th3( const TString fn , const TString hn, const TString hnout, 
   
 }
 
-void make_3Dhisto( const TString fn , const TString hn , const TString hnout , const TString fout_n , const Int_t N_D1, const Int_t N_D2, const Int_t N_D3, const Double_t V1[], const Int_t V2[], const Int_t V3[] , Int_t njetbinned ){
+void make_3Dhisto( TString fn , const TString hn , const TString hnout , const TString fout_n , const Int_t N_D1, const Int_t N_D2, const Int_t N_D3, const Double_t V1[], const Int_t V2[], const Int_t V3[] , Int_t njetbinned ){
 
   cout << "make_3D_histo \t" << fn << "\t" << hn << "\t" << fout_n << "\t" << endl;
 
-  
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+  //Getting TT scalefactors from CR
   const TString d="ViennaTool/fakefactor/data_"+s_chan[CHAN]+"/";
   TFile *f_data_CR=new TFile(d+"FF_corr_TT_MCsum_noGen.root");
   TH1D *h_data_CR= (TH1D*)f_data_CR->Get("c_t");
   TFile *f_MC_CR=new TFile(d+"FF_TT_J_only.root");
   TH1D *h_MC_CR= (TH1D*)f_MC_CR->Get("c_t");
 
-  Double_t scale_factors[]={abs(h_data_CR->GetBinContent(1)/h_MC_CR->GetBinContent(1)), abs(h_data_CR->GetBinContent(2)/h_MC_CR->GetBinContent(2))};
-  if(!fn.Contains("TT")) {scale_factors[0]=1; scale_factors[1]=1;}
-
+  vector<Double_t> scale_factors;
+  for(int i=1; i<=h_data_CR->GetNbinsX(); i++){
+    if(fn.Contains("TT")) scale_factors.push_back( abs(h_data_CR->GetBinContent(i)/h_MC_CR->GetBinContent(i) ) );
+    else scale_factors.push_back(1.);
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+  
   Double_t d1[N_D1+1];
   Double_t d2[N_D2+1];
   Double_t d3[N_D3+1];
@@ -247,61 +253,55 @@ void make_3Dhisto( const TString fn , const TString hn , const TString hnout , c
   }
   d3[N_D3]=10;
 
+
+  if(fit_pT_bins) fn.ReplaceAll(".root","_fitted.root");
   TFile *f=new TFile( fn );
-  TH1D *h=(TH1D*) f->Get(hn);
 
   TH3D *hout      = new TH3D( hnout,            "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
   TH3D *hout_err  = new TH3D( hnout+"_error",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
   TString replaceString=hnout;
   replaceString.ReplaceAll("_3d","");
 
-  if(njetbinned){
-    for (int i=0; i<N_D1; i++){
-      for (int j=0; j<N_D2; j++){
-        for (int k=0; k<N_D3; k++){
-          double cont=h->GetBinContent( i+N_D1*j + (N_D1*N_D2)*k + 1 );
-          if(j==0) {
-            cout << "Content: " << cont << endl;
-            cont=cont*scale_factors[0];
-            cout << "Content after applying scalefactors: " << cont << endl;
-          }
-          if(j==1) {
-            cout << "Content: " << cont << endl;
-            cont=cont*scale_factors[1];
-            cout << "Content after applying scalefactors: " << cont << endl;
-          }
-          if(j>2) cout << "Decay mode has more than 2 bins" << endl;
-          /*cout << "i: " << i << endl;
-          cout << "j: " << j << endl;
-          cout << "k: " << k << endl;
-          cout << i+N_D1*j + (N_D1*N_D2)*k + 1 << ": " << h->GetBinContent( i+N_D1*j + (N_D1*N_D2)*k + 1 ) << endl;*/
-          double err =h->GetBinError( i+N_D1*j + (N_D1*N_D2)*k + 1 );
-          hout->SetBinContent(       i+1 , j+1 , k+1 , cont );
-          hout->SetBinError(         i+1 , j+1 , k+1 , err );
-          hout_err->SetBinContent(       i+1 , j+1 , k+1 , err/cont );
-          cout << cont << " " << err << " " << err/cont << endl;
-          hout_err->SetBinError(       i+1 , j+1 , k+1 , err );
+
+  if(fit_pT_bins){
+    for (int idm=0; idm<N_D2; idm++){
+      for (int ijet=0; ijet<N_D3; ijet++){
+        stringstream fitted_histo; fitted_histo << "dm" << idm << "_njet" << ijet;
+        TH1D *h=(TH1D*) f->Get(fitted_histo.str().c_str());
+        for (int ipt=0; ipt<fitBins; ipt++){
+          double cont=h->GetBinContent( ipt + 1 );
+          cont = cont*scale_factors.at(idm);
+          double err =h->GetBinError( ipt +1 );
+          hout->SetBinContent(       ipt+1 , idm+1 , ijet+1 , cont );
+          hout->SetBinError(         ipt+1 , idm+1 , ijet+1 , err );
+          hout_err->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err/cont );
+          hout_err->SetBinError(       ipt+1 , idm+1 , ijet+1 , err );
         }
       }
     }
   }
-  else{
+  
+  else if(njetbinned){
+    TH1D *h=(TH1D*) f->Get(hn);
     for (int i=0; i<N_D1; i++){
       for (int j=0; j<N_D2; j++){
         for (int k=0; k<N_D3; k++){
-          double cont=h->GetBinContent( i+N_D1*j + 1 );
-          /*cout << "i: " << i << endl;
-          cout << "j: " << j << endl;
-          cout << "k: " << k << endl;
-          cout << i+N_D1*j + 1 << ": " << h->GetBinContent( i+N_D1*j + 1 ) << endl;*/
-          double err =h->GetBinError( i+N_D1*j + 1 );
+          double cont=h->GetBinContent( i+N_D1*j + (N_D1*N_D2)*k + 1 );
+          cont = cont*scale_factors.at(j);
+          cout << i+N_D1*j + (N_D1*N_D2)*k + 1 << ": " << cont << endl;
+          double err =h->GetBinError( i+N_D1*j + (N_D1*N_D2)*k + 1 );
           hout->SetBinContent(       i+1 , j+1 , k+1 , cont );
           hout->SetBinError(         i+1 , j+1 , k+1 , err );
-          hout_err->SetBinContent(       i+1 , j+1 , k+1 , err );
-          hout_err->SetBinError(       i+1 , j+1 , k+1 , err/cont );
+          hout_err->SetBinContent(       i+1 , j+1 , k+1 , err/cont );
+          hout_err->SetBinError(       i+1 , j+1 , k+1 , err );
         }
       }
     }
+    delete h;
+  }
+  else{
+    cout << fn << " fake factors have no njet binning! Is this intended?" << endl;
+    return;
   }
   
     
