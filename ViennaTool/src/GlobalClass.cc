@@ -100,6 +100,7 @@ Int_t GlobalClass::isInSR(const Int_t mode, const Int_t ind)
   if(CHAN==kMU) isolation=LEP_ISO_CUT;
   if(CHAN==kEL) isolation=LEP_ISO_CUT_ET;
   antiIso_min=isolation; antiIso_max=isolation+0.1;
+  //antiIso_min=isolation+0.15; antiIso_max=isolation+0.35;
   
   if ( mode & GEN_MATCH ) {
     if ( event_s->alltau_gen_match->at(ind)!=realJet ) return 0; //FIX ME
@@ -154,6 +155,7 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
   if(CHAN==kMU) isolation=LEP_ISO_CUT;
   if(CHAN==kEL) isolation=LEP_ISO_CUT_ET;
   antiIso_min=isolation; antiIso_max=isolation+0.1;
+  //antiIso_min=isolation+0.15; antiIso_max=isolation+0.35;
   
   if (DEBUG==2) std::cout << "In TNtupleAnalyzer::isInCR" << std::endl;
 
@@ -560,6 +562,7 @@ Double_t GlobalClass::selVal(const Int_t mode, const Int_t ind){
   else if (mode & MT) {return event_s->alltau_mt->at(ind);}
   else if (mode & LEPPT) {return event_s->lep_pt;}
   else if (mode & MVAMET) {return event_s->mvamet;}
+  else if (mode & MET) {return event_s->met;}
   else if (mode & ETA)   {return event_s->alltau_eta->at(ind);}
   else if (mode & MMTOT) {return TMath::Sqrt( TMath::Power(event_s->alltau_mt->at(ind),2) + TMath::Power(event_s->alltau_mt2->at(ind),2) + 2*event_s->lep_pt*event_s->alltau_pt->at(ind)*(1-TMath::Cos( TVector2::Phi_mpi_pi( event_s->lep_phi-event_s->alltau_phi->at(ind) ) ) ) );}
   else{ std::cout << "selVal: Warning: no valid variable given!" << std::endl; return -1; }

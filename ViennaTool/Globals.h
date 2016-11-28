@@ -21,8 +21,8 @@
 #define MUISO      131072
 #define NB         262144
 #define DRB        524288
-#define _WCORR    1048576
-#define _TTCORR   2097152
+#define MET       1048576
+#define MJJ       2097152
 #define _FIT      4194304
 #define _SS       8388608
 #define SR       16777216      
@@ -101,6 +101,8 @@ const TString s_muiso        ="muiso";
 const TString s_mt2          ="mt2";
 const TString s_lepPt        ="lepPt";
 const TString s_mvamet       ="mvamet";
+const TString s_met          ="met";
+const TString s_mjj          ="mjj";
 const TString s_mttot        ="mttot";
 const TString s_Wjets        ="Wjets";
 const TString s_QCD          ="QCD";
@@ -134,7 +136,7 @@ const TString path_img_mc_woQCD  = path_img+"mc_woQCD_"+s_chan[CHAN]+"/";
 
 //Input directories
 const TString indir = "/data/higgs/data_2016/ntuples_"+ver+"/"+s_chan[CHAN]+"/ntuples_"+curr_svfit[use_svfit]+"_merged/";
-const TString datafiles[3] = { indir+"BASIS_ntuple_SingleMuonRun2016BCD_mt_"+ver+".root",/*indir + "BASIS_ntuple_SingleMuonRun2016BCD_mt_"+ver+".root" ,*/ indir + "BASIS_ntuple_SingleElectron_16Dec_et_"+ver+".root" , indir + "BASIS_ntuple_Tau_16Dec_tt_"+ver+".root" };
+const TString datafiles[3] = { indir+"BASIS_ntuple_SingleMuonRun2016BCD_mt_"+ver+".root", indir+"BASIS_ntuple_SingleElectronRun2016BCD_et_"+ver+".root" , indir + "BASIS_ntuple_Tau_16Dec_tt_"+ver+".root" };
 const TString datafile   = datafiles[CHAN];
 
 const TString DY_NJfile  = indir + "BASIS_ntuple_DYXJetsToLL_lowMass_merged_MCSpring16_"+s_chan[CHAN]+"_"+ver+".root";
@@ -142,7 +144,7 @@ const TString DYfile     = DY_NJfile;
 const TString Wjetsfile  = indir + "BASIS_ntuple_WXJets_merged_MCSpring16_"+s_chan[CHAN]+"_"+ver+".root";
 const TString QCDfile    = indir + "BASIS_ntuple_QCD_Pt_20toInf_MuEnrichedPt15_pythia8_MCSpring16_160929_"+s_chan[CHAN]+"_"+ver+".root";
 const TString VVfile     = indir + "BASIS_ntuple_VV_MCSpring16_"+s_chan[CHAN]+"_"+ver+".root";
-const TString TTfile     = indir + "BASIS_ntuple_TT_powheg_MCSpring16_160919_"+s_chan[CHAN]+"_"+ver+".root";
+const TString TTfile     = indir + "BASIS_ntuple_TT_powheg_MCSpring16_"+s_chan[CHAN]+"_"+ver+".root";
 const TString SIGNALfile = indir + "BASIS_ntuple_SIGNAL_M125_powheg_MCSpring16_reHLT_"+s_chan[CHAN]+"_"+ver+".root";
 
 
@@ -620,6 +622,8 @@ const TString SR_MCsum_pt      = SR_MCsum+"_"+s_pt+".root";
 const TString SR_MCsum_mt2      = SR_MCsum+"_"+s_mt2+".root";
 const TString SR_MCsum_lepPt      = SR_MCsum+"_"+s_lepPt+".root";
 const TString SR_MCsum_mvamet      = SR_MCsum+"_"+s_mvamet+".root";
+const TString SR_MCsum_met      = SR_MCsum+"_"+s_met+".root";
+const TString SR_MCsum_mjj      = SR_MCsum+"_"+s_mjj+".root";
 const TString SR_MCsum_svfit      = SR_MCsum+"_"+s_svfit+".root";
 const TString SR_MCsum_eta      = SR_MCsum+"_"+s_eta+".root";
 const TString SR_MCsum_mttot      = SR_MCsum+"_"+s_mttot+".root";
@@ -637,6 +641,8 @@ const TString SR_data_pt    = SR_data+"_"+s_pt+".root";
 const TString SR_data_mt2    = SR_data+"_"+s_mt2+".root";
 const TString SR_data_lepPt    = SR_data+"_"+s_lepPt+".root";
 const TString SR_data_mvamet    = SR_data+"_"+s_mvamet+".root";
+const TString SR_data_met    = SR_data+"_"+s_met+".root";
+const TString SR_data_jj    = SR_data+"_"+s_mjj+".root";
 const TString SR_data_svfit    = SR_data+"_"+s_svfit+".root";
 const TString SR_data_eta    = SR_data+"_"+s_eta+".root";
 const TString SR_data_mttot    = SR_data+"_"+s_mttot+".root";
@@ -648,6 +654,8 @@ const TString SR_signal_pt_sim    = SR_signal+"_"+s_pt+".root";
 const TString SR_signal_mt2_sim    = SR_signal+"_"+s_mt2+".root";
 const TString SR_signal_lepPt_sim    = SR_signal+"_"+s_lepPt+".root";
 const TString SR_signal_mvamet_sim    = SR_signal+"_"+s_mvamet+".root";
+const TString SR_signal_met_sim    = SR_signal+"_"+s_met+".root";
+const TString SR_signal_mjj_sim    = SR_signal+"_"+s_mjj+".root";
 const TString SR_signal_svfit_sim    = SR_signal+"_"+s_svfit+".root";
 const TString SR_signal_eta_sim    = SR_signal+"_"+s_eta+".root";
 const TString SR_signal_mttot_sim    = SR_signal+"_"+s_mttot+".root";
@@ -683,10 +691,10 @@ Double_t Pt_cuts_TT[] = {20.,30.,40.,60.,80.,100.,150.};
 Double_t Pt_cuts_QCD[]   = {20.,30.,40.,60.,80.,100.,150.};
 */
 
-const Double_t Pt_cuts_Wjets[] = {20.,22.5,25.,27.5,30.,35.,40.,50.,60.};//lower boundaries of the pt bins, there are no data with pt<20.
+const Double_t Pt_cuts_Wjets[] = {20.,22.5,25.,27.5,30.,35.,40.,50.,80.};//lower boundaries of the pt bins, there are no data with pt<20.
 const Double_t Pt_cuts_DY[]    = {20.,25.,30.,40.};
 //const Double_t Pt_cuts_TT[]    = {20.,25.,30.,40.};
-const Double_t Pt_cuts_TT_SR[]     = {20.,22.5,25.,27.5,30.,35.,40.,50.,60.};
+const Double_t Pt_cuts_TT_SR[]     = {20.,22.5,25.,27.5,30.,35.,40.,50.,80.};
 const Double_t Pt_cuts_TT_CR[]     = {20.};
 const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.};
 const Double_t Pt_cuts_QCD_AI[] ={20.,25.,30.,40};
@@ -743,15 +751,17 @@ const Int_t N_j_TT_CR = sizeof(Njet_cuts_TT_CR)/sizeof(Int_t);
 //const Int_t N_j_TT = sizeof(Njet_cuts_TT)/sizeof(Int_t);
 const Int_t N_j_QCD = sizeof(Njet_cuts_QCD)/sizeof(Int_t);
 
-const Int_t nbins_svfit=35;  const Double_t hist_min_svfit=0.; const Double_t hist_max_svfit=350.;
+const Int_t nbins_svfit=35;  const Double_t hist_min_svfit=0.;  const Double_t hist_max_svfit=350.;
 const Int_t nbins_lepPt=20;  const Double_t hist_min_lepPt=20.; const Double_t hist_max_lepPt=120.;
 const Int_t nbins_mvamet=20; const Double_t hist_min_mvamet=0.; const Double_t hist_max_mvamet=200.;
-const Int_t nbins_mt2=20;    const Double_t hist_min_mt2=0.; const Double_t hist_max_mt2=200.;
-const Int_t nbins_mt=25;     const Double_t hist_min_mt=0.;    const Double_t hist_max_mt=250.;
-const Int_t nbins_mvis=25;   const Double_t hist_min_mvis=0.;  const Double_t hist_max_mvis=250.;
-const Int_t nbins_pt=25;     const Double_t hist_min_pt=20.;   const Double_t hist_max_pt=100.;
-const Int_t nbins_eta=25;    const Double_t hist_min_eta=-2.5; const Double_t hist_max_eta=2.5;
-const Int_t nbins_mttot=25;  const Double_t hist_min_mttot=0.; const Double_t hist_max_mttot=250.;
+const Int_t nbins_met=20;    const Double_t hist_min_met=0.;    const Double_t hist_max_met=200.;
+const Int_t nbins_mjj=20;    const Double_t hist_min_mjj=70;    const Double_t hist_max_mjj=1400;
+const Int_t nbins_mt2=20;    const Double_t hist_min_mt2=0.;    const Double_t hist_max_mt2=200.;
+const Int_t nbins_mt=25;     const Double_t hist_min_mt=0.;     const Double_t hist_max_mt=250.;
+const Int_t nbins_mvis=25;   const Double_t hist_min_mvis=0.;   const Double_t hist_max_mvis=250.;
+const Int_t nbins_pt=25;     const Double_t hist_min_pt=20.;    const Double_t hist_max_pt=100.;
+const Int_t nbins_eta=25;    const Double_t hist_min_eta=-2.5;  const Double_t hist_max_eta=2.5;
+const Int_t nbins_mttot=25;  const Double_t hist_min_mttot=0.;  const Double_t hist_max_mttot=250.;
 
 //binning constants: weight
 const Double_t w_mt_v[]={0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250};
@@ -778,12 +788,12 @@ const Int_t    w_njets_n=sizeof(w_njets_v)/sizeof(Int_t) -1;
 
 const Int_t nbins_weight=w_mt_n*w_dm_n; const Double_t min_weight=-0.5;    const Double_t max_weight=nbins_weight-0.5;
 
-const unsigned nVAR=9;
-const Int_t nbins[nVAR]={nbins_mt,nbins_mvis,nbins_pt,nbins_mt2,nbins_lepPt,nbins_mvamet,nbins_eta,nbins_mttot,w_muiso_n};
-const Double_t hist_min[nVAR]={hist_min_mt,hist_min_mvis,hist_min_pt,hist_min_mt2,hist_min_lepPt,hist_min_mvamet,hist_min_eta,nbins_mttot,hist_min_pt}; //pt bin is placeholder for muiso
-const Double_t hist_max[nVAR]={hist_max_mt,hist_max_mvis,hist_max_pt,hist_max_mt2,hist_max_lepPt,hist_max_mvamet,hist_max_eta,nbins_mttot,hist_max_pt}; //pt bin is placeholder for muiso
-const TString tvar[nVAR]={s_mt,s_mvis,s_pt,s_mt2,s_lepPt,s_mvamet,s_eta,s_muiso};
-const TString tvar_l[nVAR]={"m_{T} [GeV]","m_{vis} [GeV]","p_{T} [GeV]","m_{T}(#tau) [GeV]","p_{T}(lep) [GeV]","mvamet [GeV]","#eta_{#tau}","m_{T} (tot) [GeV]","#mu_{iso}"};
+const unsigned nVAR=11;
+const Int_t nbins[nVAR]={nbins_mt,nbins_mvis,nbins_pt,nbins_mt2,nbins_lepPt,nbins_mvamet,nbins_met,nbins_eta,nbins_mttot,nbins_mjj,w_muiso_n};
+const Double_t hist_min[nVAR]={hist_min_mt,hist_min_mvis,hist_min_pt,hist_min_mt2,hist_min_lepPt,hist_min_mvamet,hist_min_met,hist_min_eta,hist_min_mttot,hist_min_mjj,hist_min_pt}; //pt bin is placeholder for muiso
+const Double_t hist_max[nVAR]={hist_max_mt,hist_max_mvis,hist_max_pt,hist_max_mt2,hist_max_lepPt,hist_max_mvamet,hist_max_met,hist_max_eta,hist_max_mttot,hist_max_mjj,hist_max_pt}; //pt bin is placeholder for muiso
+const TString tvar[nVAR]={s_mt,s_mvis,s_pt,s_mt2,s_lepPt,s_mvamet,s_met,s_eta,s_muiso};
+const TString tvar_l[nVAR]={"m_{T} [GeV]","m_{vis} [GeV]","p_{T} [GeV]","m_{T}(#tau) [GeV]","p_{T}(lep) [GeV]","mvamet [GeV]","pfmet [GeV]","#eta_{#tau}","m_{T} (tot) [GeV]","m_{jj} [GeV]","#mu_{iso}"};
 
 const unsigned nVARCR=4;
 const Int_t nbinsCR[nVARCR]={nbins_mt,nbins_mvis,nbins_pt,w_muiso_n};

@@ -41,8 +41,6 @@ class FFCalculator : public GlobalClass, public PlotterClass{
   void calcWeightFromFit(const TString fname, const TString m_path_img, const TString m_path_w, const TString isolation, Int_t mode=0);
   Int_t doTemplateFit(const TH1D *data, const std::vector<TH1D*> templates, const TString output_path, std::vector<TH1D*> &res, TH1D* &res_data, const Int_t mode);
   void calcFFCorr(const Int_t mode, const TString pre_main, const std::vector<TString> pre_sub, const TString FF_file, const TString weight_file="", const Int_t cuts=0);
-  void calcBgEstFF(const std::vector<Int_t> mode, const std::vector<Int_t> nbins, const std::vector<Double_t> hist_min, const std::vector<Double_t> hist_max, const TString FFfile, const std::vector<TString> bg_est_file, const std::vector<TString> syst_file, const Int_t cuts=0, const TString corr_file="");
-  void calcBgEstFF(const Int_t mode, const Int_t nbins, const Double_t hist_min, const Double_t hist_max, const TString FFfile, const TString bg_est_file, const std::vector<TString> syst_file,  const Int_t cuts=0, const TString corr_file="");
   TH1D* setCorrValue(const TString fname, const TString hname);
   Double_t getCorrValueFitErr(Double_t m_mt=-999, Int_t ind=-1);
   Double_t getCorrValueFit(Double_t m_corr_d=-999, const Double_t m_corr_k=-999, Int_t ind=0);

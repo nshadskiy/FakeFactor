@@ -5,15 +5,15 @@ using namespace std;
 
 void test(){
 
-  TString fname="/afs/cern.ch/user/j/jbrandst/public/Htautau/FakeRate/20160914/mt/incl/fakeFactors_20160914.root";
+  TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20161121/mt/incl/fakeFactors_20161121.root";
   // Retrieve the fake factor
   TFile* ff_file = TFile::Open(fname);
   FakeFactor* ff    = (FakeFactor*)ff_file->Get("ff_comb");
 
   // Fill inputs
   std::vector<double> inputs(6);
-  inputs[0] = 30; //tau_pt;
-  inputs[1] = 0;  //tau_decayMode;
+  inputs[0] = 100; //tau_pt;
+  inputs[1] = 10;  //tau_decayMode;
   inputs[2] = 1;  //njet
   inputs[3] = 40; //mvis;
   inputs[4] = 10; //mt;
@@ -31,6 +31,14 @@ void test(){
 
   double stat_qcd_up = ff->value(inputs, "ff_qcd_stat_up");
   double stat_qcd_down = ff->value(inputs, "ff_qcd_stat_down");
+  double stat_dm0_njet0_tt_up = ff->value(inputs, "ff_tt_dm0_njet0_stat_up");
+  double stat_dm0_njet0_tt_down = ff->value(inputs, "ff_tt_dm0_njet0_stat_down");
+  double stat_dm0_njet1_tt_up = ff->value(inputs, "ff_tt_dm0_njet1_stat_up");
+  double stat_dm0_njet1_tt_down = ff->value(inputs, "ff_tt_dm0_njet1_stat_down");
+  double stat_dm1_njet0_tt_up = ff->value(inputs, "ff_tt_dm1_njet0_stat_up");
+  double stat_dm1_njet0_tt_down = ff->value(inputs, "ff_tt_dm1_njet0_stat_down");
+  double stat_dm1_njet1_tt_up = ff->value(inputs, "ff_tt_dm1_njet1_stat_up");
+  double stat_dm1_njet1_tt_down = ff->value(inputs, "ff_tt_dm1_njet1_stat_down");
   double stat_w_up = ff->value(inputs, "ff_w_stat_up");
   double stat_w_down = ff->value(inputs, "ff_w_stat_down");
   double stat_tt_up = ff->value(inputs, "ff_tt_stat_up");
@@ -43,6 +51,15 @@ void test(){
   cout << "syst(tt)= " << (syst_tt_up-ff_nom)/ff_nom << "%, syst(w+dy)= " << (syst_w_up-ff_nom)/ff_nom*100 << "%, syst(qcd)= " << (syst_qcd_up-ff_nom)/ff_nom*100 << "%" <<  endl;
   cout << "Uncertainties on fake factors: " << endl;
   cout << "stat(tt)= " << (stat_tt_up-ff_nom)/ff_nom*100 << "%, stat(w+dy)= " << (stat_w_up-ff_nom)/ff_nom*100 << "%, stat(qcd)= " << (stat_qcd_up-ff_nom)/ff_nom*100 << "%" << endl;
+  cout << "-------------------------------------------" << endl;
+  cout << "stat(tt_up)00= " << (stat_dm0_njet0_tt_up-ff_nom)/ff_nom*100 << "%" << endl;
+  cout << "stat(tt_down)00= " << (stat_dm0_njet0_tt_down-ff_nom)/ff_nom*100 << "%" << endl;
+  cout << "stat(tt_up)01= " << (stat_dm0_njet1_tt_up-ff_nom)/ff_nom*100 << "%" << endl;
+  cout << "stat(tt_down)01= " << (stat_dm0_njet1_tt_down-ff_nom)/ff_nom*100 << "%" << endl;
+  cout << "stat(tt_up)10= " << (stat_dm1_njet0_tt_up-ff_nom)/ff_nom*100 << "%" << endl;
+  cout << "stat(tt_down)10= " << (stat_dm1_njet0_tt_down-ff_nom)/ff_nom*100 << "%" << endl;
+  cout << "stat(tt_up)11= " << (stat_dm1_njet1_tt_up-ff_nom)/ff_nom*100 << "%" << endl;
+  cout << "stat(tt_down)11= " << (stat_dm1_njet1_tt_down-ff_nom)/ff_nom*100 << "%" << endl;
 
   delete ff;
   ff_file->Close();

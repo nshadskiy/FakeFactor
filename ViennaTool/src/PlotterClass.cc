@@ -538,6 +538,7 @@ void PlotterClass::plotBgStackedAgainstData(TString data,TString data_label,std:
   else if ( data.Contains("_svfit_")   || data.Contains("_svfit.")   ) hname+="svfit";
   else if ( data.Contains("_lepPt_")   || data.Contains("_lepPt.")   ) hname+="lepPt";
   else if ( data.Contains("_mvamet_")   || data.Contains("_mvamet.")   ) hname+="mvamet";
+  else if ( data.Contains("_met_")   || data.Contains("_met.")   ) hname+="met";
   else if ( data.Contains("_eta_")   || data.Contains("_eta.")   ) hname+="eta";
   else if ( data.Contains("_mttot_")   || data.Contains("_mttot.")   ) hname+="mttot";
   
@@ -615,6 +616,7 @@ void PlotterClass::plotBgStackedAgainstData(TString data,TString data_label,std:
   else if ( data.Contains("_mt2_")   || data.Contains("_mt2.")   ) hname+="mt2";
   else if ( data.Contains("_lepPt_")   || data.Contains("_lepPt.")   ) hname+="lepPt";
   else if ( data.Contains("_mvamet_")   || data.Contains("_mvamet.")   ) hname+="mvamet";
+  else if ( data.Contains("_met_")   || data.Contains("_met.")   ) hname+="met";
   else if ( data.Contains("_eta_")   || data.Contains("_eta.")   ) hname+="eta";
   else if ( data.Contains("_mttot_")   || data.Contains("_mttot.")   ) hname+="mttot";
   

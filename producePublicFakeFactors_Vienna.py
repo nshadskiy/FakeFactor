@@ -3,8 +3,8 @@ import ROOT
 import os
 
 #Meta-data
-channel="mt"
-version='20161023'
+channel="et"
+version='20161126'
 tag='v0.2.1'
 categories = ['incl','_0jetLow','_0jetHigh','_1jetLow','_1jetHigh','_vbfLow','_vbfHigh','_2jet','_anyb']
 #categories = ['incl']
@@ -518,6 +518,151 @@ for x in range(0,len(categories)):
          )
         }
     )
+    comb_qcd_up_stat_dm0_njet0 = replace_nodes(
+        comb, 
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_os_up_stat_dm0_njet0',
+             formula='(1.+{stat_qcd_up_dm0_njet0})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_up_dm0_njet0',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 qcd_os.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_qcd_down_stat_dm0_njet0 = replace_nodes(
+        comb, 
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_os_down_stat_dm0_njet0',
+             formula='max(0.,1.-{stat_qcd_down_dm0_njet0})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_down_dm0_njet0',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 qcd_os.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_qcd_up_stat_dm0_njet1 = replace_nodes(
+        comb, 
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_os_up_stat_dm0_njet1',
+             formula='(1.+{stat_qcd_up_dm0_njet1})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_up_dm0_njet1',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 qcd_os.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_qcd_down_stat_dm0_njet1 = replace_nodes(
+        comb, 
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_os_down_stat_dm0_njet1',
+             formula='max(0.,1.-{stat_qcd_down_dm0_njet1})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_down_dm0_njet1',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 qcd_os.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_qcd_up_stat_dm1_njet0 = replace_nodes(
+        comb, 
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_os_up_stat_dm1_njet0',
+             formula='(1.+{stat_qcd_up_dm1_njet0})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_up_dm1_njet0',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet0',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 qcd_os.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_qcd_down_stat_dm1_njet0 = replace_nodes(
+        comb, 
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_os_down_stat_dm1_njet0',
+             formula='max(0.,1.-{stat_qcd_down_dm1_njet0})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_down_dm1_njet0',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet0',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 qcd_os.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_qcd_up_stat_dm1_njet1 = replace_nodes(
+        comb, 
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_os_up_stat_dm1_njet1',
+             formula='(1.+{stat_qcd_up_dm1_njet1})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_up_dm1_njet1',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet1',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 qcd_os.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_qcd_down_stat_dm1_njet1 = replace_nodes(
+        comb, 
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_os_down_stat_dm1_njet1',
+             formula='max(0.,1.-{stat_qcd_down_dm1_njet1})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_down_dm1_njet1',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet1',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 qcd_os.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    ###############################################################################################################################
     comb_w_up = replace_nodes(
         comb,
         {'ff_w':
@@ -548,6 +693,150 @@ for x in range(0,len(categories)):
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/uncertainties_QCD_W.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                      object='uncertainties_W_MVis_MT_down',
                      vars=['mvis', 'mt']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_up_stat_dm0_njet0 = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_up_stat_dm0_njet0',
+             formula='(1.+{stat_w_up_dm0_njet0})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_up_dm0_njet0',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_down_stat_dm0_njet0 = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_down_stat_dm0_njet0',
+             formula='max(0.,1.-{stat_w_down_dm0_njet0})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_down_dm0_njet0',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_up_stat_dm0_njet1 = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_up_stat_dm0_njet1',
+             formula='(1.+{stat_w_up_dm0_njet1})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_up_dm0_njet1',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_down_stat_dm0_njet1 = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_down_stat_dm0_njet1',
+             formula='max(0.,1.-{stat_w_down_dm0_njet1})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_down_dm0_njet1',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_up_stat_dm1_njet0 = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_up_stat_dm1_njet0',
+             formula='(1.+{stat_w_up_dm1_njet0})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_up_dm1_njet0',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet0',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_down_stat_dm1_njet0 = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_down_stat_dm1_njet0',
+             formula='max(0.,1.-{stat_w_down_dm1_njet0})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_down_dm1_njet0',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet0',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_up_stat_dm1_njet1 = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_up_stat_dm1_njet1',
+             formula='(1.+{stat_w_up_dm1_njet1})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_up_dm1_njet1',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet1',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_down_stat_dm1_njet1 = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_down_stat_dm1_njet1',
+             formula='max(0.,1.-{stat_w_down_dm1_njet1})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_down_dm1_njet1',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet1',
+                     vars=['tau_pt','tau_decay','njets']
                  ),
                  comb.find('ff_w')
              ]
@@ -590,6 +879,7 @@ for x in range(0,len(categories)):
          )
         }
     )
+    #####################################################################################################################
     comb_tt_up = replace_nodes(
         comb,
         {'ff_tt':
@@ -622,6 +912,150 @@ for x in range(0,len(categories)):
                      vars=['tau_decay','mvis']
                  ),
                  comb.find('ff_tt')
+             ]
+         )
+        }
+    )
+    comb_tt_up_stat_dm0_njet0 = replace_nodes(
+        comb, 
+        {'ff_tt':
+         Node(
+             name='ff_tt_up_stat_dm0_njet0',
+             formula='(1.+{stat_tt_up_dm0_njet0})*{ff_tt}',
+             leaves=[
+                 Leaf(
+                     name='stat_tt_up_dm0_njet0',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet0',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 tt.find('ff_tt')
+             ]
+         )
+        }
+    )
+    comb_tt_down_stat_dm0_njet0 = replace_nodes(
+        comb, 
+        {'ff_tt':
+         Node(
+             name='ff_tt_down_stat_dm0_njet0',
+             formula='max(0.,1.-{stat_tt_down_dm0_njet0})*{ff_tt}',
+             leaves=[
+                 Leaf(
+                     name='stat_tt_down_dm0_njet0',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet0',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 tt.find('ff_tt')
+             ]
+         )
+        }
+    )
+    comb_tt_up_stat_dm0_njet1 = replace_nodes(
+        comb, 
+        {'ff_tt':
+         Node(
+             name='ff_tt_up_stat_dm0_njet1',
+             formula='(1.+{stat_tt_up_dm0_njet1})*{ff_tt}',
+             leaves=[
+                 Leaf(
+                     name='stat_tt_up_dm0_njet1',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet1',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 tt.find('ff_tt')
+             ]
+         )
+        }
+    )
+    comb_tt_down_stat_dm0_njet1 = replace_nodes(
+        comb, 
+        {'ff_tt':
+         Node(
+             name='ff_tt_down_stat_dm0_njet1',
+             formula='max(0.,1.-{stat_tt_down_dm0_njet1})*{ff_tt}',
+             leaves=[
+                 Leaf(
+                     name='stat_tt_down_dm0_njet1',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet1',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 tt.find('ff_tt')
+             ]
+         )
+        }
+    )
+    comb_tt_up_stat_dm1_njet0 = replace_nodes(
+        comb, 
+        {'ff_tt':
+         Node(
+             name='ff_tt_up_stat_dm1_njet0',
+             formula='(1.+{stat_tt_up_dm1_njet0})*{ff_tt}',
+             leaves=[
+                 Leaf(
+                     name='stat_tt_up_dm1_njet0',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet0',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 tt.find('ff_tt')
+             ]
+         )
+        }
+    )
+    comb_tt_down_stat_dm1_njet0 = replace_nodes(
+        comb, 
+        {'ff_tt':
+         Node(
+             name='ff_tt_down_stat_dm1_njet0',
+             formula='max(0.,1.-{stat_tt_down_dm1_njet0})*{ff_tt}',
+             leaves=[
+                 Leaf(
+                     name='stat_tt_down_dm1_njet0',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet0',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 tt.find('ff_tt')
+             ]
+         )
+        }
+    )
+    comb_tt_up_stat_dm1_njet1 = replace_nodes(
+        comb, 
+        {'ff_tt':
+         Node(
+             name='ff_tt_up_stat_dm1_njet1',
+             formula='(1.+{stat_tt_up_dm1_njet1})*{ff_tt}',
+             leaves=[
+                 Leaf(
+                     name='stat_tt_up_dm1_njet1',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet1',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 tt.find('ff_tt')
+             ]
+         )
+        }
+    )
+    comb_tt_down_stat_dm1_njet1 = replace_nodes(
+        comb, 
+        {'ff_tt':
+         Node(
+             name='ff_tt_down_stat_dm1_njet1',
+             formula='max(0.,1.-{stat_tt_down_dm1_njet1})*{ff_tt}',
+             leaves=[
+                 Leaf(
+                     name='stat_tt_down_dm1_njet1',
+                     file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet1',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 tt.find('ff_tt')
              ]
          )
         }
@@ -661,7 +1095,7 @@ for x in range(0,len(categories)):
              ]
          )
         }
-    )    
+    )
     
     
     
@@ -689,14 +1123,38 @@ for x in range(0,len(categories)):
     fill(ff_comb, comb_qcd_down,   sys='ff_qcd_syst_down')
     fill(ff_comb, comb_qcd_up_stat,   sys='ff_qcd_stat_up')
     fill(ff_comb, comb_qcd_down_stat,   sys='ff_qcd_stat_down')
+    fill(ff_comb, comb_qcd_up_stat_dm0_njet0,   sys='ff_qcd_dm0_njet0_stat_up')
+    fill(ff_comb, comb_qcd_down_stat_dm0_njet0,   sys='ff_qcd_dm0_njet0_stat_down')
+    fill(ff_comb, comb_qcd_up_stat_dm0_njet1,   sys='ff_qcd_dm0_njet1_stat_up')
+    fill(ff_comb, comb_qcd_down_stat_dm0_njet1,   sys='ff_qcd_dm0_njet1_stat_down')
+    fill(ff_comb, comb_qcd_up_stat_dm1_njet0,   sys='ff_qcd_dm1_njet0_stat_up')
+    fill(ff_comb, comb_qcd_down_stat_dm1_njet0,   sys='ff_qcd_dm1_njet0_stat_down')
+    fill(ff_comb, comb_qcd_up_stat_dm1_njet1,   sys='ff_qcd_dm1_njet1_stat_up')
+    fill(ff_comb, comb_qcd_down_stat_dm1_njet1,   sys='ff_qcd_dm1_njet1_stat_down')
     fill(ff_comb, comb_w_up,   sys='ff_w_syst_up')
     fill(ff_comb, comb_w_down,   sys='ff_w_syst_down')
     fill(ff_comb, comb_w_up_stat,   sys='ff_w_stat_up')
     fill(ff_comb, comb_w_down_stat,   sys='ff_w_stat_down')
+    fill(ff_comb, comb_w_up_stat_dm0_njet0,   sys='ff_w_dm0_njet0_stat_up')
+    fill(ff_comb, comb_w_down_stat_dm0_njet0,   sys='ff_w_dm0_njet0_stat_down')
+    fill(ff_comb, comb_w_up_stat_dm0_njet1,   sys='ff_w_dm0_njet1_stat_up')
+    fill(ff_comb, comb_w_down_stat_dm0_njet1,   sys='ff_w_dm0_njet1_stat_down')
+    fill(ff_comb, comb_w_up_stat_dm1_njet0,   sys='ff_w_dm1_njet0_stat_up')
+    fill(ff_comb, comb_w_down_stat_dm1_njet0,   sys='ff_w_dm1_njet0_stat_down')
+    fill(ff_comb, comb_w_up_stat_dm1_njet1,   sys='ff_w_dm1_njet1_stat_up')
+    fill(ff_comb, comb_w_down_stat_dm1_njet1,   sys='ff_w_dm1_njet1_stat_down')
     fill(ff_comb, comb_tt_up,   sys='ff_tt_syst_up')
     fill(ff_comb, comb_tt_down, sys='ff_tt_syst_down')
     fill(ff_comb, comb_tt_up_stat,   sys='ff_tt_stat_up')
     fill(ff_comb, comb_tt_down_stat, sys='ff_tt_stat_down')
+    fill(ff_comb, comb_tt_up_stat_dm0_njet0,   sys='ff_tt_dm0_njet0_stat_up')
+    fill(ff_comb, comb_tt_down_stat_dm0_njet0, sys='ff_tt_dm0_njet0_stat_down')
+    fill(ff_comb, comb_tt_up_stat_dm0_njet1,   sys='ff_tt_dm0_njet1_stat_up')
+    fill(ff_comb, comb_tt_down_stat_dm0_njet1, sys='ff_tt_dm0_njet1_stat_down')
+    fill(ff_comb, comb_tt_up_stat_dm1_njet0,   sys='ff_tt_dm1_njet0_stat_up')
+    fill(ff_comb, comb_tt_down_stat_dm1_njet0, sys='ff_tt_dm1_njet0_stat_down')
+    fill(ff_comb, comb_tt_up_stat_dm1_njet1,   sys='ff_tt_dm1_njet1_stat_up')
+    fill(ff_comb, comb_tt_down_stat_dm1_njet1, sys='ff_tt_dm1_njet1_stat_down')
     
     
     

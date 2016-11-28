@@ -77,7 +77,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
       else Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_MCsum.root"  );
     }
   }
-
+  
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //get Wjet SS histos for corrections
   Analyzer->getCRHisto(path_presel+s_preselection+"_Wjets.root", MVIS|_W_JETS|_SS , path_sim+s_CR+"_Wjets_mvis_Wjets_SS_SR.root"  );
@@ -101,6 +101,9 @@ void CRHisto(int doCalc, int nCR, int nQU) {
             if(scr[ic] == ssa[is]) continue;
             TFile tmp(path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_"+ssa[is]+".root"  );
             TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+"_"+tvarCR[iv]);
+            /*for(int i=1; i<tmphist->GetNbinsX();i++){
+              tmphist->SetBinContent( i, tmphist->GetBinContent(i)*0.9 );
+              }*/
             outhist->Add(tmphist);
             tmp.Close();
           }

@@ -86,8 +86,6 @@ void CalcFF() {
     Analyzer->calcFFweights(m_preselection_data,wf,ps,pi,p,p+template_file_name_tmp);
     
   }
-
-  Int_t m_corr=0, m_ttcorr=0; if (applyFF_fromCR){ m_corr=_WCORR; m_ttcorr=_TTCORR;}
   
   if (inclusive_selection){
 
@@ -103,14 +101,14 @@ void CalcFF() {
       //else               Analyzer->calcFFCorr(_DY|m_gen_match ,    m_preselection_data,   pre_sub_dy,    p+FF_corr_DY_MCsum_noGen,     p+weight_DY_J); //DY_J using FF from DY->mumu CR
 
       cout << "Calculating TT FFs" << endl;
-      if (useDYFF_forTT) Analyzer->calcFFCorr(_DY|m_gen_match,     m_preselection_data,   pre_sub_dy,    p+FF_corr_TT_MCsum_noGen,  p+weight_TT_J);
+      /*if (useDYFF_forTT) Analyzer->calcFFCorr(_DY|m_gen_match,     m_preselection_data,   pre_sub_dy,    p+FF_corr_TT_MCsum_noGen,  p+weight_TT_J);
       else               Analyzer->calcFFCorr(_TT|m_gen_match,    m_preselection_data,   pre_sub_tt,    p+FF_corr_TT_MCsum_noGen,  p+weight_TT_J);
-      Analyzer->calcFFCorr(_TT|m_gen_match,    preselection_TT_J,   empty_vec_tstring,    p+FF_TT_J_only,  p+weight_TT_J);
+      Analyzer->calcFFCorr(_TT|m_gen_match,    preselection_TT_J,   empty_vec_tstring,    p+FF_TT_J_only,  p+weight_TT_J);*/
       Analyzer->calcFFCorr(_TT|m_gen_match|SR,                    preselection_TT_J,   empty_vec_tstring,    p+FF_TT_J_only_SR,  p+weight_TT_J);
 
       cout << "Calculating QCD FFs" << endl;
       Analyzer->calcFFCorr(_QCD|m_gen_match,                     m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCD_MCsum_noGen,    p+weight_QCD);
-      Analyzer->calcFFCorr(_QCD|m_gen_match|_AI,                     m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCD_MCsum_noGen_AI,    p+weight_QCD);
+      //Analyzer->calcFFCorr(_QCD|m_gen_match|_AI,                     m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCD_MCsum_noGen_AI,    p+weight_QCD);
     }
 
     if (doCalcCorrections==1){
@@ -143,7 +141,7 @@ void CalcFF() {
       //Analyzer->calc_OSSScorr(_QCD|_AI,                       p+"FF_corr_QCD_MCsum_noGen_AI_VTight.root",  "sim/"+s_chan[CHAN]+"/SR_data_mvis_AI_MCsubtracted.root", p+"FF_corr_QCD_MCsum_noGen_nonclosure_AI.root", p+FF_corr_QCD_MCsum_noGen_OSSScorr);
       
       //mvis correction for TT
-      if(CHAN==kMU){
+      if(CHAN!=kTAU){
         cout << "Calculating TT corrections" << endl;
         Analyzer->loadFile(preselection_TT_J,"Events");
         Analyzer->calc_nonclosure(_TT|SR,                            p+FF_TT_J_only_SR,  SR_TT_J_mvis_sim, p+FF_corr_TT_MC_noGen_nonclosure, 1, 0);

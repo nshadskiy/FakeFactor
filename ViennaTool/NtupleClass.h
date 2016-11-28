@@ -39,6 +39,7 @@ public :
    Float_t         idisoweight_2;
    Float_t         effweight;
    Float_t         stitchedWeight;
+   Float_t         antilep_tauscaling;
    Float_t         topWeight;
    Float_t         ZWeight;
    Float_t         gen_Mll;
@@ -302,6 +303,7 @@ public :
    TBranch        *b_idisoweight_2;   //!
    TBranch        *b_effweight;   //!
    TBranch        *b_stitchedWeight;   //!
+   TBranch        *b_antilep_tauscaling;   //!
    TBranch        *b_topWeight;   //!
    TBranch        *b_ZWeight;   //!
    TBranch        *b_gen_Mll;   //!
@@ -685,6 +687,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("idisoweight_2", &idisoweight_2, &b_idisoweight_2);
    fChain->SetBranchAddress("effweight", &effweight, &b_effweight);
    fChain->SetBranchAddress("stitchedWeight", &stitchedWeight, &b_stitchedWeight);
+   fChain->SetBranchAddress("antilep_tauscaling", &antilep_tauscaling, &b_antilep_tauscaling);
    fChain->SetBranchAddress("topWeight", &topWeight, &b_topWeight);
    fChain->SetBranchAddress("ZWeight", &ZWeight, &b_ZWeight);
    fChain->SetBranchAddress("gen_Mll", &gen_Mll, &b_gen_Mll);

@@ -36,6 +36,7 @@ public :
    Double_t        mjj;
    Double_t        jdeta;
    Double_t        mvamet;
+   Double_t        met;
    Double_t        m_leplep;
    Double_t        lep_dR;
    Double_t        mt_leplep;
@@ -86,6 +87,7 @@ public :
    TBranch        *b_nbtag;   //!
    TBranch        *b_mjj;   //!
    TBranch        *b_mvamet;   //!
+   TBranch        *b_met;   //!
    TBranch        *b_jdeta;   //!
    TBranch        *b_m_leplep;   //!
    TBranch        *b_lep_dR;   //!
@@ -229,6 +231,7 @@ void SignalClass::Init(TTree *tree)
    fChain->SetBranchAddress("njetingap20", &njetingap20, &b_njetingap20);
    fChain->SetBranchAddress("mjj", &mjj, &b_mjj);
    fChain->SetBranchAddress("mvamet", &mvamet, &b_mvamet);
+   fChain->SetBranchAddress("met", &met, &b_met);
    fChain->SetBranchAddress("jdeta", &jdeta, &b_jdeta);
    fChain->SetBranchAddress("m_leplep", &m_leplep, &b_m_leplep);
    fChain->SetBranchAddress("lep_dR", &lep_dR, &b_lep_dR);

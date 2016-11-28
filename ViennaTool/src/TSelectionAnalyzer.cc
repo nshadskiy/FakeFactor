@@ -96,6 +96,12 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
     looseSR_tt = new TH1D("hh_ltt_mvamet","Loose events in tt SR"+suff,nbins_mvamet,hist_min_mvamet,hist_max_mvamet);
     allSR   = new TH1D("hh_a_mvamet",  "All events in SR"+suff,nbins_mvamet,hist_min_mvamet,hist_max_mvamet);
   }
+  else if (mode & MET) {                                      
+    tightSR = new TH1D("hh_t_met","Tight events in SR"+suff,nbins_met,hist_min_met,hist_max_met);
+    looseSR = new TH1D("hh_l_met","Loose events in SR"+suff,nbins_met,hist_min_met,hist_max_met);
+    looseSR_tt = new TH1D("hh_ltt_met","Loose events in tt SR"+suff,nbins_met,hist_min_met,hist_max_met);
+    allSR   = new TH1D("hh_a_met",  "All events in SR"+suff,nbins_met,hist_min_met,hist_max_met);
+  }
   else if (mode & ETA) {                                      
     tightSR = new TH1D("hh_t_eta","Tight events in SR"+suff,nbins_eta,hist_min_eta,hist_max_eta);
     looseSR = new TH1D("hh_l_eta","Loose events in SR"+suff,nbins_eta,hist_min_eta,hist_max_eta);
@@ -107,6 +113,12 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
     looseSR = new TH1D("hh_l_mttot","Loose events in SR"+suff,nbins_mttot,hist_min_mttot,hist_max_mttot);
     looseSR_tt = new TH1D("hh_ltt_mttot","Loose events in tt SR"+suff,nbins_mttot,hist_min_mttot,hist_max_mttot);
     allSR   = new TH1D("hh_a_mttot",  "All events in SR"+suff,nbins_mttot,hist_min_mttot,hist_max_mttot);
+  }
+  else if (mode & MJJ) {                                      
+    tightSR = new TH1D("hh_t_mjj","Tight events in SR"+suff,nbins_mjj,hist_min_mjj,hist_max_mjj);
+    looseSR = new TH1D("hh_l_mjj","Loose events in SR"+suff,nbins_mjj,hist_min_mjj,hist_max_mjj);
+    looseSR_tt = new TH1D("hh_ltt_mjj","Loose events in tt SR"+suff,nbins_mjj,hist_min_mjj,hist_max_mjj);
+    allSR   = new TH1D("hh_a_mjj",  "All events in SR"+suff,nbins_mjj,hist_min_mjj,hist_max_mjj);
   }
   
   else {

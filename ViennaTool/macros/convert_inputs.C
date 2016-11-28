@@ -12,7 +12,7 @@ void conv_th1_to_th3( const TString fn , const TString hn, const TString hnout, 
 //void conv_th1_to_th2( const TString fn , const TString hn , const TString fout_n , const Int_t N_D1, const Int_t N_D2, const Double_t V1[], const Int_t V2[], const int ntoys=0 );
 void make_frac_sys( const TString fn , const std::vector<TString> fn_other , const TString hn , const TString hnout , const std::vector<TString> hn_other , const TString fout_n , const int opt );
 void make_frac_sys( const TString fn , const std::vector<TString> fn_other , const TString hn , const TString hnout , const std::vector<TString> hn_other , const TString fout_n , const Int_t N_D1, const Int_t N_D2, const Double_t V1[], const Int_t V2[], const int ntoys=0 );
-void make_3Dhisto( TString fn , const TString hn , const TString hnout , const TString fout_n , const Int_t N_D1, const Int_t N_D2, const Int_t N_D3, const Double_t V1[], const Int_t V2[], const Int_t V3[], Int_t njetbinned=1 );
+void make_3Dhisto( TString fn , const TString hn , const TString hnout , const TString fout_n , Int_t N_D1, const Int_t N_D2, const Int_t N_D3, const Double_t V1[], const Int_t V2[], const Int_t V3[], Int_t njetbinned=1 );
 void copy_th1( const TString fn , const TString hn , const TString fout_n );
 void smooth_th1( const TString fn , const TString hn , const TString fout_n , const int useBinErrors=0 );
 TH1D* extract_binerr_histo( TString fn , TString hn );
@@ -76,7 +76,7 @@ void convert_inputs(Int_t categoryMode=0){
     hn="c_t";
     hnout="c_t_2d";
     fout_n="ff_dy.root";
-    if(CHAN!=kTAU)conv_th1_to_th2( d+fn , hn , o+fout_n , hnout , 0 );
+    //if(CHAN!=kTAU)conv_th1_to_th2( d+fn , hn , o+fout_n , hnout , 0 );
     
     //fn="FF_corr_TT_MCsum_noGen.root";
     fn="FF_TT_J_only_SR.root";
@@ -127,8 +127,8 @@ void convert_inputs(Int_t categoryMode=0){
         
         combineWSystematics( d+FF_corr_Wjets_MCsum_noGen_nonclosure, "nonclosure_Wjets_up", d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets_up", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_up" );
         combineWSystematics( d+FF_corr_Wjets_MCsum_noGen_nonclosure, "nonclosure_Wjets_down", d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets_down", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_down" );
-        if(CHAN==kMU)combineTTSystematics( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC_up", o+"uncertainties_TT.root", "uncertainties_TT_MVis_up" );
-        if(CHAN==kMU)combineTTSystematics( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC_down", o+"uncertainties_TT.root", "uncertainties_TT_MVis_down" );
+        combineTTSystematics( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC_up", o+"uncertainties_TT.root", "uncertainties_TT_MVis_up" );
+        combineTTSystematics( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC_down", o+"uncertainties_TT.root", "uncertainties_TT_MVis_down" );
         //combineQCDSystematics( d+"FF_corr_QCD_only_noGen_nonclosure.root", "nonclosure_QCD_MC_up", d+"FF_corr_QCD_only_noGen_muisocorr.root", "muiso_corr_QCD_up", d+"FF_corr_QCD_only_noGen_OSSS.root", "OSSS_corr_QCD_up",o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up");
         //combineQCDSystematics( d+"FF_corr_QCD_only_noGen_nonclosure.root", "nonclosure_QCD_MC_down", d+"FF_corr_QCD_only_noGen_muisocorr.root", "muiso_corr_QCD_down", d+"FF_corr_QCD_only_noGen_OSSS.root", "OSSS_corr_QCD_up", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down");
         
@@ -215,7 +215,7 @@ void conv_th1_to_th3( const TString fn , const TString hn, const TString hnout, 
   
 }
 
-void make_3Dhisto( TString fn , const TString hn , const TString hnout , const TString fout_n , const Int_t N_D1, const Int_t N_D2, const Int_t N_D3, const Double_t V1[], const Int_t V2[], const Int_t V3[] , Int_t njetbinned ){
+void make_3Dhisto( TString fn , const TString hn , const TString hnout , const TString fout_n , Int_t N_D1, const Int_t N_D2, const Int_t N_D3, const Double_t V1[], const Int_t V2[], const Int_t V3[] , Int_t njetbinned ){
 
   cout << "make_3D_histo \t" << fn << "\t" << hn << "\t" << fout_n << "\t" << endl;
 
@@ -231,18 +231,27 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
   for(int i=1; i<=h_data_CR->GetNbinsX(); i++){
     if(fn.Contains("TT")) scale_factors.push_back( abs(h_data_CR->GetBinContent(i)/h_MC_CR->GetBinContent(i) ) );
     else scale_factors.push_back(1.);
+    cout << "Scale factor " << i-1 << " :" << scale_factors.at(i-1) << endl;
   }
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
-  
+
+  if(fit_pT_bins) N_D1=fitBins;
   Double_t d1[N_D1+1];
   Double_t d2[N_D2+1];
   Double_t d3[N_D3+1];
 
-  for (int i=0; i<N_D1; i++){
-    d1[i]=V1[i];
+  if(fit_pT_bins){
+    N_D1=fitBins;
+    for (int i=0; i<=N_D1; i++){
+      d1[i]=fitMin+i*(fitMax-fitMin)/fitMax;
+    }
   }
-  d1[N_D1]=250;
-
+  else{
+    for (int i=0; i<N_D1; i++){
+      d1[i]=V1[i];
+    }
+    d1[N_D1]=250;
+  }
   for (int i=0; i<N_D2; i++){
     d2[i]=V2[i];
   }
@@ -257,8 +266,12 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
   if(fit_pT_bins) fn.ReplaceAll(".root","_fitted.root");
   TFile *f=new TFile( fn );
 
-  TH3D *hout      = new TH3D( hnout,            "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
-  TH3D *hout_err  = new TH3D( hnout+"_error",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout                 = new TH3D( hnout,            "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout_err             = new TH3D( hnout+"_error",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout_err_dm0_njet0   = new TH3D( hnout+"_error_dm0_njet0",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout_err_dm0_njet1   = new TH3D( hnout+"_error_dm0_njet1",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout_err_dm1_njet0   = new TH3D( hnout+"_error_dm1_njet0",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout_err_dm1_njet1   = new TH3D( hnout+"_error_dm1_njet1",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
   TString replaceString=hnout;
   replaceString.ReplaceAll("_3d","");
 
@@ -273,9 +286,34 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
           cont = cont*scale_factors.at(idm);
           double err =h->GetBinError( ipt +1 );
           hout->SetBinContent(       ipt+1 , idm+1 , ijet+1 , cont );
+          //if(fn.Contains("Wjets") && idm==0 && ijet==0)cout << ipt << " " << hout->GetBinContent(ipt+1,idm+1,ijet+1) << endl;
           hout->SetBinError(         ipt+1 , idm+1 , ijet+1 , err );
           hout_err->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err/cont );
           hout_err->SetBinError(       ipt+1 , idm+1 , ijet+1 , err );
+          if(idm==0 && ijet==0){
+            hout_err_dm0_njet0->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err/cont );
+            hout_err_dm0_njet1->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet0->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet1->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+          }
+          if(idm==0 && ijet==1){
+            hout_err_dm0_njet0->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm0_njet1->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err/cont );
+            hout_err_dm1_njet0->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet1->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+          }
+          if(idm==1 && ijet==0){
+            hout_err_dm0_njet0->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm0_njet1->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet0->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err/cont );
+            hout_err_dm1_njet1->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+          }
+          if(idm==1 && ijet==1){
+            hout_err_dm0_njet0->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm0_njet1->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet0->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet1->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err/cont );
+          }
         }
       }
     }
@@ -308,6 +346,12 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
   TFile *fout=new TFile ( fout_n , "RECREATE" );
   hout->Write();
   hout_err->Write();
+  if(fit_pT_bins){
+    hout_err_dm0_njet0->Write();
+    hout_err_dm0_njet1->Write();
+    hout_err_dm1_njet0->Write();
+    hout_err_dm1_njet1->Write();
+  }
   fout->Close();
 
   f->Close();

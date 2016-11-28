@@ -41,8 +41,8 @@ void SRHisto() {
     //  if (DOQCD) fl.push_back(SR_QCD_mt_sim);
 
     Int_t nVARused = nVAR-1; //no muiso is needed here
-    const TString r1[nVARused]={"_pt","_mt","_mvis","_pt","_mt2","_lepPt","_mvamet", "_eta"};
-    const TString r2[nVARused]={ "_mt", "_mvis", "_pt","_mt2","_lepPt","_mvamet","_eta", "_mttot"};
+    const TString r1[nVARused]={"_pt","_mt","_mvis","_pt","_mt2","_lepPt","_mvamet", "_met","_eta","_mttot"};
+    const TString r2[nVARused]={ "_mt", "_mvis", "_pt","_mt2","_lepPt","_mvamet","_met","_eta", "_mttot","_mjj"};
 
     TString tmp,tmp2;
     for (unsigned i=0; i<ps.size(); i++){
@@ -63,10 +63,14 @@ void SRHisto() {
         if(DOCUTS) for (unsigned l=0; l<NC; l++){ tmp2=tmp.ReplaceAll(r1[3], r2[3]); Analyzer->calcBgEstSim( ps.at(i), M2T, categoryMode, tmp2.ReplaceAll("SR_","SR_cuts_"+c_text[l]+"_"), c_cuts[l]  ); }
         if(!DOCUTS) Analyzer->calcBgEstSim( ps.at(i), LEPPT, categoryMode, tmp.ReplaceAll(r1[4],r2[4]) );
         if(DOCUTS) for (unsigned l=0; l<NC; l++){ tmp2=tmp.ReplaceAll(r1[4], r2[4]); Analyzer->calcBgEstSim( ps.at(i), LEPPT, categoryMode, tmp2.ReplaceAll("SR_","SR_cuts_"+c_text[l]+"_"), c_cuts[l]  ); }
-        if(!DOCUTS) Analyzer->calcBgEstSim( ps.at(i), MVAMET, categoryMode, tmp.ReplaceAll(r1[5],r2[5]) );
+        if(!DOCUTS) Analyzer->calcBgEstSim( ps.at(i), MVAMET|NO_SR, categoryMode, tmp.ReplaceAll(r1[5],r2[5]) );
         if(DOCUTS) for (unsigned l=0; l<NC; l++){ tmp2=tmp.ReplaceAll(r1[5], r2[5]); Analyzer->calcBgEstSim( ps.at(i), MVAMET, categoryMode, tmp2.ReplaceAll("SR_","SR_cuts_"+c_text[l]+"_"), c_cuts[l]  ); }
-        if(!DOCUTS) Analyzer->calcBgEstSim( ps.at(i), ETA, categoryMode, tmp.ReplaceAll(r1[6],r2[6]) );
-        if(!DOCUTS) Analyzer->calcBgEstSim( ps.at(i), MMTOT, categoryMode, tmp.ReplaceAll(r1[7],r2[7]) );
+        if(!DOCUTS) Analyzer->calcBgEstSim( ps.at(i), MET|NO_SR, categoryMode, tmp.ReplaceAll(r1[6],r2[6]) );
+        if(!DOCUTS) Analyzer->calcBgEstSim( ps.at(i), ETA, categoryMode, tmp.ReplaceAll(r1[7],r2[7]) );
+        if(!DOCUTS) Analyzer->calcBgEstSim( ps.at(i), MMTOT, categoryMode, tmp.ReplaceAll(r1[8],r2[8]) );
+        if( (categoryMode & _VBFLOW) || (categoryMode & _VBFLOW) || (categoryMode & _VBFLOW) ){
+          if(!DOCUTS) Analyzer->calcBgEstSim( ps.at(i), MJJ, categoryMode, tmp.ReplaceAll(r1[9],r2[9]) );
+        }
         tmp=fl.at(i); if(!inclusive_selection){tmp.ReplaceAll( ".root",categories[icat]+".root" );} Analyzer->calcBgEstSim( ps.at(i), MVIS|_AI, categoryMode, tmp.ReplaceAll(r2[0], "_mvis_AI") );
         if(use_svfit){
           tmp=fl.at(i); if(!inclusive_selection){tmp.ReplaceAll( ".root",categories[icat]+".root" );}
@@ -104,6 +108,9 @@ void SRHisto() {
               TFile tmp(path_sim+s_SR+"_"+ssa[is]+r2[iv]+"_AI.root"  );
               if(tmp.IsZombie() ){cout << path_sim+s_SR+"_"+ssa[is]+r2[iv]+"_AI.root" << " not available"<<  endl; continue;}
               TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+r2[iv]);
+              /*for(int i=1; i<tmphist->GetNbinsX();i++){
+                tmphist->SetBinContent( i, tmphist->GetBinContent(i)*0.9 );
+                }*/
               outhist->Add(tmphist);
               tmp.Close();
             }

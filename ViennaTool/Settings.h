@@ -11,22 +11,24 @@ const Double_t luminosity=12.9;
 
 const int CHAN = kMU; //kMU,kEL,kTAU
 const int use_svfit = 0;
-const TString ver = "v3";
+const TString ver = "v4";
 const TString inputFF_dir = "~/public/Htautau/FakeRate2016/";
-const TString inputFF_date = "20161023";
+//const TString inputFF_date = "20161117";
+const TString inputFF_date = "20161125";
 const Double_t epsilon=0.09; //forBlinding
 //const Double_t FFW_REL_ERR=0.2; //place holder
 const Double_t FFW_REL_ERR=0.0;
 const int NERR=5; //number of toys for FF
 ///////////////////////////////////////////////////
-const int inclusive_selection=0; //0: splitting FF procedure in categories defined in Globals.h
+const int inclusive_selection=1; //0: splitting FF procedure in categories defined in Globals.h
 const int useVV=1;
+const int useMVAMET=0;
 ///////////////////////////////////////////////////
 //This defines which fractions are taken for FF bkg estimates, one of them has to be chosen
-const int inclusive_frac_mt=0;
-const int inclusive_frac_et=0;
+const int inclusive_frac_mt=1;
+const int inclusive_frac_et=1;
 const int inclusive_frac_tt=0;
-const int cat_frac_mt=1;
+const int cat_frac_mt=0;
 const int cat_frac_et=0;
 const int cat_frac_tt=0;
 ///////////////////////////////////////////////////
@@ -39,9 +41,9 @@ const int MULTITAU=0;
 const int APPLY_TO_ISOTAU=1; //def: 0
 const int USE_ISOTAU=1; //def: 1
 const int USE_MVA_ISO=1; //def: 1
-const int CALC_SS_SR=1; //default: 0   //0.15<QCD_iso<0.25 for QCD FFs
+const int CALC_SS_SR=0; //default: 0   //0.15<QCD_iso<0.25 for QCD FFs
 const int num = 0;
-const int doSRHisto = 0;
+const int doSRHisto = 1;
 ///////////////////////////////////////////////////
 //steerFF
 const int doDebugPlots=1;    //1 to also calculate FF in SR; and do bkg estimate with unweighted FF per sample ->for control plots
@@ -55,7 +57,7 @@ const int useWJFF_forDY=0; //1 as default
 const int doCalcWeights=0; //calc fractions
 const int doFit=0; //template fit for fractions, default: 0
 const int doCalc=1; //calc FFs
-const int doCalcCorrections=0;
+const int doCalcCorrections=1;
 const int calcVTightFF=0;
 //////////////////////////////////////////////////
 const int fit_pT_bins = 1; //use fitted pT bins as input for ff

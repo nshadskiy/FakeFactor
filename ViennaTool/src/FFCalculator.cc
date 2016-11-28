@@ -1041,208 +1041,6 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
   
 }
 
-void FFCalculator::calcBgEstFF(const Int_t mode, const Int_t nbins, const Double_t hist_min, const Double_t hist_max, const TString FFfile, const TString bg_est_file, const std::vector<TString> syst_file, const Int_t cuts, 
-				  const TString corr_file){
-
-  std::vector<Int_t>    v_mode;        v_mode.push_back(mode);
-  std::vector<Int_t>    v_nbins;       v_nbins.push_back(nbins);
-  std::vector<Double_t> v_hist_min;    v_hist_min.push_back(hist_min);
-  std::vector<Double_t> v_hist_max;    v_hist_max.push_back(hist_max);
-  std::vector<TString>  v_bg_est_file; v_bg_est_file.push_back(bg_est_file);
-
-  this->calcBgEstFF(v_mode, v_nbins, v_hist_min, v_hist_max, FFfile, v_bg_est_file, syst_file, cuts, corr_file);
-}
-
-void FFCalculator::calcBgEstFF(const std::vector<Int_t> mode, const std::vector<Int_t> nbins, const std::vector<Double_t> hist_min, const std::vector<Double_t> hist_max, const TString FFfile, const std::vector<TString> bg_est_file, const std::vector<TString> syst_file, const Int_t cuts, const TString corr_file)
-{
-  std::cout<<"In TNtupleAnalyzer::calcBgEstFF" << std::endl;
-
-  Double_t fillVal; 
-  Double_t mCorr=1; Double_t mCorrErr=0; Double_t mCorrSys=0;
-  const unsigned NV=mode.size();
-
-  std::vector<TH3D*> signalHist3d(NV);
-  std::vector<TH3D*> signalHist3d_STAT(NV);
-  std::vector<TH3D*> signalHist3d_SYS(NV);
-  for (unsigned iv=0; iv<NV; iv++){
-    signalHist3d.at(iv)=new TH3D("sig3d"+sNum[iv]+FFfile,"",nbins.at(iv),hist_min.at(iv),hist_max.at(iv),nbins_weight,min_weight,max_weight,this->nBins(mode.at(iv)),-0.5,this->nBins(mode.at(iv))-0.5);
-    signalHist3d_STAT.at(iv)=(TH3D*)signalHist3d.at(iv)->Clone("sig3d_STAT"+sNum[iv]+FFfile);
-    signalHist3d_SYS.at(iv)=(TH3D*)signalHist3d.at(iv)->Clone("sig3d_SYS"+sNum[iv]+FFfile);
-  }
-
-  //Commence loop over tree
-  if (! event_s ){ std::cout << "\n\nERROR: TNtupleAnalyzer::calcBgEstFF: File has not been loaded!\n" << std::endl; }
-
-  Int_t tau_ind=0;
-  TH1D* h_corr=new TH1D();
-  for (unsigned iv=0; iv<NV; iv++){
-    if (mode.at(iv) & _TTCORR){ h_corr=this->setCorrValue( corr_file , "corr" ); break; } 
-  }
-
-  Int_t nentries = Int_t(event_s->fChain->GetEntries());
-  for (Int_t jentry=0; jentry<nentries;jentry++) {
-    event_s->GetEntry(jentry);
-
-    if (APPLY_TO_ISOTAU){
-      tau_ind=event_s->tau_iso_ind;
-      if ( tau_ind<0 ) continue;
-    }
-
-    for (unsigned iv=0; iv<NV; iv++){
-
-      if (   this->isInSR(mode.at(iv),tau_ind) && this->isLoose(0,tau_ind) && ( !cuts || this->passesCuts(cuts,tau_ind) )   ) { //!cuts for performance
-	fillVal=this->selVal(mode.at(iv),tau_ind);
-	if (mode.at(iv) & _WCORR){
-	  int p_ind=getPInd( event_s->alltau_decay->at( tau_ind ) );
-	  if ( USE_FIT_BINS    &&     ( ( this->selVal(MT,tau_ind)/10. ) > (nFIT_BINS-1) ) ) mCorrSys=0;
-	  else if ( this->selVal(MT,tau_ind) > MT_CORR_MAX ) mCorrSys=0; 
-	  else mCorrSys=this->getCorrValueFit( sys_corr_d[p_ind] , sys_corr_k[p_ind] , tau_ind); //!!!
-	  mCorr=this->getCorrValueFit(-999,-999,tau_ind);
-	  mCorrErr=this->getCorrValueFitErr(fillVal,0);
-	} else if (mode.at(iv) & _TTCORR){
-	  mCorr   =this->getCorrValue( this->selVal( MVIS , tau_ind ) , 0 , h_corr );
-	  mCorrErr=this->getCorrValue( this->selVal( MVIS , tau_ind ) , 1 , h_corr );
-	  mCorrSys=0.05;
-	}
-	if ( (mode.at(iv) & _WCORR) || (mode.at(iv) & _TTCORR) ){
-	  signalHist3d_STAT.at(iv)->Fill(fillVal,this->getWeightBin(tau_ind),this->getBin(mode.at(iv),tau_ind),(mCorr+mCorrErr)*event_s->weight_sf);
-	  signalHist3d_SYS.at(iv)->Fill(fillVal,this->getWeightBin(tau_ind),this->getBin(mode.at(iv),tau_ind),(mCorr+mCorrSys)*event_s->weight_sf); //!!!
-	}
-	signalHist3d.at(iv)->Fill(fillVal,this->getWeightBin(tau_ind),this->getBin(mode.at(iv),tau_ind),mCorr*event_s->weight_sf);
-      }
-    }
-  }
-
-  TFile *f = new TFile(FFfile);
-  TH2D* fakefactor_histo[NERR+1]; //0: central; 1-NERR: for toys
-
-  TString ffname="ff_weighted";
-  fakefactor_histo[0] = (TH2D*) f->Get(ffname); //weighted ff are called
-  if ( !fakefactor_histo[0] ) cout << "ERROR: TNtupleAnalyzer::calcBgEstFF : Histo " << ffname << " in File " << FFfile << " does not exist." << endl;
-  if ( !fakefactor_histo[0] ){ ffname="c_t"; fakefactor_histo[0] = (TH2D*) f->Get(ffname); } //if FFfile contains an unweighted FF -> works even though this is TH1D, second index is then ignored
-
-  for (int ie=0; ie<NERR; ie++){
-    TString hn=ffname+"_"; if (ie<10) hn+="0"; hn+=ie;
-    fakefactor_histo[ie+1] = (TH2D*) f->Get(hn);
-    //  std::cout << hn << " YYY " << fakefactor_histo[ie+1] << " " << FFfile  << std::endl;
-  }
-
-  std::vector<TH3D*> FF3D[NERR+1];
-  std::vector<TH1D*> bg_est[NERR+1];
-  std::vector<TH3D*> bg_est3D[NERR+1];
-  std::vector<TH1D*> bg_est_STAT(NV);
-  std::vector<TH3D*> bg_est3D_STAT(NV);
-  std::vector<TH1D*> bg_est_SYS(NV);
-  std::vector<TH3D*> bg_est3D_SYS(NV);
-
-  for(int ie=0; ie<=NERR; ie++){ FF3D[ie].resize(NV); bg_est[ie].resize(NV); bg_est3D[ie].resize(NV); }
-
-  for (unsigned iv=0; iv<NV; iv++){
-    TString hname="hh_t_";
-    if      (mode.at(iv) & MT)   {hname+="mt";}
-    else if (mode.at(iv) & MVIS) {hname+="mvis";}
-    else if (mode.at(iv) & PT)   {hname+="pt";} 
-
-    for (int ie=0; ie<=NERR; ie++){
-      TString suff="_"; suff+=ie; suff+="_"; suff+=iv;
-      FF3D[ie].at(iv) = new TH3D("ff3d"+suff,"",nbins.at(iv),hist_min.at(iv),hist_max.at(iv),nbins_weight,min_weight,max_weight,this->nBins(mode.at(iv)),-0.5,this->nBins(mode.at(iv))-0.5);
-
-      for(Int_t i=0;i<this->nBins(mode.at(iv));i++) {
-	for(Int_t k=0;k<=nbins_weight;k++) {
-	  for(Int_t j=-1;j<=nbins.at(iv);j++) {
-	    FF3D[ie].at(iv)->SetBinContent(j+1,k+1,i+1,fakefactor_histo[ie]->GetBinContent(i+1,k+1));
-	    //	    FF3D[ie].at(iv)->SetBinError(j+1,k+1,i+1,fakefactor_histo[ie]->GetBinError(i+1,k+1));
-	  }
-	}
-      }
-      //      TString bg_hname="bg_est3d_"; bg_hname+=ie; bg_hname+="_"; bg_hname+=iv; bg_hname+=FFfile;
-      bg_est3D[ie].at(iv)=(TH3D*)signalHist3d.at(iv)->Clone("bg_hname");
-      bg_est3D[ie].at(iv)->Multiply(FF3D[ie].at(iv));
-      TString ht=""; if (ie>0) ht=suff+FFfile;
-      bg_est[ie].at(iv) = bg_est3D[ie].at(iv)->ProjectionX(hname+ht,1,nbins_weight+1,1,this->nBins(mode.at(iv)),"e"); //includes weight overflow (currently, no underflow: mT>=- always); not ff overflow (currently none)
-      if (ie==0) std::cout<<bg_est_file.at(iv)<<", predicting " << bg_est[ie].at(iv)->Integral(-1,-1)<< " events, bin 2: " << bg_est[ie].at(iv)->GetBinContent(2)  << std::endl;
-    }
-    delete signalHist3d.at(iv);
-
-    if (DEBUG==1) std::cout << " ERR before " << bg_est[0].at(iv)->GetBinContent(2) << " +/- " << bg_est[0].at(iv)->GetBinError(2) << std::endl;
-    TH1D* h_wErr=this->calcToyError(bg_est, iv);
-    if (DEBUG==1) std::cout << " ERR toys   " << h_wErr->GetBinContent(2) << " +/- " << h_wErr->GetBinError(2) << std::endl;
-
-    TString errfile=bg_est_file.at(iv); errfile.ReplaceAll( ".root" , "_toyerr.root" );
-    TFile file_toyerr(errfile,"RECREATE");
-    h_wErr->Write();
-    file_toyerr.Close();
-
-
-    //add mCorr uncertainty
-    TString hn_tmp; 
-    if (  (mode.at(iv) & _WCORR) || (mode.at(iv) & _TTCORR) ){
-      hn_tmp="bg_est3D_STAT_"; hn_tmp+=signalHist3d_STAT.at(iv)->GetName();
-      bg_est3D_STAT.at(iv)=(TH3D*)signalHist3d_STAT.at(iv)->Clone(hn_tmp );
-      bg_est3D_STAT.at(iv)->Multiply(FF3D[0].at(iv));
-      bg_est_STAT.at(iv) = bg_est3D_STAT.at(iv)->ProjectionX(hname+"CE",1,nbins_weight+1,1,this->nBins(mode.at(iv)),"e");
-
-      hn_tmp="bg_est3D_SYS_"; hn_tmp+=signalHist3d_SYS.at(iv)->GetName();
-      bg_est3D_SYS.at(iv)=(TH3D*)signalHist3d_SYS.at(iv)->Clone(hn_tmp );
-      bg_est3D_SYS.at(iv)->Multiply(FF3D[0].at(iv));
-      bg_est_SYS.at(iv) = bg_est3D_SYS.at(iv)->ProjectionX(hname+"DY",1,nbins_weight+1,1,this->nBins(mode.at(iv)),"e");
-
-      hn_tmp="hdiff_STAT_"; hn_tmp+=h_wErr->GetName();
-      TH1D *hdiff_STAT=(TH1D*) h_wErr->Clone(hn_tmp );
-      hdiff_STAT->Add( bg_est_STAT.at(iv) , -1 );
-      for (Int_t ie=0; ie<=nbins.at(iv); ie++){
-	mCorrErr=fabs( hdiff_STAT->GetBinContent(ie) );
-	Double_t err= h_wErr->GetBinError(ie);
-	h_wErr->SetBinError( ie,  sqrt(err*err + mCorrErr*mCorrErr )  ); 
-      }
-      if (DEBUG==1) std::cout << " ERR corr STAT " << h_wErr->GetBinContent(2) << " +/- " << h_wErr->GetBinError(2) << std::endl;
-      hn_tmp="hdiff_SYS_"; hn_tmp+=h_wErr->GetName();
-      TH1D *hdiff_SYS=(TH1D*) h_wErr->Clone(hn_tmp );
-      hdiff_SYS->Add( bg_est_SYS.at(iv) , -1 );
-      for (Int_t ie=0; ie<=nbins.at(iv); ie++){
-	mCorrErr=fabs( hdiff_SYS->GetBinContent(ie) );
-	Double_t err= h_wErr->GetBinError(ie);
-	h_wErr->SetBinError( ie,  sqrt(err*err + mCorrErr*mCorrErr )  ); 
-      }
-      if (DEBUG==1) std::cout << " ERR corr SYS " << h_wErr->GetBinContent(2) << " +/- " << h_wErr->GetBinError(2) << std::endl;
-    }
-
-    //add other syst uncertainties, e.g. non-closure
-    TString vname;
-    if (mode.at(iv) & MT) vname="mt";
-    if (mode.at(iv) & MVIS) vname="mvis";
-    if (mode.at(iv) & PT) vname="pt";
-
-    for (unsigned is=0; is<syst_file.size(); is++){
-      TString tmp=syst_file.at(is); tmp.ReplaceAll("XVARX",vname);
-      TFile *fs = new TFile(tmp);
-      TH1D* h_syst;
-      h_syst = (TH1D*) fs->Get("sys");
-      for (Int_t ie=0; ie<=nbins.at(iv); ie++){
-	Double_t systErr= h_syst->GetBinContent(ie);
-	Double_t err= h_wErr->GetBinError(ie);
-	Double_t val= h_wErr->GetBinContent(ie);
-        h_wErr->SetBinError( ie,  sqrt(err*err + systErr*systErr*val*val )  );
-      }
-    }
-
-    if (DEBUG==1) std::cout << " Other syst " << h_wErr->GetBinContent(2) << " +/- " << h_wErr->GetBinError(2) << std::endl;
-
-    TFile file1(bg_est_file.at(iv),"RECREATE");
-    h_wErr->Write();
-    file1.Close();
-
-  }
-
-  for (int ie=0; ie<=NERR; ie++){
-    for (unsigned iv=0; iv<NV; iv++){
-      delete FF3D[ie].at(iv);
-      delete bg_est[ie].at(iv);
-    }}
-
-  //  delete signalHist3d; delete FF3D;
-} //end of calcBgEstFF
-
 TH1D* FFCalculator::setCorrValue(const TString fname, const TString hname){
   TFile *fc = new TFile(fname);
   TH1D* h_corr;
@@ -1901,6 +1699,7 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
     else if( mode.at(mi) & SVFIT ) { outstring = outfile+"_svfit.root"; nbins=nbins_svfit; min_bin=hist_min_svfit; max_bin=hist_max_svfit; }
     else if( mode.at(mi) & M2T ) { outstring = outfile+"_mt2.root"; nbins=nbins_mt2; min_bin=hist_min_mt2; max_bin=hist_max_mt2; }
     else if( mode.at(mi) & MVAMET ) { outstring = outfile+"_mvamet.root"; nbins=nbins_mvamet; min_bin=hist_min_mvamet; max_bin=hist_max_mvamet; }
+    else if( mode.at(mi) & MET ) { outstring = outfile+"_met.root"; nbins=nbins_met; min_bin=hist_min_met; max_bin=hist_max_met; }
     else if( mode.at(mi) & LEPPT ) { outstring = outfile+"_lepPt.root"; nbins=nbins_lepPt; min_bin=hist_min_lepPt; max_bin=hist_max_lepPt; }
     else if( mode.at(mi) & ETA ) { outstring = outfile+"_eta.root"; nbins=nbins_eta; min_bin=hist_min_eta; max_bin=hist_max_eta; }
     else if( mode.at(mi) & MMTOT ) { outstring = outfile+"_mttot.root"; nbins=nbins_mttot; min_bin=hist_min_mttot; max_bin=hist_max_mttot; }
@@ -1921,6 +1720,7 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
     else if( mode.at(mi) & SVFIT) {histname="hh_t_svfit"; fakefactor_histo[0] = new TH1D(histname,"",nbins_svfit,hist_min_svfit,hist_max_svfit);}
     else if( mode.at(mi) & M2T) {histname="hh_t_mt2"; fakefactor_histo[0] = new TH1D(histname,"",nbins_mt2,hist_min_mt2,hist_max_mt2);}
     else if( mode.at(mi) & MVAMET) {histname="hh_t_mvamet"; fakefactor_histo[0] = new TH1D(histname,"",nbins_mvamet,hist_min_mvamet,hist_max_mvamet);}
+    else if( mode.at(mi) & MET) {histname="hh_t_met"; fakefactor_histo[0] = new TH1D(histname,"",nbins_met,hist_min_met,hist_max_met);}
     else if( mode.at(mi) & LEPPT) {histname="hh_t_lepPt"; fakefactor_histo[0] = new TH1D(histname,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);}
     else if( mode.at(mi) & ETA) {histname="hh_t_eta"; fakefactor_histo[0] = new TH1D(histname,"",nbins_eta,hist_min_eta,hist_max_eta);}
     else if( mode.at(mi) & MMTOT) {histname="hh_t_mttot"; fakefactor_histo[0] = new TH1D(histname,"",nbins_mttot,hist_min_mttot,hist_max_mttot);}
@@ -1958,6 +1758,7 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
       if( mode.at(mi) & SVFIT) fakefactor_histo[itoys+1] = new TH1D(hn, "",nbins_svfit,hist_min_svfit,hist_max_svfit);
       if( mode.at(mi) & M2T) fakefactor_histo[itoys+1] = new TH1D(hn,"",nbins_mt2,hist_min_mt2,hist_max_mt2);
       if( mode.at(mi) & MVAMET) fakefactor_histo[itoys+1] = new TH1D(hn,"",nbins_mvamet,hist_min_mvamet,hist_max_mvamet);
+      if( mode.at(mi) & MET) fakefactor_histo[itoys+1] = new TH1D(hn,"",nbins_met,hist_min_met,hist_max_met);
       if( mode.at(mi) & LEPPT) fakefactor_histo[itoys+1] = new TH1D(hn,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
       if( mode.at(mi) & ETA) fakefactor_histo[itoys+1] = new TH1D(hn,"",nbins_eta,hist_min_eta,hist_max_eta);
       if( mode.at(mi) & MMTOT) fakefactor_histo[itoys+1] = new TH1D(hn,"",nbins_mttot,hist_min_mttot,hist_max_mttot);
@@ -2342,14 +2143,15 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   if ( ret != 0 ) return;
   gsk.set_doWeights(1);
   gsk.set_doIgnoreZeroBins(0);
-  gsk.set_kernelDistance( "err" );
+  gsk.set_kernelDistance( "lin" );
   gsk.set_doWidthInBins(1);
   gsk.set_doErrors(1);
-  if(mode & _QCD) gsk.set_lastBinFrom(150);
+  //if(mode & _QCD) gsk.set_lastBinFrom(150);
   Double_t fitWidth;
-  if(mode & _QCD) fitWidth=2.; else if(mode & _W_JETS) fitWidth=3.; else fitWidth=2.;
+  if(mode & _QCD) fitWidth=2.; else if(mode & _W_JETS) fitWidth=2.; else fitWidth=2.;
   cout << "FitWidth: " << fitWidth << endl;
   gsk.setWidth(fitWidth);
+  gsk.set_widthInBins_sf(1.115);
   //gsk.set_doWidthInBins(0);
   //gsk.setWidth(2*h->GetBinWidth(1));
   gsk.getSmoothHisto();
@@ -2379,6 +2181,31 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
       if(x<80) {g->SetPoint(i,x,y_value); g->SetPointEYhigh(i,y_errorHigh); g->SetPointEYlow(i,y_errorLow);}
     }
   }
+
+  ///////////////////////////////////////////////////////////////
+  /*int ilimit=0;
+  Double_t limitValueHigh=0;
+  Double_t limitValueLow=0;
+  for(int i=0; i<g->GetN(); i++){
+    Double_t x; Double_t y;
+    g->GetPoint(i,x,y);
+    if(x>=100 && ilimit==0) {
+      limitValueHigh=g->GetErrorYhigh(i)/y;
+      limitValueLow=g->GetErrorYlow(i)/y;
+      //cout << y << " " << g->GetErrorYhigh(i) << " " << limitValueHigh << endl;
+      ilimit=i;
+    }
+  }
+  for(int i=0; i<g->GetN(); i++){
+    Double_t x; Double_t y;
+    g->GetPoint(i,x,y);
+    if(x>100) {
+      g->SetPointEYhigh(i,g->GetErrorYhigh(i)+(i-ilimit)*(limitValueHigh/50) );
+      g->SetPointEYlow(i,g->GetErrorYlow(i)+(i-ilimit)*(limitValueLow/50) );
+    }
+    }*/
+
+  ///////////////////////////////////////////////////////////////
   g->SetTitle("nonclosure"+sample);
   g->SetName("nonclosure"+sample);
   g->Write();
@@ -2489,7 +2316,7 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
   if ( ret != 0 ) return;
   gsk.set_doWeights(1);
   gsk.set_doIgnoreZeroBins(1);
-  gsk.set_kernelDistance( "err" );
+  //gsk.set_kernelDistance( "err" );
   gsk.set_doWidthInBins(1);
   gsk.set_doErrors(1);
   Double_t fitWidth;
@@ -2624,11 +2451,12 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
   if ( ret != 0 ) return;
   gsk.set_doWeights(1);
   gsk.set_doIgnoreZeroBins(1);
-  gsk.set_kernelDistance( "err" );
+  gsk.set_kernelDistance( "lin" );
   gsk.set_doWidthInBins(1);
   gsk.set_doErrors(1);
-  gsk.setWidth( 2.5 );
-  if(mode & _QCD) gsk.set_lastBinFrom(170);
+  gsk.setWidth( 2. );
+  gsk.set_widthInBins_sf(1.115);
+  //if(mode & _QCD) gsk.set_lastBinFrom(170);
   gsk.getSmoothHisto();
   TH1D *h2=gsk.returnSmoothedHisto();
   h2->Write();
@@ -2653,6 +2481,31 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
       if(x<80) {g->SetPoint(i,x,y_value); g->SetPointEYhigh(i,y_errorHigh); g->SetPointEYlow(i,y_errorLow);}
     }
   }
+
+  ///////////////////////////////////////////////////////////////
+  /*int ilimit=0;
+  Double_t limitValueHigh=0;
+  Double_t limitValueLow=0;
+  for(int i=0; i<g->GetN(); i++){
+    Double_t x; Double_t y;
+    g->GetPoint(i,x,y);
+    if(x>=100 && ilimit==0) {
+      limitValueHigh=g->GetErrorYhigh(i)/y;
+      limitValueLow=g->GetErrorYlow(i)/y;
+      //cout << y << " " << g->GetErrorYhigh(i) << " " << limitValueHigh << endl;
+      ilimit=i;
+    }
+  }
+  for(int i=0; i<g->GetN(); i++){
+    Double_t x; Double_t y;
+    g->GetPoint(i,x,y);
+    if(x>100) {
+      g->SetPointEYhigh(i,g->GetErrorYhigh(i)+(i-ilimit)*(limitValueHigh/50) );
+      g->SetPointEYlow(i,g->GetErrorYlow(i)+(i-ilimit)*(limitValueLow/50) );
+    }
+    }*/
+  ///////////////////////////////////////////////////////////////
+  
   g->SetTitle("OSSS_corr"+sample);
   g->SetName("OSSS_corr"+sample);
   g->Write();
@@ -2821,6 +2674,7 @@ void FFCalculator::subtractBackground(TH1D* fakefactor_histo, TString fname, con
   else if( mode & SVFIT) {background = new TH1D(histname,"",nbins_svfit,hist_min_svfit,hist_max_svfit);}
   else if( mode & M2T) {background = new TH1D(histname,"",nbins_mt2,hist_min_mt2,hist_max_mt2);}
   else if( mode & MVAMET) {background = new TH1D(histname,"",nbins_mvamet,hist_min_mvamet,hist_max_mvamet);}
+  else if( mode & MET) {background = new TH1D(histname,"",nbins_met,hist_min_met,hist_max_met);}
   else if( mode & LEPPT) {background = new TH1D(histname,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);}
   else if( mode & ETA) {background = new TH1D(histname,"",nbins_eta,hist_min_eta,hist_max_eta);}
   else if( mode & MMTOT) {background = new TH1D(histname,"",nbins_mttot,hist_min_mttot,hist_max_mttot);}
