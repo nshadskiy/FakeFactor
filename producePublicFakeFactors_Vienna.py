@@ -4,9 +4,9 @@ import os
 
 #Meta-data
 channel="et"
-version='20161126'
+version='20161205_test'
 tag='v0.2.1'
-categories = ['incl','_0jetLow','_0jetHigh','_1jetLow','_1jetHigh','_vbfLow','_vbfHigh','_2jet','_anyb']
+categories = ['incl','_0jetLow','_0jetHigh','_1jetLow','_1jetHigh','_vbfLow','_vbfHigh','_2jet','_anyb','_2D_0jet', '_2D_Boosted', '_2D_VBF']
 #categories = ['incl']
 
 for x in range(0,len(categories)):
@@ -126,7 +126,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_qcd_up',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error',
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  qcd_os.find('ff_qcd_os')
@@ -145,7 +145,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_qcd_down',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error',
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
              qcd_os.find('ff_qcd_os')
@@ -180,7 +180,7 @@ for x in range(0,len(categories)):
                 vars=['mt']
             )
         ]
-)
+    )
     
     frac_w = replace_nodes(
         w,
@@ -266,7 +266,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_w_up',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error',
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  w.find('ff_w')
@@ -284,7 +284,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_w_down',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error',
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  w.find('ff_w')
@@ -380,7 +380,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_tt_up',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error',
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  tt.find('ff_tt')
@@ -398,7 +398,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_tt_down',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error',
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  tt.find('ff_tt')
@@ -423,25 +423,25 @@ for x in range(0,len(categories)):
                 name='frac_qcd',
                 file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_qcd.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                 object='h_w_2d',
-                vars=['mt','tau_decay']
+                vars=['tau_pt','tau_decay']
             ),
             Leaf(
                 name='frac_w',
                 file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_wjets.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                 object='h_w_2d',
-                vars=['mt','tau_decay']
+                vars=['tau_pt','tau_decay']
             ),
             Leaf(
                 name='frac_dy',
                 file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_dy.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                 object='h_w_2d',
-                vars=['mt','tau_decay']
+                vars=['tau_pt','tau_decay']
             ),
             Leaf(
                 name='frac_tt',
                 file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/frac_tt.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
                 object='h_w_2d',
-                vars=['mt','tau_decay']
+                vars=['tau_pt','tau_decay']
             ),
         ]
     )
@@ -492,7 +492,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_qcd_up',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error',
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  qcd_os.find('ff_qcd_os')
@@ -510,7 +510,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_qcd_down',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error',
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  qcd_os.find('ff_qcd_os')
@@ -528,7 +528,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_qcd_up_dm0_njet0',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0',
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  qcd_os.find('ff_qcd_os')
@@ -546,7 +546,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_qcd_down_dm0_njet0',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0',
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  qcd_os.find('ff_qcd_os')
@@ -564,7 +564,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_qcd_up_dm0_njet1',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1',
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  qcd_os.find('ff_qcd_os')
@@ -582,7 +582,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_qcd_down_dm0_njet1',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1',
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  qcd_os.find('ff_qcd_os')
@@ -600,7 +600,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_qcd_up_dm1_njet0',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet0',
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet0_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  qcd_os.find('ff_qcd_os')
@@ -618,7 +618,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_qcd_down_dm1_njet0',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet0',
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet0_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  qcd_os.find('ff_qcd_os')
@@ -636,7 +636,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_qcd_up_dm1_njet1',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet1',
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet1_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  qcd_os.find('ff_qcd_os')
@@ -654,7 +654,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_qcd_down_dm1_njet1',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet1',
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet1_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  qcd_os.find('ff_qcd_os')
@@ -709,7 +709,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_w_up_dm0_njet0',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0',
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  comb.find('ff_w')
@@ -727,7 +727,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_w_down_dm0_njet0',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0',
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  comb.find('ff_w')
@@ -745,7 +745,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_w_up_dm0_njet1',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1',
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  comb.find('ff_w')
@@ -763,7 +763,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_w_down_dm0_njet1',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1',
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  comb.find('ff_w')
@@ -781,7 +781,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_w_up_dm1_njet0',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet0',
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet0_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  comb.find('ff_w')
@@ -799,7 +799,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_w_down_dm1_njet0',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet0',
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet0_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  comb.find('ff_w')
@@ -817,7 +817,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_w_up_dm1_njet1',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet1',
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet1_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  comb.find('ff_w')
@@ -835,7 +835,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_w_down_dm1_njet1',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet1',
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet1_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  comb.find('ff_w')
@@ -853,7 +853,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_w_up',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error',
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  comb.find('ff_w')
@@ -871,7 +871,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_w_down',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error',
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  comb.find('ff_w')
@@ -926,7 +926,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_tt_up_dm0_njet0',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet0',
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet0_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  tt.find('ff_tt')
@@ -944,7 +944,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_tt_down_dm0_njet0',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet0',
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet0_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  tt.find('ff_tt')
@@ -962,7 +962,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_tt_up_dm0_njet1',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet1',
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet1_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  tt.find('ff_tt')
@@ -980,7 +980,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_tt_down_dm0_njet1',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet1',
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet1_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  tt.find('ff_tt')
@@ -998,7 +998,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_tt_up_dm1_njet0',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet0',
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet0_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  tt.find('ff_tt')
@@ -1016,7 +1016,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_tt_down_dm1_njet0',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet0',
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet0_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  tt.find('ff_tt')
@@ -1034,7 +1034,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_tt_up_dm1_njet1',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet1',
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet1_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  tt.find('ff_tt')
@@ -1052,7 +1052,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_tt_down_dm1_njet1',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet1',
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet1_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  tt.find('ff_tt')
@@ -1070,7 +1070,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_tt_up',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error',
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  tt.find('ff_tt')
@@ -1088,7 +1088,7 @@ for x in range(0,len(categories)):
                  Leaf(
                      name='stat_tt_down',
                      file='{HOME}/public/Htautau/FakeRate2016/{VERSION}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D.root'.format(HOME=home,VERSION=version,CHANNEL=channel,CATEGORY=category),
-                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error',
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  tt.find('ff_tt')

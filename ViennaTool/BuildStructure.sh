@@ -153,6 +153,15 @@ if [ ! -d "ff_2d" ]; then
         if [ ! -d "ff_2d/mt/_anyb" ]; then
             mkdir -p ff_2d/mt/_anyb;
         fi
+        if [ ! -d "ff_2d/mt/_2D_0jet" ]; then
+            mkdir -p ff_2d/mt/_2D_0jet;
+        fi
+        if [ ! -d "ff_2d/mt/_2D_Boosted" ]; then
+            mkdir -p ff_2d/mt/_2D_Boosted;
+        fi
+        if [ ! -d "ff_2d/mt/_2D_VBF" ]; then
+            mkdir -p ff_2d/mt/_2D_VBF;
+        fi
         
     else
         mkdir -p ff_2d/mt/incl;
@@ -164,6 +173,9 @@ if [ ! -d "ff_2d" ]; then
         mkdir -p ff_2d/mt/_vbfHigh;
         mkdir -p ff_2d/mt/_2jet;
         mkdir -p ff_2d/mt/_anyb;
+        mkdir -p ff_2d/mt/_2D_0jet;
+        mkdir -p ff_2d/mt/_2D_Boosted;
+        mkdir -p ff_2d/mt/_2D_VBF;
     fi
     if [ ! -d "ff_2d/et" ]; then
         if [ ! -d "ff_2d/et/incl" ]; then
@@ -193,6 +205,15 @@ if [ ! -d "ff_2d" ]; then
         if [ ! -d "ff_2d/et/_anyb" ]; then
             mkdir -p ff_2d/et/_anyb;
         fi
+        if [ ! -d "ff_2d/et/_2D_0jet" ]; then
+            mkdir -p ff_2d/et/_2D_0jet;
+        fi
+        if [ ! -d "ff_2d/et/_2D_Boosted" ]; then
+            mkdir -p ff_2d/et/_2D_Boosted;
+        fi
+        if [ ! -d "ff_2d/eAt/_2D_VBF" ]; then
+            mkdir -p ff_2d/et/_2D_VBF;
+        fi
     else
         mkdir -p ff_2d/et/incl;
         mkdir -p ff_2d/et/_0jetLow;
@@ -203,6 +224,9 @@ if [ ! -d "ff_2d" ]; then
         mkdir -p ff_2d/et/_vbfHigh;
         mkdir -p ff_2d/et/_2jet;
         mkdir -p ff_2d/et/_anyb;
+        mkdir -p ff_2d/et/_2D_0jet;
+        mkdir -p ff_2d/et/_2D_Boosted;
+        mkdir -p ff_2d/et/_2D_VBF;
     fi
     if [ ! -d "ff_2d/tt" ]; then
         if [ ! -d "ff_2d/tt/incl" ]; then
@@ -232,6 +256,15 @@ if [ ! -d "ff_2d" ]; then
         if [ ! -d "ff_2d/tt/_anyb" ]; then
             mkdir -p ff_2d/tt/_anyb;
         fi
+        if [ ! -d "ff_2d/tt/_2D_0jet" ]; then
+            mkdir -p ff_2d/tt/_2D_0jet;
+        fi
+        if [ ! -d "ff_2d/tt/_2D_Boosted" ]; then
+            mkdir -p ff_2d/tt/_2D_Boosted;
+        fi
+        if [ ! -d "ff_2d/tt/_2D_VBF" ]; then
+            mkdir -p ff_2d/tt/_2D_VBF;
+        fi
     else
         mkdir -p ff_2d/tt/incl;
         mkdir -p ff_2d/tt/_0jetLow;
@@ -242,6 +275,9 @@ if [ ! -d "ff_2d" ]; then
         mkdir -p ff_2d/tt/_vbfHigh;
         mkdir -p ff_2d/tt/_2jet;
         mkdir -p ff_2d/tt/_anyb;
+        mkdir -p ff_2d/tt/_2D_0jet;
+        mkdir -p ff_2d/tt/_2D_Boosted;
+        mkdir -p ff_2d/tt/_2D_VBF;
     fi
     
     
@@ -255,6 +291,9 @@ else
     mkdir -p ff_2d/mt/_vbfHigh;
     mkdir -p ff_2d/mt/_2jet;
     mkdir -p ff_2d/mt/_anyb;
+    mkdir -p ff_2d/mt/_2D_0jet;
+    mkdir -p ff_2d/mt/_2D_Boosted;
+    mkdir -p ff_2d/mt/_2D_VBF;
     mkdir -p ff_2d/et/incl;
     mkdir -p ff_2d/et/_0jetLow;
     mkdir -p ff_2d/et/_0jetHigh;
@@ -264,6 +303,9 @@ else
     mkdir -p ff_2d/et/_vbfHigh;
     mkdir -p ff_2d/et/_2jet;
     mkdir -p ff_2d/et/_anyb;
+    mkdir -p ff_2d/et/_2D_0jet;
+    mkdir -p ff_2d/et/_2D_Boosted;
+    mkdir -p ff_2d/et/_2D_VBF;
     mkdir -p ff_2d/tt/incl;
     mkdir -p ff_2d/tt/_0jetLow;
     mkdir -p ff_2d/tt/_0jetHigh;
@@ -273,6 +315,9 @@ else
     mkdir -p ff_2d/tt/_vbfHigh;
     mkdir -p ff_2d/tt/_2jet;
     mkdir -p ff_2d/tt/_anyb;
+    mkdir -p ff_2d/tt/_2D_0jet;
+    mkdir -p ff_2d/tt/_2D_Boosted;
+    mkdir -p ff_2d/tt/_2D_VBF;
     
 fi
 

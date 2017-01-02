@@ -54,7 +54,8 @@ class FFCalculator : public GlobalClass, public PlotterClass{
   
   void calcFFweights(const TString data_file, const std::vector<TString> weight_files, const std::vector<TString> presel_files, const TString m_path_img, const TString m_path_w="", const TString template_file="", Int_t mode=0);
 
-  void applyFF(TString outfile, const std::vector<Int_t> mode, const Int_t categoryMode, TString fname=FF_inputFile, const Int_t cuts=0 );
+  //void applyFF(TString outfile, const std::vector<Int_t> mode, const Int_t categoryMode, TString fname=FF_inputFile, const Int_t cuts=0 );
+  void applyFF(TString outfile, const std::vector<Int_t> mode, const Int_t categoryMode, Int_t cuts=0, TString fname=FF_inputFile);
   void applyFF_tt_raw(TString outfile, const std::vector<Int_t> mode, const Int_t categoryMode, TString fname=FF_inputFile, const Int_t cuts=0 );
   void applyFF_wUncertainties(TString outfile, const std::vector<Int_t> mode, const Int_t categoryMode, TString fname=FF_inputFile, const Int_t cuts=0, const Int_t tau_ind=0 );
   void getInputs(std::vector<double>&inputs, Int_t ind);
@@ -63,6 +64,7 @@ class FFCalculator : public GlobalClass, public PlotterClass{
   void subtractBackground(TH1D* fakefactor_histo, TString fname, const Int_t mode, const Int_t categoryMode, Int_t cuts=0, Int_t tau_ind=0);
 
   void calc_nonclosure(const Int_t mode, const TString raw_ff, const TString compare_file, const TString ff_output, const Int_t doPlot=1, const Int_t subtractMC=1, const Int_t tau_ind=0 );
+  void calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff, const TString compare_file, const TString nonclosure_corr, const TString ff_output, const Int_t doPlot=1, const Int_t subtractMC=1, const Int_t tau_ind=0 );
   void calc_muisocorr(const Int_t mode, const TString raw_ff, const TString CR_file, const TString nonclosure_corr, const TString ff_output, const Int_t doPlot=1, const Int_t subtractMC=1, const Int_t tau_ind=0 );
   void calc_mtcorr(const Int_t mode, const TString raw_ff, const TString CR_file, const TString nonclosure_corr, const TString ff_output, const Int_t tau_ind=0 );
   void calc_OSSScorr(const Int_t mode, const TString raw_ff, const TString SR_file_AI, const TString nonclosure_corr, const TString ff_output, const Int_t doPlot=1, const Int_t subtractMC=1, const Int_t tau_ind=0 );

@@ -361,7 +361,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   }
     
   float decay=event->decayMode_2;
-  if ( /*event->againstElectronTightMVA6_2 && event->againstMuonLoose3_2*/ && (event->passesTauLepVetos) && ( (decay>=0&&decay<=4)||(decay>=10&&decay<=14)   ) && (dR>0.5) && (event->pt_2 > m_tau_pt_cut ) && (fabs(event->eta_2) < m_tau_eta_cut) && (TT_AS_LEP==1) ){
+  if ( /*event->againstElectronTightMVA6_2 && event->againstMuonLoose3_2 &&*/ (event->passesTauLepVetos) && ( (decay>=0&&decay<=4)||(decay>=10&&decay<=14)   ) && (dR>0.5) && (event->pt_2 > m_tau_pt_cut ) && (fabs(event->eta_2) < m_tau_eta_cut) && (TT_AS_LEP==1) ){
     Int_t tpos=0;
     if ( (!USE_ISOTAU) && (CHAN!=kTAU) ) tpos=this->findPos(event->pt_2, alltau_pt); //for tt, always insert it as first tau
     tau_iso_ind=tpos;

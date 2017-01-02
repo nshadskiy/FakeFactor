@@ -54,15 +54,16 @@ void ApplyFF() {
       if(inclusive_selection && icat>0) continue;
       Analyzer->loadFile(m_preselection_data,"Events");
       vector<Int_t> mode_comb;
-      ///mode_comb.push_back(NO_SR|MT);
-      //mode_comb.push_back(MVIS);
+      //mode_comb.push_back(NO_SR|MT);
+      mode_comb.push_back(MVIS);
       mode_comb.push_back(PT);
-      /*if(use_svfit){mode_comb.push_back(SVFIT);}
-      mode_comb.push_back(M2T);
-      mode_comb.push_back(LEPPT); mode_comb.push_back(MVAMET|NO_SR);
-      mode_comb.push_back(ETA);
-      mode_comb.push_back(MMTOT);
-      mode_comb.push_back(MET|NO_SR);*/
+      //if(use_svfit){mode_comb.push_back(SVFIT);}
+      //mode_comb.push_back(M2T);
+      mode_comb.push_back(LEPPT);
+      //mode_comb.push_back(MVAMET|NO_SR);
+      //mode_comb.push_back(ETA);
+      //mode_comb.push_back(MMTOT);
+      //mode_comb.push_back(MET|NO_SR);
       
       Int_t categoryMode=0;
       if(inclusive_frac_mt) categoryMode=_INCLFRAC_MT;
@@ -179,6 +180,9 @@ void ApplyFF() {
       }
       for( Int_t ilist=0;ilist<proc_list_mt_ff.size();ilist++ ){
         if(CHAN==kTAU){
+          if( proc_list_mt_ff.at(ilist).Contains("FFestimate_") ){
+            proc_list_mt_ff.at(ilist).ReplaceAll( ".root", fracString+".root" );
+          }
         }
         /* if( proc_list_mt_ff.at(ilist).Contains("FFestimate_") ){
             proc_list_mt_ff.at(ilist).ReplaceAll( "_wUncertainties", "" );

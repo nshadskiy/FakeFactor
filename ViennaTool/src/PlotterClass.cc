@@ -30,7 +30,8 @@ void PlotterClass::plotCR(const std::vector<TString> fname, const std::vector<TS
   //sim
   //  TH1D* hsum= (TH1D*) hist.at(0)->Clone();
   TH1D* hsum=0;
-  for (unsigned ih=0; ih<fname.size(); ih++){
+  for (unsigned ih=0; ih<fname.size()-1; ih++){
+    //if(fname.at(ih).Contains("QCD.root")) continue;
     f.push_back( new TFile( fname.at(ih) ) );
     hist.push_back( (TH1D*) f.at(ih)->Get(hname) );
     hs->Add( hist.back(),"hist");

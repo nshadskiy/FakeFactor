@@ -79,25 +79,25 @@ void Preselection() {
     Analyzer->closeFile();
     compressFile(preselection_DY_L);
   }
-  if ( (num==11||num==0||num==99) && CHAN!=kTAU) {
+  if ( (num==11||num==0||num==99) && useVV) {
     Analyzer->loadFile(VVfile,"TauCheck");
     Analyzer->select(preselection_VV,0);
     Analyzer->closeFile();
     compressFile(preselection_VV);
   }
-  if ( (num==11 || num==12||num==0||num==99) && CHAN!=kTAU) {
+  if ( (num==11 || num==12||num==0||num==99) && useVV) {
     Analyzer->loadFile(VVfile,"TauCheck");
     Analyzer->select(preselection_VV_T,_VV|_TTAU);
     Analyzer->closeFile();
     compressFile(preselection_VV_T);
   }
-  if ( (num==11 || num==13||num==0||num==99) && CHAN!=kTAU) {
+  if ( (num==11 || num==13||num==0||num==99) && useVV) {
     Analyzer->loadFile(VVfile,"TauCheck");
     Analyzer->select(preselection_VV_J,_VV|_JTAU);
     Analyzer->closeFile();
     compressFile(preselection_VV_J);
   }
-  if ( (num==11 || num==14||num==0||num==99) && CHAN!=kTAU) {
+  if ( (num==11 || num==14||num==0||num==99) && useVV) {
     Analyzer->loadFile(VVfile,"TauCheck");
     Analyzer->select(preselection_VV_L,_VV|_LTAU);
     Analyzer->closeFile();

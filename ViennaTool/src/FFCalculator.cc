@@ -174,6 +174,7 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
     std::cout<< "Processing " << fnames.at(i) << " with \t" << nentries << " events."<<std::endl;
     for(Int_t jentry=0;jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
+      if(CHAN!=kTAU) {if(event_s->alltau_mt->at(0) > 50)continue;}
       Double_t fracWeight=event_s->weight_sf;
       if ( !fulfillCategory(mode) ) continue;
       if ( this->isInSR(NO_SR) ){
@@ -541,7 +542,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
     
     for(Int_t j=0;j<h_check.size();j++){
       TH1D *htmp = new TH1D("h_w"+sNum[j],"",nbins_weight,min_weight,max_weight);
-      for(Int_t ibins=0; ibins<NBINS; ibins++){ //ibins<h_templates.at(j)->GetNbinsX()
+      for(Int_t ibins=0; ibins<=NBINS; ibins++){ //ibins<h_templates.at(j)->GetNbinsX()
         if(h_check.at(j)->GetBinContent(ibins)>0) {htmp->SetBinContent( ibins, h_check.at(j)->GetBinContent(ibins) );}
         if(h_check.at(j)->GetBinContent(ibins)>0) {htmp->SetBinError( ibins, h_check.at(j)->GetBinError(ibins) );}
         
@@ -684,7 +685,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
       hs_split[is]->Draw();
       //      hs_split[is]->GetYaxis()->SetRangeUser(0.0,1.0);
       hs_split[is]->SetMaximum(1.0);
-      hs_split[is]->GetXaxis()->SetTitle(labelMt);
+      hs_split[is]->GetXaxis()->SetTitle(labelPt);
       hs_split[is]->GetYaxis()->SetTitle("fraction");
       hs_split[is]->Draw();
       leg->Draw();
@@ -1366,8 +1367,136 @@ void FFCalculator::doCorrFit(const TString filename, const TString plotfilename,
   f.Close();
 }
 
+void FFCalculator::applyFF(TString outfile, const std::vector<Int_t> mode, const Int_t categoryMode, Int_t cuts, TString fname){  
 
-void FFCalculator::applyFF(TString outfile, const std::vector<Int_t> mode, const Int_t categoryMode, TString fname, Int_t cuts){  
+  TFile* ff_file;
+
+  TString channelString = getChannelString(categoryMode);
+  fname.ReplaceAll("XXXXX",channelString);
+  TString catString = getCatString_noSel(categoryMode);
+  if( (categoryMode & _CATFRAC_MT || categoryMode & _CATFRAC_ET || categoryMode & _CATFRAC_TT)  ) fname.ReplaceAll("ZZZZZ",catString);
+
+  cout << "FF file: " << fname << endl;
+  //fname.ReplaceAll("/incl/","/SS_incl/");
+  //fname.ReplaceAll("/incl/","/mc_incl/");
+  //cout << "FF file: " << fname << endl;
+  ff_file = TFile::Open(fname);
+  FakeFactor* ff    = (FakeFactor*)ff_file->Get("ff_comb");
+  FakeFactor* ff_tt; FakeFactor* ff_w; FakeFactor* ff_qcd_os;
+  if(CHAN!=kTAU)ff_tt = (FakeFactor*)ff_file->Get("ff_tt");
+  if(CHAN!=kTAU)ff_w = (FakeFactor*)ff_file->Get("ff_w");
+  if(CHAN!=kTAU)ff_qcd_os = (FakeFactor*)ff_file->Get("ff_qcd_os");
+  string frac_w("frac_w");
+  string frac_qcd("frac_qcd");
+  string frac_tt("frac_tt");
+  string frac_dy("frac_dy");
+
+  Double_t fillVal;
+  Int_t tau_ind=0;
+  vector<double> inputs;
+  Int_t NV = mode.size();
+
+  for(Int_t ni=0; ni<NV; ni++){
+    loadFile(preselection_data,"Events");
+    Int_t nentries = Int_t(event_s->fChain->GetEntries());
+    cout << nentries << endl;
+    cout << "Cuts: " << cuts << endl;
+    TString outstring;
+    if( mode.at(ni) & MVIS ) outstring = outfile+"_mvis.root";
+    else if( mode.at(ni) & M2T ) outstring = outfile+"_mt2.root";
+    else if( mode.at(ni) & PT )outstring = outfile+"_pt.root";
+    else if( mode.at(ni) & MT )outstring = outfile+"_mt.root";
+    else if( mode.at(ni) & LEPPT )outstring = outfile+"_lepPt.root";
+    else if( mode.at(ni) & MVAMET )outstring = outfile+"_mvamet.root";
+    else if( mode.at(ni) & MET )outstring = outfile+"_met.root";
+    else if( mode.at(ni) & SVFIT )outstring = outfile+"_svfit.root";
+    else{
+      cout << "Error: Wrong mode specified in FFCalculator::applyFF" << endl;
+      exit(0);
+    }
+    
+    outstring.ReplaceAll(  ".root", catString+".root" );
+    TString fracString = getFracString(categoryMode);
+    outstring.ReplaceAll( ".root", fracString+".root" );
+    cout << outstring << endl;
+    
+    TFile *f = new TFile(outstring,"RECREATE");
+    TH1D* fakefactor_histo;
+    if( mode.at(ni) & MVIS) fakefactor_histo = new TH1D("hh_t_mvis","",nbins_mvis,hist_min_mvis,hist_max_mvis);
+    else if( mode.at(ni) & M2T) fakefactor_histo = new TH1D("hh_t_mt2","",nbins_mt2,hist_min_mt2,hist_max_mt2);
+    else if( mode.at(ni) & PT) fakefactor_histo = new TH1D("hh_t_pt","",nbins_pt,hist_min_pt,hist_max_pt);
+    else if( mode.at(ni) & MT) fakefactor_histo = new TH1D("hh_t_mt","",nbins_mt,hist_min_mt,hist_max_mt);
+    else if( mode.at(ni) & LEPPT) fakefactor_histo = new TH1D("hh_t_lepPt","",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+    else if( mode.at(ni) & MVAMET) fakefactor_histo = new TH1D("hh_t_mvamet","",nbins_mvamet,hist_min_mvamet,hist_max_mvamet);
+    else if( mode.at(ni) & MET) fakefactor_histo = new TH1D("hh_t_met","",nbins_met,hist_min_met,hist_max_met);
+    else if( mode.at(ni) & SVFIT) fakefactor_histo = new TH1D("hh_t_svfit","",nbins_svfit,hist_min_svfit,hist_max_svfit);
+    for (Int_t jentry=0; jentry<nentries;jentry++) {
+      event_s->GetEntry(jentry);
+      
+      if (   this->isInSR(mode.at(ni),tau_ind) && this->isLoose(mode.at(ni),tau_ind)  && ( !cuts || this->passesCuts(cuts,tau_ind) )  ) { //!cuts for performance
+        fillVal=this->selVal(mode.at(ni),tau_ind);
+        inputs.clear();
+        this->getInputs(inputs, tau_ind);
+        double ffvalue;
+        if ( !fulfillCategory(categoryMode) ) continue;
+        if( mode.at(ni) & _W_JETS ) ffvalue = ff_w->value(inputs)*ff_w->value(inputs,frac_w);
+        else if( mode.at(ni) & _TT ) ffvalue = ff_tt->value(inputs)*ff_tt->value(inputs,frac_tt);
+        else if( mode.at(ni) & _DY ) ffvalue = ff_w->value(inputs)*ff_w->value(inputs,frac_dy);
+        else if( mode.at(ni) & _QCD ) ffvalue = ff_qcd_os->value(inputs)*ff_qcd_os->value(inputs,frac_qcd);
+        else ffvalue = ffvalue = ff->value(inputs);
+        //cout << "value: " << fillVal << " and FF: " << ffvalue << " " << ffvalue*event_s->weight_sf << endl;
+        fakefactor_histo->Fill(fillVal, ffvalue*event_s->weight_sf);        
+        
+      }
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    cout << fakefactor_histo->Integral() << endl;
+    this->subtractBackground(fakefactor_histo, fname, mode.at(ni), categoryMode, cuts);
+    cout << fakefactor_histo->Integral() << endl;
+    for(int i=0; i<fakefactor_histo->GetNbinsX(); i++){
+      if(fakefactor_histo->GetBinContent(i)<0) fakefactor_histo->SetBinContent(i,0);
+    }
+    f->cd();
+    
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //cout << "Bin contents: " << endl;
+    //for(int i=0; i<fakefactor_histo->GetNbinsX(); i++) cout << i << ": " << fakefactor_histo->GetBinContent(i) << endl;
+    
+    
+    //calc error FF
+    /*TH1D *FFerr[NERR];
+    TRandom3 r3;
+    for (int i=0; i<NERR; i++){
+      //    std::cout << "calc error FF: B " << i << std::endl;
+      TString hn="ff_toyerr_"; if (i<10) hn+="0"; hn+=i;
+      if( mode.at(ni) & MVIS) FFerr[i] = new TH1D(hn, "",nbins_mvis,hist_min_mvis,hist_max_mvis);
+      if( mode.at(ni) & MT) FFerr[i] = new TH1D(hn, "",nbins_mt,hist_min_mt,hist_max_mt);
+      if( mode.at(ni) & PT) FFerr[i] = new TH1D(hn, "",nbins_pt,hist_min_pt,hist_max_pt);
+      if( mode.at(ni) & SVFIT) FFerr[i] = new TH1D(hn, "",nbins_svfit,hist_min_svfit,hist_max_svfit);
+      for (int xb=1; xb<fakefactor_histo->GetNbinsX(); xb++){
+        Double_t binc=r3.Gaus( fakefactor_histo->GetBinContent(xb) , fakefactor_histo->GetBinError(xb)  );
+        FFerr[i]->SetBinContent( xb , binc );
+      }
+    }
+    
+    for (int i=0; i<NERR; i++){
+      FFerr[i]->Write();
+      delete FFerr[i];
+      }*/
+    fakefactor_histo->Write();
+    delete fakefactor_histo;
+    f->Close();
+    }
+  
+  delete ff;
+  if(CHAN!=kTAU){delete ff_tt; delete ff_w; delete ff_qcd_os;}
+  ff_file->Close();
+}
+
+/*void FFCalculator::applyFF(TString outfile, const std::vector<Int_t> mode, const Int_t categoryMode, TString fname, Int_t cuts){  
 
   TFile* ff_file;
 
@@ -1473,7 +1602,7 @@ void FFCalculator::applyFF(TString outfile, const std::vector<Int_t> mode, const
   delete ff_w;
   delete ff_qcd_os;
   ff_file->Close();
-}
+  }*/
 
 void FFCalculator::applyFF_tt_raw(TString outfile, const std::vector<Int_t> mode, const Int_t categoryMode, TString fname, Int_t cuts){  
 
@@ -1746,9 +1875,12 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
     fakefactor_histo_QCD[0] = (TH1D*)fakefactor_histo[0]->Clone("QCD_err");
     fakefactor_histo_TT[0] = (TH1D*)fakefactor_histo[0]->Clone("TT_err");
 
-    FakeFactor* ff_w = (FakeFactor*)ff_file->Get(nominal_syst.at(0).c_str());
-    FakeFactor* ff_qcd = (FakeFactor*)ff_file->Get(nominal_syst.at(1).c_str());
-    FakeFactor* ff_tt = (FakeFactor*)ff_file->Get(nominal_syst.at(2).c_str());
+    FakeFactor* ff_w; FakeFactor* ff_qcd; FakeFactor* ff_tt;
+    if(CHAN!=kTAU){
+      ff_w = (FakeFactor*)ff_file->Get(nominal_syst.at(0).c_str());
+      ff_qcd = (FakeFactor*)ff_file->Get(nominal_syst.at(1).c_str());
+      ff_tt = (FakeFactor*)ff_file->Get(nominal_syst.at(2).c_str());
+    }
 
     for (int itoys=0; itoys<NERR; itoys++){
       TString hn="ff_toyerr_"; if (itoys<10) hn+="0"; hn+=itoys;
@@ -1795,7 +1927,7 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
         for(int ilook=0; ilook<w_muiso_n; ilook++){ if(inputs[5]>w_muiso_v[ilook] && inputs[5]<w_muiso_v[ilook+1]){ muiso_lookup = ilook; break;} }
         
         if(pt_lookup >= nbins_pt || mvis_lookup >= nbins_mvis || mt_lookup >= nbins_mt || dm_lookup >= 2 || muiso_lookup >= w_muiso_n) continue;
-        
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
         for (int itoys=0; itoys<NERR; itoys++){
           Double_t toyffvalue=0; Double_t toyffvalue_Wjets=0; Double_t toyffvalue_QCD=0; Double_t toyffvalue_DY=0; Double_t toyffvalue_TT=0;
@@ -1966,12 +2098,22 @@ void FFCalculator::applyFF_wUncertainties(TString outfile, const std::vector<Int
 
 void FFCalculator::getInputs(vector<double>&inputs, Int_t ind)
 {
-  inputs.push_back(event_s->alltau_pt->at(ind) );
-  inputs.push_back(event_s->alltau_decay->at(ind) );
-  inputs.push_back(event_s->njets);
-  inputs.push_back(event_s->alltau_mvis->at(ind) );
-  inputs.push_back(event_s->alltau_mt->at(ind) );
-  inputs.push_back(event_s->lep_iso);
+  if(CHAN==kTAU){
+    inputs.push_back(event_s->alltau_pt->at(ind) );
+    inputs.push_back(event_s->lep_pt);
+    inputs.push_back(event_s->alltau_decay->at(ind) );
+    inputs.push_back(event_s->njets);
+    inputs.push_back(event_s->alltau_mvis->at(ind) );
+    inputs.push_back(event_s->lep_iso);
+  }
+  else{
+    inputs.push_back(event_s->alltau_pt->at(ind) );
+    inputs.push_back(event_s->alltau_decay->at(ind) );
+    inputs.push_back(event_s->njets);
+    inputs.push_back(event_s->alltau_mvis->at(ind) );
+    inputs.push_back(event_s->alltau_mt->at(ind) );
+    inputs.push_back(event_s->lep_iso);
+  }
   
 }
 
@@ -2149,6 +2291,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   //if(mode & _QCD) gsk.set_lastBinFrom(150);
   Double_t fitWidth;
   if(mode & _QCD) fitWidth=2.; else if(mode & _W_JETS) fitWidth=2.; else fitWidth=2.;
+  if(CHAN==kTAU) fitWidth=1.5;
   cout << "FitWidth: " << fitWidth << endl;
   gsk.setWidth(fitWidth);
   gsk.set_widthInBins_sf(1.115);
@@ -2178,7 +2321,17 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
     for(int i=0; i<g->GetN(); i++){
       Double_t x; Double_t y; 
       g->GetPoint(i,x,y);
-      if(x<80) {g->SetPoint(i,x,y_value); g->SetPointEYhigh(i,y_errorHigh); g->SetPointEYlow(i,y_errorLow);}
+      //if(x<80) {g->SetPoint(i,x,y_value); g->SetPointEYhigh(i,y_errorHigh); g->SetPointEYlow(i,y_errorLow);}
+    }
+  }
+
+  Double_t x185; Double_t y185;
+  g->GetPoint(185,x185,y185);
+  for(int i=0; i<g->GetN(); i++){
+    Double_t x; Double_t y;
+    if(i>185){
+      g->GetPoint(i,x,y);
+      g->SetPoint(i,x,y185);
     }
   }
 
@@ -2240,6 +2393,218 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   TString SSstring="";
   if(CALC_SS_SR)SSstring+="_SS_SR";
   if ( doPlot)  c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/nonclosure"+sample+SSstring+".png");
+  //if ( doPlot)  c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/nonclosure_zpt"+sample+SSstring+".png");
+
+  FF_lookup.Close();output->Close();
+  
+}
+
+void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff, const TString compare_file, const TString nonclosure_corr, const TString ff_output, const Int_t doPlot, const Int_t subtractMC, const Int_t tau_ind){
+
+  cout << "Calculating corrections for " << ff_output << endl;
+  Int_t nentries = Int_t(event_s->fChain->GetEntries());
+  cout << nentries << endl;
+
+  TString sample;
+  if(mode & _QCD) sample="_QCD";
+  if(mode & _W_JETS) sample="_Wjets";
+  if(mode & _TT) sample="_TT";
+  if(!subtractMC) sample+="_MC";
+  
+  TH1D *closure_h;
+  if(mode & _TT) closure_h= new TH1D("closure"+sample,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+  else closure_h= new TH1D("closure"+sample,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+  //TH1D *closure_h = new TH1D("closure"+sample,"",w_zpt_n,w_zpt_v);
+  TFile *output = new TFile(ff_output,"RECREATE");
+  TH1D *output_h = new TH1D("nonclosure_lepPt","",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+  //TH1D *output_h = new TH1D("nonclosure_zpt","",w_zpt_n,w_zpt_v);
+  TFile FF_lookup(raw_ff);
+  TString ff_inputString="c_t";
+  TH1D* FF_lookup_h = (TH1D*) FF_lookup.Get(ff_inputString);
+  TFile nonclosure(nonclosure_corr);
+  if(nonclosure.IsZombie()) cout << nonclosure_corr << " does not exist" << endl;
+  TH1D* nonclosure_h = (TH1D*) nonclosure.Get("nonclosure_fit_smoothed");
+  
+  TFile compare(compare_file);
+  if(subtractMC){
+    TString ff_inputHist="hh_l"; 
+    TH1D* compare_l              = (TH1D*) compare.Get(ff_inputHist+"_lepPt");
+    TH1D* compare_l_MCsubtracted = (TH1D*) compare.Get(ff_inputHist+"_lepPt_MCsubtracted");
+    //TH1D* compare_l              = (TH1D*) compare.Get("hh_l_zpt");
+    //TH1D* compare_l_MCsubtracted = (TH1D*) compare.Get("hh_l_zpt_MCsubtracted");
+    TH1D* ratio_l                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l");
+    ratio_l->Divide(compare_l);
+    ///get unity histogram
+    TH1D *unity_h = new TH1D("unity","",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+    //TH1D *unity_h = new TH1D("unity","",w_zpt_n,w_zpt_v);
+    for(int ibin=1; ibin<=unity_h->GetNbinsX(); ibin++) unity_h->SetBinContent(ibin,1.);
+    ratio_l->Add(unity_h,-1);ratio_l->Scale(-1);
+    TH1D* compare_t              = (TH1D*) compare.Get("hh_t_lepPt");
+    TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t_lepPt_MCsubtracted");
+    //TH1D* compare_t              = (TH1D*) compare.Get("hh_t_zpt");
+    //TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t_zpt_MCsubtracted");
+
+    //TFile nonclosure("fakefactor/data_mt/FF_corr_QCD_MCsum_noGen_nonclosure.root");
+    //TH1D* nonclosure_h = (TH1D*) nonclosure.Get("nonclosure_smoothed");
+    //TFile nonclosure_mt("fakefactor/data_mt/FF_corr_Wjets_MC_noGen_mtcorr.root");
+    //TH1D* nonclosure_mt_h = (TH1D*) nonclosure_mt.Get("mt_corr_smoothed");
+  
+    for (Int_t jentry=0; jentry<nentries;jentry++) {
+      event_s->GetEntry(jentry);
+      if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
+      if (mode & SR){
+        if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->lep_pt,FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*event_s->weight_sf*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );
+      }
+      else{
+        if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->lep_pt,FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*event_s->weight_sf*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );
+      }
+      /*if (mode & SR){
+        if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->lep_pt,FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 ) );
+      }
+      else{
+        if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->lep_pt,FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 ) );
+        }*/
+    }
+
+    cout << "Here" << endl;
+    closure_h->Multiply(ratio_l);
+    output->cd();
+    closure_h->Write();
+  
+    output_h = (TH1D*)compare_t->Clone("nonclosure");
+    output_h->Add(compare_t_MCsubtracted,-1);
+    compare_t->Add(compare_t_MCsubtracted,-1);
+    compare_t->Write();
+    output_h->Divide(closure_h);
+  }
+  else{ 
+    TH1D* compare_t              = (TH1D*) compare.Get("hh_t_lepPt");
+  
+    for (Int_t jentry=0; jentry<nentries;jentry++) {
+      event_s->GetEntry(jentry);
+      if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
+      if (mode & SR){
+        if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->lep_pt,FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*event_s->weight_sf );
+      }
+      else{
+        if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->lep_pt,FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*event_s->weight_sf );
+      }
+    }
+    
+    output->cd();
+    closure_h->Write();
+  
+    output_h = (TH1D*)compare_t->Clone("nonclosure");
+    output_h->Divide(closure_h);
+  }
+
+  TH1D* output_fit;
+  if(CHAN==kTAU && calcVTightFF){
+    output_fit=new TH1D("nonclosure_fit","",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+    for(int i=1;i<=output_h->GetNbinsX();i++){
+      
+      if( i >= 9 ){output_fit->SetBinContent(i,output_h->GetBinContent(i)); output_fit->SetBinError(i,output_h->GetBinError(i));}
+    }
+  }
+  else output_fit = (TH1D*)output_h->Clone("nonclosure_fit");
+
+  for(int i=1;i<=output_h->GetNbinsX();i++){
+    if( output_h->GetBinContent(i) < 0 ) output_h->SetBinError(i,1.);
+  }
+  
+  output->cd();
+  output_fit->Write();
+
+  GaussianKernelSmoother gsk;
+  int ret=gsk.setInputHisto( output_fit );
+  if ( ret != 0 ) return;
+  gsk.set_doWeights(1);
+  gsk.set_doIgnoreZeroBins(0);
+  gsk.set_kernelDistance( "lin" );
+  gsk.set_doWidthInBins(1);
+  gsk.set_doErrors(1);
+  //if(mode & _QCD) gsk.set_lastBinFrom(150);
+  Double_t fitWidth;
+  if(mode & _QCD) fitWidth=2.; else if(mode & _W_JETS) fitWidth=2.; else fitWidth=2.;
+  if(CHAN==kTAU) fitWidth=1.5;
+  cout << "FitWidth: " << fitWidth << endl;
+  gsk.setWidth(fitWidth);
+  gsk.set_widthInBins_sf(1.115);
+  //gsk.set_doWidthInBins(0);
+  //gsk.setWidth(2*h->GetBinWidth(1));
+  gsk.getSmoothHisto();
+  TH1D *h2=gsk.returnSmoothedHisto();
+  /*for(int i=1;i<=h2->GetNbinsX();i++){
+    if(i<9){h2->SetBinContent(i,1);h2->SetBinError(i,0.1);}
+    }*/
+  h2->Write();
+
+  gsk.set_doErrors(1);
+  gsk.getContSmoothHisto();
+  TGraphAsymmErrors *g=   gsk.returnSmoothedGraph();
+  if(CHAN==kTAU){
+    Double_t x_value; Double_t y_value; Double_t y_errorHigh; Double_t y_errorLow; Int_t counter;
+    for(int i=0; i<g->GetN(); i++){
+      g->GetPoint(i,x_value,y_value);
+      if(x_value>=40){
+        counter=i;
+        y_errorHigh=g->GetErrorYhigh(i);
+        y_errorLow=g->GetErrorYlow(i);
+        break;
+      }
+    }
+    for(int i=0; i<g->GetN(); i++){
+      Double_t x; Double_t y; 
+      g->GetPoint(i,x,y);
+      if(x<40) {g->SetPoint(i,x,y_value); g->SetPointEYhigh(i,y_errorHigh); g->SetPointEYlow(i,y_errorLow);}
+    }
+  }
+
+  Double_t xV; Double_t yV;
+  g->GetPoint(375,xV,yV);
+  for(int i=0; i<g->GetN(); i++){
+    Double_t x; Double_t y;
+    if(i>375){
+      g->GetPoint(i,x,y);
+      g->SetPoint(i,x,yV);
+    }
+  }
+
+  ///////////////////////////////////////////////////////////////
+  g->SetTitle("nonclosure"+sample);
+  g->SetName("nonclosure"+sample);
+  g->Write();
+
+  TGraph *gup = (TGraphAsymmErrors*)g->Clone("nonclosure"+sample+"_up");
+  gup->SetTitle("nonclosure"+sample+"_up");
+  for(Int_t j=0;j<g->GetN();j++) gup->SetPoint(j,g->GetX()[j],g->GetErrorYhigh(j) );
+  gup->Write();
+  TGraph *gdown = (TGraphAsymmErrors*)g->Clone("nonclosure"+sample+"_down");
+  gdown->SetTitle("nonclosure"+sample+"_down");
+  for(Int_t j=0;j<g->GetN();j++) gdown->SetPoint(j,g->GetX()[j],g->GetErrorYlow(j) );
+  gdown->Write();
+  
+
+  TCanvas *c2=new TCanvas();
+  output_h->Draw("E");
+  g->Draw("same LP");
+  /*if(CHAN==kTAU && calcVTightFF){
+    for(int i=1;i<=output_h->GetNbinsX();i++){
+      if( i < 9 ){output_h->SetBinContent(i,0.); output_h->SetBinError(i,0.);}
+    }
+    }*/
+  output_h->Draw("E same");
+  output_h->SetXTitle("p_T [GeV]");
+  output_h->SetTitle("nonclosure p_T");
+  //output_h->SetXTitle("Z_{p}^{T}[GeV]");
+  output_h->SetYTitle("Ratio");
+  output_h->SetMaximum(2.);
+  output_h->SetMinimum(0.);
+  c2->SetName("nonclosure_pt"+sample+"_c");
+  c2->Write();
+  TString SSstring="";
+  if(CALC_SS_SR)SSstring+="_SS_SR";
+  if ( doPlot)  c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/nonclosure_pt"+sample+SSstring+".png");
   //if ( doPlot)  c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/nonclosure_zpt"+sample+SSstring+".png");
 
   FF_lookup.Close();output->Close();
@@ -2401,8 +2766,9 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
       if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
-      if(calcVTightFF) {if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->alltau_mvis->at(tau_ind),event_s->weight_sf*FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );}
+      if(calcVTightFF) {if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->alltau_mvis->at(tau_ind),event_s->weight_sf*FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );}      
       if(!calcVTightFF) {if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->alltau_mvis->at(tau_ind),event_s->weight_sf*FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );}
+      //if(!calcVTightFF) {if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->alltau_mvis->at(tau_ind),event_s->weight_sf*FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*nonclosure_h->GetBinContent( this->getWeightIndex_lepPt(event_s->lep_pt) +1 ) );}
     }
     
     closure_h->Multiply(ratio_l);
@@ -2455,6 +2821,7 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
   gsk.set_doWidthInBins(1);
   gsk.set_doErrors(1);
   gsk.setWidth( 2. );
+  if(CHAN ==kTAU ) gsk.setWidth(1.5);
   gsk.set_widthInBins_sf(1.115);
   //if(mode & _QCD) gsk.set_lastBinFrom(170);
   gsk.getSmoothHisto();
@@ -2478,7 +2845,16 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
     for(int i=0; i<g->GetN(); i++){
       Double_t x; Double_t y; 
       g->GetPoint(i,x,y);
-      if(x<80) {g->SetPoint(i,x,y_value); g->SetPointEYhigh(i,y_errorHigh); g->SetPointEYlow(i,y_errorLow);}
+      //if(x<80) {g->SetPoint(i,x,y_value); g->SetPointEYhigh(i,y_errorHigh); g->SetPointEYlow(i,y_errorLow);}
+    }
+  }
+  Double_t x200; Double_t y200;
+  g->GetPoint(200,x200,y200);
+  for(int i=0; i<g->GetN(); i++){
+    Double_t x; Double_t y;
+    if(i>200){
+      g->GetPoint(i,x,y);
+      //g->SetPoint(i,x,y200);
     }
   }
 

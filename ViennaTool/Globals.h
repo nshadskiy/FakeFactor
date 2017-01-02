@@ -44,6 +44,8 @@
 #define ETA1        32
 #define ETA2        64
 #define ETA3       128
+#define JET0       256
+#define JET1       512
 
 #define _COLOR          1
 #define _COLOR_RUN1     2
@@ -53,22 +55,25 @@
 #define _COMPARE2      32
 
 //be very careful to not overlap with other marks -> use category mark extra
-#define _INCL         1
-#define _0JETLOW      2
-#define _0JETHIGH     4
-#define _1JETLOW      8
-#define _1JETHIGH    16
-#define _VBFLOW      32
-#define _VBFHIGH     64
-#define _2JET       128
-#define _ANYB       256
+#define _INCL           1
+#define _0JETLOW        2
+#define _0JETHIGH       4
+#define _1JETLOW        8
+#define _1JETHIGH      16
+#define _VBFLOW        32
+#define _VBFHIGH       64
+#define _2JET         128
+#define _ANYB         256
+#define _2D_0JET      512
+#define _2D_BOOSTED  1024
+#define _2D_VBF      2048
 
-#define _INCLFRAC_MT     1024
-#define _CATFRAC_MT      2048
-#define _INCLFRAC_ET     4096
-#define _CATFRAC_ET      8192
-#define _INCLFRAC_TT    16384
-#define _CATFRAC_TT     32768
+#define _INCLFRAC_MT     4096
+#define _CATFRAC_MT      8192
+#define _INCLFRAC_ET    16384
+#define _CATFRAC_ET     32768
+#define _INCLFRAC_TT    65536
+#define _CATFRAC_TT    131072
 
 const Int_t promptE   =1;
 const Int_t promptMu  =2;
@@ -136,7 +141,7 @@ const TString path_img_mc_woQCD  = path_img+"mc_woQCD_"+s_chan[CHAN]+"/";
 
 //Input directories
 const TString indir = "/data/higgs/data_2016/ntuples_"+ver+"/"+s_chan[CHAN]+"/ntuples_"+curr_svfit[use_svfit]+"_merged/";
-const TString datafiles[3] = { indir+"BASIS_ntuple_SingleMuonRun2016BCD_mt_"+ver+".root", indir+"BASIS_ntuple_SingleElectronRun2016BCD_et_"+ver+".root" , indir + "BASIS_ntuple_Tau_16Dec_tt_"+ver+".root" };
+const TString datafiles[3] = { indir+"BASIS_ntuple_SingleMuonRun2016BCD_mt_"+ver+".root", indir+"BASIS_ntuple_SingleElectronRun2016BCD_et_"+ver+".root" , indir + "BASIS_ntuple_TauRun2016BCD_tt_"+ver+".root" };
 const TString datafile   = datafiles[CHAN];
 
 const TString DY_NJfile  = indir + "BASIS_ntuple_DYXJetsToLL_lowMass_merged_MCSpring16_"+s_chan[CHAN]+"_"+ver+".root";
@@ -691,18 +696,23 @@ Double_t Pt_cuts_TT[] = {20.,30.,40.,60.,80.,100.,150.};
 Double_t Pt_cuts_QCD[]   = {20.,30.,40.,60.,80.,100.,150.};
 */
 
-const Double_t Pt_cuts_Wjets[] = {20.,22.5,25.,27.5,30.,35.,40.,50.,80.};//lower boundaries of the pt bins, there are no data with pt<20.
+const Double_t Pt_cuts_Wjets[] = {20.,22.5,25.,27.5,30.,35.,40.,50.,70.,100.,150.};//lower boundaries of the pt bins, there are no data with pt<20.
 const Double_t Pt_cuts_DY[]    = {20.,25.,30.,40.};
 //const Double_t Pt_cuts_TT[]    = {20.,25.,30.,40.};
-const Double_t Pt_cuts_TT_SR[]     = {20.,22.5,25.,27.5,30.,35.,40.,50.,80.};
+const Double_t Pt_cuts_TT_SR[]     = {20.,22.5,25.,27.5,30.,35.,40.,50.,80.,150.};
 const Double_t Pt_cuts_TT_CR[]     = {20.};
+//const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.,100.};
 const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.};
 const Double_t Pt_cuts_QCD_AI[] ={20.,25.,30.,40};
 
-/*const Double_t Pt_cuts_Wjets[] = {20.,25.,30.,40.,60};//lower boundaries of the pt bins, there are no data with pt<20.
-const Double_t Pt_cuts_DY[]    = {20.,25.,30.,40.,60.};
-const Double_t Pt_cuts_TT[]    = {20.,25.,30.,40.,60.}; //default!
-const Double_t Pt_cuts_QCD[]   = {20.,25.,30.,40.,60.};*/
+/*const Double_t Pt_cuts_Wjets[] = {20.,22.5,25.,27.5,30.,35.,40.,50.,70.,100.,150.};//lower boundaries of the pt bins, there are no data with pt<20.
+const Double_t Pt_cuts_DY[]    = {20.,25.,30.,40.};
+//const Double_t Pt_cuts_TT[]    = {20.,25.,30.,40.};
+const Double_t Pt_cuts_TT_SR[]     = {20.,22.5,25.,27.5,30.,35.,40.,50.,80.,150.};
+const Double_t Pt_cuts_TT_CR[]     = {20.};
+//const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.,100.};
+const Double_t Pt_cuts_QCD[]   = {40.,45.,50.,60,70,90,120,200};
+const Double_t Pt_cuts_QCD_AI[] ={20.,25.,30.,40,50,70,100};*/
 
 const Int_t N_p_Wjets = sizeof(Pt_cuts_Wjets)/sizeof(Double_t);
 const Int_t N_p_DY = sizeof(Pt_cuts_DY)/sizeof(Double_t);
@@ -764,13 +774,19 @@ const Int_t nbins_eta=25;    const Double_t hist_min_eta=-2.5;  const Double_t h
 const Int_t nbins_mttot=25;  const Double_t hist_min_mttot=0.;  const Double_t hist_max_mttot=250.;
 
 //binning constants: weight
-const Double_t w_mt_v[]={0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250};
+//const Double_t w_mt_v[]={0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250};
+//const Double_t w_mt_v[]={0,10,20,30,40,50,60,80,100,140,200,300};
+//const Double_t w_mt_v[]={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,20,25,30,35,40,50,60,80,120,250};
+
+const Double_t w_mt_v[]={20,25,30,35,40,50,60,80,120,250};
+//const Double_t w_mt_v[]={40,50,60,80,120,250};
 const Int_t    w_mt_n=(sizeof(w_mt_v)/sizeof(Double_t)) -1;
 
 const Double_t w_mvis_v[]={0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450};
 const Int_t w_mvis_n=(sizeof(w_mvis_v)/sizeof(Double_t)) -1;
 
-
+const Double_t w_lepPt_v[]={20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120};
+const Int_t w_lepPt_n=(sizeof(w_lepPt_v)/sizeof(Double_t)) -1;
 
 const Double_t w_zpt_v[]={0,10,20,30,40,50,60,80,120,200};
 const Int_t w_zpt_n=(sizeof(w_zpt_v)/sizeof(Double_t)) -1;
@@ -851,14 +867,16 @@ const Int_t color_QCD=kCyan;
 
 const int nSAMPLES=11;
 const int nSAMPLES_COMP=7;
-static const TString vlabel[nSAMPLES]={"W+jets","ttJ (j#rightarrow#tau)","ttT (#tau#rightarrow#tau)","ttL (l#rightarrow#tau)","ZJ (j#rightarrow#tau)","ZTT (#tau#rightarrow#tau)","ZL (l#rightarrow#tau)","QCD","VV (j#rightarrow#tau)", "VV (#tau#rightarrow#tau)","VV (l#rightarrow#tau)"};
+static const TString vlabel[nSAMPLES]={"W+jets","ttJ (j#rightarrow#tau)","ttT (#tau#rightarrow#tau)","ttL (l#rightarrow#tau)","ZJ (j#rightarrow#tau)","ZTT (#tau#rightarrow#tau)","ZL (l#rightarrow#tau)","VV (j#rightarrow#tau)", "VV (#tau#rightarrow#tau)","VV (l#rightarrow#tau)"};
 static const TString vlabel_compare[nSAMPLES_COMP]={"W+jets","tt","ZJ (j#rightarrow#tau)","ZTT (#tau#rightarrow#tau)","ZL (l#rightarrow#tau)","VV","QCD"};
 static const TString vlabel_compare2[nSAMPLES_COMP-3]={"W+jets","tt","ZJ","QCD"};
 static const TString vlabel_w_ff[nSAMPLES-3]={"ttT (#tau#rightarrow#tau)","ttL (l#rightarrow#tau)","ZTT (#tau#rightarrow#tau)","ZL (l#rightarrow#tau)","jet #rightarrow #tau fakes","VV (#tau#rightarrow#tau)","VV (l#rightarrow#tau)"};
 static const TString vlabel_check[nSAMPLES-6]={"W+jets","QCD","ttJ (j#rightarrow#tau)","ZJ   (j#rightarrow#tau)"};
 static const TString vname[nSAMPLES]= {"Wjets" ,"ttJ"                   ,"ttT"                      ,"ttL"                   ,"ZJ"                     ,"ZTT"                      ,"ZL"                     ,"QCD", "VVT", "VVL"};
-static const TString vsuff[nSAMPLES]= {"Wjets" ,"TT_J"                  ,"TT_T"                     ,"TT_L"                  ,"DY_J"                   ,"DY_TT"                    ,"DY_L"                   ,"QCD", "VV_J", "VV_T", "VV_L"};
-const Int_t vcolor[nSAMPLES]=         {kRed    ,kGreen                  ,kGreen+2                   ,kGreen-1                ,kBlue                    ,kYellow                    ,kViolet                  ,kCyan, kYellow-5, kYellow-6};
+static const TString vsuff[nSAMPLES]= {"Wjets" ,"TT_J"                  ,"TT_T"                     ,"TT_L"                  ,"DY_J"                   ,"DY_TT"                    ,"DY_L"                   ,"VV_J", "VV_T", "VV_L"};
+const Int_t vcolor[nSAMPLES]=         {kRed    ,kGreen                  ,kGreen+2                   ,kGreen-1                ,kBlue                    ,kYellow                    ,kViolet                  ,kYellow-5, kYellow-6,kYellow-8};
+//static const TString vsuff[nSAMPLES]= {"Wjets" ,"TT_J"                  ,"TT_T"                     ,"TT_L"                  ,"DY_J"                   ,"DY_TT"                    ,"DY_L"                   ,"VV_J", "VV_T", "VV_L"};
+//const Int_t vcolor[nSAMPLES]=         {kRed    ,kGreen                  ,kGreen+2                   ,kGreen-1                ,kBlue                    ,kYellow                    ,kViolet                  ,kYellow-5, kYellow-6,kYellow-7};
 const Int_t vcolor_compare[nSAMPLES_COMP]= {kRed    ,kGreen                  ,kBlue                      ,kYellow                 ,kViolet                  ,kYellow-5                  ,kCyan};
 const Int_t vcolor_compare2[nSAMPLES_COMP-3]= {kRed    ,kGreen                  ,kBlue                      ,kCyan};
 const Int_t vcolor_run1[nSAMPLES-1]=  {kRed    ,kGreen                  ,kGreen+2                   ,kGreen-1                ,kBlue                    ,kViolet                  ,kCyan, kYellow-5, kYellow-6};
@@ -873,15 +891,15 @@ const int smap_noqcd[nSAMPLES-1]={0,2,5,6,1,3,4,7,8};
 const unsigned n_ff=4;
 const Int_t vlabel_i_ff[n_ff]={0,4,1,7};
 
-const unsigned NC=8;
-const TString c_text[NC]={"1p","3p","pt1","pt2","pt3","eta1","eta2","eta3"};
-const Int_t c_cuts[NC]={NP1,NP3,PT1,PT2,PT3,ETA1,ETA2,ETA3};
+const unsigned NC=10;
+const TString c_text[NC]={"1p","3p","pt1","pt2","pt3","eta1","eta2","eta3","jet0","jet1"};
+const Int_t c_cuts[NC]={NP1,NP3,PT1,PT2,PT3,ETA1,ETA2,ETA3,JET0,JET1};
 
 static const std::vector<TString> empty_vec_tstring;
 
-const Int_t nCAT=8;
-const TString categories[nCAT] = { "_0jetLow", "_0jetHigh", "_1jetLow", "_1jetHigh", "_vbfLow", "_vbfHigh","_2jet","_anyb"};
-const Int_t catMode[nCAT] = {_0JETLOW, _0JETHIGH, _1JETLOW, _1JETHIGH, _VBFLOW, _VBFHIGH, _2JET, _ANYB};
+const Int_t nCAT=11;
+const TString categories[nCAT] = { "_0jetLow", "_0jetHigh", "_1jetLow", "_1jetHigh", "_vbfLow", "_vbfHigh","_2jet","_anyb","_2D_0jet","_2D_Boosted","_2D_VBF"};
+const Int_t catMode[nCAT] = {_0JETLOW, _0JETHIGH, _1JETLOW, _1JETHIGH, _VBFLOW, _VBFHIGH, _2JET, _ANYB, _2D_0JET, _2D_BOOSTED, _2D_VBF};
 
 //const Int_t nCAT=4;
 //const TString categories[nCAT] = { "_0jet", "_1jet", "_2jet", "_anyb"};

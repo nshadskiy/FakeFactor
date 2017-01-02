@@ -99,17 +99,19 @@ void convert_inputs(Int_t categoryMode=0){
     conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
     
     if(!CALC_SS_SR){
+      if(CHAN==kTAU) convert_corrections( d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD", o+"Correction_Data_QCD_PT.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction");
       convert_corrections( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD", o+"Correction_Data_QCD_MVis.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction");
+      convert_corrections( d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD", o+"Correction_Data_QCD_OSSS.root", "QCD_SS_Data_FFSSMuMediumData_OSSS_correction");
       if(CHAN!=kTAU){      
         convert_corrections( d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_QCD", o+"Correction_Data_QCD_MuIso.root", "QCD_SS_Data_FFSSMuMediumData_isomu_correction");
-        convert_corrections( d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD", o+"Correction_Data_QCD_OSSS.root", "QCD_SS_Data_FFSSMuMediumData_OSSS_correction");
+        //convert_corrections( d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD", o+"Correction_Data_QCD_OSSS.root", "QCD_SS_Data_FFSSMuMediumData_OSSS_correction");
         //convert_corrections( d+"FF_corr_QCD_only_noGen_nonclosure.root", "nonclosure_QCD_MC", o+"Correction_Data_QCD_MVis.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction");
         //convert_corrections( d+"FF_corr_QCD_only_noGen_muisocorr.root", "muiso_QCD", o+"Correction_Data_QCD_MuIso.root", "QCD_SS_Data_FFSSMuMediumData_isomu_correction");
         //convert_corrections( d+"FF_corr_QCD_only_noGen_OSSS.root", "OSSS_corr_QCD", o+"Correction_Data_QCD_OSSS.root", "QCD_SS_Data_FFSSMuMediumData_OSSS_correction");
         convert_corrections( d+FF_corr_Wjets_MCsum_noGen_nonclosure, "nonclosure_Wjets", o+"Correction_Data_W_MVis.root", "W_OS_Data_FFOSData_mvis_correction");
         //convert_corrections( d+"FF_corr_Wjets_MC_noGen_nonclosure.root", "nonclosure_Wjets_MC", o+"Correction_Data_W_MVis.root", "W_OS_Data_FFOSData_mvis_correction");
         convert_corrections( d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets", o+"Correction_MC_W_MT.root", "W_OS_MC_FFOSMC_mt_correction");
-        if(CHAN==kMU)convert_corrections( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC", o+"Correction_MC_TT_MVis.root", "TT_OS_MC_mvis_correction");
+        convert_corrections( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC", o+"Correction_MC_TT_MVis.root", "TT_OS_MC_mvis_correction");
       }
     }
     else{
@@ -121,8 +123,13 @@ void convert_inputs(Int_t categoryMode=0){
     //convert_corrections( d+"FF_corr_Wjets_MC_noGen_mtcorr_SS_SR.root", "mt_corr_Wjets", o+"Correction_MC_W_MT.root", "W_OS_MC_FFOSMC_mt_correction");
     
     if(!CALC_SS_SR){
-      combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_up", d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_corr_QCD_up", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up");
-      combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_down", d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_corr_QCD_down", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down");
+      if(CHAN==kTAU){
+        combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_up", d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD_up", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up");
+        combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_down", d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD_down", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down");
+      } else{
+        combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_up", d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_corr_QCD_up", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up");
+        combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_down", d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_corr_QCD_down", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down");
+      }
       if(CHAN!=kTAU){
         
         combineWSystematics( d+FF_corr_Wjets_MCsum_noGen_nonclosure, "nonclosure_Wjets_up", d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets_up", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_up" );
@@ -221,17 +228,22 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////
   //Getting TT scalefactors from CR
-  const TString d="ViennaTool/fakefactor/data_"+s_chan[CHAN]+"/";
-  TFile *f_data_CR=new TFile(d+"FF_corr_TT_MCsum_noGen.root");
-  TH1D *h_data_CR= (TH1D*)f_data_CR->Get("c_t");
-  TFile *f_MC_CR=new TFile(d+"FF_TT_J_only.root");
-  TH1D *h_MC_CR= (TH1D*)f_MC_CR->Get("c_t");
-
   vector<Double_t> scale_factors;
-  for(int i=1; i<=h_data_CR->GetNbinsX(); i++){
-    if(fn.Contains("TT")) scale_factors.push_back( abs(h_data_CR->GetBinContent(i)/h_MC_CR->GetBinContent(i) ) );
-    else scale_factors.push_back(1.);
-    cout << "Scale factor " << i-1 << " :" << scale_factors.at(i-1) << endl;
+  if(CHAN==kTAU){
+    scale_factors.push_back(1.); scale_factors.push_back(1.);
+  }
+  else{
+    const TString d="ViennaTool/fakefactor/data_"+s_chan[CHAN]+"/";
+    TFile *f_data_CR=new TFile(d+"FF_corr_TT_MCsum_noGen.root");
+    TH1D *h_data_CR= (TH1D*)f_data_CR->Get("c_t");
+    TFile *f_MC_CR=new TFile(d+"FF_TT_J_only.root");
+    TH1D *h_MC_CR= (TH1D*)f_MC_CR->Get("c_t");
+  
+    for(int i=1; i<=h_data_CR->GetNbinsX(); i++){
+      if(fn.Contains("TT")) scale_factors.push_back( abs(h_data_CR->GetBinContent(i)/h_MC_CR->GetBinContent(i) ) );
+      else scale_factors.push_back(1.);
+      cout << "Scale factor " << i-1 << " :" << scale_factors.at(i-1) << endl;
+    }
   }
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -267,11 +279,16 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
   TFile *f=new TFile( fn );
 
   TH3D *hout                 = new TH3D( hnout,            "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
-  TH3D *hout_err             = new TH3D( hnout+"_error",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
-  TH3D *hout_err_dm0_njet0   = new TH3D( hnout+"_error_dm0_njet0",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
-  TH3D *hout_err_dm0_njet1   = new TH3D( hnout+"_error_dm0_njet1",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
-  TH3D *hout_err_dm1_njet0   = new TH3D( hnout+"_error_dm1_njet0",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
-  TH3D *hout_err_dm1_njet1   = new TH3D( hnout+"_error_dm1_njet1",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout_err_low             = new TH3D( hnout+"_error_low",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout_err_dm0_njet0_low   = new TH3D( hnout+"_error_dm0_njet0_low",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout_err_dm0_njet1_low   = new TH3D( hnout+"_error_dm0_njet1_low",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout_err_dm1_njet0_low   = new TH3D( hnout+"_error_dm1_njet0_low",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout_err_dm1_njet1_low   = new TH3D( hnout+"_error_dm1_njet1_low",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout_err_high             = new TH3D( hnout+"_error_high",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout_err_dm0_njet0_high   = new TH3D( hnout+"_error_dm0_njet0_high",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout_err_dm0_njet1_high   = new TH3D( hnout+"_error_dm0_njet1_high",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout_err_dm1_njet0_high   = new TH3D( hnout+"_error_dm1_njet0_high",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout_err_dm1_njet1_high   = new TH3D( hnout+"_error_dm1_njet1_high",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
   TString replaceString=hnout;
   replaceString.ReplaceAll("_3d","");
 
@@ -280,39 +297,70 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
     for (int idm=0; idm<N_D2; idm++){
       for (int ijet=0; ijet<N_D3; ijet++){
         stringstream fitted_histo; fitted_histo << "dm" << idm << "_njet" << ijet;
-        TH1D *h=(TH1D*) f->Get(fitted_histo.str().c_str());
+        TGraphAsymmErrors *h=(TGraphAsymmErrors*) f->Get(fitted_histo.str().c_str());
+        double x=0; double cont=0;
         for (int ipt=0; ipt<fitBins; ipt++){
-          double cont=h->GetBinContent( ipt + 1 );
+          h->GetPoint( ipt + 1,x,cont );
           cont = cont*scale_factors.at(idm);
-          double err =h->GetBinError( ipt +1 );
+          double err_low=h->GetErrorYlow(ipt+1);
+          double err_high=h->GetErrorYhigh(ipt+1);
+          if(ipt+1==fitBins) {err_low=h->GetErrorYlow(ipt); err_high=h->GetErrorYhigh(ipt);}
           hout->SetBinContent(       ipt+1 , idm+1 , ijet+1 , cont );
           //if(fn.Contains("Wjets") && idm==0 && ijet==0)cout << ipt << " " << hout->GetBinContent(ipt+1,idm+1,ijet+1) << endl;
-          hout->SetBinError(         ipt+1 , idm+1 , ijet+1 , err );
-          hout_err->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err/cont );
-          hout_err->SetBinError(       ipt+1 , idm+1 , ijet+1 , err );
+          hout->SetBinError(         ipt+1 , idm+1 , ijet+1 , (err_low+err_high)/2 );
+          hout_err_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_low/cont );
+          hout_err_low->SetBinError(       ipt+1 , idm+1 , ijet+1 , err_low );
+          hout_err_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_high/cont );
+          hout_err_high->SetBinError(       ipt+1 , idm+1 , ijet+1 , err_high );
+          
           if(idm==0 && ijet==0){
-            hout_err_dm0_njet0->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err/cont );
-            hout_err_dm0_njet1->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
-            hout_err_dm1_njet0->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
-            hout_err_dm1_njet1->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm0_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_low/cont );
+            hout_err_dm0_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
           }
           if(idm==0 && ijet==1){
-            hout_err_dm0_njet0->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
-            hout_err_dm0_njet1->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err/cont );
-            hout_err_dm1_njet0->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
-            hout_err_dm1_njet1->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm0_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm0_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_low/cont );
+            hout_err_dm1_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
           }
           if(idm==1 && ijet==0){
-            hout_err_dm0_njet0->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
-            hout_err_dm0_njet1->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
-            hout_err_dm1_njet0->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err/cont );
-            hout_err_dm1_njet1->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm0_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm0_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_low/cont );
+            hout_err_dm1_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
           }
           if(idm==1 && ijet==1){
-            hout_err_dm0_njet0->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
-            hout_err_dm0_njet1->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
-            hout_err_dm1_njet0->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
-            hout_err_dm1_njet1->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err/cont );
+            hout_err_dm0_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm0_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_low/cont );
+          }
+
+          if(idm==0 && ijet==0){
+            hout_err_dm0_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_high/cont );
+            hout_err_dm0_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+          }
+          if(idm==0 && ijet==1){
+            hout_err_dm0_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm0_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_high/cont );
+            hout_err_dm1_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+          }
+          if(idm==1 && ijet==0){
+            hout_err_dm0_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm0_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_high/cont );
+            hout_err_dm1_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+          }
+          if(idm==1 && ijet==1){
+            hout_err_dm0_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm0_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_high/cont );
           }
         }
       }
@@ -330,8 +378,10 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
           double err =h->GetBinError( i+N_D1*j + (N_D1*N_D2)*k + 1 );
           hout->SetBinContent(       i+1 , j+1 , k+1 , cont );
           hout->SetBinError(         i+1 , j+1 , k+1 , err );
-          hout_err->SetBinContent(       i+1 , j+1 , k+1 , err/cont );
-          hout_err->SetBinError(       i+1 , j+1 , k+1 , err );
+          hout_err_low->SetBinContent(       i+1 , j+1 , k+1 , err/cont );
+          hout_err_low->SetBinError(       i+1 , j+1 , k+1 , err );
+          hout_err_high->SetBinContent(       i+1 , j+1 , k+1 , err/cont );
+          hout_err_high->SetBinError(       i+1 , j+1 , k+1 , err );
         }
       }
     }
@@ -345,12 +395,17 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
     
   TFile *fout=new TFile ( fout_n , "RECREATE" );
   hout->Write();
-  hout_err->Write();
+  hout_err_low->Write();
+  hout_err_high->Write();
   if(fit_pT_bins){
-    hout_err_dm0_njet0->Write();
-    hout_err_dm0_njet1->Write();
-    hout_err_dm1_njet0->Write();
-    hout_err_dm1_njet1->Write();
+    hout_err_dm0_njet0_low->Write();
+    hout_err_dm0_njet1_low->Write();
+    hout_err_dm1_njet0_low->Write();
+    hout_err_dm1_njet1_low->Write();
+    hout_err_dm0_njet0_high->Write();
+    hout_err_dm0_njet1_high->Write();
+    hout_err_dm1_njet0_high->Write();
+    hout_err_dm1_njet1_high->Write();
   }
   fout->Close();
 
@@ -524,6 +579,10 @@ TString getCatString(Int_t categoryMode){
   if ( categoryMode & _VBFHIGH ) return categories[5];
   if ( categoryMode & _2JET ) return categories[6];
   if ( categoryMode & _ANYB ) return categories[7];
+  if ( categoryMode & _2D_0JET ) return categories[8];
+  if ( categoryMode & _2D_BOOSTED ) return categories[9];
+  if ( categoryMode & _2D_VBF ) return categories[10];
+  
   
   return "incl";
   
@@ -542,22 +601,22 @@ void convert_corrections( const TString fn, const TString gn, const TString fout
   
 }
 
-void combineQCDSystematics( const TString fQCD_nonclosure, const TString sys_nonclosure, const TString fQCD_muiso, const TString sys_muiso, const TString fQCD_OSSS, const TString sys_OSSS, const TString fout, const TString tout){
+void combineQCDSystematics( const TString fQCD_nonclosure, const TString sys_nonclosure, const TString fQCD_otherLep, const TString sys_otherLep, const TString fQCD_OSSS, const TString sys_OSSS, const TString fout, const TString tout){
 
   if(CHAN!=kTAU){
     TFile *f_nonclosure=new TFile(fQCD_nonclosure);
     TGraphAsymmErrors *sys_nonclosure_t=(TGraphAsymmErrors*)f_nonclosure->Get(sys_nonclosure);
-    TFile *f_muiso=new TFile(fQCD_muiso);
-    TGraphAsymmErrors *sys_muiso_t=(TGraphAsymmErrors*)f_muiso->Get(sys_muiso);
+    TFile *f_otherLep=new TFile(fQCD_otherLep);
+    TGraphAsymmErrors *sys_otherLep_t=(TGraphAsymmErrors*)f_otherLep->Get(sys_otherLep);
     TFile *f_OSSS=new TFile(fQCD_OSSS);
     TGraphAsymmErrors *sys_OSSS_t=(TGraphAsymmErrors*)f_OSSS->Get(sys_OSSS);
     
-    TH2D *out_t = new TH2D(tout, tout, sys_nonclosure_t->GetN(), sys_nonclosure_t->GetX()[0], sys_nonclosure_t->GetX()[sys_nonclosure_t->GetN()-1], sys_muiso_t->GetN(), sys_muiso_t->GetX()[0], sys_muiso_t->GetX()[sys_muiso_t->GetN()-1]);
-    for(Int_t i=0; i<sys_nonclosure_t->GetN(); i++){
-      for(Int_t j=0; j<sys_muiso_t->GetN(); j++){
+    TH2D *out_t = new TH2D(tout, tout, sys_nonclosure_t->GetN(), sys_nonclosure_t->GetX()[0], sys_nonclosure_t->GetX()[sys_nonclosure_t->GetN()-1], sys_otherLep_t->GetN(), sys_otherLep_t->GetX()[0], sys_otherLep_t->GetX()[sys_otherLep_t->GetN()-1]);
+    for(Int_t i=0; i<=sys_nonclosure_t->GetN(); i++){
+      for(Int_t j=0; j<=sys_otherLep_t->GetN(); j++){
         //if(!CALC_SS_SR) out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) ) );
-        if(!CALC_SS_SR)out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_muiso_t->GetY()[j],2) ) + TMath::Power(sys_OSSS_t->GetY()[i],2) );
-        else out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_muiso_t->GetY()[j],2) ) );
+        if(!CALC_SS_SR)out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) ) + TMath::Power(sys_OSSS_t->GetY()[i],2) );
+        else out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) ) );
       }
     }
     TFile *fout_f=new TFile(fout,"UPDATE");
@@ -569,17 +628,25 @@ void combineQCDSystematics( const TString fQCD_nonclosure, const TString sys_non
   else{
     TFile *f_nonclosure=new TFile(fQCD_nonclosure);
     TGraphAsymmErrors *sys_nonclosure_t=(TGraphAsymmErrors*)f_nonclosure->Get(sys_nonclosure);
+    TFile *f_otherLep=new TFile(fQCD_otherLep);
+    TGraphAsymmErrors *sys_otherLep_t=(TGraphAsymmErrors*)f_otherLep->Get(sys_otherLep);
+    TFile *f_OSSS=new TFile(fQCD_OSSS);
+    TGraphAsymmErrors *sys_OSSS_t=(TGraphAsymmErrors*)f_OSSS->Get(sys_OSSS);
     
-    TH1D *out_t = new TH1D(tout, tout, sys_nonclosure_t->GetN(), sys_nonclosure_t->GetX()[0], sys_nonclosure_t->GetX()[sys_nonclosure_t->GetN()-1]);
-    for(Int_t i=0; i<sys_nonclosure_t->GetN(); i++){
-      out_t->SetBinContent(i,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(0.05,2) ) );
+    TH2D *out_t = new TH2D(tout, tout, sys_nonclosure_t->GetN(), sys_nonclosure_t->GetX()[0], sys_nonclosure_t->GetX()[sys_nonclosure_t->GetN()-1], sys_otherLep_t->GetN(), sys_otherLep_t->GetX()[0], sys_otherLep_t->GetX()[sys_otherLep_t->GetN()-1]);
+    for(Int_t i=0; i<=sys_nonclosure_t->GetN(); i++){
+      for(Int_t j=0; j<=sys_otherLep_t->GetN(); j++){
+        //if(!CALC_SS_SR) out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) ) );
+        if(!CALC_SS_SR)out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) ) + TMath::Power(sys_OSSS_t->GetY()[i],2) );
+        else out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) ) );
+      }
     }
     TFile *fout_f=new TFile(fout,"UPDATE");
     fout_f->cd();
     out_t->Write();
     fout_f->Close();
-    
   }
+  
 }
 
 void combineWSystematics( const TString fW_nonclosure, const TString sys_nonclosure, const TString fW_mtcorr, const TString sys_mtcorr, const TString fout, const TString tout){
@@ -640,7 +707,7 @@ void combineTTSystematics( const TString fTT_nonclosure, const TString sys_noncl
 #ifndef __CINT__
 int main(int argc, char* argv[]) {
   if(!inclusive_selection){
-    for(Int_t icat=0; icat<nCAT; icat++){
+    for(Int_t icat=8; icat<nCAT; icat++){
       cout << icat << endl;
       convert_inputs(catMode[icat]);
     }

@@ -262,6 +262,12 @@ void TSelectionAnalyzer::getCRHisto(TString preselection,Int_t mode,TString outp
     looseCR_tt = new TH1D("hh_ltt_zpt","",w_zpt_n,w_zpt_v);
     allCR   = new TH1D("hh_a_zpt","",w_zpt_n,w_zpt_v);
   }
+  else if (mode & LEPPT) {
+    tightCR = new TH1D("hh_t_lepPt","",FI*nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+    looseCR = new TH1D("hh_l_lepPt","",FI*nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+    looseCR_tt = new TH1D("hh_ltt_lepPt","",FI*nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+    allCR   = new TH1D("hh_a_lepPt","",FI*nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+  }
   else {
     std::cout<<"ERROR: no valid mode given. Exiting TNtupleAnalyzer::getCRHisto..."<<std::endl;
     return;
