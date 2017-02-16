@@ -83,8 +83,9 @@ const Int_t tauH      =5;
 const Int_t realJet   =6;
 
 
-const TString curr_svfit[] = { "woSVFIT", "SVFIT"};
-const TString s_chan[]     = {"mt", "et", "tt"};
+const TString curr_svfit[]    = { "woSVFIT", "SVFIT"};
+const TString s_chan[]        = {"mt", "et", "tt"};
+const TString s_doubleCount[] = {"_DC", ""};
 
 const TString s_preselection ="preselection";
 const TString s_weighted     ="weighted";
@@ -141,38 +142,38 @@ const TString path_img_mc_woQCD  = path_img+"mc_woQCD_"+s_chan[CHAN]+"/";
 
 //Input directories
 const TString indir = "/data/higgs/data_2016/ntuples_"+ver+"/"+s_chan[CHAN]+"/ntuples_"+curr_svfit[use_svfit]+"_merged/";
-const TString datafiles[3] = { indir+"BASIS_ntuple_SingleMuonRun2016BCD_mt_"+ver+".root", indir+"BASIS_ntuple_SingleElectronRun2016BCD_et_"+ver+".root" , indir + "BASIS_ntuple_TauRun2016BCD_tt_"+ver+".root" };
+const TString datafiles[3] = { indir+"BASIS_ntuple_SingleMuonRun2016BCDEFGH_mt_"+ver+".root", indir+"BASIS_ntuple_SingleElectronRun2016BCDEFGH_et_"+ver+".root" , indir + "BASIS_ntuple_TauRun2016BCDEFGH_tt_"+ver+".root" };
 const TString datafile   = datafiles[CHAN];
 
-const TString DY_NJfile  = indir + "BASIS_ntuple_DYXJetsToLL_lowMass_merged_MCSpring16_"+s_chan[CHAN]+"_"+ver+".root";
+const TString DY_NJfile  = indir + "BASIS_ntuple_DYXJetsToLL_lowMass_EWK_merged_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
 const TString DYfile     = DY_NJfile;
-const TString Wjetsfile  = indir + "BASIS_ntuple_WXJets_merged_MCSpring16_"+s_chan[CHAN]+"_"+ver+".root";
-const TString QCDfile    = indir + "BASIS_ntuple_QCD_Pt_20toInf_MuEnrichedPt15_pythia8_MCSpring16_160929_"+s_chan[CHAN]+"_"+ver+".root";
-const TString VVfile     = indir + "BASIS_ntuple_VV_MCSpring16_"+s_chan[CHAN]+"_"+ver+".root";
-const TString TTfile     = indir + "BASIS_ntuple_TT_powheg_MCSpring16_"+s_chan[CHAN]+"_"+ver+".root";
-const TString SIGNALfile = indir + "BASIS_ntuple_SIGNAL_M125_powheg_MCSpring16_reHLT_"+s_chan[CHAN]+"_"+ver+".root";
+const TString Wjetsfile  = indir + "BASIS_ntuple_WXJets_merged_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
+const TString QCDfile    = indir + "BASIS_ntuple_QCD_Pt_20toInf_MuEnrichedPt15_pythia8_MCSummer_"+s_chan[CHAN]+"_"+ver+".root";
+const TString VVfile     = indir + "BASIS_ntuple_VV_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
+const TString TTfile     = indir + "BASIS_ntuple_TT_merged_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
+const TString SIGNALfile = indir + "BASIS_ntuple_SIGNAL_M125_powheg_MCSummer_"+s_chan[CHAN]+"_"+ver+".root";
 
 
 // Preselection files
-const TString preselection_data          = path_presel+"preselection_data.root";
-const TString preselection_Wjets         = path_presel+"preselection_Wjets.root";
-const TString preselection_DY            = path_presel+"preselection_DY.root";
-const TString preselection_DY_TT         = path_presel+"preselection_DY_TT.root";
-const TString preselection_DY_J          = path_presel+"preselection_DY_J.root";
-const TString preselection_DY_L          = path_presel+"preselection_DY_L.root";
-const TString preselection_TT            = path_presel+"preselection_TT.root";
-const TString preselection_TT_T          = path_presel+"preselection_TT_T.root";
-const TString preselection_TT_J          = path_presel+"preselection_TT_J.root";
-const TString preselection_TT_L          = path_presel+"preselection_TT_L.root";
-const TString preselection_VV            = path_presel+"preselection_VV.root";
-const TString preselection_VV_T          = path_presel+"preselection_VV_T.root";
-const TString preselection_VV_J          = path_presel+"preselection_VV_J.root";
-const TString preselection_VV_L          = path_presel+"preselection_VV_L.root";
-const TString preselection_MCsum         = path_presel+"preselection_"+s_MCsum+".root";
-const TString preselection_MCsum_woQCD   = path_presel+"preselection_"+s_MCsum+"_woQCD.root";
-const TString preselection_QCD           = path_presel+"preselection_QCD.root";
-const TString preselection_QCD_Pt        = path_presel+"preselection_QCD_Pt.root";
-const TString preselection_signal        = path_presel+"preselection_signal.root";
+const TString preselection_data          = path_presel+"preselection_data"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_Wjets         = path_presel+"preselection_Wjets"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_DY            = path_presel+"preselection_DY"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_DY_TT         = path_presel+"preselection_DY_TT"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_DY_J          = path_presel+"preselection_DY_J"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_DY_L          = path_presel+"preselection_DY_L"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_TT            = path_presel+"preselection_TT"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_TT_T          = path_presel+"preselection_TT_T"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_TT_J          = path_presel+"preselection_TT_J"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_TT_L          = path_presel+"preselection_TT_L"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_VV            = path_presel+"preselection_VV"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_VV_T          = path_presel+"preselection_VV_T"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_VV_J          = path_presel+"preselection_VV_J"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_VV_L          = path_presel+"preselection_VV_L"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_MCsum         = path_presel+"preselection_"+s_MCsum+s_doubleCount[COINFLIP]+".root";
+const TString preselection_MCsum_woQCD   = path_presel+"preselection_woQCD"+s_MCsum+s_doubleCount[COINFLIP]+".root";
+const TString preselection_QCD           = path_presel+"preselection_QCD"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_QCD_Pt        = path_presel+"preselection_QCD_Pt"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_signal        = path_presel+"preselection_signal"+s_doubleCount[COINFLIP]+".root";
 
 const TString fit_formula                = "fit_formula.root";
 
@@ -696,15 +697,38 @@ Double_t Pt_cuts_TT[] = {20.,30.,40.,60.,80.,100.,150.};
 Double_t Pt_cuts_QCD[]   = {20.,30.,40.,60.,80.,100.,150.};
 */
 
-const Double_t Pt_cuts_Wjets[] = {20.,22.5,25.,27.5,30.,35.,40.,50.,70.,100.,150.};//lower boundaries of the pt bins, there are no data with pt<20.
+//mutau, etau 12.9 fb
+/*const Double_t Pt_cuts_Wjets[] = {20.,22.5,25.,27.5,30.,35.,40.,50.,70.,100.,150.};//lower boundaries of the pt bins, there are no data with pt<20.
 const Double_t Pt_cuts_DY[]    = {20.,25.,30.,40.};
 //const Double_t Pt_cuts_TT[]    = {20.,25.,30.,40.};
 const Double_t Pt_cuts_TT_SR[]     = {20.,22.5,25.,27.5,30.,35.,40.,50.,80.,150.};
 const Double_t Pt_cuts_TT_CR[]     = {20.};
 //const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.,100.};
 const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.};
-const Double_t Pt_cuts_QCD_AI[] ={20.,25.,30.,40};
+const Double_t Pt_cuts_QCD_AI[] ={20.,25.,30.,40};*/
 
+//mutau 35.6 fb default 
+const Double_t Pt_cuts_Wjets[] = {20,22,24,26,30,32.5,35,37.5,40,45,50,55,60,70,80,100,120,200};//lower boundaries of the pt bins, there are no data with pt<20.
+const Double_t Pt_cuts_DY[]    = {20.,25.,30.,40.};
+//const Double_t Pt_cuts_TT[]    = {20,22.5,27,32,40,50,85};
+const Double_t Pt_cuts_TT_SR[]     = {20,22.5,27,32,40,50,85};
+const Double_t Pt_cuts_TT_CR[]     = {20.};
+//const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.,100.};
+const Double_t Pt_cuts_QCD[]   = {20,22.5,25,27.5,30,32.5,35,40,45,50,57.5,70,90,120};
+const Double_t Pt_cuts_QCD_AI[] ={20,22.5,25,30,35,40,50};
+
+//etau 35.6 fb default 
+/*const Double_t Pt_cuts_Wjets[] = {20,22,24,26,30,32.5,35,37.5,40,45,50,55,60,70,80,100,120,200};//lower boundaries of the pt bins, there are no data with pt<20.
+const Double_t Pt_cuts_DY[]    = {20.,25.,30.,40.};
+//const Double_t Pt_cuts_TT[]    = {20.,25.,30.,40.};
+const Double_t Pt_cuts_TT_SR[]     = {20,25,30,35,45,80};
+const Double_t Pt_cuts_TT_CR[]     = {20.};
+//const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.,100.};
+const Double_t Pt_cuts_QCD[]   = {20,23,27,30,32.5,35,40,45,50,60,80};
+const Double_t Pt_cuts_QCD_AI[] ={20,22.5,25,30,35,40,50};*/
+
+
+//tautau 12.9 fb
 /*const Double_t Pt_cuts_Wjets[] = {20.,22.5,25.,27.5,30.,35.,40.,50.,70.,100.,150.};//lower boundaries of the pt bins, there are no data with pt<20.
 const Double_t Pt_cuts_DY[]    = {20.,25.,30.,40.};
 //const Double_t Pt_cuts_TT[]    = {20.,25.,30.,40.};
@@ -713,6 +737,16 @@ const Double_t Pt_cuts_TT_CR[]     = {20.};
 //const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.,100.};
 const Double_t Pt_cuts_QCD[]   = {40.,45.,50.,60,70,90,120,200};
 const Double_t Pt_cuts_QCD_AI[] ={20.,25.,30.,40,50,70,100};*/
+
+//tautau 35.6 fb default
+/*const Double_t Pt_cuts_Wjets[] = {40.,50.,70.,100.,150.};//lower boundaries of the pt bins, there are no data with pt<20.
+const Double_t Pt_cuts_DY[]    = {40.};
+//const Double_t Pt_cuts_TT[]    = {20.,25.,30.,40.};
+const Double_t Pt_cuts_TT_SR[]     = {40.,50.,80.,150.};
+const Double_t Pt_cuts_TT_CR[]     = {40.};
+//const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.,100.};
+const Double_t Pt_cuts_QCD[]   = {40.,42.5,45.,50.,55,65,80,120};
+const Double_t Pt_cuts_QCD_AI[] ={40,50,70,100};*/
 
 const Int_t N_p_Wjets = sizeof(Pt_cuts_Wjets)/sizeof(Double_t);
 const Int_t N_p_DY = sizeof(Pt_cuts_DY)/sizeof(Double_t);
@@ -774,13 +808,17 @@ const Int_t nbins_eta=25;    const Double_t hist_min_eta=-2.5;  const Double_t h
 const Int_t nbins_mttot=25;  const Double_t hist_min_mttot=0.;  const Double_t hist_max_mttot=250.;
 
 //binning constants: weight
-//const Double_t w_mt_v[]={0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250};
+const Double_t w_mt_v[]={0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250};
 //const Double_t w_mt_v[]={0,10,20,30,40,50,60,80,100,140,200,300};
 //const Double_t w_mt_v[]={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,20,25,30,35,40,50,60,80,120,250};
 
-const Double_t w_mt_v[]={20,25,30,35,40,50,60,80,120,250};
+//const Double_t w_mt_v[]={20,25,30,35,40,50,60,80,120,250};
 //const Double_t w_mt_v[]={40,50,60,80,120,250};
 const Int_t    w_mt_n=(sizeof(w_mt_v)/sizeof(Double_t)) -1;
+
+const Double_t w_pt_v[]={20,25,30,35,40,50,60,80,120,250};
+//const Double_t w_pt_v[]={40,45,50,60,80,120,250};
+const Int_t    w_pt_n=(sizeof(w_pt_v)/sizeof(Double_t)) -1;
 
 const Double_t w_mvis_v[]={0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450};
 const Int_t w_mvis_n=(sizeof(w_mvis_v)/sizeof(Double_t)) -1;
@@ -802,7 +840,7 @@ const Int_t    w_dm_n=sizeof(w_dm_v)/sizeof(Int_t) -1;
 const Int_t    w_njets_v[]={0,1,10};
 const Int_t    w_njets_n=sizeof(w_njets_v)/sizeof(Int_t) -1;
 
-const Int_t nbins_weight=w_mt_n*w_dm_n; const Double_t min_weight=-0.5;    const Double_t max_weight=nbins_weight-0.5;
+const Int_t nbins_weight=w_pt_n*w_dm_n; const Double_t min_weight=-0.5;    const Double_t max_weight=nbins_weight-0.5;
 
 const unsigned nVAR=11;
 const Int_t nbins[nVAR]={nbins_mt,nbins_mvis,nbins_pt,nbins_mt2,nbins_lepPt,nbins_mvamet,nbins_met,nbins_eta,nbins_mttot,nbins_mjj,w_muiso_n};
@@ -865,7 +903,7 @@ const Int_t color_TT_L=kGreen-1;
 const Int_t color_sum=kMagenta;
 const Int_t color_QCD=kCyan;
 
-const int nSAMPLES=11;
+const int nSAMPLES=10;
 const int nSAMPLES_COMP=7;
 static const TString vlabel[nSAMPLES]={"W+jets","ttJ (j#rightarrow#tau)","ttT (#tau#rightarrow#tau)","ttL (l#rightarrow#tau)","ZJ (j#rightarrow#tau)","ZTT (#tau#rightarrow#tau)","ZL (l#rightarrow#tau)","VV (j#rightarrow#tau)", "VV (#tau#rightarrow#tau)","VV (l#rightarrow#tau)"};
 static const TString vlabel_compare[nSAMPLES_COMP]={"W+jets","tt","ZJ (j#rightarrow#tau)","ZTT (#tau#rightarrow#tau)","ZL (l#rightarrow#tau)","VV","QCD"};

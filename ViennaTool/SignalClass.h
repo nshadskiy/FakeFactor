@@ -49,6 +49,9 @@ public :
    Double_t        lep_phi;
    Int_t           lep_q;
    Double_t        lep_iso;
+   Double_t        lep_vloose;
+   Double_t        lep_loose;
+   Double_t        lep_medium;
    Int_t           n_iso_lep;
    Int_t           n_iso_otherLep;
    std::vector<double>  *alltau_pt;
@@ -101,6 +104,9 @@ public :
    TBranch        *b_lep_phi;   //!
    TBranch        *b_lep_q;   //!
    TBranch        *b_lep_iso;   //!
+   TBranch        *b_lep_vloose;   //!
+   TBranch        *b_lep_loose;   //!
+   TBranch        *b_lep_medium;   //!
    TBranch        *b_n_iso_lep;   //!
    TBranch        *b_n_iso_otherLep;   //!
    TBranch        *b_alltau_pt;   //!
@@ -245,6 +251,9 @@ void SignalClass::Init(TTree *tree)
    fChain->SetBranchAddress("lep_phi", &lep_phi, &b_lep_phi);
    fChain->SetBranchAddress("lep_q", &lep_q, &b_lep_q);
    fChain->SetBranchAddress("lep_iso", &lep_iso, &b_lep_iso);
+   fChain->SetBranchAddress("lep_vloose", &lep_vloose, &b_lep_vloose);
+   fChain->SetBranchAddress("lep_loose", &lep_loose, &b_lep_loose);
+   fChain->SetBranchAddress("lep_medium", &lep_medium, &b_lep_medium);   
    fChain->SetBranchAddress("n_iso_lep", &n_iso_lep, &b_n_iso_lep);
    fChain->SetBranchAddress("n_iso_otherLep", &n_iso_otherLep, &b_n_iso_otherLep);
    fChain->SetBranchAddress("alltau_pt", &alltau_pt, &b_alltau_pt);

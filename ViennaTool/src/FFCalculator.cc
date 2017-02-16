@@ -198,9 +198,10 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
     std::vector<TH1D*> templates(h_n);
     std::vector<TH1D*> templates_tt(h_n_tt);
 
+    TString CF = COINFLIP==1 ? "" : "_DC";
     TFile *ft=new TFile(tf_name,"RECREATE");
     for (int i=(int)fnames.size()-1; i>=0; i--){
-      TString stmp=fnames.at(i); cout << stmp << endl; stmp.ReplaceAll(".root",""); stmp.ReplaceAll(path_presel+"preselection_",""); stmp.ReplaceAll("_woQCD",""); stmp.ReplaceAll("MCsum","data"); cout << stmp << endl;
+      TString stmp=fnames.at(i); cout << stmp << endl; stmp.ReplaceAll(CF+".root",""); stmp.ReplaceAll(path_presel+"preselection_",""); stmp.ReplaceAll("_woQCD",""); stmp.ReplaceAll("MCsum","data"); cout << stmp << endl;
       if(!inclusive_selection){
         for(Int_t icat=0; icat<nCAT; icat++){
           if(catMode[icat] & mode) {stmp = stmp + categories[icat];}
@@ -654,7 +655,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
   }*/
 
   //now some nicer plots
-  if ( nbins_weight == w_mt_n*w_dm_n ){ //split by decay mode: only if total number of weight bins is #mt-bins*#dm-bins
+  if ( nbins_weight == w_pt_n*w_dm_n ){ //split by decay mode: only if total number of weight bins is #mt-bins*#dm-bins
     
     THStack* hs_split[w_dm_n]; for (int i=0; i<w_dm_n; i++) hs_split[i] = new THStack("w_split"+sNum[i],"");
     TLegend* leg = new TLegend(0.3,0.16,0.45,0.46);
@@ -667,15 +668,15 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
       h_w_split[is].resize(NW);
       for (int j=0; j<NW-1; j++){
         if ( !DOQCD&& m_type[j].Contains("QCD") ) continue;
-        h_w_split[is].at(j) = new TH1D("h_w_split"+mode+sNum[j]+sNum[is]+isolation ,"",w_mt_n,w_mt_v);
+        h_w_split[is].at(j) = new TH1D("h_w_split"+mode+sNum[j]+sNum[is]+isolation ,"",w_pt_n,w_pt_v);
         h_w_split[is].at(j)->SetFillColor(m_color[j]);
-        for (int ib=0; ib<w_mt_n; ib++){
-          h_w_split[is].at(j)->SetBinContent( ib+1 , h_w.at(j)->GetBinContent(ib+1 + is*w_mt_n) );
+        for (int ib=0; ib<w_pt_n; ib++){
+          h_w_split[is].at(j)->SetBinContent( ib+1 , h_w.at(j)->GetBinContent(ib+1 + is*w_pt_n) );
         }
         h_w_split[is].at(j)->SetMaximum(1.0);
         hs_split[is]->Add(h_w_split[is].at(j),"hist");
         if (is==0){
-          TString m_label="sum (#tau#rightarrow#tau)";
+          TString m_label="Multijet";
           for (int il=0; il<nSAMPLES; il++){ if ( vsuff[il]==m_type[j] ) m_label=vlabel[il]; }
           leg->AddEntry(h_w_split[is].at(j),m_label,"f");
         }
@@ -775,8 +776,8 @@ Int_t FFCalculator::doTemplateFit(const TH1D *data, const std::vector<TH1D*> tem
 
   //  fit->SetRangeX(1,12);                    // use only the first 12 bins in the fit
   if (DEBUG) std::cout << "Excluding bins..." << std::endl;
-  if (w_mt_n==25 && nbins_weight>=25){ for (int i=13; i<=25; i++) fit->ExcludeBin(i); } //exclude certaint mT bins with low stats
-  if (w_mt_n==25 && nbins_weight>=50){ for (int i=38; i<=50; i++) fit->ExcludeBin(i); }
+  if (w_pt_n==25 && nbins_weight>=25){ for (int i=13; i<=25; i++) fit->ExcludeBin(i); } //exclude certaint mT bins with low stats
+  if (w_pt_n==25 && nbins_weight>=50){ for (int i=38; i<=50; i++) fit->ExcludeBin(i); }
   Int_t status = fit->Fit();               // perform the fit
   std::cout << "fit status: " << status << std::endl;
   if (status == 0) {                       // check on fit status
@@ -2759,6 +2760,8 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
     ratio_l->Add(unity_h,-1);ratio_l->Scale(-1);
     TH1D* compare_t              = (TH1D*) compare.Get("hh_t_mvis");
     TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t_mvis_MCsubtracted");
+    //if(CHAN==kEL)compare_t_MCsubtracted->Scale(0.8);
+    //if(CHAN==kMU)compare_t_MCsubtracted->Scale(0.95);
     TH1D* ratio_t                = (TH1D*)compare_t_MCsubtracted->Clone("ratio_t");
     ratio_t->Divide(compare_t);
     ratio_t->Add(unity_h,-1);ratio_t->Scale(-1);
@@ -2849,12 +2852,12 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
     }
   }
   Double_t x200; Double_t y200;
-  g->GetPoint(200,x200,y200);
+  g->GetPoint(180,x200,y200);
   for(int i=0; i<g->GetN(); i++){
     Double_t x; Double_t y;
-    if(i>200){
+    if(i>180){
       g->GetPoint(i,x,y);
-      //g->SetPoint(i,x,y200);
+      g->SetPoint(i,x,y200);
     }
   }
 

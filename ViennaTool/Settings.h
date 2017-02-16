@@ -6,12 +6,13 @@
 
 
 const TString user="jbrandstetter";
-const TString analysis="FakeFactor_2016";
-const Double_t luminosity=12.9;
+const TString analysis="FakeFactor_2016_full2";
+const Double_t luminosity=35.5; //27.9 for ABCDEFG, 20.2 for ABCDEFB
 
-const int CHAN = kEL; //kMU,kEL,kTAU
+const int CHAN = kMU; //kMU,kEL,kTAU
 const int use_svfit = 0;
-const TString ver = "v4";
+const TString ver = "v7";
+const int singleTriggerMatch = 1;
 const TString inputFF_dir = "~/public/Htautau/FakeRate2016/";
 //const TString inputFF_date = "20161117";
 const TString inputFF_date = "20161205_test";
@@ -20,7 +21,7 @@ const Double_t epsilon=0.09; //forBlinding
 const Double_t FFW_REL_ERR=0.0;
 const int NERR=5; //number of toys for FF
 ///////////////////////////////////////////////////
-const int inclusive_selection=1; //0: splitting FF procedure in categories defined in Globals.h
+const int inclusive_selection=0; //0: splitting FF procedure in categories defined in Globals.h
 const int useVV=1;
 const int useMVAMET=0;
 ///////////////////////////////////////////////////
@@ -32,6 +33,7 @@ const int cat_frac_mt=0;
 const int cat_frac_et=0;
 const int cat_frac_tt=0;
 ///////////////////////////////////////////////////
+const int COINFLIP=1; //only for tautau channel: decide if usage of double count or coin flip
 const int DEBUG=1; //set to 1 for additional output
 const int ALLPLOTS=1; //set to 1 for PDFs etc
 const int DOQCD=1; //set to 1 to include QCD estimate, 0 for w/o; only works for MC
@@ -44,7 +46,7 @@ const int USE_MVA_ISO=1; //def: 1
 const int CALC_SS_SR=0; //default: 0   //0.15<QCD_iso<0.25 for QCD FFs
 const int num = 0;
 const int doSRHisto = 1;
-const int doCRHisto = 0;
+const int doCRHisto = 1;
 ///////////////////////////////////////////////////
 //steerFF
 const int doDebugPlots=1;    //1 to also calculate FF in SR; and do bkg estimate with unweighted FF per sample ->for control plots
@@ -57,8 +59,8 @@ const int useDYFF_forTT=0; //0 as default
 const int useWJFF_forDY=0; //1 as default
 const int doCalcWeights=1; //calc fractions
 const int doFit=0; //template fit for fractions, default: 0
-const int doCalc=0; //calc FFs
-const int doCalcCorrections=0;
+const int doCalc=1; //calc FFs
+const int doCalcCorrections=1;
 const int calcVTightFF=0;
 //////////////////////////////////////////////////
 const int fit_pT_bins = 1; //use fitted pT bins as input for ff

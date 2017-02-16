@@ -14,7 +14,7 @@ void SRHisto() {
   const Int_t DOCUTS = doCuts;
   
   //for(Int_t icat=0; icat<nCAT; icat++){
-  for(Int_t icat=8; icat<nCAT; icat++){
+  for(Int_t icat=0; icat<nCAT; icat++){
     if(inclusive_selection && icat>0) continue;
   
     TSelectionAnalyzer *Analyzer = new TSelectionAnalyzer();

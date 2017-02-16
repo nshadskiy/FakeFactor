@@ -255,6 +255,18 @@ Int_t GlobalClass::getWeightIndex_mt(Double_t mt){
   return -1; //should never get here
 }
 
+Int_t GlobalClass::getWeightIndex_pt(Double_t pt){
+  for (int i=0; i<w_pt_n; i++){
+    if ( pt>w_pt_v[i] && pt<w_pt_v[i+1] ) return i;
+  }
+  if (pt>w_pt_v[w_pt_n]) return 1e6; //overflow - one for all dimensions, though!
+  //  if (mt>w_mt_v[w_mt_n]) return w_mt_n-1; //put overflow in last bin
+  //  if (mt>w_mt_v[w_mt_n]) return w_mt_n; //overflow - only suitable for 1D!
+  if (pt<w_pt_v[0]) return -1; //underflow
+
+  return -1; //should never get here
+}
+
 Int_t GlobalClass::getWeightIndex_mvis(Double_t mvis){
   for (int i=0; i<w_mvis_n; i++){
     if ( mvis>w_mvis_v[i] && mvis<w_mvis_v[i+1] ) return i;
@@ -288,8 +300,8 @@ Int_t GlobalClass::getWeightIndex_dm(Int_t dm){
 }
 //is under/overflow handled correctly above?
 
-Int_t GlobalClass::getWeightBin(Double_t mt, Int_t dm){
-  return ( this->getWeightIndex_mt(mt) + w_mt_n * this->getWeightIndex_dm(dm) );
+Int_t GlobalClass::getWeightBin(Double_t pt, Int_t dm){
+  return ( this->getWeightIndex_pt(pt) + w_pt_n * this->getWeightIndex_dm(dm) );
 }
 
 Int_t GlobalClass::getWeightBin(const Int_t ind){

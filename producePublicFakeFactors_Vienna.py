@@ -3,11 +3,11 @@ import ROOT
 import os
 
 #Meta-data
-channel="et"
-version='20161205_test'
+channel="mt"
+version='20170215'
 tag='v0.2.1'
-categories = ['incl','_0jetLow','_0jetHigh','_1jetLow','_1jetHigh','_vbfLow','_vbfHigh','_2jet','_anyb','_2D_0jet', '_2D_Boosted', '_2D_VBF']
-#categories = ['incl']
+#categories = ['incl','_0jetLow','_0jetHigh','_1jetLow','_1jetHigh','_vbfLow','_vbfHigh','_2jet','_anyb','_2D_0jet', '_2D_Boosted', '_2D_VBF']
+categories = ['incl','_2D_0jet', '_2D_Boosted', '_2D_VBF']
 
 for x in range(0,len(categories)):
 

@@ -239,8 +239,13 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
     TFile *f_MC_CR=new TFile(d+"FF_TT_J_only.root");
     TH1D *h_MC_CR= (TH1D*)f_MC_CR->Get("c_t");
   
-    for(int i=1; i<=h_data_CR->GetNbinsX(); i++){
+    //for(int i=1; i<=h_data_CR->GetNbinsX(); i++){
+    for(int i=1; i<=2; i++){
       if(fn.Contains("TT")) scale_factors.push_back( abs(h_data_CR->GetBinContent(i)/h_MC_CR->GetBinContent(i) ) );
+      //if(fn.Contains("TT") && i==1) scale_factors.push_back(0.63);
+      //else if(fn.Contains("TT") && i==2) scale_factors.push_back(0.91);
+      //if(fn.Contains("TT") && i==1) scale_factors.push_back(0.77);
+      //else if(fn.Contains("TT") && i==2) scale_factors.push_back(0.94);
       else scale_factors.push_back(1.);
       cout << "Scale factor " << i-1 << " :" << scale_factors.at(i-1) << endl;
     }
@@ -294,6 +299,22 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
 
 
   if(fit_pT_bins){
+    Double_t err_dm0njet0=0;
+    Double_t err_dm0njet1=0;
+    Double_t err_dm1njet0=0;
+    Double_t err_dm1njet1=0;
+    if(fn.Contains("_QCD")){
+      err_dm0njet0=.03; //0.02
+      err_dm0njet1=.03; // 0.04
+      err_dm1njet0=.08; // 0.08
+      err_dm1njet1=.08; // 0.1
+    } else if(fn.Contains("_Wjets")){
+      err_dm0njet0=.0; //0.0
+      err_dm0njet1=.0; // 0.0
+      err_dm1njet0=.08;
+      err_dm1njet1=.08;
+    }
+      
     for (int idm=0; idm<N_D2; idm++){
       for (int ijet=0; ijet<N_D3; ijet++){
         stringstream fitted_histo; fitted_histo << "dm" << idm << "_njet" << ijet;
@@ -312,55 +333,56 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
           hout_err_low->SetBinError(       ipt+1 , idm+1 , ijet+1 , err_low );
           hout_err_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_high/cont );
           hout_err_high->SetBinError(       ipt+1 , idm+1 , ijet+1 , err_high );
-          
+
           if(idm==0 && ijet==0){
-            hout_err_dm0_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_low/cont );
+            
+            hout_err_dm0_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , TMath::Sqrt( TMath::Power(err_low/cont,2) + TMath::Power(err_dm0njet0,2) ) );
             hout_err_dm0_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
             hout_err_dm1_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
             hout_err_dm1_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
           }
           if(idm==0 && ijet==1){
             hout_err_dm0_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
-            hout_err_dm0_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_low/cont );
+            hout_err_dm0_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , TMath::Sqrt( TMath::Power(err_low/cont,2) + TMath::Power(err_dm0njet1,2) ) );
             hout_err_dm1_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
             hout_err_dm1_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
           }
           if(idm==1 && ijet==0){
             hout_err_dm0_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
             hout_err_dm0_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
-            hout_err_dm1_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_low/cont );
+            hout_err_dm1_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , TMath::Sqrt( TMath::Power(err_low/cont,2) + TMath::Power(err_dm1njet0,2) ) );
             hout_err_dm1_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
           }
           if(idm==1 && ijet==1){
             hout_err_dm0_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
             hout_err_dm0_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
             hout_err_dm1_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
-            hout_err_dm1_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_low/cont );
+            hout_err_dm1_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , TMath::Sqrt( TMath::Power(err_low/cont,2) + TMath::Power(err_dm1njet1,2) ) );
           }
 
           if(idm==0 && ijet==0){
-            hout_err_dm0_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_high/cont );
+            hout_err_dm0_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , TMath::Sqrt( TMath::Power(err_high/cont,2) + TMath::Power(err_dm0njet0,2) ) );
             hout_err_dm0_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
             hout_err_dm1_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
             hout_err_dm1_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
           }
           if(idm==0 && ijet==1){
             hout_err_dm0_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
-            hout_err_dm0_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_high/cont );
+            hout_err_dm0_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , TMath::Sqrt( TMath::Power(err_high/cont,2) + TMath::Power(err_dm0njet1,2) ) );
             hout_err_dm1_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
             hout_err_dm1_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
           }
           if(idm==1 && ijet==0){
             hout_err_dm0_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
             hout_err_dm0_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
-            hout_err_dm1_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_high/cont );
+            hout_err_dm1_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , TMath::Sqrt( TMath::Power(err_high/cont,2) + TMath::Power(err_dm1njet0,2) ) );
             hout_err_dm1_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
           }
           if(idm==1 && ijet==1){
             hout_err_dm0_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
             hout_err_dm0_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
             hout_err_dm1_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
-            hout_err_dm1_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_high/cont );
+            hout_err_dm1_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , TMath::Sqrt( TMath::Power(err_high/cont,2) + TMath::Power(err_dm1njet1,2) ) );
           }
         }
       }
@@ -416,7 +438,7 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
 void make_frac_sys( const TString fn , const std::vector<TString> fn_other , const TString hn , const TString hnout , const std::vector<TString> hn_other , const TString fout_n , const int opt ){
 
   if ( opt==0 ) make_frac_sys( fn , fn_other , hn , hnout, hn_other , fout_n , N_p_Wjets , N_t_Wjets , Pt_cuts_Wjets , Decay_cuts_Wjets );
-  if ( opt==1 ) make_frac_sys( fn , fn_other , hn , hnout, hn_other , fout_n , w_mt_n    , N_t_Wjets , w_mt_v        , Decay_cuts_Wjets );
+  if ( opt==1 ) make_frac_sys( fn , fn_other , hn , hnout, hn_other , fout_n , w_pt_n    , N_t_Wjets , w_pt_v        , Decay_cuts_Wjets );
 
 }
 
@@ -603,6 +625,9 @@ void convert_corrections( const TString fn, const TString gn, const TString fout
 
 void combineQCDSystematics( const TString fQCD_nonclosure, const TString sys_nonclosure, const TString fQCD_otherLep, const TString sys_otherLep, const TString fQCD_OSSS, const TString sys_OSSS, const TString fout, const TString tout){
 
+  Float_t addUncertainty=0;
+  if(CHAN!=kTAU) addUncertainty=0.01;
+  else addUncertainty=0.0025;
   if(CHAN!=kTAU){
     TFile *f_nonclosure=new TFile(fQCD_nonclosure);
     TGraphAsymmErrors *sys_nonclosure_t=(TGraphAsymmErrors*)f_nonclosure->Get(sys_nonclosure);
@@ -610,12 +635,16 @@ void combineQCDSystematics( const TString fQCD_nonclosure, const TString sys_non
     TGraphAsymmErrors *sys_otherLep_t=(TGraphAsymmErrors*)f_otherLep->Get(sys_otherLep);
     TFile *f_OSSS=new TFile(fQCD_OSSS);
     TGraphAsymmErrors *sys_OSSS_t=(TGraphAsymmErrors*)f_OSSS->Get(sys_OSSS);
-    
+
     TH2D *out_t = new TH2D(tout, tout, sys_nonclosure_t->GetN(), sys_nonclosure_t->GetX()[0], sys_nonclosure_t->GetX()[sys_nonclosure_t->GetN()-1], sys_otherLep_t->GetN(), sys_otherLep_t->GetX()[0], sys_otherLep_t->GetX()[sys_otherLep_t->GetN()-1]);
     for(Int_t i=0; i<=sys_nonclosure_t->GetN(); i++){
       for(Int_t j=0; j<=sys_otherLep_t->GetN(); j++){
         //if(!CALC_SS_SR) out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) ) );
-        if(!CALC_SS_SR)out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) ) + TMath::Power(sys_OSSS_t->GetY()[i],2) );
+        if(!CALC_SS_SR){
+          Float_t binContent = TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) + TMath::Power(sys_OSSS_t->GetY()[i],2) + addUncertainty );
+          if(binContent>1) binContent=0;
+          out_t->SetBinContent(i,j,binContent );
+        }
         else out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) ) );
       }
     }
@@ -637,7 +666,11 @@ void combineQCDSystematics( const TString fQCD_nonclosure, const TString sys_non
     for(Int_t i=0; i<=sys_nonclosure_t->GetN(); i++){
       for(Int_t j=0; j<=sys_otherLep_t->GetN(); j++){
         //if(!CALC_SS_SR) out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) ) );
-        if(!CALC_SS_SR)out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) ) + TMath::Power(sys_OSSS_t->GetY()[i],2) );
+        if(!CALC_SS_SR){
+          Float_t binContent=TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) + TMath::Power(sys_OSSS_t->GetY()[i],2) + addUncertainty );
+          if(binContent>1)binContent=0;
+          out_t->SetBinContent(i,j,binContent);
+        }
         else out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) ) );
       }
     }
@@ -660,7 +693,7 @@ void combineWSystematics( const TString fW_nonclosure, const TString sys_nonclos
   for(Int_t i=0; i<sys_nonclosure_t->GetN(); i++){
     for(Int_t j=0; j<sys_mtcorr_t->GetN(); j++){
       //out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_mtcorr_t->GetY()[j],2) ) );
-      out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_mtcorr_t->GetY()[j],2) ) );
+      out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_mtcorr_t->GetY()[j],2) +0.0025 ) );
     }
   }
   TFile *fout_f=new TFile(fout,"UPDATE");
@@ -683,6 +716,8 @@ void combineTTSystematics( const TString fTT_nonclosure, const TString sys_noncl
   TH1D *h_MC_CR= (TH1D*)f_MC_CR->Get("c_t");
 
   Double_t scale_factors[]={abs(h_data_CR->GetBinContent(1)-h_MC_CR->GetBinContent(1))/h_MC_CR->GetBinContent(1), abs(h_data_CR->GetBinContent(2)-h_MC_CR->GetBinContent(2))/h_MC_CR->GetBinContent(2)};
+  //Double_t scale_factors[]={0.37,0.09};
+  //Double_t scale_factors[]={0.23,0.06};
   cout << "///////////////////////////////////////////////////////" << endl;
   cout << "TT data/MC scale factors (decay mode):" << endl;
   cout << "Data: " << h_data_CR->GetBinContent(1) << " and MC: " << h_MC_CR->GetBinContent(1) << " -> " << scale_factors[0] << endl;

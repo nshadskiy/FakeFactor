@@ -98,9 +98,13 @@ void CalcFF() {
       cout << endl << "################### Calculating FFs         ###############" << endl << endl;
       Analyzer->calcFFCorr(_W_JETS|m_gen_match,                    m_preselection_data,   pre_sub_wj,    p+FF_corr_Wjets_MCsum_noGen,  p+weight_Wjets);
 
-      //if (useWJFF_forDY) Analyzer->calcFFCorr(_W_JETS|m_gen_match, m_preselection_data,   pre_sub_wj,    p+FF_corr_DY_MCsum_noGen,     p+weight_DY_J);
-      //else               Analyzer->calcFFCorr(_DY|m_gen_match ,    m_preselection_data,   pre_sub_dy,    p+FF_corr_DY_MCsum_noGen,     p+weight_DY_J); //DY_J using FF from DY->mumu CR
+      /*if (useWJFF_forDY) Analyzer->calcFFCorr(_W_JETS|m_gen_match, m_preselection_data,   pre_sub_wj,    p+FF_corr_DY_MCsum_noGen,     p+weight_DY_J);
+      else               Analyzer->calcFFCorr(_DY|m_gen_match ,    m_preselection_data,   pre_sub_dy,    p+FF_corr_DY_MCsum_noGen,     p+weight_DY_J); //DY_J using FF from DY->mumu CR
 
+      Analyzer->calcFFCorr(_W_JETS|m_gen_match|SR,                    preselection_Wjets,   empty_vec_tstring,    p+FF_Wjets_only_SR,  p+weight_Wjets);
+      Analyzer->calcFFCorr(_DY|m_gen_match|SR,                    preselection_DY_J,   empty_vec_tstring,    p+FF_DY_J_only_SR,  p+weight_Wjets);
+      Analyzer->calcFFCorr(_DY|m_gen_match,                       preselection_DY_J,   empty_vec_tstring,    p+FF_DY_J_only,  p+weight_Wjets);*/
+      
       cout << "Calculating TT FFs" << endl;
       if (useDYFF_forTT) Analyzer->calcFFCorr(_DY|m_gen_match,     m_preselection_data,   pre_sub_dy,    p+FF_corr_TT_MCsum_noGen,  p+weight_TT_J);
       else               Analyzer->calcFFCorr(_TT|m_gen_match,    m_preselection_data,   pre_sub_tt,    p+FF_corr_TT_MCsum_noGen,  p+weight_TT_J);
@@ -133,7 +137,7 @@ void CalcFF() {
       if(CHAN!=kTAU){
         cout << "Calculating TT corrections" << endl;
         Analyzer->loadFile(preselection_TT_J,"Events");
-        //Analyzer->calc_nonclosure(_TT|SR,                            p+FF_TT_J_only_SR,  SR_TT_J_mvis_sim, p+FF_corr_TT_MC_noGen_nonclosure, 1, 0);
+        Analyzer->calc_nonclosure(_TT|SR,                            p+FF_TT_J_only_SR,  SR_TT_J_mvis_sim, p+FF_corr_TT_MC_noGen_nonclosure, 1, 0);
         //...done
       }
     }
@@ -151,9 +155,9 @@ void CalcFF() {
       //Analyzer->calc_nonclosure_lepPt(_QCD|_AI,                            p+"FF_corr_QCD_MCsum_noGen_AI.root",  "ViennaTool/sim/tt/CR_QCD_lepPt_AI_data_MCsubtracted.root", p+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt_AI.root");
       //Analyzer->calc_OSSScorr(_QCD|_AI,                       p+"FF_corr_QCD_MCsum_noGen_AI.root",  "ViennaTool/sim/"+s_chan[CHAN]+"/SR_data_mvis_AI_MCsubtracted.root", p+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt_AI.root", p+FF_corr_QCD_MCsum_noGen_OSSScorr);
 
-      /*Analyzer->calc_nonclosure(_QCD,                            p+"FF_corr_QCD_MCsum_noGen.root",  "ViennaTool/sim/tt/CR_QCD_mvis_data_MCsubtracted.root", p+"FF_corr_QCD_MCsum_noGen_nonclosure.root");
+      Analyzer->calc_nonclosure(_QCD,                            p+"FF_corr_QCD_MCsum_noGen.root",  "ViennaTool/sim/tt/CR_QCD_mvis_data_MCsubtracted.root", p+"FF_corr_QCD_MCsum_noGen_nonclosure.root");
       Analyzer->calc_nonclosure(_QCD|_AI,                            p+"FF_corr_QCD_MCsum_noGen_AI.root",  "ViennaTool/sim/tt/CR_QCD_mvis_AI_data_MCsubtracted.root", p+"FF_corr_QCD_MCsum_noGen_nonclosure_AI.root", 0);
-      Analyzer->calc_OSSScorr(_QCD|_AI,                       p+"FF_corr_QCD_MCsum_noGen_AI.root",  "ViennaTool/sim/"+s_chan[CHAN]+"/SR_data_mvis_AI_MCsubtracted.root", p+"FF_corr_QCD_MCsum_noGen_nonclosure_AI.root", p+FF_corr_QCD_MCsum_noGen_OSSScorr);*/
+      Analyzer->calc_OSSScorr(_QCD|_AI,                       p+"FF_corr_QCD_MCsum_noGen_AI.root",  "ViennaTool/sim/"+s_chan[CHAN]+"/SR_data_mvis_AI_MCsubtracted.root", p+"FF_corr_QCD_MCsum_noGen_nonclosure_AI.root", p+FF_corr_QCD_MCsum_noGen_OSSScorr);
       Analyzer->calc_nonclosure_lepPt(_QCD,                            p+"FF_corr_QCD_MCsum_noGen.root",  "ViennaTool/sim/tt/CR_QCD_lepPt_data_MCsubtracted.root", p+"FF_corr_QCD_MCsum_noGen_nonclosure.root", p+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root");
     }
       //mvis correction for TT

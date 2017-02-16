@@ -3,7 +3,7 @@ INCDIR=.
 ROOTINC=$(shell root-config --incdir)
 ROOTLIB=$(shell root-config --libs)
 
-all: NtupleClass.o SignalClass.o GlobalClass.o TNtupleAnalyzer.o TSelectionAnalyzer.o PlotterClass.o GaussianKernelSmoother.o FFCalculator.o CustomFit.o test fitFakeFactors Preselection SRHisto CRHisto steerFF convert_inputs ApplyFF ApplyUncertainties getDatacards makeCutPlots
+all: NtupleClass.o SignalClass.o GlobalClass.o TNtupleAnalyzer.o TSelectionAnalyzer.o PlotterClass.o GaussianKernelSmoother.o FFCalculator.o CustomFit.o test fitFakeFactors altFitError Preselection SRHisto CRHisto steerFF convert_inputs ApplyFF ApplyUncertainties getDatacards makeCutPlots
 
 %.o: ViennaTool/%.C
 	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -fpic -c $<
@@ -35,6 +35,9 @@ getDatacards: ViennaTool/macros/getDatacards.C
 fitFakeFactors: ViennaTool/macros/fitFakeFactors.C
 	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ CustomFit.o SignalClass.o PlotterClass.o GlobalClass.o ViennaTool/macros/fitFakeFactors.C
 
+altFitError: ViennaTool/macros/altFitError.C
+	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ CustomFit.o SignalClass.o PlotterClass.o GlobalClass.o ViennaTool/macros/altFitError.C
+
 ApplyFF: ViennaTool/macros/ApplyFF.C
 	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ SignalClass.o GlobalClass.o PlotterClass.o ../tmp/slc6_amd64_gcc493/src/HTTutilities/Jet2TauFakes/src/HTTutilitiesJet2TauFakes/libHTTutilitiesJet2TauFakes.so ViennaTool/macros/ApplyFF.C
 
@@ -46,7 +49,7 @@ makeCutPlots: ViennaTool/macros/makeCutPlots.C
 
 
 clean:
-	rm *.o test Preselection SRHisto CRHisto convert_inputs ApplyFF getDatacards fitFakeFactors
+	rm *.o test Preselection SRHisto CRHisto convert_inputs ApplyFF getDatacards fitFakeFactors altFitError
 
 
 

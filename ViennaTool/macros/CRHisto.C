@@ -42,6 +42,8 @@ void CRHisto(int doCalc, int nCR, int nQU) {
 
   const TString squ[nQU]=    {s_loose, s_tight, s_loose_tt};
 
+  TString CF = COINFLIP==1 ? "" : "_DC";
+
   if(doCRHisto){
     
     for (int ic=0; ic<nCR; ic++){ //loop over CRs
@@ -49,7 +51,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
       // nVAR is set to 3, one has to increase the number if muiso or zpt or any other variable is required
       for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt
         for (int is=0; is<nSA; is++){ //loop over samples
-          Analyzer->getCRHisto(path_presel+s_preselection+"_"+ssa[is]+".root", ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root"  );
+          Analyzer->getCRHisto(path_presel+s_preselection+"_"+ssa[is]+CF+".root", ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root"  );
         }
         if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_data.root"  );
         else Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_MCsum.root"  );
@@ -58,7 +60,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
     
     for (int ic=3; ic<nCR; ic++){ //loop over CRs
       for (int is=0; is<nSA; is++){ //loop over samples
-        Analyzer->getCRHisto(path_presel+s_preselection+"_"+ssa[is]+".root", icr[ic]|LEPPT , path_sim+s_CR+"_"+scr[ic]+"_lepPt_"+ssa[is]+".root"  );
+        Analyzer->getCRHisto(path_presel+s_preselection+"_"+ssa[is]+CF+".root", icr[ic]|LEPPT , path_sim+s_CR+"_"+scr[ic]+"_lepPt_"+ssa[is]+".root"  );
       }
       if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , icr[ic]|LEPPT , path_sim+s_CR+"_"+scr[ic]+"_lepPt_data.root"  );
     }
@@ -68,7 +70,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
       if ( !doCalc ) break;
       for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
         for (int is=0; is<nSA; is++){ //loop over samples
-          Analyzer->getCRHisto(path_presel+s_preselection+"_"+ssa[is]+".root", ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_"+ssa[is]+".root"  );
+          Analyzer->getCRHisto(path_presel+s_preselection+"_"+ssa[is]+CF+".root", ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_"+ssa[is]+".root"  );
         }
         if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_data.root"  );
         else Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_MCsum.root"  );
@@ -79,7 +81,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
     if(CHAN==kTAU){
       for (int ic=3; ic<nCR; ic++){ //loop over CRs
         for (int is=0; is<nSA; is++){ //loop over samples
-          Analyzer->getCRHisto(path_presel+s_preselection+"_"+ssa[is]+".root", LEPPT|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_"+ssa[is]+".root"  );
+          Analyzer->getCRHisto(path_presel+s_preselection+"_"+ssa[is]+CF+".root", LEPPT|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_"+ssa[is]+".root"  );
         }
         if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , LEPPT|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_data.root"  );
       }
@@ -90,7 +92,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
       if ( !doCalc ) break;
       for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
         for (int is=0; is<nSA; is++){ //loop over samples
-          Analyzer->getCRHisto(path_presel+s_preselection+"_"+ssa[is]+".root", ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_"+ssa[is]+".root"  );
+          Analyzer->getCRHisto(path_presel+s_preselection+"_"+ssa[is]+CF+".root", ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_"+ssa[is]+".root"  );
         }
         if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_data.root"  );
         else Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_MCsum.root"  );

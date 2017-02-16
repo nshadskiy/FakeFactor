@@ -48,6 +48,11 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
     event->GetEntry(jentry);
     Int_t ntau=setTreeValues(preselectionFile, mode); //preselection happens in there now
     if (ntau>=1){ t_Events->Fill(); pc++; }
+    if(CHAN==kTAU && !COINFLIP){
+      ntau=0;
+      ntau=setTreeValues(preselectionFile, mode, 2);
+      if(ntau>=1){ t_Events->Fill(); pc++; }
+    }
   }// End loop over all events
   
   cout<<pc<<" events passed preselection."<< endl;
@@ -62,8 +67,11 @@ void TNtupleAnalyzer::closeFile()
   delete tchain;
 }
 
-Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t mode)
+Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t mode, Int_t whichTau)
 {
+
+  if( singleTriggerMatch && !event->STrig_match ) return 0;
+  
   TLorentzVector vec1, vec2, vec;
   //////////////////////////////////////////////////////////////////////////
   //////////weight_sf contains top pT reweighting for TT samples and Z reweighting for DY samples
@@ -79,6 +87,11 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
   if( preselectionFile.Contains("preselection_TT") ) weight_sf *= event->topWeight;
   if( preselectionFile.Contains("preselection_DY") ) weight_sf *= event->ZWeight;
+    
+  if(CHAN==kTAU && !COINFLIP){
+    weight=weight*0.5;
+    weight_sf=weight_sf*0.5;
+  }
   
   passes3LVeto=event->passesThirdLepVeto;
   if ( CHAN == kMU  ) passesDLVeto=event->passesDiMuonVeto;
@@ -357,11 +370,16 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   //for tt: insert both _1 and _2, but in random order (i.e. not iso- or pt-ordered!!); other channels: simply insert _2
   Int_t TT_AS_LEP=1;
   if ( CHAN == kTAU ){
-     if ( r3.Uniform(2)>1.0 ) TT_AS_LEP=2; //if uniform random number in (0;2) is >1, then use it as 2nd tau as lep; otherwise 1st. For et/mt, TT_AS_LEP is always =1
+    if(COINFLIP) {
+      if ( r3.Uniform(2)>1.0 ) TT_AS_LEP=2; //if uniform random number in (0;2) is >1, then use it as 2nd tau as lep; otherwise 1st. For et/mt, TT_AS_LEP is always =1
+    }
+    else if(!COINFLIP){
+      if(whichTau==2) TT_AS_LEP=2;
+    }
   }
     
   float decay=event->decayMode_2;
-  if ( /*event->againstElectronTightMVA6_2 && event->againstMuonLoose3_2 &&*/ (event->passesTauLepVetos) && ( (decay>=0&&decay<=4)||(decay>=10&&decay<=14)   ) && (dR>0.5) && (event->pt_2 > m_tau_pt_cut ) && (fabs(event->eta_2) < m_tau_eta_cut) && (TT_AS_LEP==1) ){
+  if ( (event->passesTauLepVetos) && ( (decay>=0&&decay<=4)||(decay>=10&&decay<=14)   ) && (dR>0.5) && (event->pt_2 > m_tau_pt_cut ) && (fabs(event->eta_2) < m_tau_eta_cut) && (TT_AS_LEP==1) ){
     Int_t tpos=0;
     if ( (!USE_ISOTAU) && (CHAN!=kTAU) ) tpos=this->findPos(event->pt_2, alltau_pt); //for tt, always insert it as first tau
     tau_iso_ind=tpos;
@@ -480,6 +498,10 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     }
   }
 
+  lep_vloose = 0;
+  lep_loose = 0;
+  lep_medium = 0;
+
   if ( CHAN == kTAU ){
     //now: take "other tau" (as determined by the random number above) as "lep"
     if ( TT_AS_LEP == 2 ){
@@ -489,6 +511,9 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       lep_phi=event->phi_2;
       lep_q=event->q_2;
       lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2v1DBoldDMwLT_2==1) || (calcVTightFF==0 && event->byTightIsolationMVArun2v1DBoldDMwLT_2==1) )  ? 10 : 0;
+      lep_vloose = ( event->byVLooseIsolationMVArun2v1DBoldDMwLT_2 == 1 ) ? 1 : 0;
+      lep_loose = ( event->byLooseIsolationMVArun2v1DBoldDMwLT_2 == 1 ) ? 1 : 0;
+      lep_medium = ( event->byMediumIsolationMVArun2v1DBoldDMwLT_2 == 1 ) ? 1 : 0;
     } else{
       lep_dR=-99; //needed for mZ in ee/mumu CR; not needed for tautau
       lep_pt=event->pt_1;
@@ -496,6 +521,9 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       lep_phi=event->phi_1;
       lep_q=event->q_1;
       lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2v1DBoldDMwLT_1==1) || (calcVTightFF==0 && event->byTightIsolationMVArun2v1DBoldDMwLT_1==1) )  ? 10 : 0;
+      lep_vloose = ( event->byVLooseIsolationMVArun2v1DBoldDMwLT_1 == 1 ) ? 1 : 0;
+      lep_loose = ( event->byLooseIsolationMVArun2v1DBoldDMwLT_1 == 1 ) ? 1 : 0;
+      lep_medium = ( event->byMediumIsolationMVArun2v1DBoldDMwLT_1 == 1 ) ? 1 : 0;
     }
   }
 
@@ -582,6 +610,9 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   tree->Branch("lep_phi",&lep_phi);
   tree->Branch("lep_q"  ,&lep_q);
   tree->Branch("lep_iso",&lep_iso);
+  tree->Branch("lep_vloose",&lep_vloose);
+  tree->Branch("lep_loose",&lep_loose);
+  tree->Branch("lep_medium",&lep_medium);
   tree->Branch("n_iso_lep",&n_iso_lep);
   tree->Branch("n_iso_otherLep",&n_iso_otherLep);
   tree->Branch("alltau_pt",&alltau_pt);
