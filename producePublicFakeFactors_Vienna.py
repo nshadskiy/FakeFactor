@@ -3,8 +3,8 @@ import ROOT
 import os
 
 #Meta-data
-channel="mt"
-version='20170215'
+channel="et"
+version='20170222'
 tag='v0.2.1'
 #categories = ['incl','_0jetLow','_0jetHigh','_1jetLow','_1jetHigh','_vbfLow','_vbfHigh','_2jet','_anyb','_2D_0jet', '_2D_Boosted', '_2D_VBF']
 categories = ['incl','_2D_0jet', '_2D_Boosted', '_2D_VBF']

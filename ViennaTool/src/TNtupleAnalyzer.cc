@@ -70,7 +70,11 @@ void TNtupleAnalyzer::closeFile()
 Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t mode, Int_t whichTau)
 {
 
-  if( singleTriggerMatch && !event->STrig_match ) return 0;
+  if( !integrateOverTrig ){
+    if( XTriggerObjectMatch && !event->matchXTrig_obj ) return 0;
+    if( !XTriggerObjectMatch && event->matchXTrig_obj ) return 0;
+  }
+  if(CHAN==kMU && event->pt_1<23) return 0;
   
   TLorentzVector vec1, vec2, vec;
   //////////////////////////////////////////////////////////////////////////

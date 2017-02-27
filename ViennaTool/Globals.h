@@ -142,7 +142,7 @@ const TString path_img_mc_woQCD  = path_img+"mc_woQCD_"+s_chan[CHAN]+"/";
 
 //Input directories
 const TString indir = "/data/higgs/data_2016/ntuples_"+ver+"/"+s_chan[CHAN]+"/ntuples_"+curr_svfit[use_svfit]+"_merged/";
-const TString datafiles[3] = { indir+"BASIS_ntuple_SingleMuonRun2016BCDEFGH_mt_"+ver+".root", indir+"BASIS_ntuple_SingleElectronRun2016BCDEFGH_et_"+ver+".root" , indir + "BASIS_ntuple_TauRun2016BCDEFGH_tt_"+ver+".root" };
+const TString datafiles[3] = { indir+"BASIS_ntuple_SingleMuon_mt_"+ver+".root", indir+"BASIS_ntuple_SingleElectron_et_"+ver+".root" , indir + "BASIS_ntuple_Tau_tt_"+ver+".root" };
 const TString datafile   = datafiles[CHAN];
 
 const TString DY_NJfile  = indir + "BASIS_ntuple_DYXJetsToLL_lowMass_EWK_merged_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
@@ -708,24 +708,24 @@ const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.};
 const Double_t Pt_cuts_QCD_AI[] ={20.,25.,30.,40};*/
 
 //mutau 35.6 fb default 
-const Double_t Pt_cuts_Wjets[] = {20,22,24,26,30,32.5,35,37.5,40,45,50,55,60,70,80,100,120,200};//lower boundaries of the pt bins, there are no data with pt<20.
-const Double_t Pt_cuts_DY[]    = {20.,25.,30.,40.};
+/*const Double_t Pt_cuts_Wjets[] = {30.,32.5,35,37.5,40,45,50,55,60,70,80,100,120,200};//lower boundaries of the pt bins, there are no data with pt<20.
+const Double_t Pt_cuts_DY[]    = {30.,40.};
 //const Double_t Pt_cuts_TT[]    = {20,22.5,27,32,40,50,85};
-const Double_t Pt_cuts_TT_SR[]     = {20,22.5,27,32,40,50,85};
-const Double_t Pt_cuts_TT_CR[]     = {20.};
+const Double_t Pt_cuts_TT_SR[]     = {30.,32.5,37.5,45,55,85};
+const Double_t Pt_cuts_TT_CR[]     = {30.};
 //const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.,100.};
-const Double_t Pt_cuts_QCD[]   = {20,22.5,25,27.5,30,32.5,35,40,45,50,57.5,70,90,120};
-const Double_t Pt_cuts_QCD_AI[] ={20,22.5,25,30,35,40,50};
+const Double_t Pt_cuts_QCD[]   = {30,32.5,35,40,45,50,57.5,70,90,120};
+const Double_t Pt_cuts_QCD_AI[] ={30,35,40,50};*/
 
 //etau 35.6 fb default 
-/*const Double_t Pt_cuts_Wjets[] = {20,22,24,26,30,32.5,35,37.5,40,45,50,55,60,70,80,100,120,200};//lower boundaries of the pt bins, there are no data with pt<20.
-const Double_t Pt_cuts_DY[]    = {20.,25.,30.,40.};
-//const Double_t Pt_cuts_TT[]    = {20.,25.,30.,40.};
-const Double_t Pt_cuts_TT_SR[]     = {20,25,30,35,45,80};
-const Double_t Pt_cuts_TT_CR[]     = {20.};
+const Double_t Pt_cuts_Wjets[] = {30.,32.5,35,37.5,40,45,50,55,60,70,85,110,200};//lower boundaries of the pt bins, there are no data with pt<20.
+const Double_t Pt_cuts_DY[]    = {30.,40.};
+//const Double_t Pt_cuts_TT[]    = {20,22.5,27,32,40,50,85};
+const Double_t Pt_cuts_TT_SR[]     = {30.,32.5,37.5,45,55,85};
+const Double_t Pt_cuts_TT_CR[]     = {30.};
 //const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.,100.};
-const Double_t Pt_cuts_QCD[]   = {20,23,27,30,32.5,35,40,45,50,60,80};
-const Double_t Pt_cuts_QCD_AI[] ={20,22.5,25,30,35,40,50};*/
+const Double_t Pt_cuts_QCD[]   = {30,32.5,35,35.7,40,45,55,100};
+const Double_t Pt_cuts_QCD_AI[] ={30,35,40,55};
 
 
 //tautau 12.9 fb
@@ -816,7 +816,7 @@ const Double_t w_mt_v[]={0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,16
 //const Double_t w_mt_v[]={40,50,60,80,120,250};
 const Int_t    w_mt_n=(sizeof(w_mt_v)/sizeof(Double_t)) -1;
 
-const Double_t w_pt_v[]={20,25,30,35,40,50,60,80,120,250};
+const Double_t w_pt_v[]={30,35,40,50,60,80,120,250};
 //const Double_t w_pt_v[]={40,45,50,60,80,120,250};
 const Int_t    w_pt_n=(sizeof(w_pt_v)/sizeof(Double_t)) -1;
 

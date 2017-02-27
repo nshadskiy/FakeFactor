@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Sat Feb 11 18:14:35 2017 by ROOT version 6.06/01
+// Fri Feb 17 09:33:12 2017 by ROOT version 6.02/13
 // from TTree TauCheck/TauCheck
-// found on file: /data/higgs/data_2016/ntuples_v7/mt/ntuples_woSVFIT_merged/BASIS_ntuple_VV_MCSummer16_mt_v7.root
+// found on file: /data/higgs/data_2016/ntuples_v8/mt/ntuples_woSVFIT_merged/BASIS_ntuple_DYXJetsToLL_lowMass_merged_MCSummer16_mt_v8.root
 //////////////////////////////////////////////////////////
 
 #ifndef NtupleClass_h
@@ -13,7 +13,6 @@
 #include <TFile.h>
 
 // Header file for the classes stored in the TTree if any.
-#include "vector"
 #include "vector"
 
 class NtupleClass {
@@ -33,7 +32,7 @@ public :
    Float_t         puweight;
    Float_t         genweight;
    Float_t         trigweight_1;
-   Float_t         trigweight_1_SF;
+   Float_t         anti_trigweight_1;
    Float_t         trigweight_2;
    Float_t         idisoweight_1;
    Float_t         anti_idisoweight_1;
@@ -221,6 +220,7 @@ public :
    Bool_t          passesDiElectronVeto;
    Bool_t          XTrig_match;
    Bool_t          STrig_match;
+   Bool_t          matchXTrig_obj;
    Bool_t          dilepton_veto;
    Bool_t          extraelec_veto;
    Bool_t          extramuon_veto;
@@ -303,7 +303,7 @@ public :
    TBranch        *b_puweight;   //!
    TBranch        *b_genweight;   //!
    TBranch        *b_trigweight_1;   //!
-   TBranch        *b_trigweight_1_SF;   //!
+   TBranch        *b_anti_trigweight_1;   //!
    TBranch        *b_trigweight_2;   //!
    TBranch        *b_idisoweight_1;   //!
    TBranch        *b_anti_idisoweight_1;   //!
@@ -491,6 +491,7 @@ public :
    TBranch        *b_passesDiElectronVeto;   //!
    TBranch        *b_XTrig_match;   //!
    TBranch        *b_STrig_match;   //!
+   TBranch        *b_matchXTrig_obj;   //!
    TBranch        *b_dilepton_veto;   //!
    TBranch        *b_extraelec_veto;   //!
    TBranch        *b_extramuon_veto;   //!
@@ -582,9 +583,9 @@ NtupleClass::NtupleClass(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/higgs/data_2016/ntuples_v7/mt/ntuples_woSVFIT_merged/BASIS_ntuple_VV_MCSummer16_mt_v7.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/higgs/data_2016/ntuples_v8/mt/ntuples_woSVFIT_merged/BASIS_ntuple_DYXJetsToLL_lowMass_merged_MCSummer16_mt_v8.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/data/higgs/data_2016/ntuples_v7/mt/ntuples_woSVFIT_merged/BASIS_ntuple_VV_MCSummer16_mt_v7.root");
+         f = new TFile("/data/higgs/data_2016/ntuples_v8/mt/ntuples_woSVFIT_merged/BASIS_ntuple_DYXJetsToLL_lowMass_merged_MCSummer16_mt_v8.root");
       }
       f->GetObject("TauCheck",tree);
 
@@ -684,7 +685,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("puweight", &puweight, &b_puweight);
    fChain->SetBranchAddress("genweight", &genweight, &b_genweight);
    fChain->SetBranchAddress("trigweight_1", &trigweight_1, &b_trigweight_1);
-   fChain->SetBranchAddress("trigweight_1_SF", &trigweight_1_SF, &b_trigweight_1_SF);
+   fChain->SetBranchAddress("anti_trigweight_1", &anti_trigweight_1, &b_anti_trigweight_1);
    fChain->SetBranchAddress("trigweight_2", &trigweight_2, &b_trigweight_2);
    fChain->SetBranchAddress("idisoweight_1", &idisoweight_1, &b_idisoweight_1);
    fChain->SetBranchAddress("anti_idisoweight_1", &anti_idisoweight_1, &b_anti_idisoweight_1);
@@ -872,6 +873,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("passesDiElectronVeto", &passesDiElectronVeto, &b_passesDiElectronVeto);
    fChain->SetBranchAddress("XTrig_match", &XTrig_match, &b_XTrig_match);
    fChain->SetBranchAddress("STrig_match", &STrig_match, &b_STrig_match);
+   fChain->SetBranchAddress("matchXTrig_obj", &matchXTrig_obj, &b_matchXTrig_obj);
    fChain->SetBranchAddress("dilepton_veto", &dilepton_veto, &b_dilepton_veto);
    fChain->SetBranchAddress("extraelec_veto", &extraelec_veto, &b_extraelec_veto);
    fChain->SetBranchAddress("extramuon_veto", &extramuon_veto, &b_extramuon_veto);

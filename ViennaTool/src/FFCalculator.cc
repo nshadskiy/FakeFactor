@@ -274,7 +274,7 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
       h_n_qcd_tight->Add( h_n_tight.at(i) , -1 );
     }
 
-
+    cout << "Works4" << endl;
 
     /*
       TH1D* nMCsum=new TH1D("nMCsum","",nbins_weight,min_weight,max_weight);
@@ -368,7 +368,8 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
 //can also be called from external
 void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_img, const TString m_path_w, const TString isolation, Int_t mode){
 
-  const TString m_data="h_template_data";
+  TString m_data="h_template_data";
+  if(!DOQCD) m_data="h_template_woQCDdata";
 
   std::vector<TString> m_fix;
   m_fix.push_back("h_template_TT_L"); m_fix.push_back("h_template_TT_T"); m_fix.push_back("h_template_DY_L"); m_fix.push_back("h_template_DY_TT");
@@ -407,7 +408,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
     else if ( m_used[j].Contains("TT_J") ){  m_color[j]=color_TT_J;  m_type[j]="TT_J";}
     else if ( m_used[j].Contains("DY_J") ){  m_color[j]=color_DY_J;  m_type[j]="DY_J";}
     else if ( m_used[j].Contains("rest") ){  m_color[j]=color_sum;   m_type[j]="rest";}
-    else m_color[j]=kBlack;    
+    else m_color[j]=kBlack;
   }
   //  const int fractions[NFIT+(NSUM>0)]={ _W_JETS , _QCD , _DY_J | _TT_J };
 
@@ -438,11 +439,11 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
     }
   }
   htmp=(TH1D*) f.Get(m_data_tmp);
-
+      
   TH1D *h_data=(TH1D*) htmp->Clone();
   TH1D *h_rest=new TH1D();
   TH1D *h_sum=new TH1D();
-  
+
   //sum up the fixed components, and subtract from data
   for (int i=0; i<NFIX; i++){
     htmp=(TH1D*) f.Get(m_fix.at(i));
@@ -514,16 +515,19 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
     std::vector<TH1D*> h_check; //if fit doesn't converge, this vector contains all the necessary histograms
     TH1D* htmp_check;
     for (int i=0; i<NFIT; i++){
-    if ( !DOQCD && m_fit[i].Contains("_QCD") ) continue; //FIX ME -- continue from here
-    if (m_fit[i].Contains("_QCD")){
-      TString qcd_rest=m_fit[i];
-      qcd_rest.ReplaceAll("_QCD","_QCD_rest");
-      htmp_check=(TH1D*) f.Get(qcd_rest);
+      if ( !DOQCD && m_fit[i].Contains("_QCD") ){
+        htmp_check=(TH1D*) f.Get( m_fit[i] );
+        for(int i=1;i<=htmp_check->GetNbinsX();i++) htmp_check->SetBinContent(i,0);
+      }
+      else if (m_fit[i].Contains("_QCD")){
+        TString qcd_rest=m_fit[i];
+        qcd_rest.ReplaceAll("_QCD","_QCD_rest");
+        htmp_check=(TH1D*) f.Get(qcd_rest);
+        for(int i=1;i<htmp_check->GetNbinsX();i++){ if(htmp_check->GetBinContent(i)<0) htmp_check->SetBinContent(i,0);}
+      } 
+      else htmp_check=(TH1D*) f.Get(m_fit[i]);
       for(int i=1;i<htmp_check->GetNbinsX();i++){ if(htmp_check->GetBinContent(i)<0) htmp_check->SetBinContent(i,0);}
-    } 
-    else htmp_check=(TH1D*) f.Get(m_fit[i]);
-    for(int i=1;i<htmp_check->GetNbinsX();i++){ if(htmp_check->GetBinContent(i)<0) htmp_check->SetBinContent(i,0);}
-    h_check.push_back(htmp_check);
+      h_check.push_back(htmp_check);
     }
     for (int i=0; i<NSUM; i++){
       htmp_check=(TH1D*) f.Get(m_sum[i]);
@@ -539,7 +543,6 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
     for(int i=0;i<h_check.size();i++){
       h_check.at(i)->Divide(h_all);
     }
-    
     
     for(Int_t j=0;j<h_check.size();j++){
       TH1D *htmp = new TH1D("h_w"+sNum[j],"",nbins_weight,min_weight,max_weight);
@@ -569,7 +572,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
         res.insert(res.begin()+qcd_pos,htmp);
       }
     }
-    
+
     unsigned NR=res.size();
   //  for (unsigned i=0; i<NR; i++) std::cout << res.at(i)->Integral();
 
@@ -578,7 +581,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
     //  for(int i=0; i<res_data->GetNbinsX(); i++){
     TH1D* h_normI=(TH1D*) res.at(0)->Clone();
     for (unsigned j=1; j<NR; j++) h_normI->Add( res.at(j) );
-    
+
     TH1D* h_restI=new TH1D( *h_rest );
     h_restI->Divide(h_rest,res_data,1,1,"B");
     //h_normI->Add(h_restI);
@@ -600,7 +603,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
     }
 
   }
-  
+
   for (int i=0; i<NW-1; i++){
     if ( !DOQCD && m_type[i].Contains("QCD") ) continue;
     TString wname=m_path_w+"weight_"+m_type[i]+isolation;
@@ -636,7 +639,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
     fracstring.ReplaceAll( ".pdf", ".eps");
     gPad->SaveAs(fracstring);
   }
-  
+
   /*if(!inclusive_selection){
     for(Int_t icat=0; icat<nCAT; icat++) if(catMode[icat] & mode) {fracstring.ReplaceAll( ".png", categories[icat]+".png");}
   }
@@ -2291,7 +2294,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   gsk.set_doErrors(1);
   //if(mode & _QCD) gsk.set_lastBinFrom(150);
   Double_t fitWidth;
-  if(mode & _QCD) fitWidth=2.; else if(mode & _W_JETS) fitWidth=2.; else fitWidth=2.;
+  if(mode & _QCD) fitWidth=1.5; else if(mode & _W_JETS) fitWidth=1.5; else fitWidth=1.5;
   if(CHAN==kTAU) fitWidth=1.5;
   cout << "FitWidth: " << fitWidth << endl;
   gsk.setWidth(fitWidth);
@@ -2960,8 +2963,8 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   gsk.set_doWidthInBins(1);
   gsk.setWidth(1.);
   Double_t lastBin;
-  if(CHAN==kMU) lastBin=200;
-  if(CHAN==kEL) lastBin=180;
+  if(CHAN==kMU) lastBin=150;
+  if(CHAN==kEL) lastBin=150;
   gsk.set_lastBinFrom(lastBin);
   gsk.getSmoothHisto();
   TH1D *h2=gsk.returnSmoothedHisto();
