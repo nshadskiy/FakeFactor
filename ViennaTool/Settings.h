@@ -6,12 +6,12 @@
 
 
 const TString user="jbrandstetter";
-const TString analysis="FakeFactor_2016_full4";
+const TString analysis="FakeFactor_2016_full5";
 const Double_t luminosity=35.9; //27.9 for ABCDEFG, 20.2 for ABCDEFB
 
 const int CHAN = kMU; //kMU,kEL,kTAU
 const int use_svfit = 0;
-const TString ver = "v9";
+const TString ver = "v10";
 const int integrateOverTrig = 1;
 const int XTriggerObjectMatch = 0;
 const TString inputFF_dir = "~/public/Htautau/FakeRate2016/";
@@ -58,10 +58,9 @@ const int applyFF_fromCR=1; //1 for default; 0 for debugging
 const int requireGenMatch_whenCalcFF=0; //0 as default
 const int useDYFF_forTT=0; //0 as default
 const int useWJFF_forDY=0; //1 as default
-const int doCalcWeights=0; //calc fractions
+const int doCalcWeights=1; //calc fractions
 const int doFit=0; //template fit for fractions, default: 0
 const int doCalc=0; //calc FFs
-const int doCalcCorrections=1;
 const int calcVTightFF=0;
 //////////////////////////////////////////////////
 const int fit_pT_bins = 1; //use fitted pT bins as input for ff

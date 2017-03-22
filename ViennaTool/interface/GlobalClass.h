@@ -16,6 +16,7 @@
 #include "TChain.h"
 #include "TStyle.h"
 #include "TRandom3.h"
+#include "TGraphAsymmErrors.h"
 
 #include <vector>
 
@@ -44,6 +45,7 @@ class GlobalClass{
   Int_t getWeightBin(const Int_t ind=0);
   Int_t nBins(Int_t mode);
   Int_t getBin(const Int_t mode, const Int_t ind=0);
+  Double_t getFittedBinContent( const Int_t mode, std::vector<TGraphAsymmErrors*> fittedFFs, const Int_t ind=0 );
   Int_t getTrackIndex(const Int_t mode, const Int_t ind=0);
   Int_t getPtIndex(const Int_t mode, const Int_t ind=0);
   Int_t getNjetIndex(const Int_t mode, const Int_t ind=0);

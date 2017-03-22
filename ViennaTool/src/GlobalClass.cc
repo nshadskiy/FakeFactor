@@ -309,6 +309,25 @@ Int_t GlobalClass::getWeightBin(const Int_t ind){
   //return ( this->getWeightBin(event_s->lep_pt,event_s->alltau_decay->at(ind)) );
 }
 
+Double_t GlobalClass::getFittedBinContent( const Int_t mode, vector<TGraphAsymmErrors*> fittedFFs, const Int_t ind){
+  
+  Int_t i_t=this->getTrackIndex(mode,ind);
+  Int_t i_j=this->getNjetIndex(mode,ind);
+  TGraphAsymmErrors *tmp = nullptr;
+  if( i_t == 0 && i_j == 0 ) tmp = fittedFFs.at(0);
+  if( i_t == 1 && i_j == 0 ) tmp = fittedFFs.at(1);
+  if( i_t == 0 && i_j == 1 ) tmp = fittedFFs.at(2);
+  if( i_t == 1 && i_j == 1 ) tmp = fittedFFs.at(3);
+
+  double x=0; double y=0; double cont=0;
+  for (int ipt=0; ipt<fitBins; ipt++){
+    tmp->GetPoint( ipt + 1,x,y );
+    if( event_s->alltau_pt->at(ind) < x && y>0 && y<100 ) return y;
+  }
+
+  return y;
+}
+
 Int_t GlobalClass::getBin(const Int_t mode, const Int_t ind)
 {  
   if (mode & VSVAR){
@@ -454,6 +473,7 @@ Int_t GlobalClass::getNtracks(const Int_t mode, const Int_t ind)
 Int_t GlobalClass::getNpts(const Int_t mode, const Int_t ind)
 {
   if(mode & _W_JETS) return N_p_Wjets;
+  else if(mode & _QCD && mode & _AI) return N_p_QCD_AI;
   else if(mode & _QCD) return N_p_QCD;
   else if(mode & _DY) return N_p_DY;
   else if(mode & _TT && mode & SR) return N_p_TT_SR;

@@ -2197,9 +2197,18 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   TH1D *output_h = new TH1D("nonclosure_mvis","",w_mvis_n,w_mvis_v);
   //TH1D *output_h = new TH1D("nonclosure_zpt","",w_zpt_n,w_zpt_v);
   TFile FF_lookup(raw_ff);
-  TString ff_inputString="c_t";
-  TH1D* FF_lookup_h = (TH1D*) FF_lookup.Get(ff_inputString);
+  TH1D* FF_lookup_h = nullptr;
+  if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t");
+  vector<TGraphAsymmErrors*> fittedFFs;
+  if( raw_ff.Contains("_fitted") ){
+    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"); fittedFFs.push_back(dm0njet0);
+    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"); fittedFFs.push_back(dm1njet0);
+    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"); fittedFFs.push_back(dm0njet1);
+    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"); fittedFFs.push_back(dm1njet1);
+  }
+  
   TFile compare(compare_file);
+  Double_t FF_value=0;
   if(subtractMC){
     TString ff_inputHist="hh_l"; 
     TH1D* compare_l              = (TH1D*) compare.Get(ff_inputHist+"_mvis");
@@ -2227,10 +2236,22 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
       event_s->GetEntry(jentry);
       if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
       if (mode & SR){
-        if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->alltau_mvis->at(tau_ind),FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*event_s->weight_sf );
+        if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) {
+          if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
+          else if( raw_ff.Contains("_fitted") ){
+            FF_value = this->getFittedBinContent( mode, fittedFFs );
+          }
+          closure_h->Fill(event_s->alltau_mvis->at(tau_ind),FF_value*event_s->weight_sf );
+        }
       }
       else{
-        if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->alltau_mvis->at(tau_ind),FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*event_s->weight_sf );
+        if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+          if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
+          else if( raw_ff.Contains("_fitted") ){
+            FF_value = this->getFittedBinContent( mode, fittedFFs );
+          }
+          closure_h->Fill(event_s->alltau_mvis->at(tau_ind),FF_value*event_s->weight_sf );
+        }
       }
       //if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->alltau_Zpt->at(tau_ind),FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 )*nonclosure_mt_h->GetBinContent( this->getWeightIndex_mt(event_s->alltau_mt->at(tau_ind) )+1 ) );
       //if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->alltau_Zpt->at(tau_ind),FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) ); 
@@ -2253,10 +2274,22 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
       event_s->GetEntry(jentry);
       if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
       if (mode & SR){
-        if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->alltau_mvis->at(tau_ind),FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*event_s->weight_sf );
+        if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+          if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
+          else if( raw_ff.Contains("_fitted") ){
+            FF_value = this->getFittedBinContent( mode, fittedFFs );
+          }
+          closure_h->Fill(event_s->alltau_mvis->at(tau_ind),FF_value*event_s->weight_sf );
+        }
       }
       else{
-        if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->alltau_mvis->at(tau_ind),FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*event_s->weight_sf );
+        if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+          if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
+          else if( raw_ff.Contains("_fitted") ){
+            FF_value = this->getFittedBinContent( mode, fittedFFs );
+          }
+          closure_h->Fill(event_s->alltau_mvis->at(tau_ind),FF_value*event_s->weight_sf );
+        }
       }
     }
     
@@ -2400,6 +2433,11 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   //if ( doPlot)  c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/nonclosure_zpt"+sample+SSstring+".png");
 
   FF_lookup.Close();output->Close();
+  if( raw_ff.Contains("_fitted") ){
+    for(int i=0; i<fittedFFs.size();i++){
+      delete fittedFFs.at(i);
+    }
+  }
   
 }
 
@@ -2416,6 +2454,7 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   if(!subtractMC) sample+="_MC";
   
   TH1D *closure_h;
+  Double_t FF_value=0;
   if(mode & _TT) closure_h= new TH1D("closure"+sample,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
   else closure_h= new TH1D("closure"+sample,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
   //TH1D *closure_h = new TH1D("closure"+sample,"",w_zpt_n,w_zpt_v);
@@ -2423,8 +2462,15 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   TH1D *output_h = new TH1D("nonclosure_lepPt","",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
   //TH1D *output_h = new TH1D("nonclosure_zpt","",w_zpt_n,w_zpt_v);
   TFile FF_lookup(raw_ff);
-  TString ff_inputString="c_t";
-  TH1D* FF_lookup_h = (TH1D*) FF_lookup.Get(ff_inputString);
+  TH1D* FF_lookup_h = nullptr;
+  if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t");
+  vector<TGraphAsymmErrors*> fittedFFs;
+  if( raw_ff.Contains("_fitted") ){
+    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"); fittedFFs.push_back(dm0njet0);
+    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"); fittedFFs.push_back(dm1njet0);
+    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"); fittedFFs.push_back(dm0njet1);
+    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"); fittedFFs.push_back(dm1njet1);
+  }
   TFile nonclosure(nonclosure_corr);
   if(nonclosure.IsZombie()) cout << nonclosure_corr << " does not exist" << endl;
   TH1D* nonclosure_h = (TH1D*) nonclosure.Get("nonclosure_fit_smoothed");
@@ -2457,10 +2503,22 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
       event_s->GetEntry(jentry);
       if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
       if (mode & SR){
-        if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->lep_pt,FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*event_s->weight_sf*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );
+        if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+          if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
+          else if( raw_ff.Contains("_fitted") ){
+            FF_value = this->getFittedBinContent( mode, fittedFFs );
+          }
+          closure_h->Fill(event_s->lep_pt,FF_value*event_s->weight_sf*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );
+        } 
       }
       else{
-        if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->lep_pt,FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*event_s->weight_sf*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );
+        if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+          if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
+          else if( raw_ff.Contains("_fitted") ){
+            FF_value = this->getFittedBinContent( mode, fittedFFs );
+          }
+          closure_h->Fill(event_s->lep_pt,FF_value*event_s->weight_sf*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );
+        } 
       }
       /*if (mode & SR){
         if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->lep_pt,FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 ) );
@@ -2488,10 +2546,22 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
       event_s->GetEntry(jentry);
       if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
       if (mode & SR){
-        if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->lep_pt,FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*event_s->weight_sf );
+        if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+          if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
+          else if( raw_ff.Contains("_fitted") ){
+            FF_value = this->getFittedBinContent( mode, fittedFFs );
+          }
+          closure_h->Fill(event_s->lep_pt,FF_value*event_s->weight_sf );
+        } 
       }
       else{
-        if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->lep_pt,FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*event_s->weight_sf );
+        if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+          if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
+          else if( raw_ff.Contains("_fitted") ){
+            FF_value = this->getFittedBinContent( mode, fittedFFs );
+          }
+          closure_h->Fill(event_s->lep_pt,FF_value*event_s->weight_sf );
+        } 
       }
     }
     
@@ -2612,6 +2682,11 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   //if ( doPlot)  c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/nonclosure_zpt"+sample+SSstring+".png");
 
   FF_lookup.Close();output->Close();
+  if( raw_ff.Contains("_fitted") ){
+    for(int i=0; i<fittedFFs.size();i++){
+      delete fittedFFs.at(i);
+    }
+  }
   
 }
 
@@ -2625,12 +2700,21 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
   TH1D *closure_h = new TH1D("closure","",w_muiso_n,w_muiso_v);
   TFile FF_lookup(raw_ff);
   if(FF_lookup.IsZombie()) cout << raw_ff << " does not exist" << endl;
-  TH1D* FF_lookup_h = (TH1D*) FF_lookup.Get("c_t");
+  TH1D* FF_lookup_h = nullptr;
+  if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t");
+  vector<TGraphAsymmErrors*> fittedFFs;
+  if( raw_ff.Contains("_fitted") ){
+    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"); fittedFFs.push_back(dm0njet0);
+    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"); fittedFFs.push_back(dm1njet0);
+    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"); fittedFFs.push_back(dm0njet1);
+    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"); fittedFFs.push_back(dm1njet1);
+  }
   TFile nonclosure(nonclosure_corr);
   if(nonclosure.IsZombie()) cout << nonclosure_corr << " does not exist" << endl;
   TH1D* nonclosure_h = (TH1D*) nonclosure.Get("nonclosure_fit_smoothed");
   
   TFile compare(CR_file);
+  Double_t FF_value=0;
   if(compare.IsZombie()) cout << CR_file << " does not exit" << endl;
   if(subtractMC){
     TH1D* compare_l              = (TH1D*) compare.Get("hh_l_muiso");
@@ -2647,7 +2731,13 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
       event_s->GetEntry(jentry);
       if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
       //if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->lep_iso,FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 ) );
-      if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->lep_iso,event_s->weight_sf*FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );
+      if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+        if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
+        else if( raw_ff.Contains("_fitted") ){
+          FF_value = this->getFittedBinContent( mode, fittedFFs );
+        }
+        closure_h->Fill(event_s->lep_iso,event_s->weight_sf*FF_value*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );
+      } 
     }
     
     closure_h->Multiply(ratio_l);
@@ -2663,7 +2753,13 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
       if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
-      if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->lep_iso,event_s->weight_sf*FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );
+      if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+        if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
+        else if( raw_ff.Contains("_fitted") ){
+          FF_value = this->getFittedBinContent( mode, fittedFFs );
+        }
+        closure_h->Fill(event_s->lep_iso,event_s->weight_sf*FF_value*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );
+      } 
     }
     
     output->cd();
@@ -2730,6 +2826,11 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
   }
   
   FF_lookup.Close();compare.Close();nonclosure.Close();output->Close();
+  if( raw_ff.Contains("_fitted") ){
+    for(int i=0; i<fittedFFs.size();i++){
+      delete fittedFFs.at(i);
+    }
+  }
   
 }
 
@@ -2741,12 +2842,20 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
   TFile *output = new TFile(ff_output,"RECREATE");
   TH1D *output_h = new TH1D("OSSS_corr","",w_mvis_n,w_mvis_v);
   TH1D *closure_h = new TH1D("closure","",w_mvis_n,w_mvis_v);
+  Double_t FF_value=0;
   TFile compare(SR_file_AI);
   if(compare.IsZombie()) cout << SR_file_AI << " does not exist" << endl;
   TFile FF_lookup(raw_ff);
   if(FF_lookup.IsZombie()) cout << raw_ff << " does not exist" << endl;
-  TString ff_inputString="c_t"; 
-  TH1D* FF_lookup_h = (TH1D*) FF_lookup.Get(ff_inputString);
+  TH1D* FF_lookup_h = nullptr;
+  if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t");
+  vector<TGraphAsymmErrors*> fittedFFs;
+  if( raw_ff.Contains("_fitted") ){
+    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"); fittedFFs.push_back(dm0njet0);
+    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"); fittedFFs.push_back(dm1njet0);
+    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"); fittedFFs.push_back(dm0njet1);
+    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"); fittedFFs.push_back(dm1njet1);
+  }
   TFile nonclosure(nonclosure_corr);
   if(nonclosure.IsZombie()) cout << nonclosure_corr << " does not exist" << endl;
   TH1D* nonclosure_h = (TH1D*) nonclosure.Get("nonclosure_fit_smoothed");
@@ -2772,9 +2881,13 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
       if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
-      if(calcVTightFF) {if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->alltau_mvis->at(tau_ind),event_s->weight_sf*FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );}      
-      if(!calcVTightFF) {if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->alltau_mvis->at(tau_ind),event_s->weight_sf*FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );}
-      //if(!calcVTightFF) {if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->alltau_mvis->at(tau_ind),event_s->weight_sf*FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*nonclosure_h->GetBinContent( this->getWeightIndex_lepPt(event_s->lep_pt) +1 ) );}
+      if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+        if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
+        else if( raw_ff.Contains("_fitted") ){
+          FF_value = this->getFittedBinContent( mode, fittedFFs );
+        }
+        closure_h->Fill(event_s->alltau_mvis->at(tau_ind),event_s->weight_sf*FF_value*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );
+      } 
     }
     
     closure_h->Multiply(ratio_l);
@@ -2796,7 +2909,13 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
       if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
-      if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->alltau_mvis->at(tau_ind),event_s->weight_sf*FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 )/**muiso_h->GetBinContent( this->getWeightIndex_muiso(event_s->lep_iso)+1 )*/ );
+      if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+        if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
+        else if( raw_ff.Contains("_fitted") ){
+          FF_value = this->getFittedBinContent( mode, fittedFFs );
+        }
+        closure_h->Fill(event_s->alltau_mvis->at(tau_ind),event_s->weight_sf*FF_value*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 )/**muiso_h->GetBinContent( this->getWeightIndex_muiso(event_s->lep_iso)+1 )*/ );
+      } 
     }
     
     output->cd();
@@ -2855,10 +2974,15 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
     }
   }
   Double_t x200; Double_t y200;
-  g->GetPoint(180,x200,y200);
+  if(CHAN==kMU)g->GetPoint(180,x200,y200);
+  if(CHAN==kEL)g->GetPoint(110,x200,y200);
   for(int i=0; i<g->GetN(); i++){
     Double_t x; Double_t y;
-    if(i>180){
+    if(CHAN==kMU && i>180){
+      g->GetPoint(i,x,y);
+      g->SetPoint(i,x,y200);
+    }
+    else if(CHAN==kEL && i>110){
       g->GetPoint(i,x,y);
       g->SetPoint(i,x,y200);
     }
@@ -2916,7 +3040,11 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
   if(doPlot)c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/OSSScorr"+sample+".png");
 
   FF_lookup.Close();compare.Close();nonclosure.Close();output->Close();
-  
+  if( raw_ff.Contains("_fitted") ){
+    for(int i=0; i<fittedFFs.size();i++){
+      delete fittedFFs.at(i);
+    }
+  }
 }
 
 
@@ -2929,17 +3057,32 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
 
   TH1D *output_h = new TH1D("mt_corr","",w_mt_n,w_mt_v);
   TH1D *closure_h = new TH1D("closure","",w_mt_n,w_mt_v);
+  Double_t FF_value=0;
   TFile compare(CR_file);
   TH1D* compare_t              = (TH1D*) compare.Get("hh_t_mt");
   TFile FF_lookup(raw_ff);
-  TH1D* FF_lookup_h = (TH1D*) FF_lookup.Get("c_t");
+  TH1D* FF_lookup_h = nullptr;
+  if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t");
+  vector<TGraphAsymmErrors*> fittedFFs;
+  if( raw_ff.Contains("_fitted") ){
+    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"); fittedFFs.push_back(dm0njet0);
+    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"); fittedFFs.push_back(dm1njet0);
+    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"); fittedFFs.push_back(dm0njet1);
+    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"); fittedFFs.push_back(dm1njet1);
+  }
   TFile nonclosure(nonclosure_corr);
   TH1D* nonclosure_h = (TH1D*) nonclosure.Get("nonclosure_fit_smoothed");
   for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
       if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
       //if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->lep_iso,FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 ) );
-      if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) closure_h->Fill(event_s->alltau_mt->at(tau_ind),FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 )*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 )*event_s->weight_sf );
+      if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+        if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
+        else if( raw_ff.Contains("_fitted") ){
+          FF_value = this->getFittedBinContent( mode, fittedFFs );
+        }
+        closure_h->Fill(event_s->alltau_mt->at(tau_ind),FF_value*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 )*event_s->weight_sf );
+      }
   }
 
   output->cd();
@@ -3001,7 +3144,11 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   if(CALC_SS_SR) c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/mtcorr"+sample+"_SS_SR.png");
 
   FF_lookup.Close();compare.Close();output->Close();
-  
+  if( raw_ff.Contains("_fitted") ){
+    for(int i=0; i<fittedFFs.size();i++){
+      delete fittedFFs.at(i);
+    }
+  }
 }
 
 Double_t FFCalculator::return_yvalue(Double_t xvalue, TGraphAsymmErrors* g){

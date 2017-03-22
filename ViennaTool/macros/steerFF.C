@@ -97,6 +97,7 @@ void CalcFF() {
       ///////////////////////////////////////////////////////////////////////////////////////
       cout << endl << "################### Calculating FFs         ###############" << endl << endl;
       Analyzer->calcFFCorr(_W_JETS|m_gen_match,                    m_preselection_data,   pre_sub_wj,    p+FF_corr_Wjets_MCsum_noGen,  p+weight_Wjets);
+      Analyzer->calcFFCorr(_W_JETS|m_gen_match,                    preselection_Wjets,   empty_vec_tstring,    p+FF_corr_Wjets_MC_noGen,  p+weight_Wjets);
 
       /*if (useWJFF_forDY) Analyzer->calcFFCorr(_W_JETS|m_gen_match, m_preselection_data,   pre_sub_wj,    p+FF_corr_DY_MCsum_noGen,     p+weight_DY_J);
       else               Analyzer->calcFFCorr(_DY|m_gen_match ,    m_preselection_data,   pre_sub_dy,    p+FF_corr_DY_MCsum_noGen,     p+weight_DY_J); //DY_J using FF from DY->mumu CR
@@ -116,67 +117,13 @@ void CalcFF() {
       Analyzer->calcFFCorr(_QCD|m_gen_match|_AI,                     m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCD_MCsum_noGen_AI,    p+weight_QCD);
     }
 
-    if (doCalcCorrections==1){
-      cout << "Calculating QCD and W+jets corrections" << endl;
-      if(!DOMC && CHAN!=kTAU){
-        Analyzer->loadFile(m_preselection_data,"Events");
-        Analyzer->calc_nonclosure(_QCD,                            p+FF_corr_QCD_MCsum_noGen,  CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure);
-        Analyzer->calc_nonclosure(_W_JETS,                            p+FF_corr_Wjets_MCsum_noGen,  CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure);
-        Analyzer->calc_muisocorr(_QCD|MUISO,                       p+FF_corr_QCD_MCsum_noGen,  CR_QCD_muiso_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure, p+FF_corr_QCD_MCsum_noGen_muisocorr);
-        Analyzer->calc_nonclosure(_QCD|_AI,                            p+FF_corr_QCD_MCsum_noGen_AI,  CR_QCD_mvis_AI_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_AI, 0);
-        Analyzer->calc_OSSScorr(_QCD|_AI,                       p+FF_corr_QCD_MCsum_noGen_AI,  SR_data_mvis_AI_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_AI, p+FF_corr_QCD_MCsum_noGen_OSSScorr);
-        
-        Analyzer->calcFFCorr(_W_JETS|m_gen_match,                    preselection_Wjets,   empty_vec_tstring,    p+FF_corr_Wjets_MC_noGen,  p+weight_Wjets);
-        Analyzer->loadFile(preselection_Wjets,"Events");
-        Analyzer->calc_nonclosure(_W_JETS,                            p+FF_corr_Wjets_MC_noGen,  CR_Wjets_mvis_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure, 0, 0);
-        Analyzer->loadFile(preselection_Wjets,"Events");
-        Analyzer->calc_mtcorr(_W_JETS|NO_SR,                            p+FF_corr_Wjets_MC_noGen,  CR_Wjets_mt_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure, p+FF_corr_Wjets_MC_noGen_mtcorr);
-        
-      }
-      else cout << "FIXME: Reasonable corrections for MC closure if enough statistics" << endl;
-      if(CHAN!=kTAU){
-        cout << "Calculating TT corrections" << endl;
-        Analyzer->loadFile(preselection_TT_J,"Events");
-        Analyzer->calc_nonclosure(_TT|SR,                            p+FF_TT_J_only_SR,  SR_TT_J_mvis_sim, p+FF_corr_TT_MC_noGen_nonclosure, 1, 0);
-        //...done
-      }
-    }
-
-      //These are the setting for tt
     if(doCalc && CHAN==kTAU){
       Analyzer->calcFFCorr(_QCD|m_gen_match,   m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCD_MCsum_noGen, p+weight_QCD);
       //Analyzer->plotFF(p+"FF_corr_QCD_MCsum_noGen_VTight.root",    p+"FF_corr_QCD_MCsum_noGen_VTight.root",    _QCD, pi+"ff_QCD_njetBinned"   ,"QCD m_{T}(#tau#tau) !vtightMVA", "QCD m_{T}(#mu#tau) vlooseMVA && !vtightMVA",PTDMJET_BINS,nPTDMJET_BINS+1);
       
       Analyzer->calcFFCorr(_QCD|m_gen_match|_AI,   m_preselection_data,   pre_sub_qcd,   p+"FF_corr_QCD_MCsum_noGen_AI.root", p+weight_QCD);
     }
-    if(doCalcCorrections && CHAN==kTAU){
-      Analyzer->loadFile(preselection_data,"Events");
-      //Analyzer->calc_nonclosure_lepPt(_QCD,                            p+"FF_corr_QCD_MCsum_noGen.root",  "ViennaTool/sim/tt/CR_QCD_lepPt_data_MCsubtracted.root", p+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root");
-      //Analyzer->calc_nonclosure_lepPt(_QCD|_AI,                            p+"FF_corr_QCD_MCsum_noGen_AI.root",  "ViennaTool/sim/tt/CR_QCD_lepPt_AI_data_MCsubtracted.root", p+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt_AI.root");
-      //Analyzer->calc_OSSScorr(_QCD|_AI,                       p+"FF_corr_QCD_MCsum_noGen_AI.root",  "ViennaTool/sim/"+s_chan[CHAN]+"/SR_data_mvis_AI_MCsubtracted.root", p+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt_AI.root", p+FF_corr_QCD_MCsum_noGen_OSSScorr);
-
-      Analyzer->calc_nonclosure(_QCD,                            p+"FF_corr_QCD_MCsum_noGen.root",  "ViennaTool/sim/tt/CR_QCD_mvis_data_MCsubtracted.root", p+"FF_corr_QCD_MCsum_noGen_nonclosure.root");
-      Analyzer->calc_nonclosure(_QCD|_AI,                            p+"FF_corr_QCD_MCsum_noGen_AI.root",  "ViennaTool/sim/tt/CR_QCD_mvis_AI_data_MCsubtracted.root", p+"FF_corr_QCD_MCsum_noGen_nonclosure_AI.root", 0);
-      Analyzer->calc_OSSScorr(_QCD|_AI,                       p+"FF_corr_QCD_MCsum_noGen_AI.root",  "ViennaTool/sim/"+s_chan[CHAN]+"/SR_data_mvis_AI_MCsubtracted.root", p+"FF_corr_QCD_MCsum_noGen_nonclosure_AI.root", p+FF_corr_QCD_MCsum_noGen_OSSScorr);
-      Analyzer->calc_nonclosure_lepPt(_QCD,                            p+"FF_corr_QCD_MCsum_noGen.root",  "ViennaTool/sim/tt/CR_QCD_lepPt_data_MCsubtracted.root", p+"FF_corr_QCD_MCsum_noGen_nonclosure.root", p+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root");
-    }
-      //mvis correction for TT
-
-      /*if(CHAN==kMU){
-        Analyzer->plotFF(p+"FF_corr_QCD_MCsum_noGen.root",    "fakefactor/mc_mt/FF_corr_QCD_MCsum_noGen.root",    _QCD, pi+"ff_QCD_data_vs_MC"   ,"FF in QCD (data #mu#tau)", "FF in QCD (sim #mu#tau)");
-        Analyzer->plotFF(p+"FF_corr_Wjets_MCsum_noGen.root",    "fakefactor/mc_mt/FF_corr_Wjets_MCsum_noGen.root",    _W_JETS, pi+"ff_Wjets_data_vs_MC"   ,"FF in Wjets (data #mu#tau)", "FF in Wjets (sim #mu#tau)");
-        //Analyzer->plotFF(p+"FF_corr_DY_MCsum_noGen.root",    "fakefactor/mc_mt/FF_corr_DY_MCsum_noGen.root",    _DY, pi+"ff_DY_J_data_vs_MC"   ,"FF in DY (data #mu#tau)", "FF in DY (sim #mu#tau)");
-        Analyzer->plotFF(p+"FF_corr_TT_MCsum_noGen.root",    p+"FF_TT_J_only.root",    _TT, pi+"ff_TT_CR_data_vs_MC"   ,"FF in TT (data #mu#tau)", "FF in TT (sim #mu#tau)");
-        
-        Analyzer->plotFF(p+"FF_corr_QCD_MCsum_noGen.root",    "fakefactor/data_et/FF_corr_QCD_MCsum_noGen.root",    _QCD, pi+"ff_QCD_data_mt_vs_et"   ,"FF in QCD (data #mu#tau)", "FF in QCD (data e#tau)");
-        Analyzer->plotFF(p+"FF_corr_Wjets_MCsum_noGen.root",    "fakefactor/data_et/FF_corr_Wjets_MCsum_noGen.root",    _W_JETS, pi+"ff_Wjets_data_mt_vs_et"   ,"FF in Wjets (data #mu#tau)", "FF in Wjets (data e#tau)");
-        Analyzer->plotFF(p+"FF_corr_DY_MCsum_noGen.root",    "fakefactor/data_et/FF_corr_DY_MCsum_noGen.root",    _DY, pi+"ff_DY_J_data_mt_vs_et"   ,"FF in DY (data #mu#tau)", "FF in DY (data e#tau)");
-        Analyzer->plotFF(p+"FF_TT_J_only_SR.root",    "fakefactor/data_et/FF_TT_J_only_SR.root",    _TT, pi+"ff_TT_MC_mt_vs_et"   ,"FF in TT (data #mu#tau)", "FF in TT (data e#tau)");
-
-        //Analyzer->plotFF(p+"FF_corr_QCD_MCsum_noGen.root",    "../../../CMSSW_7_6_3/src/ViennaTool/fakefactor/data_mt/FF_corr_QCD_MCsum_noGen.root",    _QCD, pi+"ff_QCD_data2016_vs_data2015"   ,"FF in QCD (2016 #mu#tau)", "FF in QCD (2015 #mu#tau)");
-        //Analyzer->plotFF(p+"FF_corr_Wjets_MCsum_noGen.root",    "../../../CMSSW_7_6_3/src/ViennaTool/fakefactor/data_mt/FF_corr_Wjets_MCsum_noGen.root",    _W_JETS, pi+"ff_Wjets_data2016_vs_data2015"   ,"FF in Wjets (2016 #mu#tau)", "FF in Wjets (2015 #mu#tau)");
-        //Analyzer->plotFF(p+"FF_corr_TT_MCsum_noGen.root",    "../../../CMSSW_7_6_3/src/ViennaTool/fakefactor/data_mt/FF_corr_TT_MCsum_noGen.root",    _TT, pi+"ff_TT_data2016_vs_data2015"   ,"FF in TT (2016 #mu#tau)", "FF in TT (2015 #mu#tau)");
-        }*/
+    
   }  
       
   ///////////////////////////////////////////////////////////////////////////////////////

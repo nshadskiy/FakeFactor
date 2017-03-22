@@ -308,17 +308,17 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
     Double_t err_dm0njet1=0;
     Double_t err_dm1njet0=0;
     Double_t err_dm1njet1=0;
-    /*if(fn.Contains("_QCD")){
-      err_dm0njet0=.03; //0.02
-      err_dm0njet1=.03; // 0.04
-      err_dm1njet0=.08; // 0.08
-      err_dm1njet1=.08; // 0.1
+    if(fn.Contains("_QCD")){
+      err_dm0njet0=.02; //0.02
+      err_dm0njet1=.02; // 0.04
+      err_dm1njet0=.04; // 0.08
+      err_dm1njet1=.04; // 0.1
     } else if(fn.Contains("_Wjets")){
       err_dm0njet0=.0; //0.0
       err_dm0njet1=.0; // 0.0
-      err_dm1njet0=.08;
-      err_dm1njet1=.08;
-      }*/
+      err_dm1njet0=.04;
+      err_dm1njet1=.04;
+    }
       
     for (int idm=0; idm<N_D2; idm++){
       for (int ijet=0; ijet<N_D3; ijet++){

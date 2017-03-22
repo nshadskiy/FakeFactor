@@ -195,11 +195,12 @@ const TString FF_QCD_only                    = "FF_QCD_only.root";
 const TString FF_Wjets_only_SR               = "FF_Wjets_only_"+s_SR+".root";
 const TString FF_DY_J_only_SR                = "FF_DY_J_only_"+s_SR+".root";
 const TString FF_TT_J_only_SR                = "FF_TT_J_only_"+s_SR+".root";
+const TString FF_TT_J_only_SR_fitted         = "FF_TT_J_only_"+s_SR+"_fitted.root";
 const TString FF_QCD_only_SR                 = "FF_QCD_only_"+s_SR+".root";
 const TString FF_QCD_only_SS                 = "FF_QCD_only_SS.root";
-const TString FF_QCD_only_iso                 = "FF_QCD_only_iso.root";
-const TString FF_QCD_only_mvis_SS                 = "FF_QCD_only_mvis_SS.root";
-const TString FF_QCD_only_mvis_iso                 = "FF_QCD_only_mvis_iso.root";
+const TString FF_QCD_only_iso                = "FF_QCD_only_iso.root";
+const TString FF_QCD_only_mvis_SS            = "FF_QCD_only_mvis_SS.root";
+const TString FF_QCD_only_mvis_iso           = "FF_QCD_only_mvis_iso.root";
 
 
 // Fake factor files (vs mt)
@@ -276,7 +277,9 @@ const TString FF_DY_J_only_mtll_3p_fit_CR          = "FF_DY_J_only_"+s_mtll+"_3p
 const TString FF_corr_Wjets_data                    = "FF_"+s_corr+"_Wjets_data.root";
 const TString FF_corr_Wjets_data_weighted           = "FF_"+s_corr+"_Wjets_data_"+s_weighted+".root";
 const TString FF_corr_Wjets_MCsum_noGen             = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen.root";
+const TString FF_corr_Wjets_MCsum_noGen_fitted      = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_fitted.root";
 const TString FF_corr_Wjets_MC_noGen                = "FF_"+s_corr+"_Wjets_MC_noGen.root";
+const TString FF_corr_Wjets_MC_noGen_fitted         = "FF_"+s_corr+"_Wjets_MC_noGen_fitted.root";
 const TString FF_corr_Wjets_MCsum_noGen_nonclosure  = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_nonclosure.root";
 const TString FF_corr_Wjets_MCsum_noGen_nonclosure_SS_SR  = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_nonclosure_SS_SR.root";
 const TString FF_corr_Wjets_MC_noGen_nonclosure  = "FF_"+s_corr+"_Wjets_MC_noGen_nonclosure.root";
@@ -286,6 +289,7 @@ const TString FF_corr_Wjets_MCsum_noGen_weighted    = "FF_"+s_corr+"_Wjets_"+s_M
 const TString FF_corr_Wjets_MCsum_noGen_SR          = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_"+s_SR+".root";
 const TString FF_corr_Wjets_MCsum_noGen_SR_weighted = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_"+s_SR+"_"+s_weighted+".root";
 const TString FF_corr_Wjets_MCsum_Gen               = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_Gen.root";
+const TString FF_corr_Wjets_MCsum_Gen_fitted        = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_Gen_fitted.root";
 const TString FF_corr_Wjets_MCsum_Gen_weighted      = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_Gen_"+s_weighted+".root";
 
 const TString FF_corr_DY_data                    = "FF_"+s_corr+"_DY_data.root";
@@ -310,6 +314,7 @@ const TString FF_corr_TT_MC_noGen_nonclosure     = "FF_"+s_corr+"_TT_MC_noGen_no
 const TString FF_corr_QCD_data                   = "FF_"+s_corr+"_QCD_data.root";
 const TString FF_corr_QCD_data_weighted          = "FF_"+s_corr+"_QCD_data_"+s_weighted+".root";
 const TString FF_corr_QCD_MCsum_noGen            = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen.root";
+const TString FF_corr_QCD_MCsum_noGen_fitted     = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_fitted.root";
 const TString FF_corr_QCD_MCsum_noGen_muisocorr  = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_muisocorr.root";
 const TString FF_corr_QCD_MCsum_noGen_muisocorr_AI  = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_muisocorr_AI.root";
 const TString FF_corr_QCD_MCsum_noGen_nonclosure = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure.root";
@@ -319,8 +324,10 @@ const TString FF_corr_QCD_MCsum_noGen_OS           = "FF_"+s_corr+"_QCD_"+s_MCsu
 const TString FF_corr_QCD_MCsum_noGen_weighted   = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_"+s_weighted+".root";
 const TString FF_corr_QCD_MCsum_noGen_SR         = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_"+s_SR+".root";
 const TString FF_corr_QCD_MCsum_noGen_AI         = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_AI.root";
+const TString FF_corr_QCD_MCsum_noGen_AI_fitted  = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_AI_fitted.root";
 const TString FF_corr_QCD_MCsum_noGen_SR_weighted= "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_"+s_SR+"_"+s_weighted+".root";
 const TString FF_corr_QCD_MCsum_Gen              = "FF_"+s_corr+"_QCD_"+s_MCsum+"_Gen.root";
+const TString FF_corr_QCD_MCsum_Gen_fitted       = "FF_"+s_corr+"_QCD_"+s_MCsum+"_Gen_fitted.root";
 const TString FF_corr_QCD_MCsum_Gen_weighted     = "FF_"+s_corr+"_QCD_"+s_MCsum+"_Gen_"+s_weighted+".root";
 
 const TString FF_corr_QCDISO_MCsum_noGen            = "FF_"+s_corr+"_QCDISO_"+s_MCsum+"_noGen.root";
@@ -708,24 +715,24 @@ const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.};
 const Double_t Pt_cuts_QCD_AI[] ={20.,25.,30.,40};*/
 
 //mutau 35.6 fb default 
-/*const Double_t Pt_cuts_Wjets[] = {30.,32.5,35,37.5,40,45,50,55,60,70,80,100,120,200};//lower boundaries of the pt bins, there are no data with pt<20.
+const Double_t Pt_cuts_Wjets[] = {30.,32.5,35,37.5,40,45,50,55,60,70,80,100,120,200};//lower boundaries of the pt bins, there are no data with pt<20.
 const Double_t Pt_cuts_DY[]    = {30.,40.};
 //const Double_t Pt_cuts_TT[]    = {20,22.5,27,32,40,50,85};
 const Double_t Pt_cuts_TT_SR[]     = {30.,32.5,37.5,45,55,85};
 const Double_t Pt_cuts_TT_CR[]     = {30.};
 //const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.,100.};
 const Double_t Pt_cuts_QCD[]   = {30,32.5,35,40,45,50,57.5,70,90,120};
-const Double_t Pt_cuts_QCD_AI[] ={30,35,40,50};*/
+const Double_t Pt_cuts_QCD_AI[] ={30,35,40,50,80};
 
 //etau 35.6 fb default 
-const Double_t Pt_cuts_Wjets[] = {30.,32.5,35,37.5,40,45,50,55,60,70,85,110,200};//lower boundaries of the pt bins, there are no data with pt<20.
+/*const Double_t Pt_cuts_Wjets[] = {20,22.5,25,27.5,30.,32.5,35,37.5,40,45,50,55,60,70,85,110,200};//lower boundaries of the pt bins, there are no data with pt<20.
 const Double_t Pt_cuts_DY[]    = {30.,40.};
 //const Double_t Pt_cuts_TT[]    = {20,22.5,27,32,40,50,85};
-const Double_t Pt_cuts_TT_SR[]     = {30.,32.5,37.5,45,55,85};
-const Double_t Pt_cuts_TT_CR[]     = {30.};
+const Double_t Pt_cuts_TT_SR[]     = {20,22.5,27.5,32.5,37.5,45,55,85};
+const Double_t Pt_cuts_TT_CR[]     = {20.};
 //const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.,100.};
-const Double_t Pt_cuts_QCD[]   = {30,32.5,35,35.7,40,45,55,100};
-const Double_t Pt_cuts_QCD_AI[] ={30,35,40,55};
+const Double_t Pt_cuts_QCD[]   = {20,22.5,27.5,30,32.5,35,35.7,40,45,55,100};
+const Double_t Pt_cuts_QCD_AI[] ={20,25,30,35,40,55};*/
 
 
 //tautau 12.9 fb
@@ -746,7 +753,7 @@ const Double_t Pt_cuts_TT_SR[]     = {40.,50.,80.,150.};
 const Double_t Pt_cuts_TT_CR[]     = {40.};
 //const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.,100.};
 const Double_t Pt_cuts_QCD[]   = {40.,42.5,45.,50.,55,65,80,120};
-const Double_t Pt_cuts_QCD_AI[] ={40,50,70,100};*/
+const Double_t Pt_cuts_QCD_AI[] ={40,42.5,45,50,70,100};*/
 
 const Int_t N_p_Wjets = sizeof(Pt_cuts_Wjets)/sizeof(Double_t);
 const Int_t N_p_DY = sizeof(Pt_cuts_DY)/sizeof(Double_t);
@@ -817,6 +824,7 @@ const Double_t w_mt_v[]={0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,16
 const Int_t    w_mt_n=(sizeof(w_mt_v)/sizeof(Double_t)) -1;
 
 const Double_t w_pt_v[]={30,35,40,50,60,80,120,250};
+//const Double_t w_pt_v[]={20,25,30,35,40,50,60,80,120,250};
 //const Double_t w_pt_v[]={40,45,50,60,80,120,250};
 const Int_t    w_pt_n=(sizeof(w_pt_v)/sizeof(Double_t)) -1;
 

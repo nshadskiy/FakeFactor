@@ -6,27 +6,31 @@ using namespace std;
 void test(){
 
   //TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170212/et/_2D_Boosted/fakeFactors_20170212.root";
-  //TString fname="/afs/hephy.at/work/j/jbrandstetter/cmssw/CMSSW_8_0_20/src/HTTutilities/Jet2TauFakes/data/mt/boosted/fakeFactors_20170215.root";
-  TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170217_MC/mt/incl/fakeFactors_20170217_MC.root";
+  TString fname="/afs/hephy.at/work/j/jbrandstetter/cmssw/CMSSW_8_0_20/src/HTTutilities/Jet2TauFakes/data/mt/boosted/fakeFactors_20170228.root";
+  //TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170217_MC/mt/incl/fakeFactors_20170217_MC.root";
   //TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170212/tt/incl/fakeFactors_20170212.root";
   //TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170111/et/incl/fakeFactors_20170111.root";
   // Retrieve the fake factor
   TFile* ff_file = TFile::Open(fname);
   FakeFactor* ff    = (FakeFactor*)ff_file->Get("ff_comb");
   FakeFactor* ff_qcd_os    = (FakeFactor*)ff_file->Get("ff_qcd_os");
+  FakeFactor* ff_w    = (FakeFactor*)ff_file->Get("ff_w");
+  FakeFactor* ff_tt    = (FakeFactor*)ff_file->Get("ff_tt");
 
   // Fill inputs
   std::vector<double> inputs(6);
-  inputs[0] = 30; //tau_pt;
-  inputs[1] = 0;  //tau_decayMode;
-  inputs[2] = 0;  //njet
-  inputs[3] = 50; //mvis;
-  inputs[4] = 0; //mt
-  inputs[5] = 0.0; //muon_iso;
+  inputs[0] = 148; //tau_pt;
+  inputs[1] = 10;  //tau_decayMode;
+  inputs[2] = 4;  //njet
+  inputs[3] = 161; //mvis;
+  inputs[4] = 43.7; //mt
+  inputs[5] = 0.123; //muon_iso;
 
   // Retrieve fake factors
   double ff_nom = ff->value(inputs); // nominal fake factor
-  //double ff_nom_qcd = ff_qcd_os->value(inputs);
+  double ff_nom_qcd = ff_qcd_os->value(inputs);
+  double ff_nom_w = ff_w->value(inputs);
+  double ff_nom_tt = ff_tt->value(inputs);
 
   //double syst_qcd_up = ff->value(inputs, "ff_qcd_syst_up");
   //double syst_qcd_down = ff->value(inputs, "ff_qcd_syst_down");
@@ -61,6 +65,9 @@ void test(){
   
   cout << "pt= " << inputs[0] << "\t dm= " << inputs[1] << "\t njet= " << inputs[2] << "\t mvis= " << inputs[3] << "\t mt= " << inputs[4] << "\t muiso= " << inputs[5] << endl;
   cout << "ff= " << ff_nom << endl;
+  cout << "ff_qcd= " << ff_nom_qcd << endl;
+  cout << "ff_w: " << ff_nom_w << endl;
+  cout << "ff_tt: " << ff_nom_tt << endl;
   //^cout << "ff qcd= " << ff_nom_qcd << endl;
   cout << " ----- Systematic uncertainties ----- " << endl;
   cout << "Uncertainties on corrections: " << endl;
@@ -91,7 +98,9 @@ void test(){
   cout << "stat(w_down)11= " << (stat_dm1_njet1_w_down-ff_nom)/ff_nom*100 << "%" << endl;
 
   delete ff;
-  //delete ff_qcd_os;
+  delete ff_qcd_os;
+  delete ff_w;
+  delete ff_tt;
   ff_file->Close();
 
 }
