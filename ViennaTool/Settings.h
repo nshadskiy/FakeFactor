@@ -6,12 +6,12 @@
 
 
 const TString user="jbrandstetter";
-const TString analysis="FakeFactor_2016_full5";
+const TString analysis="FakeFactor_2016_MSSM";
 const Double_t luminosity=35.9; //27.9 for ABCDEFG, 20.2 for ABCDEFB
 
-const int CHAN = kMU; //kMU,kEL,kTAU
+const int CHAN = kTAU; //kMU,kEL,kTAU
 const int use_svfit = 0;
-const TString ver = "v10";
+const TString ver = "v11";
 const int integrateOverTrig = 1;
 const int XTriggerObjectMatch = 0;
 const TString inputFF_dir = "~/public/Htautau/FakeRate2016/";
@@ -27,14 +27,14 @@ const int useVV=1;
 const int useMVAMET=0;
 ///////////////////////////////////////////////////
 //This defines which fractions are taken for FF bkg estimates, one of them has to be chosen
-const int inclusive_frac_mt=1;
+const int inclusive_frac_mt=0;
 const int inclusive_frac_et=0;
-const int inclusive_frac_tt=0;
+const int inclusive_frac_tt=1;
 const int cat_frac_mt=0;
 const int cat_frac_et=0;
 const int cat_frac_tt=0;
 ///////////////////////////////////////////////////
-const int COINFLIP=1; //only for tautau channel: decide if usage of double count or coin flip
+const int COINFLIP=0; //only for tautau channel: decide if usage of double count or coin flip
 const int DEBUG=1; //set to 1 for additional output
 const int ALLPLOTS=1; //set to 1 for PDFs etc
 const int DOQCD=1; //set to 1 to include QCD estimate, 0 for w/o; only works for MC
@@ -45,7 +45,7 @@ const int APPLY_TO_ISOTAU=1; //def: 0
 const int USE_ISOTAU=1; //def: 1
 const int USE_MVA_ISO=1; //def: 1
 const int CALC_SS_SR=0; //default: 0   //0.15<QCD_iso<0.25 for QCD FFs
-const int num = 0;
+const int num = 21;
 const int doSRHisto = 1;
 const int doCRHisto = 1;
 ///////////////////////////////////////////////////
@@ -58,15 +58,15 @@ const int applyFF_fromCR=1; //1 for default; 0 for debugging
 const int requireGenMatch_whenCalcFF=0; //0 as default
 const int useDYFF_forTT=0; //0 as default
 const int useWJFF_forDY=0; //1 as default
-const int doCalcWeights=1; //calc fractions
+const int doCalcWeights=0; //calc fractions
 const int doFit=0; //template fit for fractions, default: 0
-const int doCalc=0; //calc FFs
+const int doCalc=1; //calc FFs
 const int calcVTightFF=0;
 //////////////////////////////////////////////////
 const int fit_pT_bins = 1; //use fitted pT bins as input for ff
-const double fitMin = 30;
-const double fitMax = 200;
-const int fitBins = 170;
+const double fitMin = 40;
+const double fitMax = 300;
+const int fitBins = 260;
 //////////////////////////////////////////////////
 //applyFF
 const int doBgEst=1; //calc bkg estimates for different FF contributions
@@ -106,7 +106,7 @@ const Double_t TAU_ETA_CUT=2.3;
 const Double_t TAU_PT_CUT=20.;
 const Double_t TAU_ETA_CUT_TT=2.1;
 const Double_t TAU_PT_CUT_TT=40.;
-const Double_t MT_CUT=50;
+const Double_t MT_CUT=40;
 
 const Double_t MZ=91.2;
 const Double_t QCD_SS_TO_OS=1.06;

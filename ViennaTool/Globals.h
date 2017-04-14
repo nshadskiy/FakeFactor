@@ -55,18 +55,15 @@
 #define _COMPARE2      32
 
 //be very careful to not overlap with other marks -> use category mark extra
-#define _INCL           1
-#define _0JETLOW        2
-#define _0JETHIGH       4
-#define _1JETLOW        8
-#define _1JETHIGH      16
-#define _VBFLOW        32
-#define _VBFHIGH       64
-#define _2JET         128
-#define _ANYB         256
-#define _2D_0JET      512
-#define _2D_BOOSTED  1024
-#define _2D_VBF      2048
+#define _INCL              1
+#define _BTAG              2
+#define _NOBTAG            4
+#define _BTAG_TIGHT        8
+#define _BTAG_LOOSEMT     16
+#define _BTAG_LOOSEISO    32
+#define _NOBTAG_TIGHT     64
+#define _NOBTAG_LOOSEMT  128
+#define _NOBTAG_LOOSEISO 256
 
 #define _INCLFRAC_MT     4096
 #define _CATFRAC_MT      8192
@@ -121,7 +118,7 @@ const TString s_DY_J         ="DY_J";
 const TString s_DY_TT        ="DY_TT";
 const TString s_DY_L         ="DY_L";
 const TString s_loose        ="loose";
-const TString s_loose_tt     ="loose_tt";
+const TString s_tight_alt    ="tight_alt";
 const TString s_tight        ="tight";
 
 
@@ -153,6 +150,14 @@ const TString VVfile     = indir + "BASIS_ntuple_VV_MCSummer16_"+s_chan[CHAN]+"_
 const TString TTfile     = indir + "BASIS_ntuple_TT_merged_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
 const TString SIGNALfile = indir + "BASIS_ntuple_SIGNAL_M125_powheg_MCSummer_"+s_chan[CHAN]+"_"+ver+".root";
 
+const TString SUSYGluGluToBBHToTauTau_M1000 = indir +  "BASIS_ntuple_SUSYGluGluToBBHToTauTau_M_1000_pythia8_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
+const TString SUSYGluGluToBBHToTauTau_M2000 = indir +  "BASIS_ntuple_SUSYGluGluToBBHToTauTau_M_2000_pythia8_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
+const TString SUSYGluGluToBBHToTauTau_M2900 = indir +  "BASIS_ntuple_SUSYGluGluToBBHToTauTau_M_2900_pythia8_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
+
+const TString SUSYGluGluToHToTauTau_M1000 = indir +  "BASIS_ntuple_SUSYGluGluToHToTauTau_M_1000_pythia8_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
+const TString SUSYGluGluToHToTauTau_M2000 = indir +  "BASIS_ntuple_SUSYGluGluToHToTauTau_M_2000_pythia8_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
+const TString SUSYGluGluToHToTauTau_M2900 = indir +  "BASIS_ntuple_SUSYGluGluToHToTauTau_M_2900_pythia8_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
+
 
 // Preselection files
 const TString preselection_data          = path_presel+"preselection_data"+s_doubleCount[COINFLIP]+".root";
@@ -174,6 +179,14 @@ const TString preselection_MCsum_woQCD   = path_presel+"preselection_woQCD"+s_MC
 const TString preselection_QCD           = path_presel+"preselection_QCD"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_QCD_Pt        = path_presel+"preselection_QCD_Pt"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_signal        = path_presel+"preselection_signal"+s_doubleCount[COINFLIP]+".root";
+
+const TString preselection_SUSY_BBH_1000 =  path_presel+"preselection_SUSY_BBH_1000"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_SUSY_BBH_2000 =  path_presel+"preselection_SUSY_BBH_2000"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_SUSY_BBH_2900 =  path_presel+"preselection_SUSY_BBH_2900"+s_doubleCount[COINFLIP]+".root";
+
+const TString preselection_SUSY_ggH_1000 =  path_presel+"preselection_SUSY_ggH_1000"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_SUSY_ggH_2000 =  path_presel+"preselection_SUSY_ggH_2000"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_SUSY_ggH_2900 =  path_presel+"preselection_SUSY_ggH_2900"+s_doubleCount[COINFLIP]+".root";
 
 const TString fit_formula                = "fit_formula.root";
 
@@ -673,6 +686,14 @@ const TString SR_signal_svfit_sim    = SR_signal+"_"+s_svfit+".root";
 const TString SR_signal_eta_sim    = SR_signal+"_"+s_eta+".root";
 const TString SR_signal_mttot_sim    = SR_signal+"_"+s_mttot+".root";
 
+const TString SR_SUSYGluGluToBBHToTauTau_M1000_mt_sim       = path_sim+s_SR+"_SUSYGluGluToBBHToTauTau_M1000_mt.root";
+const TString SR_SUSYGluGluToBBHToTauTau_M2000_mt_sim       = path_sim+s_SR+"_SUSYGluGluToBBHToTauTau_M2000_mt.root";
+const TString SR_SUSYGluGluToBBHToTauTau_M2900_mt_sim       = path_sim+s_SR+"_SUSYGluGluToBBHToTauTau_M2900_mt.root";
+const TString SR_SUSYGluGluToHToTauTau_M1000_mt_sim       = path_sim+s_SR+"_SUSYGluGluToHToTauTau_M1000_mt.root";
+const TString SR_SUSYGluGluToHToTauTau_M2000_mt_sim       = path_sim+s_SR+"_SUSYGluGluToHToTauTau_M2000_mt.root";
+const TString SR_SUSYGluGluToHToTauTau_M2900_mt_sim       = path_sim+s_SR+"_SUSYGluGluToHToTauTau_M2900_mt.root";
+
+
 const TString SS_SR_data       = path_sim+s_SS_SR+"_data";
 const TString SS_SR_data_mt    = SS_SR_data+"_"+s_mt+".root";
 const TString SS_SR_data_mvis  = SS_SR_data+"_"+s_mvis+".root";
@@ -715,24 +736,29 @@ const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.};
 const Double_t Pt_cuts_QCD_AI[] ={20.,25.,30.,40};*/
 
 //mutau 35.6 fb default 
-const Double_t Pt_cuts_Wjets[] = {30.,32.5,35,37.5,40,45,50,55,60,70,80,100,120,200};//lower boundaries of the pt bins, there are no data with pt<20.
+/*const Double_t Pt_cuts_Wjets[] = {30.,32.5,35,40,50,70,100,150};//lower boundaries of the pt bins, there are no data with pt<20.
 const Double_t Pt_cuts_DY[]    = {30.,40.};
-//const Double_t Pt_cuts_TT[]    = {20,22.5,27,32,40,50,85};
-const Double_t Pt_cuts_TT_SR[]     = {30.,32.5,37.5,45,55,85};
+const Double_t Pt_cuts_TT_SR[]     = {30.,32.5,35.,40.,50,65,85,120,160};
 const Double_t Pt_cuts_TT_CR[]     = {30.};
-//const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.,100.};
-const Double_t Pt_cuts_QCD[]   = {30,32.5,35,40,45,50,57.5,70,90,120};
-const Double_t Pt_cuts_QCD_AI[] ={30,35,40,50,80};
+const Double_t Pt_cuts_QCD[]   = {30,32.5,35,40,45,50,57.5,70,90,120,200};
+const Double_t Pt_cuts_QCD_AI[] ={30,35,40,50,80};*/
+
+/*const Double_t Pt_cuts_Wjets[] = {30.,35,40,50,70,100,150};//lower boundaries of the pt bins, there are no data with pt<20.
+const Double_t Pt_cuts_DY[]    = {30.,40.};
+const Double_t Pt_cuts_TT_SR[]     = {30.,32.5,35.,40.,50,65,85,120,160};
+const Double_t Pt_cuts_TT_CR[]     = {30.};
+const Double_t Pt_cuts_QCD[]   = {30,35,40,45,50,70,90,120,180};
+const Double_t Pt_cuts_QCD_AI[] ={30,35,40,50,80};*/
 
 //etau 35.6 fb default 
-/*const Double_t Pt_cuts_Wjets[] = {20,22.5,25,27.5,30.,32.5,35,37.5,40,45,50,55,60,70,85,110,200};//lower boundaries of the pt bins, there are no data with pt<20.
+/*const Double_t Pt_cuts_Wjets[] = {30.,32.5,35,40,50,65,95,150};//lower boundaries of the pt bins, there are no data with pt<20.
 const Double_t Pt_cuts_DY[]    = {30.,40.};
 //const Double_t Pt_cuts_TT[]    = {20,22.5,27,32,40,50,85};
-const Double_t Pt_cuts_TT_SR[]     = {20,22.5,27.5,32.5,37.5,45,55,85};
-const Double_t Pt_cuts_TT_CR[]     = {20.};
+const Double_t Pt_cuts_TT_SR[]     = {30.,32.5,35.,40.,50,65,85,120,160};
+const Double_t Pt_cuts_TT_CR[]     = {30.};
 //const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.,100.};
-const Double_t Pt_cuts_QCD[]   = {20,22.5,27.5,30,32.5,35,35.7,40,45,55,100};
-const Double_t Pt_cuts_QCD_AI[] ={20,25,30,35,40,55};*/
+const Double_t Pt_cuts_QCD[]   = {30,35,40,45,55,75,110};
+const Double_t Pt_cuts_QCD_AI[] ={30,33,40,50,80};*/
 
 
 //tautau 12.9 fb
@@ -746,14 +772,14 @@ const Double_t Pt_cuts_QCD[]   = {40.,45.,50.,60,70,90,120,200};
 const Double_t Pt_cuts_QCD_AI[] ={20.,25.,30.,40,50,70,100};*/
 
 //tautau 35.6 fb default
-/*const Double_t Pt_cuts_Wjets[] = {40.,50.,70.,100.,150.};//lower boundaries of the pt bins, there are no data with pt<20.
+const Double_t Pt_cuts_Wjets[] = {40.,50.,70.,100.,150.};//lower boundaries of the pt bins, there are no data with pt<20.
 const Double_t Pt_cuts_DY[]    = {40.};
 //const Double_t Pt_cuts_TT[]    = {20.,25.,30.,40.};
 const Double_t Pt_cuts_TT_SR[]     = {40.,50.,80.,150.};
 const Double_t Pt_cuts_TT_CR[]     = {40.};
 //const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.,100.};
-const Double_t Pt_cuts_QCD[]   = {40.,42.5,45.,50.,55,65,80,120};
-const Double_t Pt_cuts_QCD_AI[] ={40,42.5,45,50,70,100};*/
+const Double_t Pt_cuts_QCD[]   = {40.,42.5,45.,50.,55,60,65,75,95,155};
+const Double_t Pt_cuts_QCD_AI[] ={40,42.5,45,50,60,75,115,180};
 
 const Int_t N_p_Wjets = sizeof(Pt_cuts_Wjets)/sizeof(Double_t);
 const Int_t N_p_DY = sizeof(Pt_cuts_DY)/sizeof(Double_t);
@@ -786,7 +812,7 @@ const Int_t N_t_QCD = sizeof(Decay_cuts_QCD)/sizeof(Int_t);
 const Int_t Njet_cuts_Wjets[] = {0,1};
 const Int_t Njet_cuts_DY[] = {0,1};
 //const Int_t Njet_cuts_TT[] = {0};
-const Int_t Njet_cuts_TT_SR[] = {0,1};
+const Int_t Njet_cuts_TT_SR[] = {0};
 const Int_t Njet_cuts_TT_CR[] = {0};
 const Int_t Njet_cuts_QCD[] = {0,1};
 
@@ -866,8 +892,8 @@ const TString tvarCR_l[nVARCR]={"m_{T} [GeV]","m_{vis} [GeV]","p_{T} [GeV]","#mu
 
 
 //plotting constants
-//const Double_t p_mt_v[]={0,10,20,30,40,50,60,70,150,250};
-const Double_t p_mt_v[]={0,50,70,80,90,100,120,140,180,250};
+const Double_t p_mt_v[]={0,10,20,30,40,50,60,70,100,150,250,500};
+//const Double_t p_mt_v[]={0,50,70,80,90,100,120,140,180,250};
 const Int_t    p_mt_n=(sizeof(p_mt_v)/sizeof(Double_t)) -1;
 
 const Double_t p_mvis_v[]={0,50,75,100,200};
@@ -943,9 +969,9 @@ const Int_t c_cuts[NC]={NP1,NP3,PT1,PT2,PT3,ETA1,ETA2,ETA3,JET0,JET1};
 
 static const std::vector<TString> empty_vec_tstring;
 
-const Int_t nCAT=11;
-const TString categories[nCAT] = { "_0jetLow", "_0jetHigh", "_1jetLow", "_1jetHigh", "_vbfLow", "_vbfHigh","_2jet","_anyb","_2D_0jet","_2D_Boosted","_2D_VBF"};
-const Int_t catMode[nCAT] = {_0JETLOW, _0JETHIGH, _1JETLOW, _1JETHIGH, _VBFLOW, _VBFHIGH, _2JET, _ANYB, _2D_0JET, _2D_BOOSTED, _2D_VBF};
+const Int_t nCAT=8;
+const TString categories[nCAT] = { "_btag", "_nobtag", "_btag_tight", "_btag_loosemt", "_btag_looseiso", "_nobtag_tight", "_nobtag_loosemt", "_nobtag_looseiso" };
+const Int_t catMode[nCAT] = {_BTAG, _NOBTAG, _BTAG_TIGHT, _BTAG_LOOSEMT, _BTAG_LOOSEISO, _NOBTAG_TIGHT, _NOBTAG_LOOSEMT, _NOBTAG_LOOSEISO};
 
 //const Int_t nCAT=4;
 //const TString categories[nCAT] = { "_0jet", "_1jet", "_2jet", "_anyb"};

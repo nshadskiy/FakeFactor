@@ -30,7 +30,7 @@ class GlobalClass{
   void init();
   Int_t passesCuts(const Int_t cuts, const Int_t ind);
   Int_t isLoose(const Int_t mode=0, const Int_t ind=0);
-  Int_t isLoose_tt(const Int_t mode=0, const Int_t ind=0);
+  Int_t isTight_alt(const Int_t mode=0, const Int_t ind=0);
   Int_t isTight(const Int_t mode=0, const Int_t ind=0);
   Int_t isInSR(const Int_t mode, const Int_t ind=0);
   Int_t isInCR(const Int_t mode, const Int_t ind=0);

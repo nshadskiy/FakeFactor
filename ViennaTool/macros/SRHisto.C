@@ -22,21 +22,35 @@ void SRHisto() {
     Analyzer->init();
 
     std::vector<TString> ps;
-    ps.push_back(preselection_data);
+    /*ps.push_back(preselection_data);
     ps.push_back(preselection_Wjets); ps.push_back(preselection_TT_T); ps.push_back(preselection_TT_J); ps.push_back(preselection_TT_L);
     if( useVV ) {ps.push_back(preselection_VV_T); ps.push_back(preselection_VV_J); ps.push_back(preselection_VV_L);}
     ps.push_back(preselection_DY_TT); ps.push_back(preselection_DY_J); ps.push_back(preselection_DY_L); 
     ps.push_back(preselection_QCD);
-    ps.push_back(preselection_signal);
+    ps.push_back(preselection_signal);*/
+    //////////////////////////////////////
+    ps.push_back(preselection_SUSY_BBH_1000);
+    ps.push_back(preselection_SUSY_BBH_2000);
+    ps.push_back(preselection_SUSY_BBH_2900);
+    ps.push_back(preselection_SUSY_ggH_1000);
+    ps.push_back(preselection_SUSY_ggH_2000);
+    ps.push_back(preselection_SUSY_ggH_2900);
     //  if (DOQCD) ps.push_back(preselection_QCD);
 
     std::vector<TString> fl;
-    fl.push_back(SR_data_mt); 
+    /*fl.push_back(SR_data_mt); 
     fl.push_back(SR_Wjets_mt_sim); fl.push_back(SR_TT_T_mt_sim); fl.push_back(SR_TT_J_mt_sim); fl.push_back(SR_TT_L_mt_sim);
     if( useVV ) {fl.push_back(SR_VV_T_mt_sim); fl.push_back(SR_VV_J_mt_sim); fl.push_back(SR_VV_L_mt_sim);}
     fl.push_back(SR_DY_TT_mt_sim); fl.push_back(SR_DY_J_mt_sim); fl.push_back(SR_DY_L_mt_sim); 
     fl.push_back(SR_QCD_mt_sim);
-    fl.push_back(SR_signal_mt_sim);
+    fl.push_back(SR_signal_mt_sim);*/
+    fl.push_back(SR_SUSYGluGluToBBHToTauTau_M1000_mt_sim);
+    fl.push_back(SR_SUSYGluGluToBBHToTauTau_M2000_mt_sim);
+    fl.push_back(SR_SUSYGluGluToBBHToTauTau_M2900_mt_sim);
+    fl.push_back(SR_SUSYGluGluToHToTauTau_M1000_mt_sim);
+    fl.push_back(SR_SUSYGluGluToHToTauTau_M2000_mt_sim);
+    fl.push_back(SR_SUSYGluGluToHToTauTau_M2900_mt_sim);
+    
     
     //  if (DOQCD) fl.push_back(SR_QCD_mt_sim);
 
@@ -76,9 +90,6 @@ void SRHisto() {
         if(!DOCUTS) Analyzer->calcBgEstSim( ps.at(i), MET|NO_SR, categoryMode, tmp.ReplaceAll(r1[6],r2[6]) );
         if(!DOCUTS) Analyzer->calcBgEstSim( ps.at(i), ETA, categoryMode, tmp.ReplaceAll(r1[7],r2[7]) );
         if(!DOCUTS) Analyzer->calcBgEstSim( ps.at(i), MMTOT, categoryMode, tmp.ReplaceAll(r1[8],r2[8]) );
-        if( (categoryMode & _VBFLOW) || (categoryMode & _VBFLOW) || (categoryMode & _VBFLOW) ){
-          if(!DOCUTS) Analyzer->calcBgEstSim( ps.at(i), MJJ, categoryMode, tmp.ReplaceAll(r1[9],r2[9]) );
-        }
         tmp=fl.at(i); if(!inclusive_selection){tmp.ReplaceAll( ".root",categories[icat]+".root" );} Analyzer->calcBgEstSim( ps.at(i), MVIS|_AI, categoryMode, tmp.ReplaceAll(r2[0], "_mvis_AI") );
         if(use_svfit){
           tmp=fl.at(i); if(!inclusive_selection){tmp.ReplaceAll( ".root",categories[icat]+".root" );}
@@ -96,7 +107,7 @@ void SRHisto() {
 
     if(inclusive_selection){
       
-      TString modes[] = {"l","t","ltt"};
+      TString modes[] = {"l","t","t_alt"};
       Int_t nmodes = 3;
       int nSA; if(useVV){nSA=nSAMPLES-1;}else{nSA=nSAMPLES-4;} //signal sample is also subtracted
       const TString *ssa=vsuff;

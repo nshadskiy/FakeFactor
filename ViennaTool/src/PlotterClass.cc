@@ -11,8 +11,8 @@ void PlotterClass::plotCR(const std::vector<TString> fname, const std::vector<TS
   std::cout << "In plotCR, producing " << imagefile << " using " << fname.size() << " input samples" << std::endl;
 
   TString hname="hh_";
-  if ( iso.Contains("tight") ) hname+="t_";
-  else if ( iso.Contains("loose_tt") ) hname+="ltt_";
+  if ( iso.Contains("tight_alt") ) hname+="t_alt_";
+  else if ( iso.Contains("tight") ) hname+="t_";
   else if ( iso.Contains("all") ) hname+="a_";
   else hname+="l_";
 
@@ -245,7 +245,7 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
 
 }
 
-Int_t PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,const int mode,const TString plotfile, const TString n1, const TString n2, const Double_t* xbins, const Int_t xbins_size, const TString xlabel)
+Int_t PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,const int mode,const TString plotfile, const TString n1, const TString n2, const TString tight_cat, const Double_t* xbins, const Int_t xbins_size, const TString xlabel)
 {
 
   TFile f1(FF_file_CR);
@@ -259,8 +259,8 @@ Int_t PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,con
     return 0;
   }
 
-  TH1D* FF_CR = (TH1D*) f1.Get("c_t");
-  TH1D* FF_SR = (TH1D*) f2.Get("c_t");
+  TH1D* FF_CR = (TH1D*) f1.Get("c_t"+tight_cat);
+  TH1D* FF_SR = (TH1D*) f2.Get("c_t"+tight_cat);
 
   FF_CR->SetLineWidth(3);
   FF_SR->SetLineWidth(3);
@@ -398,15 +398,15 @@ Int_t PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,con
   leg->SetLineColor(10);
 
   if (n1 != n2)
-    this->makeRatioPlot(FF_CR, FF_SR, plotfile, "", xlabel, leg, "Ratio");
+    this->makeRatioPlot(FF_CR, FF_SR, plotfile+tight_cat, "", xlabel, leg, "Ratio");
   else{
     FF_CR->Draw();
     FF_SR->Draw("same");
     leg->Draw();
-    gPad->SaveAs(plotfile+".png");
+    gPad->SaveAs(plotfile+tight_cat+".png");
     if (ALLPLOTS){
-      gPad->SaveAs(plotfile+".pdf");
-      gPad->SaveAs(plotfile+".eps");
+      gPad->SaveAs(plotfile+tight_cat+".pdf");
+      gPad->SaveAs(plotfile+tight_cat+".eps");
       //      c1->SaveAs(imagefilename+".C");                                                                                                                                                                                              
     }
   }

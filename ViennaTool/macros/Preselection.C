@@ -115,6 +115,45 @@ void Preselection() {
     Analyzer->closeFile();
     compressFile(preselection_signal);
   }
+  //////////////////////////////////////////////////////////////////////////////
+  if( num==21 || num==0 ){
+    Analyzer->loadFile(SUSYGluGluToBBHToTauTau_M1000,"TauCheck");
+    Analyzer->select(preselection_SUSY_BBH_1000,0);
+    Analyzer->closeFile();
+    compressFile(preselection_SUSY_BBH_1000);
+  }
+  if( num==21 || num==0 ){
+    Analyzer->loadFile(SUSYGluGluToBBHToTauTau_M2000,"TauCheck");
+    Analyzer->select(preselection_SUSY_BBH_2000,0);
+    Analyzer->closeFile();
+    compressFile(preselection_SUSY_BBH_2000);
+  }
+  if( num==21 || num==0 ){
+    Analyzer->loadFile(SUSYGluGluToBBHToTauTau_M2900,"TauCheck");
+    Analyzer->select(preselection_SUSY_BBH_2900,0);
+    Analyzer->closeFile();
+    compressFile(preselection_SUSY_BBH_2900);
+  }
+  if( num==21 || num==0 ){
+    Analyzer->loadFile(SUSYGluGluToHToTauTau_M1000,"TauCheck");
+    Analyzer->select(preselection_SUSY_ggH_1000,0);
+    Analyzer->closeFile();
+    compressFile(preselection_SUSY_ggH_1000);
+  }
+  if( num==21 || num==0 ){
+    Analyzer->loadFile(SUSYGluGluToHToTauTau_M2000,"TauCheck");
+    Analyzer->select(preselection_SUSY_ggH_2000,0);
+    Analyzer->closeFile();
+    compressFile(preselection_SUSY_ggH_2000);
+  }
+  if( num==21 || num==0 ){
+    Analyzer->loadFile(SUSYGluGluToHToTauTau_M2900,"TauCheck");
+    Analyzer->select(preselection_SUSY_ggH_2900,0);
+    Analyzer->closeFile();
+    compressFile(preselection_SUSY_ggH_2900);
+  }
+  //////////////////////////////////////////////////////////////////////////////
+  
   if (num==19||num>90||num==0) {
     std::cout << "Creating merged tree in file " << preselection_MCsum_woQCD << std::endl;
     TChain* MCch=new TChain("Events");

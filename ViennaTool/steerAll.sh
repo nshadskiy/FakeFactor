@@ -5,11 +5,11 @@ sh BuildStructure.sh
 cd ../
 make -B
 #./Preselection
-#./SRHisto
+./SRHisto
 #./CRHisto
 #./steerFF
-./fitFakeFactors
-./calcCorrections
+#./fitFakeFactors
+#./calcCorrections
 #./convert_inputs
 #./ApplyFF
 #cp ViennaTool/fakefactor/data_mt/FFestimate_mt.root ViennaTool/fakefactor/data_mt/FFestimate_wUncertainties_mt.root

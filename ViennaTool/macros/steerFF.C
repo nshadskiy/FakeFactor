@@ -65,7 +65,8 @@ void CalcFF() {
     cout << endl << "################### Calculating FF weights  ###############" << endl << endl;
     if(inclusive_selection) Analyzer->calcFFweights(m_preselection_data,wf, ps, pi, p, p+template_file_name);
     else{
-      for(Int_t icat=8;icat<nCAT;icat++){
+      for(Int_t icat=0;icat<nCAT;icat++){
+        if(CHAN==kTAU && icat>2) continue;
       //for(Int_t icat=0;icat<8;icat++){
       //for(Int_t icat=3;icat<4;icat++){
         TString m_preselection_data_tmp=m_preselection_data; //m_preselection_data_tmp.ReplaceAll( ".root",categories[icat]+".root" );
@@ -125,7 +126,18 @@ void CalcFF() {
     }
     
   }  
-      
+
+  if(inclusive_selection){
+    if(CHAN==kMU){
+      Analyzer->plotFF(p+"FF_corr_TT_MCsum_noGen.root",    p+"FF_TT_J_only.root",    _TT, pi+"ff_TT_CR_data_vs_MC"   ,"FF in TT CR(data #mu#tau)", "FF in TT CR(sim #mu#tau)");
+      Analyzer->plotFF(p+"FF_corr_TT_MCsum_noGen.root",    p+"FF_TT_J_only.root",    _TT, pi+"ff_TT_CR_data_vs_MC"   ,"FF in TT CR(data #mu#tau)", "FF in TT CR(sim #mu#tau)", "_alt");
+    }
+    if(CHAN==kEL){
+      Analyzer->plotFF(p+"FF_corr_TT_MCsum_noGen.root",    p+"FF_TT_J_only.root",    _TT, pi+"ff_TT_CR_data_vs_MC"   ,"FF in TT CR(data e#tau)", "FF in TT CR(sim e#tau)");
+      Analyzer->plotFF(p+"FF_corr_TT_MCsum_noGen.root",    p+"FF_TT_J_only.root",    _TT, pi+"ff_TT_CR_data_vs_MC"   ,"FF in TT CR(data e#tau)", "FF in TT CR(sim e#tau)", "_alt");
+    }
+  }
+  
   ///////////////////////////////////////////////////////////////////////////////////////
   /////////////2b. Calc some FF for debugging (e.g. in SR)
   ///////////////////////////////////////////////////////////////////////////////////////
@@ -218,7 +230,7 @@ void CalcFF() {
       }
 
 
-  if(CHAN==kMU){
+  /*if(CHAN==kMU){
     Analyzer->plotFF(p+"FF_corr_QCD_MCsum_noGen.root",    p+"FF_corr_QCD_MCsum_noGen_mT50.root",    _QCD, pi+"ff_QCD_data_mt40_vs_mt50"   ,"FF in QCD (data #mu#tau m_{T}<40)", "FF in QCD (data #mu#tau m_{T}<50)");
     
     Analyzer->plotFF(p+"FF_corr_QCD_MCsum_noGen.root",    "fakefactor/mc_mt/FF_corr_QCD_MCsum_noGen.root",    _QCD, pi+"ff_QCD_data_vs_MC"   ,"FF in QCD (data #mu#tau)", "FF in QCD (sim #mu#tau)");
@@ -234,7 +246,7 @@ void CalcFF() {
     //Analyzer->plotFF(p+"FF_corr_QCD_MCsum_noGen.root",    "../../../CMSSW_7_6_3/src/ViennaTool/fakefactor/data_mt/FF_corr_QCD_MCsum_noGen.root",    _QCD, pi+"ff_QCD_data2016_vs_data2015"   ,"FF in QCD (2016 #mu#tau)", "FF in QCD (2015 #mu#tau)");
     //Analyzer->plotFF(p+"FF_corr_Wjets_MCsum_noGen.root",    "../../../CMSSW_7_6_3/src/ViennaTool/fakefactor/data_mt/FF_corr_Wjets_MCsum_noGen.root",    _W_JETS, pi+"ff_Wjets_data2016_vs_data2015"   ,"FF in Wjets (2016 #mu#tau)", "FF in Wjets (2015 #mu#tau)");
     //Analyzer->plotFF(p+"FF_corr_TT_MCsum_noGen.root",    "../../../CMSSW_7_6_3/src/ViennaTool/fakefactor/data_mt/FF_corr_TT_MCsum_noGen.root",    _TT, pi+"ff_TT_data2016_vs_data2015"   ,"FF in TT (2016 #mu#tau)", "FF in TT (2015 #mu#tau)");
-  }
+    }*/
 
 
   delete Analyzer;

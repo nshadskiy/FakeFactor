@@ -25,6 +25,10 @@ public :
    // Declaration of leaf types
    Int_t           fileEntry;
    Int_t           run;
+   Int_t           trg_singlemuon;
+   Int_t           trg_singleelectron;
+   Int_t           trg_singletau;
+   Int_t           trg_doubletau;
    Float_t         lumi;
    ULong64_t       evt;
    Float_t         weight;
@@ -296,6 +300,10 @@ public :
    // List of branches
    TBranch        *b_fileEntry;   //!
    TBranch        *b_run;   //!
+   TBranch        *b_trg_singlemuon;   //!
+   TBranch        *b_trg_singleelectron;   //!
+   TBranch        *b_trg_singletau;   //!
+   TBranch        *b_trg_doubletau;   //!
    TBranch        *b_lumi;   //!
    TBranch        *b_evt;   //!
    TBranch        *b_weight;   //!
@@ -678,6 +686,10 @@ void NtupleClass::Init(TTree *tree)
 
    fChain->SetBranchAddress("fileEntry", &fileEntry, &b_fileEntry);
    fChain->SetBranchAddress("run", &run, &b_run);
+   fChain->SetBranchAddress("trg_singlemuon", &trg_singlemuon, &b_trg_singlemuon);
+   fChain->SetBranchAddress("trg_singleelectron", &trg_singleelectron, &b_trg_singleelectron);
+   fChain->SetBranchAddress("trg_singletau", &trg_singletau, &b_trg_singletau);
+   fChain->SetBranchAddress("trg_doubletau", &trg_doubletau, &b_trg_doubletau); 
    fChain->SetBranchAddress("lumi", &lumi, &b_lumi);
    fChain->SetBranchAddress("evt", &evt, &b_evt);
    fChain->SetBranchAddress("weight", &weight, &b_weight);

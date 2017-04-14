@@ -40,7 +40,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   int nSA; if(useVV){nSA=nSAMPLES;}else{nSA=nSAMPLES-3;}
   const TString *ssa=vsuff;
 
-  const TString squ[nQU]=    {s_loose, s_tight, s_loose_tt};
+  const TString squ[nQU]=    {s_loose, s_tight, s_tight_alt};
 
   TString CF = COINFLIP==1 ? "" : "_DC";
 
@@ -106,7 +106,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //TEST
-    TString modes[] = {"l","t","ltt"};
+    TString modes[] = {"l","t","t_alt"};
     Int_t nmodes = 3;
     if(!DOMC){
       for (int ic=3; ic<nCR; ic++){ //loop over CRs
@@ -207,6 +207,10 @@ void CRHisto(int doCalc, int nCR, int nQU) {
               TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+"_"+tvarCR[iv]);
               if(ivar[iv] & MUISO){
                 for(int i=1; i<tmphist->GetNbinsX();i++){
+                  if( tmphist->GetBinContent(i) > inhist->GetBinContent(i) ){
+                    tmphist->SetBinContent(i,0);
+                    tmphist->SetBinError(i,0);
+                  }
                   if(tmphist->GetBinContent(i) > 3){
                     Double_t err1=tmphist->GetBinError(i)/tmphist->GetBinContent(i);
                     Double_t err2=0.25;

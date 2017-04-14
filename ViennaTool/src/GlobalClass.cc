@@ -55,9 +55,13 @@ Int_t GlobalClass::isLoose(const Int_t mode, const Int_t ind) //default: 0,0
   if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != 6 ) return 0; }
 
   if (USE_MVA_ISO){
-    //    if ( event_s->alltau_vlooseMVA->at(ind) && !event_s->alltau_tightMVA->at(ind)) return 1;
-    if ( calcVTightFF && !event_s->alltau_vtightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1; 
-    if ( !calcVTightFF && !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1; 
+    if( CHAN == kTAU ){
+      if ( !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
+    }
+    else if ( !event_s->alltau_mediumMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
+    //else if ( !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
+    //else if ( !event_s->alltau_looseMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
+    //else if ( !event_s->alltau_looseMVA->at(ind) ) return 1;
   } else{
     if (event_s->alltau_beta->at(ind)<100 && !event_s->alltau_mediumBeta->at(ind)) return 1;
   }
@@ -66,13 +70,14 @@ Int_t GlobalClass::isLoose(const Int_t mode, const Int_t ind) //default: 0,0
   return 0;
 }
 
-Int_t GlobalClass::isLoose_tt(const Int_t mode, const Int_t ind) //default: 0,0
+Int_t GlobalClass::isTight_alt(const Int_t mode, const Int_t ind) //default: 0,0
 {
   if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != 6 ) return 0; }
 
   if (USE_MVA_ISO){
-    if ( calcVTightFF && !event_s->alltau_vtightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1; 
-    if ( !calcVTightFF && !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1; 
+    if ( calcVTightFF && event_s->alltau_mediumMVA->at(ind) && !event_s->alltau_vtightMVA->at(ind) ) return 1; 
+    //if ( !calcVTightFF && event_s->alltau_mediumMVA->at(ind) && !event_s->alltau_tightMVA->at(ind) ) return 1;
+    if ( !calcVTightFF && event_s->alltau_mediumMVA->at(ind) && !event_s->alltau_tightMVA->at(ind) ) return 1;
   }
 
   return 0;
@@ -84,11 +89,10 @@ Int_t GlobalClass::isTight(const Int_t mode, const Int_t ind) //default: 0,0
 
   if (USE_MVA_ISO){
     if ( calcVTightFF && event_s->alltau_vtightMVA->at(ind)) return 1; 
-    if ( !calcVTightFF && event_s->alltau_tightMVA->at(ind)) return 1; 
+    if ( !calcVTightFF && event_s->alltau_tightMVA->at(ind)) return 1;
   } else{
     if (event_s->alltau_mediumBeta->at(ind)) return 1;
   }
-  //  if (event_s->alltau_looseBeta->at(ind)) return 1;
 
   return 0;
 }
@@ -101,7 +105,9 @@ Int_t GlobalClass::isInSR(const Int_t mode, const Int_t ind)
   if(CHAN==kEL) isolation=LEP_ISO_CUT_ET;
   antiIso_min=isolation; antiIso_max=isolation+0.1;
   //antiIso_min=isolation+0.15; antiIso_max=isolation+0.35;
-  
+
+  //MSSM definition of SR
+  if( !( event_s->nbtag == 0 || (event_s->nbtag>0 && event_s->njets<=1) ) ) return 0;
   if ( mode & GEN_MATCH ) {
     if ( event_s->alltau_gen_match->at(ind)!=realJet ) return 0; //FIX ME
   }
@@ -626,127 +632,62 @@ Int_t GlobalClass::getPInd( Int_t dm ){
 
 Int_t GlobalClass::fulfillCategory(Int_t categoryMode, Int_t ind){
 
-  if ( categoryMode & _0JETLOW && (CHAN==kMU || CHAN==kEL) ){
-    if(event_s->njets!=0) return 0;
-    if(event_s->alltau_pt->at(ind) < 20) return 0;
-    if(event_s->alltau_pt->at(ind) > 50) return 0;
-    
-  }
-  if ( categoryMode & _0JETLOW && CHAN==kTAU ){
-    if(event_s->njets!=0) return 0;
-    if(event_s->alltau_pt->at(ind) < 50) return 0;
-    
-  }
-  if ( categoryMode & _0JETHIGH && (CHAN==kMU || CHAN==kEL) ){
-    if(event_s->njets!=0) return 0;
-    if(event_s->alltau_pt->at(ind) < 50) return 0;
-    
-  }
-  if ( categoryMode & _0JETHIGH && CHAN==kTAU ) return 0;
-
-  if ( categoryMode & _1JETLOW && (CHAN==kMU || CHAN==kEL) ){
-    if( !(event_s->njets==1 || (event_s->njets==2 && event_s->mjj<500) ) ) return 0;
-    if( !( (event_s->alltau_pt->at(ind) > 30 && event_s->alltau_pt->at(ind) < 40) || (event_s->alltau_pt->at(ind) > 40 && event_s->alltau_Zpt->at(ind) < 140) ) ) return 0;
-    
-  }
-  if ( categoryMode & _1JETLOW && CHAN==kTAU ){
-    if( event_s->alltau_pt->at(ind) < 50 ) return 0;
-    if( event_s->alltau_Zpt->at(ind) < 100 ) return 0;
-    if( event_s->alltau_Zpt->at(ind) > 170 ) return 0;
-    if( !(event_s->njets==1 || (event_s->njets>=2 && !(event_s->mjj<300 && abs(event_s->jdeta)>2.5 && event_s->njetingap20<1) ) ) ) return 0;
-    
-  }
-  if ( categoryMode & _1JETHIGH && (CHAN==kMU || CHAN==kEL) ){
-    if( !(event_s->njets==1 || (event_s->njets==2 && event_s->mjj<500) ) ) return 0;
-    if( event_s->alltau_pt->at(ind) < 40 ) return 0;
-    if( event_s->alltau_Zpt->at(ind) < 140 ) return 0;
-    
-  }
-  if ( categoryMode & _1JETHIGH && CHAN==kTAU ){
-    if( event_s->alltau_pt->at(ind) < 50 ) return 0;
-    if( event_s->alltau_Zpt->at(ind) < 170 ) return 0;
-    if( !(event_s->njets==1 || (event_s->njets>2 && !(event_s->mjj>300 && abs(event_s->jdeta)>2.5 && event_s->njetingap20<1) ) ) ) return 0;
-    
-  }
-  if ( categoryMode & _VBFLOW && (CHAN==kMU || CHAN==kEL) ){
-    if( event_s->njets!=2 ) return 0;
-    if( event_s->alltau_pt->at(ind) < 20 ) return 0;
-    if( event_s->mjj < 500 ) return 0;
-    if( !(event_s->mjj < 800 || event_s->alltau_Zpt->at(ind) < 100 ) ) return 0;    
-  }
-  if ( categoryMode & _VBFLOW && CHAN==kTAU ){
-    if( event_s->alltau_pt->at(ind) < 50 ) return 0;
-    if( event_s->njets<=2 ) return 0;
-    if( event_s->njetingap20 > 0 ) return 0;
-    if( abs(event_s->jdeta) < 2.5 ) return 0;
-    if( !( (event_s->alltau_Zpt->at(ind)<100 && event_s->mjj>300) || (event_s->alltau_Zpt->at(ind)>100 && event_s->mjj>300 && event_s->mjj<500) ) ) return 0;
-  }
-  if ( categoryMode & _VBFHIGH && (CHAN==kMU || CHAN==kEL) ){
-    if( event_s->njets!=2 ) return 0;
-    if( event_s->alltau_pt->at(ind) < 20 ) return 0;
-    if( event_s->mjj < 800 ) return 0;
-    if( event_s->alltau_Zpt->at(ind) < 100 ) return 0;    
-  }
-  if ( categoryMode & _VBFHIGH && CHAN==kTAU ){
-    if( event_s->alltau_pt->at(ind) < 50 ) return 0;
-    if( event_s->njets<=2 ) return 0;
-    if( event_s->njetingap20 > 0 ) return 0;
-    if( abs(event_s->jdeta) < 2.5 ) return 0;
-    if( event_s->alltau_Zpt->at(ind)<100 ) return 0;
-    if( event_s->mjj<500 ) return 0;
-  }
-
-  if ( categoryMode & _2JET && event_s->njets < 2 ) return 0;
-  if ( categoryMode & _ANYB && event_s->nbtag < 1 ) {
-    return 0;
-  }
-  if ( categoryMode & _2D_0JET && (CHAN==kMU || CHAN==kEL) ){
-    if( event_s->njets>0 ) return 0;
-    if( event_s->alltau_pt->at(ind) < 30 ) return 0;
-  }
-  if ( categoryMode & _2D_0JET && CHAN==kTAU ){
-    if( event_s->njets>0 ) return 0;
-    if( event_s->alltau_pt->at(ind) < 50 && event_s->lep_pt<50) return 0;
-  }
-  if ( categoryMode & _2D_BOOSTED && (CHAN==kMU || CHAN==kEL) ){
-    if( event_s->alltau_pt->at(ind) < 30 ) return 0;
-    if( !( event_s->njets==1 || (event_s->njets==2 && event_s->mjj<300) || event_s->njets>2 ) ) return 0;
-  }
-  if ( categoryMode & _2D_BOOSTED && CHAN==kTAU ){
-    if( event_s->alltau_pt->at(ind) < 50 && event_s->lep_pt<50 ) return 0;
-    if( !( event_s->njets==1 || ( event_s->njets>=2 && event_s->jdeta>2.5 && event_s->alltau_Zpt->at(ind)>100 ) ) ) return 0;
-  }
-  if ( categoryMode & _2D_VBF && (CHAN==kMU || CHAN==kEL) ){
-    if( event_s->alltau_pt->at(ind) < 30 ) return 0;
-    if( !( event_s->njets==2 && event_s->mjj>300 ) ) return 0;
-  }
-  if ( categoryMode & _2D_VBF && CHAN==kTAU ){
-    if( event_s->alltau_pt->at(ind) < 50 && event_s->lep_pt<50) return 0;
-    if( !( event_s->njets==2 && event_s->jdeta>2.5 && event_s->alltau_Zpt->at(ind)>100 ) ) return 0;
+  if( inclusive_selection && (CHAN==kMU || CHAN==kEL) ){
+    if(event_s->alltau_mt->at(ind) > MT_CUT) return 0; 
   }
   
+  if ( categoryMode & _BTAG ){
+    if(event_s->nbtag == 0) return 0;
+    if(event_s->njets > 1) return 0;
+  }
+  if ( categoryMode & _NOBTAG ){
+    if(event_s->nbtag !=0) return 0;
+  }
+  if ( categoryMode & _BTAG_TIGHT && (CHAN==kMU || CHAN==kEL) ){
+    if(event_s->nbtag==0) return 0;
+    if(event_s->njets > 1) return 0;
+    if(event_s->alltau_mt->at(ind) > MT_CUT) return 0; 
+  }
+  if ( categoryMode & _BTAG_LOOSEMT && (CHAN==kMU || CHAN==kEL) ){
+    if(event_s->nbtag==0) return 0;
+    if(event_s->njets > 1) return 0;
+    if(event_s->alltau_mt->at(ind) < MT_CUT) return 0;
+    if(event_s->alltau_mt->at(ind) > 70) return 0;
+  }
+  if ( categoryMode & _BTAG_LOOSEISO && (CHAN==kMU || CHAN==kEL) ){
+    if(event_s->nbtag==0) return 0;
+    if(event_s->njets > 1) return 0;
+    if(event_s->alltau_mt->at(ind) > 70) return 0;
+  }
+  if ( categoryMode & _NOBTAG_TIGHT && (CHAN==kMU || CHAN==kEL) ){
+    if(event_s->nbtag !=0) return 0;
+    if(event_s->alltau_mt->at(ind) > MT_CUT) return 0; 
+  }
+  if ( categoryMode & _NOBTAG_LOOSEMT && (CHAN==kMU || CHAN==kEL) ){
+    if(event_s->nbtag !=0) return 0;
+    if(event_s->alltau_mt->at(ind) < MT_CUT) return 0;
+    if(event_s->alltau_mt->at(ind) > 70) return 0;
+  }
+  if ( categoryMode & _NOBTAG_LOOSEISO && (CHAN==kMU || CHAN==kEL) ){
+    if(event_s->nbtag !=0) return 0;
+    if(event_s->alltau_mt->at(ind) > 70) return 0;
+  }
   
-  
-
-  
+    
   return 1;
   
 }
 
 TString GlobalClass::getCatString_noSel(Int_t categoryMode){
 
-  if ( categoryMode & _0JETLOW ) return categories[0];
-  if ( categoryMode & _0JETHIGH ) return categories[1];
-  if ( categoryMode & _1JETLOW ) return categories[2];
-  if ( categoryMode & _1JETHIGH ) return categories[3];
-  if ( categoryMode & _VBFLOW ) return categories[4];
-  if ( categoryMode & _VBFHIGH ) return categories[5];
-  if ( categoryMode & _2JET ) return categories[6];
-  if ( categoryMode & _ANYB ) return categories[7];
-  if (categoryMode & _2D_0JET ) return categories[8];
-  if (categoryMode & _2D_BOOSTED ) return categories[9];
-  if (categoryMode & _2D_VBF ) return categories[10];
-  
+  if ( categoryMode & _BTAG ) return categories[0];
+  if ( categoryMode & _NOBTAG ) return categories[1];
+  if ( categoryMode & _BTAG_TIGHT ) return categories[2];
+  if ( categoryMode & _BTAG_LOOSEMT ) return categories[3];
+  if ( categoryMode & _BTAG_LOOSEISO ) return categories[4];
+  if ( categoryMode & _NOBTAG_TIGHT ) return categories[5];
+  if ( categoryMode & _NOBTAG_LOOSEMT ) return categories[6];
+  if ( categoryMode & _NOBTAG_LOOSEISO ) return categories[7];
 
   return "";
   

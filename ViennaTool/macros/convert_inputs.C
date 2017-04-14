@@ -18,10 +18,10 @@ void smooth_th1( const TString fn , const TString hn , const TString fout_n , co
 TH1D* extract_binerr_histo( TString fn , TString hn );
 TString getCatString(Int_t categoryMode=0);
 
-void convert_corrections( const TString fn, const TString gn, const TString fout, const TString gout);
-void combineQCDSystematics( const TString fQCD_nonclosure, const TString sys_nonclosure, const TString fQCD_muiso, const TString fQCD_OSSS, const TString sys_OSSS, const TString sys_muiso, const TString fout, const TString tout);
-void combineWSystematics( const TString fW_nonclosure, const TString sys_nonclosure, const TString fW_mtcorr, const TString sys_mtcorr, const TString fout, const TString tout);
-void combineTTSystematics( const TString fTT_nonclosure, const TString sys_nonclosure, const TString fout, const TString tout);
+void convert_corrections( TString fn, TString gn, TString fout, TString gout, const TString tight_cat="");
+void combineQCDSystematics( TString fQCD_nonclosure, TString sys_nonclosure, TString fQCD_muiso, TString fQCD_OSSS, TString sys_OSSS, TString sys_muiso, TString fout, TString tout, const TString tight_cat="");
+void combineWSystematics( TString fW_nonclosure, TString sys_nonclosure, TString fW_mtcorr, TString sys_mtcorr, TString fout, TString tout, const TString tight_cat="");
+void combineTTSystematics( TString fTT_nonclosure, TString sys_nonclosure, TString fout, TString tout, const TString tight_cat="");
 
 void convert_inputs(Int_t categoryMode=0){
 
@@ -46,7 +46,6 @@ void convert_inputs(Int_t categoryMode=0){
   TString vtightString="";
   if(CALC_SS_SR) SSstring+="_SS_SR";
   if(CALC_SS_SR) AIstring+="_AI";
-  if(calcVTightFF) vtightString+="_VTight";
 
   TString data = (!DOMC) ? "data_" : "mc_";
   TString QCD = (DOMC && !DOQCD) ? "woQCD_" : "";
@@ -75,6 +74,9 @@ void convert_inputs(Int_t categoryMode=0){
     fout_n3d="FakeFactors_Data_W_3D.root";
     //conv_th1_to_th2( d+fn , hn , hnout , o+fout_n , 0 );
     if(CHAN!=kTAU)conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
+    hn="c_t_alt";
+    fout_n3d="FakeFactors_Data_W_3D_alt.root";
+    if(CHAN!=kTAU)conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
     
     fn="FF_corr_DY_MCsum_noGen.root";
     hn="c_t";
@@ -91,6 +93,9 @@ void convert_inputs(Int_t categoryMode=0){
     hnout3d="FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode";
     //conv_th1_to_th2( d+fn , hn , o+fout_n , hnout , 0 );
     if(CHAN!=kTAU)conv_th1_to_th3( d+fn , hn , hnout3d, o+fout_n3d );
+    hn="c_t_alt";
+    fout_n3d="FakeFactors_Data_TT_3D_alt.root";
+    if(CHAN!=kTAU)conv_th1_to_th3( d+fn , hn , hnout3d, o+fout_n3d );
     
     fn="FF_corr_QCD_MCsum_noGen"+AIstring+vtightString+".root";
     fn3d="FF_corr_QCD_MCsum_noGen"+AIstring+vtightString+".root";
@@ -101,22 +106,29 @@ void convert_inputs(Int_t categoryMode=0){
     fout_n3d="FakeFactors_Data_QCD_3D.root";
     //conv_th1_to_th2( d+fn , hn , hnout , o+fout_n , 0 );
     conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
+    hn="c_t_alt";
+    fout_n3d="FakeFactors_Data_QCD_3D_alt.root";
+    if(CHAN!=kTAU)conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
 
     if(!DOMC){
       if(!CALC_SS_SR){
         if(CHAN==kTAU) convert_corrections( d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD", o+"Correction_Data_QCD_PT.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction");
         convert_corrections( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD", o+"Correction_Data_QCD_MVis.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction");
         convert_corrections( d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD", o+"Correction_Data_QCD_OSSS.root", "QCD_SS_Data_FFSSMuMediumData_OSSS_correction");
-        if(CHAN!=kTAU){      
+        if(CHAN!=kTAU){
           convert_corrections( d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_QCD", o+"Correction_Data_QCD_MuIso.root", "QCD_SS_Data_FFSSMuMediumData_isomu_correction");
+          convert_corrections( d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_QCD", o+"Correction_Data_QCD_MuIso.root", "QCD_SS_Data_FFSSMuMediumData_isomu_correction","_alt");
           //convert_corrections( d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD", o+"Correction_Data_QCD_OSSS.root", "QCD_SS_Data_FFSSMuMediumData_OSSS_correction");
           //convert_corrections( d+"FF_corr_QCD_only_noGen_nonclosure.root", "nonclosure_QCD_MC", o+"Correction_Data_QCD_MVis.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction");
           //convert_corrections( d+"FF_corr_QCD_only_noGen_muisocorr.root", "muiso_QCD", o+"Correction_Data_QCD_MuIso.root", "QCD_SS_Data_FFSSMuMediumData_isomu_correction");
           //convert_corrections( d+"FF_corr_QCD_only_noGen_OSSS.root", "OSSS_corr_QCD", o+"Correction_Data_QCD_OSSS.root", "QCD_SS_Data_FFSSMuMediumData_OSSS_correction");
           convert_corrections( d+FF_corr_Wjets_MCsum_noGen_nonclosure, "nonclosure_Wjets", o+"Correction_Data_W_MVis.root", "W_OS_Data_FFOSData_mvis_correction");
+          convert_corrections( d+FF_corr_Wjets_MCsum_noGen_nonclosure, "nonclosure_Wjets", o+"Correction_Data_W_MVis.root", "W_OS_Data_FFOSData_mvis_correction","_alt");
           //convert_corrections( d+"FF_corr_Wjets_MC_noGen_nonclosure.root", "nonclosure_Wjets_MC", o+"Correction_Data_W_MVis.root", "W_OS_Data_FFOSData_mvis_correction");
-        convert_corrections( d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets", o+"Correction_MC_W_MT.root", "W_OS_MC_FFOSMC_mt_correction");
-        convert_corrections( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC", o+"Correction_MC_TT_MVis.root", "TT_OS_MC_mvis_correction");
+          convert_corrections( d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets", o+"Correction_MC_W_MT.root", "W_OS_MC_FFOSMC_mt_correction");
+          convert_corrections( d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets", o+"Correction_MC_W_MT.root", "W_OS_MC_FFOSMC_mt_correction","_alt");
+          convert_corrections( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC", o+"Correction_MC_TT_MVis.root", "TT_OS_MC_mvis_correction");
+          convert_corrections( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC", o+"Correction_MC_TT_MVis.root", "TT_OS_MC_mvis_correction","_alt");
         }
       }
       else{
@@ -133,14 +145,20 @@ void convert_inputs(Int_t categoryMode=0){
           combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_down", d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD_down", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down");
         } else{
           combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_up", d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_corr_QCD_up", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up");
+          combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_up", d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_corr_QCD_up", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up","_alt");
           combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_down", d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_corr_QCD_down", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down");
+          combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_down", d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_corr_QCD_down", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down","_alt");
         }
         if(CHAN!=kTAU){
-          
+
           combineWSystematics( d+FF_corr_Wjets_MCsum_noGen_nonclosure, "nonclosure_Wjets_up", d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets_up", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_up" );
+          combineWSystematics( d+FF_corr_Wjets_MCsum_noGen_nonclosure, "nonclosure_Wjets_up", d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets_up", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_up","_alt" );          
           combineWSystematics( d+FF_corr_Wjets_MCsum_noGen_nonclosure, "nonclosure_Wjets_down", d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets_down", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_down" );
+          combineWSystematics( d+FF_corr_Wjets_MCsum_noGen_nonclosure, "nonclosure_Wjets_down", d+FF_corr_Wjets_MC_noGen_mtcorr, "mt_corr_Wjets_down", o+"uncertainties_QCD_W.root", "uncertainties_W_MVis_MT_down","_alt" );
           combineTTSystematics( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC_up", o+"uncertainties_TT.root", "uncertainties_TT_MVis_up" );
+          combineTTSystematics( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC_up", o+"uncertainties_TT.root", "uncertainties_TT_MVis_up","_alt" );
           combineTTSystematics( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC_down", o+"uncertainties_TT.root", "uncertainties_TT_MVis_down" );
+          combineTTSystematics( d+FF_corr_TT_MC_noGen_nonclosure, "nonclosure_TT_MC_down", o+"uncertainties_TT.root", "uncertainties_TT_MVis_down","_alt" );
           //combineQCDSystematics( d+"FF_corr_QCD_only_noGen_nonclosure.root", "nonclosure_QCD_MC_up", d+"FF_corr_QCD_only_noGen_muisocorr.root", "muiso_corr_QCD_up", d+"FF_corr_QCD_only_noGen_OSSS.root", "OSSS_corr_QCD_up",o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up");
           //combineQCDSystematics( d+"FF_corr_QCD_only_noGen_nonclosure.root", "nonclosure_QCD_MC_down", d+"FF_corr_QCD_only_noGen_muisocorr.root", "muiso_corr_QCD_down", d+"FF_corr_QCD_only_noGen_OSSS.root", "OSSS_corr_QCD_up", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down");
         
@@ -238,11 +256,12 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
     scale_factors.push_back(1.); scale_factors.push_back(1.);
   }
   else{
+    TString tight_cat="";
     const TString d="ViennaTool/fakefactor/data_"+s_chan[CHAN]+"/";
     TFile *f_data_CR=new TFile(d+"FF_corr_TT_MCsum_noGen.root");
-    TH1D *h_data_CR= (TH1D*)f_data_CR->Get("c_t");
+    TH1D *h_data_CR= (TH1D*)f_data_CR->Get(hn);
     TFile *f_MC_CR=new TFile(d+"FF_TT_J_only.root");
-    TH1D *h_MC_CR= (TH1D*)f_MC_CR->Get("c_t");
+    TH1D *h_MC_CR= (TH1D*)f_MC_CR->Get(hn);
   
     //for(int i=1; i<=h_data_CR->GetNbinsX(); i++){
     for(int i=1; i<=2; i++){
@@ -323,6 +342,7 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
     for (int idm=0; idm<N_D2; idm++){
       for (int ijet=0; ijet<N_D3; ijet++){
         stringstream fitted_histo; fitted_histo << "dm" << idm << "_njet" << ijet;
+        if(hn.Contains("alt")) fitted_histo << "_alt";
         TGraphAsymmErrors *h=(TGraphAsymmErrors*) f->Get(fitted_histo.str().c_str());
         double x=0; double cont=0;
         for (int ipt=0; ipt<fitBins; ipt++){
@@ -598,28 +618,25 @@ TH1D* extract_binerr_histo( TString fn , TString hn ){
 
 TString getCatString(Int_t categoryMode){
 
-  if ( categoryMode & _0JETLOW ) return categories[0];
-  if ( categoryMode & _0JETHIGH ) return categories[1];
-  if ( categoryMode & _1JETLOW ) return categories[2];
-  if ( categoryMode & _1JETHIGH ) return categories[3];
-  if ( categoryMode & _VBFLOW ) return categories[4];
-  if ( categoryMode & _VBFHIGH ) return categories[5];
-  if ( categoryMode & _2JET ) return categories[6];
-  if ( categoryMode & _ANYB ) return categories[7];
-  if ( categoryMode & _2D_0JET ) return categories[8];
-  if ( categoryMode & _2D_BOOSTED ) return categories[9];
-  if ( categoryMode & _2D_VBF ) return categories[10];
+  if ( categoryMode & _BTAG ) return categories[0];
+  if ( categoryMode & _NOBTAG ) return categories[1];
+  if ( categoryMode & _BTAG_TIGHT ) return categories[2];
+  if ( categoryMode & _BTAG_LOOSEMT ) return categories[3];
+  if ( categoryMode & _BTAG_LOOSEISO ) return categories[4];
+  if ( categoryMode & _NOBTAG_TIGHT ) return categories[5];
+  if ( categoryMode & _NOBTAG_LOOSEMT ) return categories[6];
+  if ( categoryMode & _NOBTAG_LOOSEISO ) return categories[7];
   
   
   return "incl";
   
 }
 
-void convert_corrections( const TString fn, const TString gn, const TString fout, const TString gout){
+void convert_corrections( TString fn, TString gn, TString fout, TString gout, const TString tight_cat){
 
-  TFile *f=new TFile(fn);
+  TFile *f=new TFile(fn.ReplaceAll(".root",tight_cat+".root"));
   TGraphAsymmErrors *t=(TGraphAsymmErrors*)f->Get(gn);
-  TFile *fout_h=new TFile(fout,"RECREATE");
+  TFile *fout_h=new TFile(fout.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
   TGraphAsymmErrors *gout_h=(TGraphAsymmErrors*)t->Clone(gout);
   gout_h->SetTitle(gout);
   fout_h->cd();
@@ -628,17 +645,17 @@ void convert_corrections( const TString fn, const TString gn, const TString fout
   
 }
 
-void combineQCDSystematics( const TString fQCD_nonclosure, const TString sys_nonclosure, const TString fQCD_otherLep, const TString sys_otherLep, const TString fQCD_OSSS, const TString sys_OSSS, const TString fout, const TString tout){
+void combineQCDSystematics( TString fQCD_nonclosure, TString sys_nonclosure, TString fQCD_otherLep, TString sys_otherLep, TString fQCD_OSSS, TString sys_OSSS, TString fout, TString tout, const TString tight_cat){
 
   Float_t addUncertainty=0;
   if(CHAN!=kTAU) addUncertainty=0.01;
   else addUncertainty=0.0025;
   if(CHAN!=kTAU){
-    TFile *f_nonclosure=new TFile(fQCD_nonclosure);
+    TFile *f_nonclosure=new TFile(fQCD_nonclosure.ReplaceAll(".root",tight_cat+".root"));
     TGraphAsymmErrors *sys_nonclosure_t=(TGraphAsymmErrors*)f_nonclosure->Get(sys_nonclosure);
-    TFile *f_otherLep=new TFile(fQCD_otherLep);
+    TFile *f_otherLep=new TFile(fQCD_otherLep.ReplaceAll(".root",tight_cat+".root"));
     TGraphAsymmErrors *sys_otherLep_t=(TGraphAsymmErrors*)f_otherLep->Get(sys_otherLep);
-    TFile *f_OSSS=new TFile(fQCD_OSSS);
+    TFile *f_OSSS=new TFile(fQCD_OSSS.ReplaceAll(".root",tight_cat+".root"));
     TGraphAsymmErrors *sys_OSSS_t=(TGraphAsymmErrors*)f_OSSS->Get(sys_OSSS);
 
     TH2D *out_t = new TH2D(tout, tout, sys_nonclosure_t->GetN(), sys_nonclosure_t->GetX()[0], sys_nonclosure_t->GetX()[sys_nonclosure_t->GetN()-1], sys_otherLep_t->GetN(), sys_otherLep_t->GetX()[0], sys_otherLep_t->GetX()[sys_otherLep_t->GetN()-1]);
@@ -653,7 +670,7 @@ void combineQCDSystematics( const TString fQCD_nonclosure, const TString sys_non
         else out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) ) );
       }
     }
-    TFile *fout_f=new TFile(fout,"UPDATE");
+    TFile *fout_f=new TFile(fout.ReplaceAll(".root",tight_cat+".root"),"UPDATE");
     fout_f->cd();
     out_t->Write();
     fout_f->Close();
@@ -679,7 +696,7 @@ void combineQCDSystematics( const TString fQCD_nonclosure, const TString sys_non
         else out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) ) );
       }
     }
-    TFile *fout_f=new TFile(fout,"UPDATE");
+    TFile *fout_f=new TFile(fout.ReplaceAll(".root",tight_cat+".root"),"UPDATE");
     fout_f->cd();
     out_t->Write();
     fout_f->Close();
@@ -687,11 +704,11 @@ void combineQCDSystematics( const TString fQCD_nonclosure, const TString sys_non
   
 }
 
-void combineWSystematics( const TString fW_nonclosure, const TString sys_nonclosure, const TString fW_mtcorr, const TString sys_mtcorr, const TString fout, const TString tout){
+void combineWSystematics( TString fW_nonclosure, TString sys_nonclosure, TString fW_mtcorr, TString sys_mtcorr, TString fout, TString tout, const TString tight_cat){
 
-  TFile *f_nonclosure=new TFile(fW_nonclosure);
+  TFile *f_nonclosure=new TFile(fW_nonclosure.ReplaceAll(".root",tight_cat+".root"));
   TGraphAsymmErrors *sys_nonclosure_t=(TGraphAsymmErrors*)f_nonclosure->Get(sys_nonclosure);
-  TFile *f_mtcorr=new TFile(fW_mtcorr);
+  TFile *f_mtcorr=new TFile(fW_mtcorr.ReplaceAll(".root",tight_cat+".root"));
   TGraphAsymmErrors *sys_mtcorr_t=(TGraphAsymmErrors*)f_mtcorr->Get(sys_mtcorr);
 
   TH2D *out_t = new TH2D(tout, tout, sys_nonclosure_t->GetN(), sys_nonclosure_t->GetX()[0], sys_nonclosure_t->GetX()[sys_nonclosure_t->GetN()-1], sys_mtcorr_t->GetN(), sys_mtcorr_t->GetX()[0], sys_mtcorr_t->GetX()[sys_mtcorr_t->GetN()-1]);
@@ -701,24 +718,24 @@ void combineWSystematics( const TString fW_nonclosure, const TString sys_nonclos
       out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_mtcorr_t->GetY()[j],2) +0.0025 ) );
     }
   }
-  TFile *fout_f=new TFile(fout,"UPDATE");
+  TFile *fout_f=new TFile(fout.ReplaceAll(".root",tight_cat+".root"),"UPDATE");
   fout_f->cd();
   out_t->Write();
   fout_f->Close();
 
 }
 
-void combineTTSystematics( const TString fTT_nonclosure, const TString sys_nonclosure, const TString fout, const TString tout){
+void combineTTSystematics( TString fTT_nonclosure, TString sys_nonclosure, TString fout, TString tout, const TString tight_cat){
 
   const TString d="ViennaTool/fakefactor/data_"+s_chan[CHAN]+"/";
   
-  TFile *f_nonclosure=new TFile(fTT_nonclosure);
+  TFile *f_nonclosure=new TFile(fTT_nonclosure.ReplaceAll(".root",tight_cat+".root"));
   TGraphAsymmErrors *sys_nonclosure_t=(TGraphAsymmErrors*)f_nonclosure->Get(sys_nonclosure);
 
   TFile *f_data_CR=new TFile(d+"FF_corr_TT_MCsum_noGen.root");
-  TH1D *h_data_CR= (TH1D*)f_data_CR->Get("c_t");
+  TH1D *h_data_CR= (TH1D*)f_data_CR->Get("c_t"+tight_cat);
   TFile *f_MC_CR=new TFile(d+"FF_TT_J_only.root");
-  TH1D *h_MC_CR= (TH1D*)f_MC_CR->Get("c_t");
+  TH1D *h_MC_CR= (TH1D*)f_MC_CR->Get("c_t"+tight_cat);
 
   Double_t scale_factors[]={abs(h_data_CR->GetBinContent(1)-h_MC_CR->GetBinContent(1))/h_MC_CR->GetBinContent(1), abs(h_data_CR->GetBinContent(2)-h_MC_CR->GetBinContent(2))/h_MC_CR->GetBinContent(2)};
   //Double_t scale_factors[]={0.37,0.09};
@@ -736,7 +753,7 @@ void combineTTSystematics( const TString fTT_nonclosure, const TString sys_noncl
       else out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) ) );
     }
   }
-  TFile *fout_f=new TFile(fout,"UPDATE");
+  TFile *fout_f=new TFile(fout.ReplaceAll(".root",tight_cat+".root"),"UPDATE");
   fout_f->cd();
   out_t->Write();
   fout_f->Close();
@@ -748,7 +765,8 @@ void combineTTSystematics( const TString fTT_nonclosure, const TString sys_noncl
 #ifndef __CINT__
 int main(int argc, char* argv[]) {
   if(!inclusive_selection){
-    for(Int_t icat=8; icat<nCAT; icat++){
+    for(Int_t icat=0; icat<nCAT; icat++){
+      if(CHAN==kTAU && icat >= 2) continue;
       cout << icat << endl;
       convert_inputs(catMode[icat]);
     }

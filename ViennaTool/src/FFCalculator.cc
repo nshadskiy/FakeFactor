@@ -174,13 +174,12 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
     std::cout<< "Processing " << fnames.at(i) << " with \t" << nentries << " events."<<std::endl;
     for(Int_t jentry=0;jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
-      if(CHAN!=kTAU) {if(event_s->alltau_mt->at(0) > 50)continue;}
       Double_t fracWeight=event_s->weight_sf;
       if ( !fulfillCategory(mode) ) continue;
       if ( this->isInSR(NO_SR) ){
 	if (this->isLoose()) h_n.at(i)->Fill(this->getWeightBin(),fracWeight);
 	else if (this->isTight()) h_n_tight.at(i)->Fill(this->getWeightBin(),fracWeight);
-        if (this->isLoose_tt()) h_n_tt.at(i)->Fill(this->getWeightBin(),fracWeight);
+        if (this->isTight_alt()) h_n_tt.at(i)->Fill(this->getWeightBin(),fracWeight);
       }
       if ( this->isInSR( NO_SR | _SS ) && this->isLoose() ) 
         h_ss->Fill(this->getWeightBin(),fracWeight *(-2*(i<PS_SIZE)+1)    ); //-1 for MC, +1 for data
@@ -523,16 +522,16 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
         TString qcd_rest=m_fit[i];
         qcd_rest.ReplaceAll("_QCD","_QCD_rest");
         htmp_check=(TH1D*) f.Get(qcd_rest);
-        for(int i=1;i<htmp_check->GetNbinsX();i++){ if(htmp_check->GetBinContent(i)<0) htmp_check->SetBinContent(i,0);}
+        for(int i=1;i<=htmp_check->GetNbinsX();i++){ if(htmp_check->GetBinContent(i)<0) htmp_check->SetBinContent(i,0);}
       } 
       else htmp_check=(TH1D*) f.Get(m_fit[i]);
-      for(int i=1;i<htmp_check->GetNbinsX();i++){ if(htmp_check->GetBinContent(i)<0) htmp_check->SetBinContent(i,0);}
+      for(int i=1;i<=htmp_check->GetNbinsX();i++){ if(htmp_check->GetBinContent(i)<0) htmp_check->SetBinContent(i,0);}
       h_check.push_back(htmp_check);
     }
     for (int i=0; i<NSUM; i++){
       htmp_check=(TH1D*) f.Get(m_sum[i]);
       h_check.push_back(htmp_check);
-      for(int i=1;i<htmp_check->GetNbinsX();i++){ if(htmp_check->GetBinContent(i)<0) htmp_check->SetBinContent(i,0);}
+      for(int i=1;i<=htmp_check->GetNbinsX();i++){ if(htmp_check->GetBinContent(i)<0) htmp_check->SetBinContent(i,0);}
     }
     //h_check.push_back(h_rest);
     TH1D *h_all;
@@ -845,29 +844,29 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
   TH1D counter_histo_proto("c_h","Counter histogram",this->nBins(mode),-0.5,this->nBins(mode)-0.5);
   TH1D* counter_histo_loose_CR = (TH1D*) counter_histo_proto.Clone("c_l");
   TH1D* weighted_bin_center_loose= (TH1D*) counter_histo_proto.Clone("bins_weighted");
-  TH1D* counter_histo_loose_CR_tt = (TH1D*) counter_histo_proto.Clone("c_ltt");
+  TH1D* counter_histo_tight_alt_CR = (TH1D*) counter_histo_proto.Clone("c_t_alt");
   TH1D* counter_histo_tight_CR = (TH1D*) counter_histo_proto.Clone("c_t");
   TH1D* fakefactor_histo = (TH1D*) counter_histo_proto.Clone("c_f");
-  TH1D* fakefactor_histo_tt = (TH1D*) counter_histo_proto.Clone("c_ftt");
+  TH1D* fakefactor_histo_alt = (TH1D*) counter_histo_proto.Clone("c_t_alt");
  
   std::vector<TH1D*> counter_histo_loose_CR_cont;
-  std::vector<TH1D*> counter_histo_loose_CR_tt_cont;
+  std::vector<TH1D*> counter_histo_tight_alt_CR_cont;
   std::vector<TH1D*> counter_histo_tight_CR_cont;
   for (unsigned i=0; i<pre_sub.size(); i++){
     TString tmp; tmp+=i;
     counter_histo_loose_CR_cont.push_back( (TH1D*) counter_histo_proto.Clone("cc"+tmp+"_l")  );
-    counter_histo_loose_CR_tt_cont.push_back( (TH1D*) counter_histo_proto.Clone("cc"+tmp+"_ltt")  );
+    counter_histo_tight_alt_CR_cont.push_back( (TH1D*) counter_histo_proto.Clone("cc"+tmp+"_t_alt")  );
     counter_histo_tight_CR_cont.push_back( (TH1D*) counter_histo_proto.Clone("cc"+tmp+"_t")  );
   }
 
   TH1D* counter_histo_numer = (TH1D*) counter_histo_proto.Clone("numer");
-  TH1D* counter_histo_numer_tt = (TH1D*) counter_histo_proto.Clone("numer_tt");
+  TH1D* counter_histo_numer_alt = (TH1D*) counter_histo_proto.Clone("numer_alt");
   TH1D* counter_histo_denom = (TH1D*) counter_histo_proto.Clone("denom");
-  TH1D* counter_histo_denom_tt = (TH1D*) counter_histo_proto.Clone("denom_tt");
+  TH1D* counter_histo_denom_alt = (TH1D*) counter_histo_proto.Clone("denom_alt");
 
   int nT=0;
   int nL=0;
-  int nLtt=0;
+  int nT_alt=0;
   Double_t bin_values[this->getNjets(mode)*this->getNtracks(mode)][this->getNpts(mode)]={{0}}; Double_t bin_counters[this->getNjets(mode)*this->getNtracks(mode)][this->getNpts(mode)]={};
   loadFile(pre_main,"Events");
   //Commence loop over tree
@@ -882,10 +881,10 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
       //if(pre_main.Contains("data"))cout << "Before" << endl;
       if (  ( (mode & DOALL) && this->isInAll(mode,i) ) ||  ( doCR && this->isInCR(mode,i) ) || ( !doCR && this->isInSR(mode,i) )    ) {
         //if(pre_main.Contains("data"))cout << "after" << endl;
-	nT=this->isTight(mode,i); nL=this->isLoose(mode,i); nLtt=this->isLoose_tt(mode,i);
+	nT=this->isTight(mode,i); nL=this->isLoose(mode,i); nT_alt=this->isTight_alt(mode,i);
 	if      (nT) {counter_histo_tight_CR->Fill(this->getBin(mode,i),event_s->weight_sf);}
-	else if (nL) {counter_histo_loose_CR->Fill(this->getBin(mode,i),event_s->weight_sf);}
-        if (nLtt) {counter_histo_loose_CR_tt->Fill(this->getBin(mode,i),event_s->weight_sf);}
+	if (nL) {counter_histo_loose_CR->Fill(this->getBin(mode,i),event_s->weight_sf);}
+        if (nT_alt) {counter_histo_tight_alt_CR->Fill(this->getBin(mode,i),event_s->weight_sf);}
 
         if(nL){
           Int_t pT_index=this->getPtIndex(mode,i);
@@ -898,7 +897,7 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
     }
   }//end loop over entries
 
-  std::cout<<"in "<<pre_main<<": "<<counter_histo_loose_CR->Integral(-1,-1) <<" loose, "<<counter_histo_tight_CR->Integral(-1,-1)<<" tight, " <<counter_histo_loose_CR_tt->Integral(-1,-1)<<" loose tt."<<std::endl;
+  std::cout<<"in "<<pre_main<<": "<<counter_histo_loose_CR->Integral(-1,-1) <<" loose, "<<counter_histo_tight_CR->Integral(-1,-1)<<" tight, " <<counter_histo_tight_alt_CR->Integral(-1,-1)<<" loose tt."<<std::endl;
 
   for (unsigned is=0; is<pre_sub.size(); is++){
     loadFile(pre_sub.at(is),"Events");
@@ -910,10 +909,10 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
       for (unsigned i=0; i<ntau; i++){
 	if ( !this->passesCuts(cuts,i) ) continue;
 	if (  ( (mode & DOALL) && this->isInAll(mode,i) ) ||  ( doCR && this->isInCR(mode,i) ) || ( !doCR && this->isInSR(mode,i) )    ) {
-	  nT=this->isTight(mode,i); nL=this->isLoose(mode,i); nLtt=this->isLoose_tt(mode,i);
+	  nT=this->isTight(mode,i); nL=this->isLoose(mode,i); nT_alt=this->isTight_alt(mode,i);
 	  if (nT) {counter_histo_tight_CR_cont.at(is)->Fill(this->getBin(mode,i),event_s->weight_sf);}
 	  else if (nL) {counter_histo_loose_CR_cont.at(is)->Fill(this->getBin(mode,i),event_s->weight_sf);}
-          if (nLtt) {counter_histo_loose_CR_tt_cont.at(is)->Fill(this->getBin(mode,i),event_s->weight_sf);}
+          if (nT_alt) {counter_histo_tight_alt_CR_cont.at(is)->Fill(this->getBin(mode,i),event_s->weight_sf);}
 
           if(nL){
             Int_t pT_index=this->getPtIndex(mode,i);
@@ -925,35 +924,35 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
 	}
       }
     }
-    if (DEBUG) std::cout<<std::endl<<"In contamination file "<<pre_sub.at(is)<<" "<< counter_histo_loose_CR_cont.at(is)->Integral(-1,-1) <<" loose "<<counter_histo_tight_CR_cont.at(is)->Integral(-1,-1)<<" tight, " <<counter_histo_loose_CR_tt_cont.at(is)->Integral(-1,-1)<<" loose tt."<<std::endl;
+    if (DEBUG) std::cout<<std::endl<<"In contamination file "<<pre_sub.at(is)<<" "<< counter_histo_loose_CR_cont.at(is)->Integral(-1,-1) <<" loose "<<counter_histo_tight_CR_cont.at(is)->Integral(-1,-1)<<" tight, " <<counter_histo_tight_alt_CR_cont.at(is)->Integral(-1,-1)<<" loose tt."<<std::endl;
   }
   
   counter_histo_numer->Add(counter_histo_tight_CR);
-  counter_histo_numer_tt->Add(counter_histo_tight_CR);
+  counter_histo_numer_alt->Add(counter_histo_tight_alt_CR);
   counter_histo_denom->Add(counter_histo_loose_CR);
-  counter_histo_denom_tt->Add(counter_histo_loose_CR_tt);
+  counter_histo_denom_alt->Add(counter_histo_loose_CR);
 
   for (unsigned is=0; is<pre_sub.size(); is++){
     counter_histo_numer->Add(counter_histo_tight_CR_cont.at(is),-1.);
-    counter_histo_numer_tt->Add(counter_histo_tight_CR_cont.at(is),-1.);
+    counter_histo_numer_alt->Add(counter_histo_tight_alt_CR_cont.at(is),-1.);
     counter_histo_denom->Add(counter_histo_loose_CR_cont.at(is),-1.);
-    counter_histo_denom_tt->Add(counter_histo_loose_CR_tt_cont.at(is),-1.);
+    counter_histo_denom_alt->Add(counter_histo_loose_CR_cont.at(is),-1.);
   }
 
-  TString ff_file=FF_file; if(calcVTightFF)ff_file.ReplaceAll(".root","_VTight.root");
+  TString ff_file=FF_file; //if(calcVTightFF)ff_file.ReplaceAll(".root","_VTight.root");
   TFile f(ff_file,"RECREATE");
   f.cd();
   
-  fakefactor_histo = counter_histo_numer; fakefactor_histo_tt = counter_histo_numer_tt;
+  fakefactor_histo = counter_histo_numer; fakefactor_histo_alt = counter_histo_numer_alt;
   //  fakefactor_histo->Divide(counter_histo_denom); //uncorrelated errors
   fakefactor_histo->Divide(fakefactor_histo,counter_histo_denom,1,1,"B"); //binomial errors
   fakefactor_histo->SetTitle("Fakefactor");
   fakefactor_histo->SetName("c_t");
   fakefactor_histo->Write();
-  fakefactor_histo_tt->Divide(fakefactor_histo_tt,counter_histo_denom_tt,1,1,"B"); //binomial errors
-  fakefactor_histo_tt->SetTitle("Fakefactor");
-  fakefactor_histo_tt->SetName("c_t_tt");
-  fakefactor_histo_tt->Write();
+  fakefactor_histo_alt->Divide(fakefactor_histo_alt,counter_histo_denom_alt,1,1,"B"); //binomial errors
+  fakefactor_histo_alt->SetTitle("Fakefactor");
+  fakefactor_histo_alt->SetName("c_t_alt");
+  fakefactor_histo_alt->Write();
 
 
   for(Int_t ijets=0;ijets<this->getNjets(mode);ijets++){
@@ -1658,7 +1657,7 @@ void FFCalculator::applyFF_tt_raw(TString outfile, const std::vector<Int_t> mode
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
       
-      if (   this->isInSR(mode.at(ni),tau_ind) && this->isLoose_tt(mode.at(ni),tau_ind)  && ( !cuts || this->passesCuts(cuts,tau_ind) )  ) { //!cuts for performance
+      if (   this->isInSR(mode.at(ni),tau_ind) && this->isTight_alt(mode.at(ni),tau_ind)  && ( !cuts || this->passesCuts(cuts,tau_ind) )  ) { //!cuts for performance
         fillVal=this->selVal(mode.at(ni),tau_ind);
         inputs.clear();
         this->getInputs(inputs, tau_ind);
@@ -2177,7 +2176,7 @@ void FFCalculator::getSystUncertainties(const Int_t mode, TString FFfile, const 
 }
 
 
-void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const TString compare_file, const TString ff_output, const Int_t doPlot, const Int_t subtractMC, const Int_t tau_ind){
+void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const TString compare_file, TString ff_output, const TString tight_cat, const Int_t doPlot, const Int_t subtractMC, const Int_t tau_ind){
 
   cout << "Calculating corrections for " << ff_output << endl;
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
@@ -2193,18 +2192,18 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   if(mode & _TT) closure_h= new TH1D("closure"+sample,"",nbins_mvis,hist_min_mvis,hist_max_mvis);
   else closure_h= new TH1D("closure"+sample,"",w_mvis_n,w_mvis_v);
   //TH1D *closure_h = new TH1D("closure"+sample,"",w_zpt_n,w_zpt_v);
-  TFile *output = new TFile(ff_output,"RECREATE");
+  TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
   TH1D *output_h = new TH1D("nonclosure_mvis","",w_mvis_n,w_mvis_v);
   //TH1D *output_h = new TH1D("nonclosure_zpt","",w_zpt_n,w_zpt_v);
   TFile FF_lookup(raw_ff);
   TH1D* FF_lookup_h = nullptr;
-  if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t");
+  if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t"+tight_cat);
   vector<TGraphAsymmErrors*> fittedFFs;
   if( raw_ff.Contains("_fitted") ){
-    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"); fittedFFs.push_back(dm0njet0);
-    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"); fittedFFs.push_back(dm1njet0);
-    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"); fittedFFs.push_back(dm0njet1);
-    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"); fittedFFs.push_back(dm1njet1);
+    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"+tight_cat); fittedFFs.push_back(dm0njet0);
+    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"+tight_cat); fittedFFs.push_back(dm1njet0);
+    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"+tight_cat); fittedFFs.push_back(dm0njet1);
+    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"+tight_cat); fittedFFs.push_back(dm1njet1);
   }
   
   TFile compare(compare_file);
@@ -2222,8 +2221,8 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
     //TH1D *unity_h = new TH1D("unity","",w_zpt_n,w_zpt_v);
     for(int ibin=1; ibin<=unity_h->GetNbinsX(); ibin++) unity_h->SetBinContent(ibin,1.);
     ratio_l->Add(unity_h,-1);ratio_l->Scale(-1);
-    TH1D* compare_t              = (TH1D*) compare.Get("hh_t_mvis");
-    TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t_mvis_MCsubtracted");
+    TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis");
+    TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis_MCsubtracted");
     //TH1D* compare_t              = (TH1D*) compare.Get("hh_t_zpt");
     //TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t_zpt_MCsubtracted");
 
@@ -2268,7 +2267,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
     output_h->Divide(closure_h);
   }
   else{ 
-    TH1D* compare_t              = (TH1D*) compare.Get("hh_t_mvis");
+    TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis");
   
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
@@ -2301,14 +2300,14 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   }
 
   TH1D* output_fit;
-  if(CHAN==kTAU && calcVTightFF){
+  /*if(CHAN==kTAU && calcVTightFF){
     output_fit=new TH1D("nonclosure_fit","",w_mvis_n,w_mvis_v);
     for(int i=1;i<=output_h->GetNbinsX();i++){
       
       if( i >= 9 ){output_fit->SetBinContent(i,output_h->GetBinContent(i)); output_fit->SetBinError(i,output_h->GetBinError(i));}
     }
   }
-  else output_fit = (TH1D*)output_h->Clone("nonclosure_fit");
+  else*/ output_fit = (TH1D*)output_h->Clone("nonclosure_fit");
 
   for(int i=1;i<=output_h->GetNbinsX();i++){
     if( output_h->GetBinContent(i) < 0 ) output_h->SetBinError(i,1.);
@@ -2429,7 +2428,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   c2->Write();
   TString SSstring="";
   if(CALC_SS_SR)SSstring+="_SS_SR";
-  if ( doPlot)  c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/nonclosure"+sample+SSstring+".png");
+  if ( doPlot)  c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/nonclosure"+sample+SSstring+tight_cat+".png");
   //if ( doPlot)  c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/nonclosure_zpt"+sample+SSstring+".png");
 
   FF_lookup.Close();output->Close();
@@ -2573,14 +2572,14 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   }
 
   TH1D* output_fit;
-  if(CHAN==kTAU && calcVTightFF){
+  /*if(CHAN==kTAU && calcVTightFF){
     output_fit=new TH1D("nonclosure_fit","",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
     for(int i=1;i<=output_h->GetNbinsX();i++){
       
       if( i >= 9 ){output_fit->SetBinContent(i,output_h->GetBinContent(i)); output_fit->SetBinError(i,output_h->GetBinError(i));}
     }
   }
-  else output_fit = (TH1D*)output_h->Clone("nonclosure_fit");
+  else*/ output_fit = (TH1D*)output_h->Clone("nonclosure_fit");
 
   for(int i=1;i<=output_h->GetNbinsX();i++){
     if( output_h->GetBinContent(i) < 0 ) output_h->SetBinError(i,1.);
@@ -2690,26 +2689,26 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   
 }
 
-void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const TString CR_file, const TString nonclosure_corr, const TString ff_output, const Int_t doPlot, const Int_t subtractMC, const Int_t tau_ind){
+void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const TString CR_file, TString nonclosure_corr, TString ff_output, const TString tight_cat, const Int_t doPlot, const Int_t subtractMC, const Int_t tau_ind){
 
   cout << "Calculating corrections for " << ff_output << endl;
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
   cout << nentries << endl;
-  TFile *output = new TFile(ff_output,"RECREATE");
+  TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
   TH1D *output_h = new TH1D("muiso_corr","",w_muiso_n,w_muiso_v);
   TH1D *closure_h = new TH1D("closure","",w_muiso_n,w_muiso_v);
   TFile FF_lookup(raw_ff);
   if(FF_lookup.IsZombie()) cout << raw_ff << " does not exist" << endl;
   TH1D* FF_lookup_h = nullptr;
-  if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t");
+  if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t"+tight_cat);
   vector<TGraphAsymmErrors*> fittedFFs;
   if( raw_ff.Contains("_fitted") ){
-    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"); fittedFFs.push_back(dm0njet0);
-    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"); fittedFFs.push_back(dm1njet0);
-    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"); fittedFFs.push_back(dm0njet1);
-    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"); fittedFFs.push_back(dm1njet1);
+    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"+tight_cat); fittedFFs.push_back(dm0njet0);
+    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"+tight_cat); fittedFFs.push_back(dm1njet0);
+    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"+tight_cat); fittedFFs.push_back(dm0njet1);
+    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"+tight_cat); fittedFFs.push_back(dm1njet1);
   }
-  TFile nonclosure(nonclosure_corr);
+  TFile nonclosure(nonclosure_corr.ReplaceAll(".root",tight_cat+".root"));
   if(nonclosure.IsZombie()) cout << nonclosure_corr << " does not exist" << endl;
   TH1D* nonclosure_h = (TH1D*) nonclosure.Get("nonclosure_fit_smoothed");
   
@@ -2725,8 +2724,8 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
     TH1D *unity_h = new TH1D("unity","",w_muiso_n,w_muiso_v);
     for(int ibin=1; ibin<=unity_h->GetNbinsX(); ibin++) unity_h->SetBinContent(ibin,1.);
     ratio_l->Add(unity_h,-1);ratio_l->Scale(-1);
-    TH1D* compare_t              = (TH1D*) compare.Get("hh_t_muiso");
-    TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t_muiso_MCsubtracted");
+    TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_muiso");
+    TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t"+tight_cat+"_muiso_MCsubtracted");
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
       if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
@@ -2749,7 +2748,7 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
     output_h->Divide(closure_h);
   }
   else{
-    TH1D* compare_t              = (TH1D*) compare.Get("hh_t_muiso");
+    TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_muiso");
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
       if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
@@ -2821,8 +2820,8 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
   c2->SetName("muiso_corr"+sample+"_c");
   c2->Write();
   if(doPlot){
-    if(!CALC_SS_SR) c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/muisocorr"+sample+".png");
-    if(CALC_SS_SR) c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/muisocorr"+sample+"_SS_SR.png");
+    if(!CALC_SS_SR) c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/muisocorr"+sample+tight_cat+".png");
+    if(CALC_SS_SR) c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/muisocorr"+sample+tight_cat+"_SS_SR.png");
   }
   
   FF_lookup.Close();compare.Close();nonclosure.Close();output->Close();
@@ -2834,12 +2833,12 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
   
 }
 
-void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const TString SR_file_AI, const TString nonclosure_corr, const TString ff_output, const Int_t doPlot, const Int_t subtractMC, const Int_t tau_ind){
+void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const TString SR_file_AI, TString nonclosure_corr, TString ff_output, const TString tight_cat, const Int_t doPlot, const Int_t subtractMC, const Int_t tau_ind){
 
   cout << "Calculating corrections for " << ff_output << endl;
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
   cout << nentries << endl;
-  TFile *output = new TFile(ff_output,"RECREATE");
+  TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
   TH1D *output_h = new TH1D("OSSS_corr","",w_mvis_n,w_mvis_v);
   TH1D *closure_h = new TH1D("closure","",w_mvis_n,w_mvis_v);
   Double_t FF_value=0;
@@ -2848,15 +2847,15 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
   TFile FF_lookup(raw_ff);
   if(FF_lookup.IsZombie()) cout << raw_ff << " does not exist" << endl;
   TH1D* FF_lookup_h = nullptr;
-  if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t");
+  if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t"+tight_cat);
   vector<TGraphAsymmErrors*> fittedFFs;
   if( raw_ff.Contains("_fitted") ){
-    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"); fittedFFs.push_back(dm0njet0);
-    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"); fittedFFs.push_back(dm1njet0);
-    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"); fittedFFs.push_back(dm0njet1);
-    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"); fittedFFs.push_back(dm1njet1);
+    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"+tight_cat); fittedFFs.push_back(dm0njet0);
+    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"+tight_cat); fittedFFs.push_back(dm1njet0);
+    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"+tight_cat); fittedFFs.push_back(dm0njet1);
+    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"+tight_cat); fittedFFs.push_back(dm1njet1);
   }
-  TFile nonclosure(nonclosure_corr);
+  TFile nonclosure(nonclosure_corr.ReplaceAll(".root",tight_cat+".root"));
   if(nonclosure.IsZombie()) cout << nonclosure_corr << " does not exist" << endl;
   TH1D* nonclosure_h = (TH1D*) nonclosure.Get("nonclosure_fit_smoothed");
 
@@ -2870,8 +2869,8 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
     TH1D *unity_h = new TH1D("unity","",w_mvis_n,w_mvis_v);
     for(int ibin=1; ibin<=unity_h->GetNbinsX(); ibin++) unity_h->SetBinContent(ibin,1.);
     ratio_l->Add(unity_h,-1);ratio_l->Scale(-1);
-    TH1D* compare_t              = (TH1D*) compare.Get("hh_t_mvis");
-    TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t_mvis_MCsubtracted");
+    TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis");
+    TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis_MCsubtracted");
     //if(CHAN==kEL)compare_t_MCsubtracted->Scale(0.8);
     //if(CHAN==kMU)compare_t_MCsubtracted->Scale(0.95);
     TH1D* ratio_t                = (TH1D*)compare_t_MCsubtracted->Clone("ratio_t");
@@ -2905,7 +2904,7 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
     }
   }
   else{
-    TH1D* compare_t              = (TH1D*) compare.Get("hh_t_mvis");
+    TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis");
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
       if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
@@ -3037,7 +3036,7 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
   output_h->SetMinimum(0.);
   c2->SetName("OSSS_corr"+sample+"_c");
   c2->Write();
-  if(doPlot)c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/OSSScorr"+sample+".png");
+  if(doPlot)c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/OSSScorr"+sample+tight_cat+".png");
 
   FF_lookup.Close();compare.Close();nonclosure.Close();output->Close();
   if( raw_ff.Contains("_fitted") ){
@@ -3048,27 +3047,27 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
 }
 
 
-void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TString CR_file, const TString nonclosure_corr, const TString ff_output, const Int_t tau_ind){
+void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TString CR_file, TString nonclosure_corr, TString ff_output, const TString tight_cat, const Int_t tau_ind){
 
   cout << "Calculating corrections for " << ff_output << endl;
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
   cout << nentries << endl;
-  TFile *output = new TFile(ff_output,"RECREATE");
+  TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
 
   TH1D *output_h = new TH1D("mt_corr","",w_mt_n,w_mt_v);
   TH1D *closure_h = new TH1D("closure","",w_mt_n,w_mt_v);
   Double_t FF_value=0;
   TFile compare(CR_file);
-  TH1D* compare_t              = (TH1D*) compare.Get("hh_t_mt");
+  TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_mt");
   TFile FF_lookup(raw_ff);
   TH1D* FF_lookup_h = nullptr;
-  if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t");
+  if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t"+tight_cat);
   vector<TGraphAsymmErrors*> fittedFFs;
   if( raw_ff.Contains("_fitted") ){
-    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"); fittedFFs.push_back(dm0njet0);
-    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"); fittedFFs.push_back(dm1njet0);
-    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"); fittedFFs.push_back(dm0njet1);
-    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"); fittedFFs.push_back(dm1njet1);
+    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"+tight_cat); fittedFFs.push_back(dm0njet0);
+    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"+tight_cat); fittedFFs.push_back(dm1njet0);
+    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"+tight_cat); fittedFFs.push_back(dm0njet1);
+    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"+tight_cat); fittedFFs.push_back(dm1njet1);
   }
   TFile nonclosure(nonclosure_corr);
   TH1D* nonclosure_h = (TH1D*) nonclosure.Get("nonclosure_fit_smoothed");
@@ -3140,8 +3139,8 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   output_h->SetMinimum(0.);
   c2->SetName("mt_corr"+sample+"_c");
   c2->Write();
-  if(!CALC_SS_SR) c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/mtcorr"+sample+".png");
-  if(CALC_SS_SR) c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/mtcorr"+sample+"_SS_SR.png");
+  if(!CALC_SS_SR) c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/mtcorr"+sample+tight_cat+".png");
+  if(CALC_SS_SR) c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/mtcorr"+sample+tight_cat+"_SS_SR.png");
 
   FF_lookup.Close();compare.Close();output->Close();
   if( raw_ff.Contains("_fitted") ){

@@ -5,8 +5,9 @@ using namespace std;
 
 void test(){
 
-  //TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170212/et/_2D_Boosted/fakeFactors_20170212.root";
-  TString fname="/afs/hephy.at/work/j/jbrandstetter/cmssw/CMSSW_8_0_20/src/HTTutilities/Jet2TauFakes/data/mt/boosted/fakeFactors_20170228.root";
+  TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170328_tight/mt/_btagHigh/fakeFactors_20170328_tight.root";
+  //TString fname="/afs/hephy.at/user/m/mspanring/public/forHannes/data/mt/btagLoose/fakeFactors_20170324.root";
+  //TString fname="/afs/hephy.at/work/j/jbrandstetter/cmssw/CMSSW_8_0_20/src/HTTutilities/Jet2TauFakes/data/mt/boosted/fakeFactors_20170228.root";
   //TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170217_MC/mt/incl/fakeFactors_20170217_MC.root";
   //TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170212/tt/incl/fakeFactors_20170212.root";
   //TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170111/et/incl/fakeFactors_20170111.root";
@@ -19,12 +20,12 @@ void test(){
 
   // Fill inputs
   std::vector<double> inputs(6);
-  inputs[0] = 148; //tau_pt;
-  inputs[1] = 10;  //tau_decayMode;
-  inputs[2] = 4;  //njet
-  inputs[3] = 161; //mvis;
+  inputs[0] = 45; //tau_pt;
+  inputs[1] = 0;  //tau_decayMode;
+  inputs[2] = 0;  //njet
+  inputs[3] = 100; //mvis;
   inputs[4] = 43.7; //mt
-  inputs[5] = 0.123; //muon_iso;
+  inputs[5] = 0.01; //muon_iso;
 
   // Retrieve fake factors
   double ff_nom = ff->value(inputs); // nominal fake factor
