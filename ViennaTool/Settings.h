@@ -11,7 +11,7 @@ const Double_t luminosity=35.9; //27.9 for ABCDEFG, 20.2 for ABCDEFB
 
 const int CHAN = kTAU; //kMU,kEL,kTAU
 const int use_svfit = 0;
-const TString ver = "v11";
+const TString ver = "v15";
 const int integrateOverTrig = 1;
 const int XTriggerObjectMatch = 0;
 const TString inputFF_dir = "~/public/Htautau/FakeRate2016/";
@@ -22,7 +22,7 @@ const Double_t epsilon=0.09; //forBlinding
 const Double_t FFW_REL_ERR=0.0;
 const int NERR=5; //number of toys for FF
 ///////////////////////////////////////////////////
-const int inclusive_selection=1; //0: splitting FF procedure in categories defined in Globals.h
+const int inclusive_selection=0; //0: splitting FF procedure in categories defined in Globals.h
 const int useVV=1;
 const int useMVAMET=0;
 ///////////////////////////////////////////////////
@@ -45,7 +45,7 @@ const int APPLY_TO_ISOTAU=1; //def: 0
 const int USE_ISOTAU=1; //def: 1
 const int USE_MVA_ISO=1; //def: 1
 const int CALC_SS_SR=0; //default: 0   //0.15<QCD_iso<0.25 for QCD FFs
-const int num = 21;
+const int num = 0;
 const int doSRHisto = 1;
 const int doCRHisto = 1;
 ///////////////////////////////////////////////////
@@ -58,15 +58,15 @@ const int applyFF_fromCR=1; //1 for default; 0 for debugging
 const int requireGenMatch_whenCalcFF=0; //0 as default
 const int useDYFF_forTT=0; //0 as default
 const int useWJFF_forDY=0; //1 as default
-const int doCalcWeights=0; //calc fractions
+const int doCalcWeights=1; //calc fractions
 const int doFit=0; //template fit for fractions, default: 0
 const int doCalc=1; //calc FFs
 const int calcVTightFF=0;
 //////////////////////////////////////////////////
 const int fit_pT_bins = 1; //use fitted pT bins as input for ff
 const double fitMin = 40;
-const double fitMax = 300;
-const int fitBins = 260;
+const double fitMax = 500;
+const int fitBins = 460;
 //////////////////////////////////////////////////
 //applyFF
 const int doBgEst=1; //calc bkg estimates for different FF contributions

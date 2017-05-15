@@ -273,8 +273,6 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
       h_n_qcd_tight->Add( h_n_tight.at(i) , -1 );
     }
 
-    cout << "Works4" << endl;
-
     /*
       TH1D* nMCsum=new TH1D("nMCsum","",nbins_weight,min_weight,max_weight);
       TH1D* nMCsumTight=new TH1D("nMCsumTight","",nbins_weight,min_weight,max_weight);
@@ -657,7 +655,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
   }*/
 
   //now some nicer plots
-  if ( nbins_weight == w_pt_n*w_dm_n ){ //split by decay mode: only if total number of weight bins is #mt-bins*#dm-bins
+  if ( (CHAN != kTAU && nbins_weight == w_pt_n*w_dm_n) || (CHAN == kTAU && nbins_weight == w_mttot_n*w_dm_n) ){ //split by decay mode: only if total number of weight bins is #mt-bins*#dm-bins
     
     THStack* hs_split[w_dm_n]; for (int i=0; i<w_dm_n; i++) hs_split[i] = new THStack("w_split"+sNum[i],"");
     TLegend* leg = new TLegend(0.3,0.16,0.45,0.46);
@@ -670,10 +668,17 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
       h_w_split[is].resize(NW);
       for (int j=0; j<NW-1; j++){
         if ( !DOQCD&& m_type[j].Contains("QCD") ) continue;
-        h_w_split[is].at(j) = new TH1D("h_w_split"+mode+sNum[j]+sNum[is]+isolation ,"",w_pt_n,w_pt_v);
+        Int_t n_tmp = 0;
+        if(CHAN != kTAU) n_tmp = w_pt_n;
+        else n_tmp = w_mttot_n;
+        Double_t arr_tmp[n_tmp+1];
+        if(CHAN != kTAU) for(int i=0;i<=n_tmp;i++) arr_tmp[i]=w_pt_v[i];
+        else for(int i=0;i<=n_tmp;i++) arr_tmp[i]=w_mttot_v[i];
+        
+        h_w_split[is].at(j) = new TH1D("h_w_split"+mode+sNum[j]+sNum[is]+isolation ,"",n_tmp,arr_tmp);
         h_w_split[is].at(j)->SetFillColor(m_color[j]);
-        for (int ib=0; ib<w_pt_n; ib++){
-          h_w_split[is].at(j)->SetBinContent( ib+1 , h_w.at(j)->GetBinContent(ib+1 + is*w_pt_n) );
+        for (int ib=0; ib<n_tmp; ib++){
+          h_w_split[is].at(j)->SetBinContent( ib+1 , h_w.at(j)->GetBinContent(ib+1 + is*n_tmp) );
         }
         h_w_split[is].at(j)->SetMaximum(1.0);
         hs_split[is]->Add(h_w_split[is].at(j),"hist");
@@ -688,8 +693,10 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
       hs_split[is]->Draw();
       //      hs_split[is]->GetYaxis()->SetRangeUser(0.0,1.0);
       hs_split[is]->SetMaximum(1.0);
-      hs_split[is]->GetXaxis()->SetTitle(labelPt);
-      hs_split[is]->GetYaxis()->SetTitle("fraction");
+      c1s->SetLogx();
+      if(CHAN != kTAU)hs_split[is]->GetXaxis()->SetTitle(labelPt);
+      else hs_split[is]->GetXaxis()->SetTitle("m_{T,tot} [GeV]");
+      hs_split[is]->GetYaxis()->SetTitle("Fraction");
       hs_split[is]->Draw();
       leg->Draw();
       TString fracstring=m_path_img+"frac_split"+sNum[is]+isolation+".png";
@@ -2440,7 +2447,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   
 }
 
-void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff, const TString compare_file, const TString nonclosure_corr, const TString ff_output, const Int_t doPlot, const Int_t subtractMC, const Int_t tau_ind){
+void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff, const TString compare_file, const TString nonclosure_corr, TString ff_output, const TString tight_cat, const Int_t doPlot, const Int_t subtractMC, const Int_t tau_ind){
 
   cout << "Calculating corrections for " << ff_output << endl;
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
@@ -2457,18 +2464,18 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   if(mode & _TT) closure_h= new TH1D("closure"+sample,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
   else closure_h= new TH1D("closure"+sample,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
   //TH1D *closure_h = new TH1D("closure"+sample,"",w_zpt_n,w_zpt_v);
-  TFile *output = new TFile(ff_output,"RECREATE");
+  TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
   TH1D *output_h = new TH1D("nonclosure_lepPt","",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
   //TH1D *output_h = new TH1D("nonclosure_zpt","",w_zpt_n,w_zpt_v);
   TFile FF_lookup(raw_ff);
   TH1D* FF_lookup_h = nullptr;
-  if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t");
+  if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t"+tight_cat);
   vector<TGraphAsymmErrors*> fittedFFs;
   if( raw_ff.Contains("_fitted") ){
-    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"); fittedFFs.push_back(dm0njet0);
-    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"); fittedFFs.push_back(dm1njet0);
-    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"); fittedFFs.push_back(dm0njet1);
-    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"); fittedFFs.push_back(dm1njet1);
+    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"+tight_cat); fittedFFs.push_back(dm0njet0);
+    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"+tight_cat); fittedFFs.push_back(dm1njet0);
+    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"+tight_cat); fittedFFs.push_back(dm0njet1);
+    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"+tight_cat); fittedFFs.push_back(dm1njet1);
   }
   TFile nonclosure(nonclosure_corr);
   if(nonclosure.IsZombie()) cout << nonclosure_corr << " does not exist" << endl;
@@ -2488,8 +2495,8 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
     //TH1D *unity_h = new TH1D("unity","",w_zpt_n,w_zpt_v);
     for(int ibin=1; ibin<=unity_h->GetNbinsX(); ibin++) unity_h->SetBinContent(ibin,1.);
     ratio_l->Add(unity_h,-1);ratio_l->Scale(-1);
-    TH1D* compare_t              = (TH1D*) compare.Get("hh_t_lepPt");
-    TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t_lepPt_MCsubtracted");
+    TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_lepPt");
+    TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t"+tight_cat+"_lepPt_MCsubtracted");
     //TH1D* compare_t              = (TH1D*) compare.Get("hh_t_zpt");
     //TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t_zpt_MCsubtracted");
 
@@ -2539,7 +2546,7 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
     output_h->Divide(closure_h);
   }
   else{ 
-    TH1D* compare_t              = (TH1D*) compare.Get("hh_t_lepPt");
+    TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_lepPt");
   
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
@@ -2677,7 +2684,7 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   c2->Write();
   TString SSstring="";
   if(CALC_SS_SR)SSstring+="_SS_SR";
-  if ( doPlot)  c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/nonclosure_pt"+sample+SSstring+".png");
+  if ( doPlot)  c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/nonclosure_pt"+sample+SSstring+tight_cat+".png");
   //if ( doPlot)  c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/nonclosure_zpt"+sample+SSstring+".png");
 
   FF_lookup.Close();output->Close();

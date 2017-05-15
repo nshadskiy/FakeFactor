@@ -56,10 +56,11 @@ Int_t GlobalClass::isLoose(const Int_t mode, const Int_t ind) //default: 0,0
 
   if (USE_MVA_ISO){
     if( CHAN == kTAU ){
-      if ( !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
+      //if ( !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
+      if ( !event_s->alltau_mediumMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
     }
-    else if ( !event_s->alltau_mediumMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
-    //else if ( !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
+    //else if ( !event_s->alltau_mediumMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
+    else if ( !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
     //else if ( !event_s->alltau_looseMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
     //else if ( !event_s->alltau_looseMVA->at(ind) ) return 1;
   } else{
@@ -88,8 +89,15 @@ Int_t GlobalClass::isTight(const Int_t mode, const Int_t ind) //default: 0,0
   if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != 6 ) return 0; }
 
   if (USE_MVA_ISO){
-    if ( calcVTightFF && event_s->alltau_vtightMVA->at(ind)) return 1; 
-    if ( !calcVTightFF && event_s->alltau_tightMVA->at(ind)) return 1;
+    if(CHAN == kTAU){
+      if ( calcVTightFF && event_s->alltau_vtightMVA->at(ind)) return 1; 
+      //if ( !calcVTightFF && event_s->alltau_tightMVA->at(ind)) return 1;
+      if ( !calcVTightFF && event_s->alltau_mediumMVA->at(ind)) return 1;
+    }
+    else{
+      //if ( event_s->alltau_mediumMVA->at(ind)) return 1;
+      if ( event_s->alltau_tightMVA->at(ind)) return 1;
+    }
   } else{
     if (event_s->alltau_mediumBeta->at(ind)) return 1;
   }
@@ -107,7 +115,7 @@ Int_t GlobalClass::isInSR(const Int_t mode, const Int_t ind)
   //antiIso_min=isolation+0.15; antiIso_max=isolation+0.35;
 
   //MSSM definition of SR
-  if( !( event_s->nbtag == 0 || (event_s->nbtag>0 && event_s->njets<=1) ) ) return 0;
+  //if( !( event_s->nbtag == 0 || (event_s->nbtag>0 && event_s->njets<=1) ) ) return 0;
   if ( mode & GEN_MATCH ) {
     if ( event_s->alltau_gen_match->at(ind)!=realJet ) return 0; //FIX ME
   }
@@ -205,7 +213,7 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
 	   event_s->n_iso_otherLep >= 1                             &&
 	   event_s->alltau_dRToLep->at(ind) > DR_TAU_LEP_CUT    &&
 	   event_s->alltau_dRToOtherLep->at(ind) > DR_TAU_LEP_CUT    &&
-	   //	   event_s->mu2_iso<0.3               &&
+	   event_s->njets>1               &&
 	   event_s->bpt_1>=20)
     returnVal=1;
   else if ((mode &_QCD && mode & SR && CHAN==kTAU)                   &&
@@ -221,14 +229,14 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
            )
     returnVal=1;
   else if ((mode & _QCD)                  &&
-	   (  ( !CALC_SS_SR && !(mode & _AI) && event_s->alltau_mt->at(ind)<40   && ( ( event_s->lep_iso > 0.05 && event_s->lep_iso<0.15 ) || ( mode & MUISO ) ) ) || //TRY
-	      (  (CALC_SS_SR) && event_s->alltau_mt->at(ind)<40   &&  ( ( event_s->lep_iso > 0.15 && event_s->lep_iso<0.25 ) || ( mode & MUISO) )                    ) || //TRY
+	   (  ( !CALC_SS_SR && !(mode & _AI) && event_s->alltau_mt->at(ind)<40 && event_s->lep_q*event_s->alltau_q->at(ind)>0.  && ( ( event_s->lep_iso > 0.05 && event_s->lep_iso<0.15 ) || ( mode & MUISO ) ) ) || //TRY
+	      (  (CALC_SS_SR) && event_s->alltau_mt->at(ind)<40   && event_s->lep_q*event_s->alltau_q->at(ind)<0. && ( ( event_s->lep_iso > 0.15 && event_s->lep_iso<0.25 ) || ( mode & MUISO) )                    ) || //TRY
               (  mode & _AI && event_s->alltau_mt->at(ind)<40   &&   ( event_s->lep_iso > antiIso_min && event_s->lep_iso<antiIso_max )                     ) ) && //TRY
 	   //	   (  ( !CALC_SS_SR && event_s->alltau_mt->at(ind)<MT_CUT   && ( event_s->lep_iso<LEP_ISO_CUT || ( mode & MUISO ) ) ) || //DEFAULT
 	   //	      (  CALC_SS_SR                                     && event_s->lep_iso>LEP_ISO_CUT )   ) && //DEFAULT
+           (event_s->lep_q*event_s->alltau_q->at(ind)>=0.) &&
 	   event_s->passesDLVeto             &&
-	   event_s->passes3LVeto             &&
-	   event_s->lep_q*event_s->alltau_q->at(ind)>=0.
+	   event_s->passes3LVeto        
 	   )
     returnVal=1;
   else returnVal=0; 
@@ -273,6 +281,16 @@ Int_t GlobalClass::getWeightIndex_pt(Double_t pt){
   return -1; //should never get here
 }
 
+Int_t GlobalClass::getWeightIndex_mttot(Double_t mttot){
+  for (int i=0; i<w_mttot_n; i++){
+    if ( mttot>w_mttot_v[i] && mttot<w_mttot_v[i+1] ) return i;
+  }
+  if (mttot>w_mttot_v[w_mttot_n]) return 1e6;
+  if (mttot<w_mttot_v[0]) return -1; //underflow
+
+  return -1; //should never get here
+}
+
 Int_t GlobalClass::getWeightIndex_mvis(Double_t mvis){
   for (int i=0; i<w_mvis_n; i++){
     if ( mvis>w_mvis_v[i] && mvis<w_mvis_v[i+1] ) return i;
@@ -307,12 +325,14 @@ Int_t GlobalClass::getWeightIndex_dm(Int_t dm){
 //is under/overflow handled correctly above?
 
 Int_t GlobalClass::getWeightBin(Double_t pt, Int_t dm){
-  return ( this->getWeightIndex_pt(pt) + w_pt_n * this->getWeightIndex_dm(dm) );
+  if(CHAN != kTAU) return ( this->getWeightIndex_pt(pt) + w_pt_n * this->getWeightIndex_dm(dm) );
+  return ( this->getWeightIndex_mttot(pt) + w_mttot_n * this->getWeightIndex_dm(dm) );
 }
 
 Int_t GlobalClass::getWeightBin(const Int_t ind){
-  return ( this->getWeightBin(event_s->alltau_pt->at(ind),event_s->alltau_decay->at(ind)) );
-  //return ( this->getWeightBin(event_s->lep_pt,event_s->alltau_decay->at(ind)) );
+  if(CHAN != kTAU) return ( this->getWeightBin(event_s->alltau_pt->at(ind),event_s->alltau_decay->at(ind)) );
+  Double_t mt_tot = TMath::Sqrt( TMath::Power(event_s->alltau_mt->at(ind),2) + TMath::Power(event_s->alltau_mt2->at(ind),2) + 2*event_s->lep_pt*event_s->alltau_pt->at(ind)*(1-TMath::Cos( TVector2::Phi_mpi_pi( event_s->lep_phi-event_s->alltau_phi->at(ind) ) ) ) ); 
+  return ( this->getWeightBin(mt_tot,event_s->alltau_decay->at(ind)) );
 }
 
 Double_t GlobalClass::getFittedBinContent( const Int_t mode, vector<TGraphAsymmErrors*> fittedFFs, const Int_t ind){
@@ -637,39 +657,42 @@ Int_t GlobalClass::fulfillCategory(Int_t categoryMode, Int_t ind){
   }
   
   if ( categoryMode & _BTAG ){
-    if(event_s->nbtag == 0) return 0;
-    if(event_s->njets > 1) return 0;
+    if( (CHAN==kMU || CHAN==kEL) && event_s->alltau_mt->at(ind) > MT_CUT ) return 0;
+    if(event_s->bpt_1<20) return 0;
+    //if(event_s->bpt_2>20) return 0;
+    //if(event_s->njets > 1) return 0;
   }
   if ( categoryMode & _NOBTAG ){
-    if(event_s->nbtag !=0) return 0;
+    if( (CHAN==kMU || CHAN==kEL) && event_s->alltau_mt->at(ind) > MT_CUT ) return 0;
+    if(event_s->bpt_1>20) return 0;    
   }
   if ( categoryMode & _BTAG_TIGHT && (CHAN==kMU || CHAN==kEL) ){
-    if(event_s->nbtag==0) return 0;
-    if(event_s->njets > 1) return 0;
+    if(event_s->bpt_1<20) return 0;    
+    //if(event_s->njets > 1) return 0;
     if(event_s->alltau_mt->at(ind) > MT_CUT) return 0; 
   }
   if ( categoryMode & _BTAG_LOOSEMT && (CHAN==kMU || CHAN==kEL) ){
-    if(event_s->nbtag==0) return 0;
-    if(event_s->njets > 1) return 0;
+    if(event_s->bpt_1<20) return 0;    
+    //if(event_s->njets > 1) return 0;
     if(event_s->alltau_mt->at(ind) < MT_CUT) return 0;
     if(event_s->alltau_mt->at(ind) > 70) return 0;
   }
   if ( categoryMode & _BTAG_LOOSEISO && (CHAN==kMU || CHAN==kEL) ){
-    if(event_s->nbtag==0) return 0;
+    if(event_s->bpt_1<20) return 0;    
     if(event_s->njets > 1) return 0;
     if(event_s->alltau_mt->at(ind) > 70) return 0;
   }
   if ( categoryMode & _NOBTAG_TIGHT && (CHAN==kMU || CHAN==kEL) ){
-    if(event_s->nbtag !=0) return 0;
+    if(event_s->bpt_1>20) return 0;    
     if(event_s->alltau_mt->at(ind) > MT_CUT) return 0; 
   }
   if ( categoryMode & _NOBTAG_LOOSEMT && (CHAN==kMU || CHAN==kEL) ){
-    if(event_s->nbtag !=0) return 0;
+    if(event_s->bpt_1>20) return 0;    
     if(event_s->alltau_mt->at(ind) < MT_CUT) return 0;
     if(event_s->alltau_mt->at(ind) > 70) return 0;
   }
   if ( categoryMode & _NOBTAG_LOOSEISO && (CHAN==kMU || CHAN==kEL) ){
-    if(event_s->nbtag !=0) return 0;
+    if(event_s->bpt_1>20) return 0;    
     if(event_s->alltau_mt->at(ind) > 70) return 0;
   }
   

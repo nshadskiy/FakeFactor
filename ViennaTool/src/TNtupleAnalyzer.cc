@@ -70,9 +70,12 @@ void TNtupleAnalyzer::closeFile()
 Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t mode, Int_t whichTau)
 {
 
-  
+
+  if(CHAN==kMU && !event->trg_singlemuon) return 0;
   if(CHAN==kEL && !event->trg_singleelectron) return 0;
-  if(CHAN==kTAU && !event->trg_doubletau) return 0;
+  if(CHAN==kTAU && !(event->trg_doubletau) ) return 0;
+  if(event->Flag_badMuons) return 0;
+  if(event->Flag_duplicateMuons) return 0;
   
   TLorentzVector vec1, vec2, vec;
   //////////////////////////////////////////////////////////////////////////
@@ -85,9 +88,23 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     if( abs(event->eta_2) > 1.558 ) weight = weight*1.994;
     
     }*/
+  if( CHAN == kTAU && !preselectionFile.Contains("preselection_data") ){
+    if(event->gen_match_1 == 5 && event->byMediumIsolationMVArun2v1DBoldDMwLT_1) weight *= 0.97;
+    else if(event->gen_match_1 == 5 && event->byVLooseIsolationMVArun2v1DBoldDMwLT_1 ) weight *= 0.99;
+    if(event->gen_match_2 == 5 && event->byMediumIsolationMVArun2v1DBoldDMwLT_2) weight *= 0.97;
+    else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2v1DBoldDMwLT_2 ) weight *= 0.99;
+  }
+  if( CHAN != kTAU && !preselectionFile.Contains("preselection_data") ){
+    if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2v1DBoldDMwLT_2) weight *= 0.95;
+    else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2v1DBoldDMwLT_2 ) weight *= 0.99;
+  }
+  /*if( !preselectionFile.Contains("preselection_data") && CHAN == kEL && event->gen_match_2 == 1 ){
+    if( event->decayMode_2 == 0 ) weight *= 1.02;
+    if( event->decayMode_2 == 1 ) weight *= 1.05;
+    }*/
   weight_sf= weight; //event->evtWeight; no Zpt and top pT reweighting
 
-  if( preselectionFile.Contains("preselection_TT") ) weight_sf *= event->topWeight;
+  if( preselectionFile.Contains("preselection_TT") ) weight_sf *= event->topWeight_run1;
   if( preselectionFile.Contains("preselection_DY") ) weight_sf *= event->ZWeight;
     
   if(CHAN==kTAU && !COINFLIP){
@@ -101,6 +118,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   if ( CHAN == kTAU ) passesDLVeto=1;
 
   bpt_1=event->bpt_1;
+  bpt_2=event->bpt_2;
   nbtag=event->nbtag;
   njets=event->njets;
   mjj=event->mjj;
@@ -512,7 +530,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       lep_eta=event->eta_2;
       lep_phi=event->phi_2;
       lep_q=event->q_2;
-      lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2v1DBoldDMwLT_2==1) || (calcVTightFF==0 && event->byTightIsolationMVArun2v1DBoldDMwLT_2==1) )  ? 10 : 0;
+      //lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2v1DBoldDMwLT_2==1) || (calcVTightFF==0 && event->byTightIsolationMVArun2v1DBoldDMwLT_2==1) )  ? 10 : 0;
+      lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2v1DBoldDMwLT_2==1) || (calcVTightFF==0 && event->byMediumIsolationMVArun2v1DBoldDMwLT_2==1) )  ? 10 : 0;
       lep_vloose = ( event->byVLooseIsolationMVArun2v1DBoldDMwLT_2 == 1 ) ? 1 : 0;
       lep_loose = ( event->byLooseIsolationMVArun2v1DBoldDMwLT_2 == 1 ) ? 1 : 0;
       lep_medium = ( event->byMediumIsolationMVArun2v1DBoldDMwLT_2 == 1 ) ? 1 : 0;
@@ -522,7 +541,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       lep_eta=event->eta_1;
       lep_phi=event->phi_1;
       lep_q=event->q_1;
-      lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2v1DBoldDMwLT_1==1) || (calcVTightFF==0 && event->byTightIsolationMVArun2v1DBoldDMwLT_1==1) )  ? 10 : 0;
+      //lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2v1DBoldDMwLT_1==1) || (calcVTightFF==0 && event->byTightIsolationMVArun2v1DBoldDMwLT_1==1) )  ? 10 : 0;
+      lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2v1DBoldDMwLT_1==1) || (calcVTightFF==0 && event->byMediumIsolationMVArun2v1DBoldDMwLT_1==1) )  ? 10 : 0;
       lep_vloose = ( event->byVLooseIsolationMVArun2v1DBoldDMwLT_1 == 1 ) ? 1 : 0;
       lep_loose = ( event->byLooseIsolationMVArun2v1DBoldDMwLT_1 == 1 ) ? 1 : 0;
       lep_medium = ( event->byMediumIsolationMVArun2v1DBoldDMwLT_1 == 1 ) ? 1 : 0;
@@ -593,6 +613,7 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   tree->Branch("passes3LVeto",&passes3LVeto);
   tree->Branch("passesDLVeto",&passesDLVeto);
   tree->Branch("bpt_1",&bpt_1);
+  tree->Branch("bpt_2",&bpt_2);
   tree->Branch("njets",&njets);
   tree->Branch("nbtag",&nbtag);
   tree->Branch("mjj",&mjj);

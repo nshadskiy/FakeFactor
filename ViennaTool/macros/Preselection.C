@@ -116,7 +116,7 @@ void Preselection() {
     compressFile(preselection_signal);
   }
   //////////////////////////////////////////////////////////////////////////////
-  if( num==21 || num==0 ){
+  /*if( num==21 || num==0 ){
     Analyzer->loadFile(SUSYGluGluToBBHToTauTau_M1000,"TauCheck");
     Analyzer->select(preselection_SUSY_BBH_1000,0);
     Analyzer->closeFile();
@@ -151,7 +151,7 @@ void Preselection() {
     Analyzer->select(preselection_SUSY_ggH_2900,0);
     Analyzer->closeFile();
     compressFile(preselection_SUSY_ggH_2900);
-  }
+    }*/
   //////////////////////////////////////////////////////////////////////////////
   
   if (num==19||num>90||num==0) {

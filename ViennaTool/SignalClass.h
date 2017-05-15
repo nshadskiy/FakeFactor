@@ -30,6 +30,7 @@ public :
    Int_t           passes3LVeto;
    Int_t           passesDLVeto;
    Double_t        bpt_1;
+   Double_t        bpt_2;
    Int_t           njets;
    Int_t           njetingap20;
    Int_t           nbtag;
@@ -85,6 +86,7 @@ public :
    TBranch        *b_passes3LVeto;   //!
    TBranch        *b_passesDLVeto;   //!
    TBranch        *b_bpt_1;   //!
+   TBranch        *b_bpt_2;   //!
    TBranch        *b_njets;   //!
    TBranch        *b_njetingap20;   //!
    TBranch        *b_nbtag;   //!
@@ -232,6 +234,7 @@ void SignalClass::Init(TTree *tree)
    fChain->SetBranchAddress("passes3LVeto", &passes3LVeto, &b_passes3LVeto);
    fChain->SetBranchAddress("passesDLVeto", &passesDLVeto, &b_passesDLVeto);
    fChain->SetBranchAddress("bpt_1", &bpt_1, &b_bpt_1);
+   fChain->SetBranchAddress("bpt_2", &bpt_2, &b_bpt_2);
    fChain->SetBranchAddress("njets", &njets, &b_njets);
    fChain->SetBranchAddress("nbtag", &nbtag, &b_nbtag);
    fChain->SetBranchAddress("njetingap20", &njetingap20, &b_njetingap20);

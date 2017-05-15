@@ -3,12 +3,12 @@ import ROOT
 import os
 
 #Meta-data
-channel="mt"
-version='20170407_vLooseAndNotTight'
+channel="et"
+version='20170515_tight'
 tag='v0.2.1'
 FFtype=""
 #FFtype="_alt"
-categories = ['inclusive','btag', 'nobtag', 'btag_tight', 'btag_loosemt', 'nobtag_tight', 'nobtag_loosemt']
+categories = ['inclusive','btag_tight', 'btag_loosemt', 'nobtag_tight', 'nobtag_loosemt']
 #categories = ['btag_looseiso', 'nobtag_looseiso']
 
 for x in range(0,len(categories)):

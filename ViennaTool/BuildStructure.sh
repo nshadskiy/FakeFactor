@@ -212,14 +212,22 @@ if [ ! -d "ff_2d" ]; then
         if [ ! -d "ff_2d/tt/_btag" ]; then
             mkdir -p ff_2d/tt/_btag;
         fi
+        if [ ! -d "ff_2d/tt/_btag_looseiso" ]; then
+            mkdir -p ff_2d/tt/_btag_looseiso;
+        fi
         if [ ! -d "ff_2d/tt/_nobtag" ]; then
             mkdir -p ff_2d/tt/_nobtag;
+        fi
+        if [ ! -d "ff_2d/tt/_nobtag" ]; then
+            mkdir -p ff_2d/tt/_nobtag_looseiso;
         fi
         
     else
         mkdir -p ff_2d/tt/incl;
         mkdir -p ff_2d/tt/_btag;
+        mkdir -p ff_2d/tt/_btag_looseiso;
         mkdir -p ff_2d/tt/_nobtag;
+        mkdir -p ff_2d/tt/_nobtag_looseiso;
     fi
     
     

@@ -108,13 +108,18 @@ void convert_inputs(Int_t categoryMode=0){
     conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
     hn="c_t_alt";
     fout_n3d="FakeFactors_Data_QCD_3D_alt.root";
-    if(CHAN!=kTAU)conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
+    conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
 
     if(!DOMC){
       if(!CALC_SS_SR){
-        if(CHAN==kTAU) convert_corrections( d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD", o+"Correction_Data_QCD_PT.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction");
+        if(CHAN==kTAU) {
+          convert_corrections( d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD", o+"Correction_Data_QCD_PT.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction");
+          convert_corrections( d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD", o+"Correction_Data_QCD_PT.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction","_alt");
+        }
         convert_corrections( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD", o+"Correction_Data_QCD_MVis.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction");
+        convert_corrections( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD", o+"Correction_Data_QCD_MVis.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction","_alt");
         convert_corrections( d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD", o+"Correction_Data_QCD_OSSS.root", "QCD_SS_Data_FFSSMuMediumData_OSSS_correction");
+        convert_corrections( d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD", o+"Correction_Data_QCD_OSSS.root", "QCD_SS_Data_FFSSMuMediumData_OSSS_correction","_alt");
         if(CHAN!=kTAU){
           convert_corrections( d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_QCD", o+"Correction_Data_QCD_MuIso.root", "QCD_SS_Data_FFSSMuMediumData_isomu_correction");
           convert_corrections( d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_QCD", o+"Correction_Data_QCD_MuIso.root", "QCD_SS_Data_FFSSMuMediumData_isomu_correction","_alt");
@@ -142,7 +147,9 @@ void convert_inputs(Int_t categoryMode=0){
       if(!CALC_SS_SR){
         if(CHAN==kTAU){
           combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_up", d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD_up", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up");
+          combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_up", d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD_up", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up","_alt");
           combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_down", d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD_down", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down");
+          combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_down", d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD_down", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down","_alt");
         } else{
           combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_up", d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_corr_QCD_up", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up");
           combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure, "nonclosure_QCD_up", d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_corr_QCD_up", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up","_alt");
@@ -329,14 +336,14 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
     Double_t err_dm1njet1=0;
     if(fn.Contains("_QCD")){
       err_dm0njet0=.02; //0.02
-      err_dm0njet1=.02; // 0.04
-      err_dm1njet0=.04; // 0.08
-      err_dm1njet1=.04; // 0.1
+      err_dm0njet1=.04; // 0.04
+      err_dm1njet0=.08; // 0.08
+      err_dm1njet1=.08; // 0.1
     } else if(fn.Contains("_Wjets")){
-      err_dm0njet0=.0; //0.0
-      err_dm0njet1=.0; // 0.0
-      err_dm1njet0=.04;
-      err_dm1njet1=.04;
+      err_dm0njet0=0.02; //0.0
+      err_dm0njet1=0.02; // 0.0
+      err_dm1njet0=.05;
+      err_dm1njet1=.05;
     }
       
     for (int idm=0; idm<N_D2; idm++){
@@ -463,7 +470,8 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
 void make_frac_sys( const TString fn , const std::vector<TString> fn_other , const TString hn , const TString hnout , const std::vector<TString> hn_other , const TString fout_n , const int opt ){
 
   if ( opt==0 ) make_frac_sys( fn , fn_other , hn , hnout, hn_other , fout_n , N_p_Wjets , N_t_Wjets , Pt_cuts_Wjets , Decay_cuts_Wjets );
-  if ( opt==1 ) make_frac_sys( fn , fn_other , hn , hnout, hn_other , fout_n , w_pt_n    , N_t_Wjets , w_pt_v        , Decay_cuts_Wjets );
+  if ( opt==1 && CHAN != kTAU ) make_frac_sys( fn , fn_other , hn , hnout, hn_other , fout_n , w_pt_n    , N_t_Wjets , w_pt_v        , Decay_cuts_Wjets );
+  if ( opt==1 && CHAN == kTAU ) make_frac_sys( fn , fn_other , hn , hnout, hn_other , fout_n , w_mttot_n    , N_t_Wjets , w_mttot_v        , Decay_cuts_Wjets );
 
 }
 
@@ -524,7 +532,8 @@ void make_frac_sys( const TString fn , const std::vector<TString> fn_other , con
   for (int i=0; i<N_D1; i++){
     d1[i]=V1[i];
   }
-  d1[N_D1]=250;
+  if(CHAN !=kTAU) d1[N_D1]=250;
+  else d1[N_D1]=1000;
 
   for (int i=0; i<N_D2; i++){
     d2[i]=V2[i];
@@ -562,8 +571,12 @@ void make_frac_sys( const TString fn , const std::vector<TString> fn_other , con
       double err =h->GetBinError( i+N_D1*j +1 );
       hout->SetBinContent(       i+1 , j+1 , cont );
       hout->SetBinError(         i+1 , j+1 , err );
-      hout_low->SetBinContent(  i+1 , j+1 , cont-err );
-      hout_high->SetBinContent( i+1 , j+1 , cont+err );
+      //THESE ERRORS ARE ONLY FOR TAUTAU CHANNEL
+      if(cont != 0) err = err/(2*cont);
+      else err = 0;
+      //cout << (1-err) << endl;
+      hout_low->SetBinContent(  i+1 , j+1 , (1-err) );
+      hout_high->SetBinContent( i+1 , j+1 , (1+err) );
 
       double s_other=0;
       for (unsigned jf=0; jf<n_other; jf++){
@@ -649,7 +662,7 @@ void combineQCDSystematics( TString fQCD_nonclosure, TString sys_nonclosure, TSt
 
   Float_t addUncertainty=0;
   if(CHAN!=kTAU) addUncertainty=0.01;
-  else addUncertainty=0.0025;
+  else addUncertainty=0.01;
   if(CHAN!=kTAU){
     TFile *f_nonclosure=new TFile(fQCD_nonclosure.ReplaceAll(".root",tight_cat+".root"));
     TGraphAsymmErrors *sys_nonclosure_t=(TGraphAsymmErrors*)f_nonclosure->Get(sys_nonclosure);
