@@ -1,6 +1,6 @@
 #!/bin/bash
 user=jbrandstetter
-fftype=FakeFactor_2016_MSSM_preapproval
+fftype=FakeFactor_2016_MSSM_preapproval_dev
 
 line=" --------------------------------------------------------------------------------------"
 echo $line
@@ -141,17 +141,11 @@ if [ ! -d "ff_2d" ]; then
         if [ ! -d "ff_2d/mt/_btag_tight" ]; then
             mkdir -p ff_2d/mt/_btag_tight;
         fi
-        if [ ! -d "ff_2d/mt/_btag_looseiso" ]; then
-            mkdir -p ff_2d/mt/_btag_looseiso;
-        fi
         if [ ! -d "ff_2d/mt/_nobtag_loosemt" ]; then
             mkdir -p ff_2d/mt/_nobtag_loosemt;
         fi
         if [ ! -d "ff_2d/mt/_nobtag_tight" ]; then
             mkdir -p ff_2d/mt/_nobtag_tight;
-        fi
-        if [ ! -d "ff_2d/mt/_nobtag_looseiso" ]; then
-            mkdir -p ff_2d/mt/_nobtag_looseiso;
         fi
         
     else
@@ -160,10 +154,8 @@ if [ ! -d "ff_2d" ]; then
         mkdir -p ff_2d/mt/_nobtag;
         mkdir -p ff_2d/mt/_btag_loosemt;
         mkdir -p ff_2d/mt/_btag_tight;
-        mkdir -p ff_2d/mt/_btag_looseiso;
         mkdir -p ff_2d/mt/_nobtag_loosemt;
         mkdir -p ff_2d/mt/_nobtag_tight;
-        mkdir -p ff_2d/mt/_nobtag_looseiso;
     fi
     if [ ! -d "ff_2d/mt" ]; then
         if [ ! -d "ff_2d/et/incl" ]; then
@@ -181,17 +173,11 @@ if [ ! -d "ff_2d" ]; then
         if [ ! -d "ff_2d/et/_btag_tight" ]; then
             mkdir -p ff_2d/et/_btag_tight;
         fi
-        if [ ! -d "ff_2d/et/_btag_looseiso" ]; then
-            mkdir -p ff_2d/et/_btag_looseiso;
-        fi
         if [ ! -d "ff_2d/et/_nobtag_loosemt" ]; then
             mkdir -p ff_2d/et/_nobtag_loosemt;
         fi
         if [ ! -d "ff_2d/et/_nobtag_tight" ]; then
             mkdir -p ff_2d/et/_nobtag_tight;
-        fi
-        if [ ! -d "ff_2d/et/_nobtag_looseiso" ]; then
-            mkdir -p ff_2d/et/_nobtag_looseiso;
         fi
         
     else
@@ -200,10 +186,8 @@ if [ ! -d "ff_2d" ]; then
         mkdir -p ff_2d/et/_nobtag;
         mkdir -p ff_2d/et/_btag_loosemt;
         mkdir -p ff_2d/et/_btag_tight;
-        mkdir -p ff_2d/et/_btag_looseiso;
         mkdir -p ff_2d/et/_nobtag_loosemt;
         mkdir -p ff_2d/et/_nobtag_tight;
-        mkdir -p ff_2d/et/_nobtag_looseiso;
     fi
     if [ ! -d "ff_2d/tt" ]; then
         if [ ! -d "ff_2d/tt/incl" ]; then
@@ -212,22 +196,14 @@ if [ ! -d "ff_2d" ]; then
         if [ ! -d "ff_2d/tt/_btag" ]; then
             mkdir -p ff_2d/tt/_btag;
         fi
-        if [ ! -d "ff_2d/tt/_btag_looseiso" ]; then
-            mkdir -p ff_2d/tt/_btag_looseiso;
-        fi
         if [ ! -d "ff_2d/tt/_nobtag" ]; then
             mkdir -p ff_2d/tt/_nobtag;
-        fi
-        if [ ! -d "ff_2d/tt/_nobtag" ]; then
-            mkdir -p ff_2d/tt/_nobtag_looseiso;
         fi
         
     else
         mkdir -p ff_2d/tt/incl;
         mkdir -p ff_2d/tt/_btag;
-        mkdir -p ff_2d/tt/_btag_looseiso;
         mkdir -p ff_2d/tt/_nobtag;
-        mkdir -p ff_2d/tt/_nobtag_looseiso;
     fi
     
     
@@ -237,19 +213,15 @@ else
     mkdir -p ff_2d/mt/_nobtag;
     mkdir -p ff_2d/mt/_btag_loosemt;
     mkdir -p ff_2d/mt/_btag_tight;
-    mkdir -p ff_2d/mt/_btag_looseiso;
     mkdir -p ff_2d/mt/_nobtag_loosemt;
     mkdir -p ff_2d/mt/_nobtag_tight;
-    mkdir -p ff_2d/mt/_nobtag_looseiso;
     mkdir -p ff_2d/et/incl;
     mkdir -p ff_2d/et/_btag;
     mkdir -p ff_2d/et/_nobtag;
     mkdir -p ff_2d/et/_btag_loosemt;
     mkdir -p ff_2d/et/_btag_tight;
-    mkdir -p ff_2d/et/_btag_looseiso;
     mkdir -p ff_2d/et/_nobtag_loosemt;
     mkdir -p ff_2d/et/_nobtag_tight;
-    mkdir -p ff_2d/et/_nobtag_looseiso;
     mkdir -p ff_2d/tt/incl;
     mkdir -p ff_2d/tt/_btag;
     mkdir -p ff_2d/tt/_nobtag;
