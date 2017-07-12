@@ -4,13 +4,13 @@ echo "Compiling the framework"
 sh BuildStructure.sh
 cd ../
 make -B
-#./Preselection
+./Preselection
 #./SRHisto
 #./CRHisto
-./steerFF
+#./steerFF
 #./fitFakeFactors
 #./calcCorrections
-./convert_inputs
+#./convert_inputs
 #./ApplyFF
 #cp ViennaTool/fakefactor/data_mt/FFestimate_mt.root ViennaTool/fakefactor/data_mt/FFestimate_wUncertainties_mt.root
 #cp ViennaTool/fakefactor/data_mt/FFestimate_mvis.root ViennaTool/fakefactor/data_mt/FFestimate_wUncertainties_mvis.root

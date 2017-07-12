@@ -4,7 +4,7 @@ import os
 
 #Meta-data
 channel="et"
-version='20170515_tight'
+version='20170628_tight'
 tag='v0.2.1'
 FFtype=""
 #FFtype="_alt"

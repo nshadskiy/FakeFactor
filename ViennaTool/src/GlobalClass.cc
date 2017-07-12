@@ -653,7 +653,7 @@ Int_t GlobalClass::getPInd( Int_t dm ){
 Int_t GlobalClass::fulfillCategory(Int_t categoryMode, Int_t ind){
 
   if( inclusive_selection && (CHAN==kMU || CHAN==kEL) ){
-    if(event_s->alltau_mt->at(ind) > MT_CUT) return 0; 
+    if(event_s->alltau_mt->at(ind) > 70) return 0; 
   }
   
   if ( categoryMode & _BTAG ){
