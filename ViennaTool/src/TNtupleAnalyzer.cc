@@ -106,6 +106,51 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
   if( preselectionFile.Contains("preselection_TT") ) weight_sf *= event->topWeight_run1;
   if( preselectionFile.Contains("preselection_DY") ) weight_sf *= event->ZWeight;
+
+  ////////////////////////////////////////////////////////////////////////////////////////
+
+  if( CHAN == kTAU && !preselectionFile.Contains("preselection_data" )){
+    //run2 SF for VLoose for tau2
+    float scaleFactor_tautau = 1;
+    if( event->gen_match_2 == 1
+        || event->gen_match_2 == 3 ){
+
+      if( fabs(event->eta_2 ) < 1.46) scaleFactor_tautau = 1.21;
+      else if( fabs(event->eta_2 ) > 1.558) scaleFactor_tautau =  1.38;
+    }
+    //run2 SF with bad muon filter for cut-based Loose for tau2
+    if( event->gen_match_2 == 2
+        || event->gen_match_2 == 4 ){
+
+      if( fabs(event->gen_match_2) < 0.4 ) scaleFactor_tautau =  1.22;
+      else if( fabs(event->gen_match_2) < 0.8 ) scaleFactor_tautau =  1.12;
+      else if( fabs(event->gen_match_2) < 1.2 ) scaleFactor_tautau =  1.26;
+      else if( fabs(event->gen_match_2) < 1.7 ) scaleFactor_tautau =  1.22;
+      else if( fabs(event->gen_match_2) < 2.3 ) scaleFactor_tautau =  2.39;
+    }
+
+    if( event->gen_match_1 == 1
+        || event->gen_match_1 == 3 ){
+
+      if( fabs(event->eta_1 ) < 1.46) scaleFactor_tautau *= 1.21;
+      else if( fabs(event->eta_1 ) > 1.558) scaleFactor_tautau *=  1.38;
+    }
+    //run2 SF with bad muon filter for cut-based Loose for tau2
+    if( event->gen_match_1 == 2
+        || event->gen_match_1 == 4 ){
+
+      if( fabs(event->gen_match_1) < 0.4 ) scaleFactor_tautau *=  1.22;
+      else if( fabs(event->gen_match_1) < 0.8 ) scaleFactor_tautau *=  1.12;
+      else if( fabs(event->gen_match_1) < 1.2 ) scaleFactor_tautau *=  1.26;
+      else if( fabs(event->gen_match_1) < 1.7 ) scaleFactor_tautau *=  1.22;
+      else if( fabs(event->gen_match_1) < 2.3 ) scaleFactor_tautau *=  2.39;
+    }
+    weight = weight*scaleFactor_tautau;
+    weight_sf = weight_sf*scaleFactor_tautau;
+
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////
     
   if(CHAN==kTAU && !COINFLIP){
     weight=weight*0.5;

@@ -3,7 +3,7 @@ import ROOT
 import os
 
 #Meta-data
-version='20170515_medium'
+version='20170628_medium'
 tag='v0.2.1'
 channels=["tt"]
 FFtype=""

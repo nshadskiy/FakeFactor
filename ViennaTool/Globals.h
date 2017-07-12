@@ -735,7 +735,7 @@ const Double_t Pt_cuts_TT_CR[]     = {20.};
 const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.};
 const Double_t Pt_cuts_QCD_AI[] ={20.,25.,30.,40};*/
 
-//mutau 35.6 fb default 
+//mutau 35.6 fb old
 /*const Double_t Pt_cuts_Wjets[] = {30.,32.5,35,40,50,70,100,150};//lower boundaries of the pt bins, there are no data with pt<20.
 const Double_t Pt_cuts_DY[]    = {30.,40.};
 const Double_t Pt_cuts_TT_SR[]     = {30.,32.5,35.,40.,50,65,85,120,160};
@@ -743,19 +743,19 @@ const Double_t Pt_cuts_TT_CR[]     = {30.};
 const Double_t Pt_cuts_QCD[]   = {30,32.5,35,40,45,50,57.5,70,90,120,200};
 const Double_t Pt_cuts_QCD_AI[] ={30,35,40,50,80};*/
 
-//mutau 35.6 fb test
+//mutau 35.6 fb pre-approval
 /*const Double_t Pt_cuts_Wjets[] = {30.,34,39,50,60,75,90,110,140,180,500};//lower boundaries of the pt bins, there are no data with pt<20.
 const Double_t Pt_cuts_DY[]    = {30.,40.};
-const Double_t Pt_cuts_TT_SR[]     = {30.,32.5,35.,40.,45,50,70,90,120,180,500};
+const Double_t Pt_cuts_TT_SR[]     = {30.,32.5,35.,40.,45,50,70,90,115,175,500};
 const Double_t Pt_cuts_TT_CR[]     = {30.};
 //const Double_t Pt_cuts_QCD[]   = {30,35,40,50,60,70,80,105,140};
-const Double_t Pt_cuts_QCD[]   = {30,35,40,50,75,120,500};
+const Double_t Pt_cuts_QCD[]   = {30,35,40,50,70,120,500};
 const Double_t Pt_cuts_QCD_AI[] ={30,35,40,50,75,120,500};*/
 
-//etau 35.6 fb test
+//etau 35.6 fb pre-approval
 /*const Double_t Pt_cuts_Wjets[] = {30.,35,40,50,60,75,95,120,170,500};//lower boundaries of the pt bins, there are no data with pt<20.
 const Double_t Pt_cuts_DY[]    = {30.,40.};
-const Double_t Pt_cuts_TT_SR[]     = {30.,32.,34,37.5,40,45,50,70,110,160,500};
+const Double_t Pt_cuts_TT_SR[]     = {30.,32.,34,37.,40,45,50,70,110,160,500};
 const Double_t Pt_cuts_TT_CR[]     = {30.};
 //const Double_t Pt_cuts_QCD[]   = {30,35,40,50,60,70,80,105,140};
 const Double_t Pt_cuts_QCD[]   = {30,32.5,35,40,50,60,70,80,110,500};
@@ -768,7 +768,7 @@ const Double_t Pt_cuts_TT_CR[]     = {30.};
 const Double_t Pt_cuts_QCD[]   = {30,35,40,45,50,70,90,120,180};
 const Double_t Pt_cuts_QCD_AI[] ={30,35,40,50,80};*/
 
-//etau 35.6 fb default 
+//etau 35.6 fb old
 /*const Double_t Pt_cuts_Wjets[] = {30.,32.5,35,40,50,65,95,150};//lower boundaries of the pt bins, there are no data with pt<20.
 const Double_t Pt_cuts_DY[]    = {30.,40.};
 //const Double_t Pt_cuts_TT[]    = {20,22.5,27,32,40,50,85};
@@ -789,21 +789,13 @@ const Double_t Pt_cuts_TT_CR[]     = {20.};
 const Double_t Pt_cuts_QCD[]   = {40.,45.,50.,60,70,90,120,200};
 const Double_t Pt_cuts_QCD_AI[] ={20.,25.,30.,40,50,70,100};*/
 
-//tautau 35.6 fb default test
+//tautau 35.6 fb pre-approval
 const Double_t Pt_cuts_Wjets[] = {40.,50.,70.,100.,150.};//lower boundaries of the pt bins, there are no data with pt<20.
 const Double_t Pt_cuts_DY[]    = {40.};
 const Double_t Pt_cuts_TT_SR[]     = {40.,50.,80.,150.};
 const Double_t Pt_cuts_TT_CR[]     = {40.};
 const Double_t Pt_cuts_QCD[]   = {40.,42.5,45.,50.,55,60,65,75,95,155};
 const Double_t Pt_cuts_QCD_AI[] ={40,42.5,45,50,60,75,115,180};
-
-//tautau 35.6 fb default
-/*const Double_t Pt_cuts_Wjets[] = {40.,50.,70.,100.,150.};//lower boundaries of the pt bins, there are no data with pt<20.
-const Double_t Pt_cuts_DY[]    = {40.};
-const Double_t Pt_cuts_TT_SR[]     = {40.,50.,80.,150.};
-const Double_t Pt_cuts_TT_CR[]     = {40.};
-const Double_t Pt_cuts_QCD[]   = {40.,42.5,45.,50.,55,60,65,75,95,155};
-const Double_t Pt_cuts_QCD_AI[] ={40,42.5,45,50,60,75,115,180};*/
 
 const Int_t N_p_Wjets = sizeof(Pt_cuts_Wjets)/sizeof(Double_t);
 const Int_t N_p_DY = sizeof(Pt_cuts_DY)/sizeof(Double_t);
