@@ -16,23 +16,16 @@
 #define MT           4096
 #define MVIS         8192
 #define PT          16384
-#define ETA         32768
 #define MTLL        65536
 #define MUISO      131072
 #define NB         262144
 #define DRB        524288
-#define MET       1048576
-#define MJJ       2097152
 #define _FIT      4194304
 #define _SS       8388608
 #define SR       16777216      
 #define _AI      33554432
-#define MMTOT    67108864
-#define ZPT     134217728
 #define LEPPT   268435456
-#define MVAMET  536870912
 #define SVFIT  1073741824
-#define M2T    2147483648   
 
 //int max:     4294967295
 
@@ -122,9 +115,6 @@ const TString s_tight_alt    ="tight_alt";
 const TString s_tight        ="tight";
 
 
-//FF file produced by official tools
-const TString FF_inputFile=inputFF_dir+inputFF_date+"/XXXXX/fakeFactors_"+inputFF_date+".root";
-
 //Output directories
 const TString path_presel        = "/data/"+user+"/"+analysis+"/preselection/"+s_chan[CHAN]+"/";
 const TString path_ff            = "ViennaTool/fakefactor/";
@@ -150,14 +140,6 @@ const TString VVfile     = indir + "BASIS_ntuple_VV_MCSummer16_"+s_chan[CHAN]+"_
 const TString TTfile     = indir + "BASIS_ntuple_TT_merged_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
 const TString SIGNALfile = indir + "BASIS_ntuple_SIGNAL_M125_powheg_MCSummer_"+s_chan[CHAN]+"_"+ver+".root";
 
-const TString SUSYGluGluToBBHToTauTau_M1000 = indir +  "BASIS_ntuple_SUSYGluGluToBBHToTauTau_M_1000_pythia8_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
-const TString SUSYGluGluToBBHToTauTau_M2000 = indir +  "BASIS_ntuple_SUSYGluGluToBBHToTauTau_M_2000_pythia8_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
-const TString SUSYGluGluToBBHToTauTau_M2900 = indir +  "BASIS_ntuple_SUSYGluGluToBBHToTauTau_M_2900_pythia8_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
-
-const TString SUSYGluGluToHToTauTau_M1000 = indir +  "BASIS_ntuple_SUSYGluGluToHToTauTau_M_1000_pythia8_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
-const TString SUSYGluGluToHToTauTau_M2000 = indir +  "BASIS_ntuple_SUSYGluGluToHToTauTau_M_2000_pythia8_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
-const TString SUSYGluGluToHToTauTau_M2900 = indir +  "BASIS_ntuple_SUSYGluGluToHToTauTau_M_2900_pythia8_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
-
 
 // Preselection files
 const TString preselection_data          = path_presel+"preselection_data"+s_doubleCount[COINFLIP]+".root";
@@ -179,14 +161,6 @@ const TString preselection_MCsum_woQCD   = path_presel+"preselection_woQCD"+s_MC
 const TString preselection_QCD           = path_presel+"preselection_QCD"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_QCD_Pt        = path_presel+"preselection_QCD_Pt"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_signal        = path_presel+"preselection_signal"+s_doubleCount[COINFLIP]+".root";
-
-const TString preselection_SUSY_BBH_1000 =  path_presel+"preselection_SUSY_BBH_1000"+s_doubleCount[COINFLIP]+".root";
-const TString preselection_SUSY_BBH_2000 =  path_presel+"preselection_SUSY_BBH_2000"+s_doubleCount[COINFLIP]+".root";
-const TString preselection_SUSY_BBH_2900 =  path_presel+"preselection_SUSY_BBH_2900"+s_doubleCount[COINFLIP]+".root";
-
-const TString preselection_SUSY_ggH_1000 =  path_presel+"preselection_SUSY_ggH_1000"+s_doubleCount[COINFLIP]+".root";
-const TString preselection_SUSY_ggH_2000 =  path_presel+"preselection_SUSY_ggH_2000"+s_doubleCount[COINFLIP]+".root";
-const TString preselection_SUSY_ggH_2900 =  path_presel+"preselection_SUSY_ggH_2900"+s_doubleCount[COINFLIP]+".root";
 
 const TString fit_formula                = "fit_formula.root";
 
@@ -894,12 +868,12 @@ const Int_t    w_njets_n=sizeof(w_njets_v)/sizeof(Int_t) -1;
 
 const Int_t nbins_weight=(CHAN!=kTAU) ? w_pt_n*w_dm_n : w_mttot_n*w_dm_n; const Double_t min_weight=-0.5;    const Double_t max_weight=nbins_weight-0.5;
 
-const unsigned nVAR=11;
-const Int_t nbins[nVAR]={nbins_mt,nbins_mvis,nbins_pt,nbins_mt2,nbins_lepPt,nbins_mvamet,nbins_met,nbins_eta,nbins_mttot,nbins_mjj,w_muiso_n};
-const Double_t hist_min[nVAR]={hist_min_mt,hist_min_mvis,hist_min_pt,hist_min_mt2,hist_min_lepPt,hist_min_mvamet,hist_min_met,hist_min_eta,hist_min_mttot,hist_min_mjj,hist_min_pt}; //pt bin is placeholder for muiso
-const Double_t hist_max[nVAR]={hist_max_mt,hist_max_mvis,hist_max_pt,hist_max_mt2,hist_max_lepPt,hist_max_mvamet,hist_max_met,hist_max_eta,hist_max_mttot,hist_max_mjj,hist_max_pt}; //pt bin is placeholder for muiso
-const TString tvar[nVAR]={s_mt,s_mvis,s_pt,s_mt2,s_lepPt,s_mvamet,s_met,s_eta,s_muiso};
-const TString tvar_l[nVAR]={"m_{T} [GeV]","m_{vis} [GeV]","p_{T} [GeV]","m_{T}(#tau) [GeV]","p_{T}(lep) [GeV]","mvamet [GeV]","pfmet [GeV]","#eta_{#tau}","m_{T} (tot) [GeV]","m_{jj} [GeV]","#mu_{iso}"};
+const unsigned nVAR=5;
+const Int_t nbins[nVAR]={nbins_mt,nbins_mvis,nbins_pt,nbins_lepPt,w_muiso_n};
+const Double_t hist_min[nVAR]={hist_min_mt,hist_min_mvis,hist_min_pt,hist_min_lepPt,hist_min_pt}; //pt bin is placeholder for muiso
+const Double_t hist_max[nVAR]={hist_max_mt,hist_max_mvis,hist_max_pt,hist_max_lepPt,hist_max_pt}; //pt bin is placeholder for muiso
+const TString tvar[nVAR]={s_mt,s_mvis,s_pt,s_lepPt,s_muiso};
+const TString tvar_l[nVAR]={"m_{T} [GeV]","m_{vis} [GeV]","p_{T} [GeV]","p_{T}(lep) [GeV]","#mu_{iso}"};
 
 const unsigned nVARCR=4;
 const Int_t nbinsCR[nVARCR]={nbins_mt,nbins_mvis,nbins_pt,w_muiso_n};

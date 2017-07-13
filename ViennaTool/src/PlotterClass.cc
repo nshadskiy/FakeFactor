@@ -60,8 +60,6 @@ void PlotterClass::plotCR(const std::vector<TString> fname, const std::vector<TS
 
 void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, TString ltext, TString xtitle, TLegend *leg, TString ytitle, THStack *hs, TH1D *hsignal){
 
-  if(hsignal) this->doBlinding(hdata,hmc,hsignal);
-  
   TString xLabel=hmc->GetXaxis()->GetTitle();
 
   hdata->SetLineWidth(3);
@@ -298,12 +296,6 @@ Int_t PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,con
     Pt_cuts=Pt_cuts_TT_CR; Eta_cuts=Eta_cuts_TT; Decay_cuts=Decay_cuts_TT; Njet_cuts=Njet_cuts_TT_CR;
     m_color=color_TT_J;
   }
-  /*else if (mode & _TT ){
-    proc="ttbar";
-    N_p=N_p_TT; N_e=N_e_TT; N_t=N_t_TT; N_j=N_j_Wjets;
-    Pt_cuts=Pt_cuts_TT; Eta_cuts=Eta_cuts_TT; Decay_cuts=Decay_cuts_TT; Njet_cuts=Njet_cuts_Wjets;
-    m_color=color_TT_J;
-    }*/
   else if (mode & _QCD && mode & _AI){
     proc="QCD AI";
     N_p=N_p_QCD_AI; N_e=N_e_QCD; N_t=N_t_QCD; N_j=N_j_Wjets;
@@ -450,6 +442,7 @@ TString PlotterClass::FloatToString( double num, int prec ){
 
 }
 
+/*
 void PlotterClass::makeComparePlots(TString toCompare,TString toCompare_label,std::vector<TString> proc_list,std::vector<TString> proc_labels,TString imagefile,TString description,TString xLabel,Int_t col)
 {
   //  std::cout << "In " << __func__ << std::endl; //note: not portable to all compilers (and gcc versions)
@@ -745,6 +738,8 @@ void PlotterClass::plotCompBgStackedAgainstData(TString compareFile,TString comp
 
 }
 
+*/
+
 TString PlotterClass::getDescription(TString ltext)
 {
   stringstream returnstring;
@@ -778,19 +773,3 @@ TString PlotterClass::getCaption(TString ltext)
   return returnstring;
 }
 
-void PlotterClass::doBlinding(TH1D* hdata, TH1D *hsum, TH1D *hsignal){
-
-  for(int i=1; i<=hdata->GetNbinsX(); i++){
-    Double_t s=hsignal->GetBinContent(i);
-    Double_t b=hsum->GetBinContent(i);
-    if(s/TMath::Sqrt(b+TMath::Power(b*epsilon,2))  > 0.5 ){
-      cout << "Blinding here!!" << endl;
-      hdata->SetBinContent(i,-10);
-    }
-    else if(hdata->GetBinContent(i)==0) {
-      cout << "No bin content here!!" << endl;
-      hdata->SetBinContent(i,0.00001);
-    }
-  }
-  
-}

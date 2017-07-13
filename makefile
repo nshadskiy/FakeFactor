@@ -3,7 +3,7 @@ INCDIR=.
 ROOTINC=$(shell root-config --incdir)
 ROOTLIB=$(shell root-config --libs)
 
-all: NtupleClass.o SignalClass.o GlobalClass.o TNtupleAnalyzer.o TSelectionAnalyzer.o PlotterClass.o GaussianKernelSmoother.o FFCalculator.o CustomFit.o test fitFakeFactors Preselection SRHisto CRHisto steerFF convert_inputs ApplyFF ApplyUncertainties calcCorrections
+all: NtupleClass.o SignalClass.o GlobalClass.o TNtupleAnalyzer.o TSelectionAnalyzer.o PlotterClass.o GaussianKernelSmoother.o FFCalculator.o CustomFit.o test fitFakeFactors Preselection SRHisto CRHisto steerFF convert_inputs calcCorrections
 
 %.o: ViennaTool/%.C
 	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -fpic -c $<
@@ -35,12 +35,6 @@ convert_inputs: ViennaTool/macros/convert_inputs.C
 
 fitFakeFactors: ViennaTool/macros/fitFakeFactors.C
 	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ CustomFit.o SignalClass.o PlotterClass.o GlobalClass.o ViennaTool/macros/fitFakeFactors.C
-
-ApplyFF: ViennaTool/macros/ApplyFF.C
-	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ SignalClass.o GlobalClass.o PlotterClass.o ../tmp/slc6_amd64_gcc530/src/HTTutilities/Jet2TauFakes/src/HTTutilitiesJet2TauFakes/libHTTutilitiesJet2TauFakes.so ViennaTool/macros/ApplyFF.C
-
-ApplyUncertainties: ViennaTool/macros/ApplyUncertainties.C
-	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ SignalClass.o GlobalClass.o PlotterClass.o ../tmp/slc6_amd64_gcc530/src/HTTutilities/Jet2TauFakes/src/HTTutilitiesJet2TauFakes/libHTTutilitiesJet2TauFakes.so ViennaTool/macros/ApplyUncertainties.C
 
 clean:
 	rm *.o test Preselection SRHisto CRHisto convert_inputs ApplyFF fitFakeFactors calcCorrections

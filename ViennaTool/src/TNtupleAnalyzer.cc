@@ -83,11 +83,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   //////////////////////////////////////////////////////////////////////////
   weight=1;
   if(!preselectionFile.Contains("preselection_data"))weight = event->puweight*event->effweight*event->stitchedWeight*luminosity*event->genweight*event->antilep_tauscaling;
-  /*if(!preselectionFile.Contains("preselection_data") && ( event->gen_match_2==3 || event->gen_match_2==1 ) ){
-    if( abs(event->eta_2) < 1.46 ) weight = weight*1.42;
-    if( abs(event->eta_2) > 1.558 ) weight = weight*1.994;
-    
-    }*/
+
   if( CHAN == kTAU && !preselectionFile.Contains("preselection_data") ){
     if(event->gen_match_1 == 5 && event->byMediumIsolationMVArun2v1DBoldDMwLT_1) weight *= 0.97;
     else if(event->gen_match_1 == 5 && event->byVLooseIsolationMVArun2v1DBoldDMwLT_1 ) weight *= 0.99;
@@ -98,10 +94,6 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2v1DBoldDMwLT_2) weight *= 0.95;
     else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2v1DBoldDMwLT_2 ) weight *= 0.99;
   }
-  /*if( !preselectionFile.Contains("preselection_data") && CHAN == kEL && event->gen_match_2 == 1 ){
-    if( event->decayMode_2 == 0 ) weight *= 1.02;
-    if( event->decayMode_2 == 1 ) weight *= 1.05;
-    }*/
   weight_sf= weight; //event->evtWeight; no Zpt and top pT reweighting
 
   if( preselectionFile.Contains("preselection_TT") ) weight_sf *= event->topWeight_run1;
@@ -109,6 +101,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
   ////////////////////////////////////////////////////////////////////////////////////////
 
+  //obsolete as soon as e->tau/mu->tau SF are applied correctly in tautau channel postprocessing
   if( CHAN == kTAU && !preselectionFile.Contains("preselection_data" )){
     //run2 SF for VLoose for tau2
     float scaleFactor_tautau = 1;
@@ -181,16 +174,11 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   lep_pt=event->pt_1;
   lep_eta=event->eta_1;
   lep_phi=event->phi_1;
-  //  lep_phi=event->phi_1; //not saved
-  //  lep_m=event->m_1;
   lep_iso=event->iso_1;
   lep_q=event->q_1;
-  //  lep_gen_match=event->gen_match_1;
 
   otherLep_pt=-999;
   otherLep_eta=-999;
-  //  otherLep_phi=-999; //not saved
-  //  otherLep_m=-999;
   otherLep_iso=-999;
   otherLep_q=-999;
 
@@ -338,9 +326,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   alltau_q->resize(0);
   alltau_decay->resize(0);
   alltau_beta->resize(0);
-  //alltau_looseBeta->resize(0);
   alltau_mediumBeta->resize(0);
-  //alltau_tightBeta->resize(0);
   alltau_vlooseMVA->resize(0);
   alltau_looseMVA->resize(0);
   alltau_mediumMVA->resize(0);
@@ -379,9 +365,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     alltau_q->push_back(event->addtau_q->at(i));
     alltau_decay->push_back(m);
     alltau_beta->push_back(event->addtau_byCombinedIsolationDeltaBetaCorrRaw3Hits->at(i));
-    //  alltau_looseBeta->push_back(event->addtau_byLooseCombinedIsolationDeltaBetaCorr3Hits->at(i));
     alltau_mediumBeta->push_back(event->addtau_byMediumCombinedIsolationDeltaBetaCorr3Hits->at(i));
-    //  alltau_tightBeta->push_back(event->addtau_byTightCombinedIsolationDeltaBetaCorr3Hits->at(i));
     alltau_vlooseMVA->push_back( event->addtau_byVLooseIsolationMVArun2v1DBoldDMwLT->at(i));
     alltau_looseMVA->push_back( event->addtau_byLooseIsolationMVArun2v1DBoldDMwLT->at(i));
     alltau_mediumMVA->push_back(event->addtau_byMediumIsolationMVArun2v1DBoldDMwLT->at(i));
@@ -402,10 +386,6 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     if(useMVAMET) Emiss.SetPtEtaPhiM(event->mvamet,0,event->mvametphi,0);
     else Emiss.SetPtEtaPhiM(event->met,0,event->metphi,0);
     alltau_Zpt->push_back( (leg1+leg2+Emiss).Pt() );
-    
-    //    dR1=calcDR(event->addtau_eta->at(i),event->addtau_phi->at(i),lep1_eta,lep1_phi);
-    //    dR2=calcDR(event->addtau_eta->at(i),event->addtau_phi->at(i),lep2_eta,lep2_phi);
-    //    alltau_dRToLep->push_back( min(dR1,dR2) );
 
     dR1=1e6;
     double m_dR1=dR1;
@@ -446,7 +426,6 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   float decay=event->decayMode_2;
   if ( (event->passesTauLepVetos) && ( (decay>=0&&decay<=4)||(decay>=10&&decay<=14)   ) && (dR>0.5) && (event->pt_2 > m_tau_pt_cut ) && (fabs(event->eta_2) < m_tau_eta_cut) && (TT_AS_LEP==1) ){
     Int_t tpos=0;
-    if ( (!USE_ISOTAU) && (CHAN!=kTAU) ) tpos=this->findPos(event->pt_2, alltau_pt); //for tt, always insert it as first tau
     tau_iso_ind=tpos;
     alltau_pt->insert(alltau_pt->begin()+tpos,event->pt_2);
     alltau_eta->insert(alltau_eta->begin()+tpos,event->eta_2);
@@ -454,16 +433,12 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     alltau_q->insert(alltau_q->begin()+tpos,event->q_2);
     alltau_decay->insert(alltau_decay->begin()+tpos,decay);
     alltau_beta->insert(alltau_beta->begin()+tpos,event->byCombinedIsolationDeltaBetaCorrRaw3Hits_2);
-    //  alltau_looseBeta->insert(alltau_looseBeta->begin()+tpos,event->byLooseCombinedIsolationDeltaBetaCorr3Hits_2);
     alltau_mediumBeta->insert(alltau_mediumBeta->begin()+tpos,event->byMediumCombinedIsolationDeltaBetaCorr3Hits_2);
-    //  alltau_tightBeta->insert(alltau_tightBeta->begin()+tpos,event->byTightCombinedIsolationDeltaBetaCorr3Hits_2);
     alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationMVArun2v1DBoldDMwLT_2 );
     alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationMVArun2v1DBoldDMwLT_2 );
     alltau_mediumMVA->insert(alltau_mediumMVA->begin()+tpos, event->byMediumIsolationMVArun2v1DBoldDMwLT_2 );
     alltau_tightMVA->insert(alltau_tightMVA->begin()+tpos, event->byTightIsolationMVArun2v1DBoldDMwLT_2 );
     alltau_vtightMVA->insert(alltau_vtightMVA->begin()+tpos, event->byVTightIsolationMVArun2v1DBoldDMwLT_2 );
-    //if(event->againstElectronTightMVA6_2 && event->againstMuonLoose3_2) alltau_lepVeto->insert(alltau_lepVeto->begin()+tpos,1);
-    //else alltau_lepVeto->insert(alltau_lepVeto->begin()+tpos,0);
     alltau_lepVeto->insert(alltau_lepVeto->begin()+tpos,event->passesTauLepVetos);
     alltau_gen_match->insert(alltau_gen_match->begin()+tpos,event->gen_match_2);
     alltau_mvis->insert(alltau_mvis->begin()+tpos,event->m_vis);
@@ -499,7 +474,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     dR1=calcDR(event->eta_2,event->phi_2,event->beta_1,event->bphi_1);
     dR2=calcDR(event->eta_2,event->phi_2,event->beta_2,event->bphi_2);
     alltau_dRToB->insert(alltau_dRToB->begin()+tpos, min(dR1,dR2) );
-  } else if ( CHAN!=kTAU && USE_ISOTAU ){ //if most iso tau is not ok, then do not use event if this flag is set
+  } else if ( CHAN!=kTAU ){ //if most iso tau is not ok, then do not use event if this flag is set
     return 0;
   }
 
@@ -576,7 +551,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       lep_phi=event->phi_2;
       lep_q=event->q_2;
       //lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2v1DBoldDMwLT_2==1) || (calcVTightFF==0 && event->byTightIsolationMVArun2v1DBoldDMwLT_2==1) )  ? 10 : 0;
-      lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2v1DBoldDMwLT_2==1) || (calcVTightFF==0 && event->byMediumIsolationMVArun2v1DBoldDMwLT_2==1) )  ? 10 : 0;
+      lep_iso = event->byMediumIsolationMVArun2v1DBoldDMwLT_2==1 ? 10 : 0;
       lep_vloose = ( event->byVLooseIsolationMVArun2v1DBoldDMwLT_2 == 1 ) ? 1 : 0;
       lep_loose = ( event->byLooseIsolationMVArun2v1DBoldDMwLT_2 == 1 ) ? 1 : 0;
       lep_medium = ( event->byMediumIsolationMVArun2v1DBoldDMwLT_2 == 1 ) ? 1 : 0;
@@ -587,7 +562,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       lep_phi=event->phi_1;
       lep_q=event->q_1;
       //lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2v1DBoldDMwLT_1==1) || (calcVTightFF==0 && event->byTightIsolationMVArun2v1DBoldDMwLT_1==1) )  ? 10 : 0;
-      lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2v1DBoldDMwLT_1==1) || (calcVTightFF==0 && event->byMediumIsolationMVArun2v1DBoldDMwLT_1==1) )  ? 10 : 0;
+      lep_iso = event->byMediumIsolationMVArun2v1DBoldDMwLT_1==1 ? 10 : 0;
       lep_vloose = ( event->byVLooseIsolationMVArun2v1DBoldDMwLT_1 == 1 ) ? 1 : 0;
       lep_loose = ( event->byLooseIsolationMVArun2v1DBoldDMwLT_1 == 1 ) ? 1 : 0;
       lep_medium = ( event->byMediumIsolationMVArun2v1DBoldDMwLT_1 == 1 ) ? 1 : 0;

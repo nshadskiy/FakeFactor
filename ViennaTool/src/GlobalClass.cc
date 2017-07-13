@@ -54,20 +54,11 @@ Int_t GlobalClass::isLoose(const Int_t mode, const Int_t ind) //default: 0,0
 {
   if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != 6 ) return 0; }
 
-  if (USE_MVA_ISO){
-    if( CHAN == kTAU ){
-      //if ( !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
-      if ( !event_s->alltau_mediumMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
-    }
-    //else if ( !event_s->alltau_mediumMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
-    else if ( !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
-    //else if ( !event_s->alltau_looseMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
-    //else if ( !event_s->alltau_looseMVA->at(ind) ) return 1;
-  } else{
-    if (event_s->alltau_beta->at(ind)<100 && !event_s->alltau_mediumBeta->at(ind)) return 1;
+  if( CHAN == kTAU ){
+    if ( !event_s->alltau_mediumMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
   }
-  //if (event_s->alltau_beta->at(ind)<100 && !event_s->alltau_looseBeta->at(ind)) return 1;
-
+  else if ( !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
+  
   return 0;
 }
 
@@ -75,11 +66,7 @@ Int_t GlobalClass::isTight_alt(const Int_t mode, const Int_t ind) //default: 0,0
 {
   if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != 6 ) return 0; }
 
-  if (USE_MVA_ISO){
-    if ( calcVTightFF && event_s->alltau_mediumMVA->at(ind) && !event_s->alltau_vtightMVA->at(ind) ) return 1; 
-    //if ( !calcVTightFF && event_s->alltau_mediumMVA->at(ind) && !event_s->alltau_tightMVA->at(ind) ) return 1;
-    if ( !calcVTightFF && event_s->alltau_mediumMVA->at(ind) && !event_s->alltau_tightMVA->at(ind) ) return 1;
-  }
+  if ( event_s->alltau_mediumMVA->at(ind) && !event_s->alltau_vtightMVA->at(ind) ) return 1; 
 
   return 0;
 }
@@ -88,18 +75,11 @@ Int_t GlobalClass::isTight(const Int_t mode, const Int_t ind) //default: 0,0
 {
   if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != 6 ) return 0; }
 
-  if (USE_MVA_ISO){
-    if(CHAN == kTAU){
-      if ( calcVTightFF && event_s->alltau_vtightMVA->at(ind)) return 1; 
-      //if ( !calcVTightFF && event_s->alltau_tightMVA->at(ind)) return 1;
-      if ( !calcVTightFF && event_s->alltau_mediumMVA->at(ind)) return 1;
-    }
-    else{
-      //if ( event_s->alltau_mediumMVA->at(ind)) return 1;
-      if ( event_s->alltau_tightMVA->at(ind)) return 1;
-    }
-  } else{
-    if (event_s->alltau_mediumBeta->at(ind)) return 1;
+  if(CHAN == kTAU){
+    if ( event_s->alltau_mediumMVA->at(ind)) return 1;
+  }
+  else{
+    if ( event_s->alltau_tightMVA->at(ind)) return 1;
   }
 
   return 0;
@@ -624,18 +604,12 @@ Int_t GlobalClass::passesCuts(const Int_t cuts, const Int_t ind){
 
 Double_t GlobalClass::selVal(const Int_t mode, const Int_t ind){
 
-  if      (mode & M2T)   {return event_s->alltau_mt2->at(ind);}
-  else if (mode & MVIS) {return event_s->alltau_mvis->at(ind);}
+  if (mode & MVIS) {return event_s->alltau_mvis->at(ind);}
   else if (mode & PT)   {return event_s->alltau_pt->at(ind);}
   else if (mode & MUISO) {return event_s->lep_iso;}
-  else if (mode & ZPT)   {return event_s->alltau_Zpt->at(ind);}
   else if (mode & SVFIT) {return event_s->alltau_svfit->at(ind);}
   else if (mode & MT) {return event_s->alltau_mt->at(ind);}
   else if (mode & LEPPT) {return event_s->lep_pt;}
-  else if (mode & MVAMET) {return event_s->mvamet;}
-  else if (mode & MET) {return event_s->met;}
-  else if (mode & ETA)   {return event_s->alltau_eta->at(ind);}
-  else if (mode & MMTOT) {return TMath::Sqrt( TMath::Power(event_s->alltau_mt->at(ind),2) + TMath::Power(event_s->alltau_mt2->at(ind),2) + 2*event_s->lep_pt*event_s->alltau_pt->at(ind)*(1-TMath::Cos( TVector2::Phi_mpi_pi( event_s->lep_phi-event_s->alltau_phi->at(ind) ) ) ) );}
   else{ std::cout << "selVal: Warning: no valid variable given!" << std::endl; return -1; }
 
 }

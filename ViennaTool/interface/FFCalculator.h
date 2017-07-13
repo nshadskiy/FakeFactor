@@ -45,8 +45,6 @@ class FFCalculator : public GlobalClass, public PlotterClass{
   Double_t getCorrValueFitErr(Double_t m_mt=-999, Int_t ind=-1);
   Double_t getCorrValueFit(Double_t m_corr_d=-999, const Double_t m_corr_k=-999, Int_t ind=0);
   double getCorrValue(const double value, const int err, TH1D* h_corr);
-  TH1D* calcToyError(const std::vector<TH1D*> bg_est[NERR+1], const int ind );
-  TH1D* calcToyError( TH1D* bg_est[NERR+1] );
   void createSystRatio(const TString fin1, const TString fin2, const TString fout, const int mode=0, const TString plotfile="", const int ratio=0, const int incl_stat_err=0);
   void createFitSystRatio(const TString FF1, const TString FF2, const TString pname1, const TString pname2, const int ind);
   void initCorrFit(const TString filename[NB_MTCORR], const TString plotfilename[NB_MTCORR], const TString formfilename="");
@@ -55,9 +53,6 @@ class FFCalculator : public GlobalClass, public PlotterClass{
   void calcFFweights(const TString data_file, const std::vector<TString> weight_files, const std::vector<TString> presel_files, const TString m_path_img, const TString m_path_w="", const TString template_file="", Int_t mode=0);
 
   //void applyFF(TString outfile, const std::vector<Int_t> mode, const Int_t categoryMode, TString fname=FF_inputFile, const Int_t cuts=0 );
-  void applyFF(TString outfile, const std::vector<Int_t> mode, const Int_t categoryMode, Int_t cuts=0, TString fname=FF_inputFile);
-  void applyFF_tt_raw(TString outfile, const std::vector<Int_t> mode, const Int_t categoryMode, TString fname=FF_inputFile, const Int_t cuts=0 );
-  void applyFF_wUncertainties(TString outfile, const std::vector<Int_t> mode, const Int_t categoryMode, TString fname=FF_inputFile, const Int_t cuts=0, const Int_t tau_ind=0 );
   void getInputs(std::vector<double>&inputs, Int_t ind);
   void getSystUncertainties(const Int_t mode, TString ffname, const std::vector<TString> syst_file, TString outfile);
 

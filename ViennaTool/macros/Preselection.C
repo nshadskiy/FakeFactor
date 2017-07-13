@@ -8,8 +8,8 @@ void compressFile(TString name);
 void Preselection() {
 
   std::cout << std::endl << "***************************************" << std::endl;
-  std::cout << " *             Preselection            *" << std::endl;
-  std::cout << " ***************************************" << std::endl << std::endl;
+  std::cout << "*             Preselection            *" << std::endl;
+  std::cout << "***************************************" << std::endl << std::endl;
 
   std::cout << "Number: " << num << std::endl;
   TNtupleAnalyzer *Analyzer = new TNtupleAnalyzer();
@@ -116,45 +116,8 @@ void Preselection() {
     compressFile(preselection_signal);
   }
   //////////////////////////////////////////////////////////////////////////////
-  /*if( num==21 || num==0 ){
-    Analyzer->loadFile(SUSYGluGluToBBHToTauTau_M1000,"TauCheck");
-    Analyzer->select(preselection_SUSY_BBH_1000,0);
-    Analyzer->closeFile();
-    compressFile(preselection_SUSY_BBH_1000);
-  }
-  if( num==21 || num==0 ){
-    Analyzer->loadFile(SUSYGluGluToBBHToTauTau_M2000,"TauCheck");
-    Analyzer->select(preselection_SUSY_BBH_2000,0);
-    Analyzer->closeFile();
-    compressFile(preselection_SUSY_BBH_2000);
-  }
-  if( num==21 || num==0 ){
-    Analyzer->loadFile(SUSYGluGluToBBHToTauTau_M2900,"TauCheck");
-    Analyzer->select(preselection_SUSY_BBH_2900,0);
-    Analyzer->closeFile();
-    compressFile(preselection_SUSY_BBH_2900);
-  }
-  if( num==21 || num==0 ){
-    Analyzer->loadFile(SUSYGluGluToHToTauTau_M1000,"TauCheck");
-    Analyzer->select(preselection_SUSY_ggH_1000,0);
-    Analyzer->closeFile();
-    compressFile(preselection_SUSY_ggH_1000);
-  }
-  if( num==21 || num==0 ){
-    Analyzer->loadFile(SUSYGluGluToHToTauTau_M2000,"TauCheck");
-    Analyzer->select(preselection_SUSY_ggH_2000,0);
-    Analyzer->closeFile();
-    compressFile(preselection_SUSY_ggH_2000);
-  }
-  if( num==21 || num==0 ){
-    Analyzer->loadFile(SUSYGluGluToHToTauTau_M2900,"TauCheck");
-    Analyzer->select(preselection_SUSY_ggH_2900,0);
-    Analyzer->closeFile();
-    compressFile(preselection_SUSY_ggH_2900);
-    }*/
-  //////////////////////////////////////////////////////////////////////////////
   
-  if (num==19||num>90||num==0) {
+  if (num==0) {
     std::cout << "Creating merged tree in file " << preselection_MCsum_woQCD << std::endl;
     TChain* MCch=new TChain("Events");
     MCch->Add(preselection_Wjets);
@@ -164,7 +127,7 @@ void Preselection() {
     TFile* MCf = new TFile(preselection_MCsum_woQCD,"recreate");
     MCch->Merge(MCf,0);
   }
-  if (num==19||num>90||num==0) {
+  if (num==0) {
     std::cout << "Creating merged tree in file " << preselection_MCsum << std::endl;
     TChain* MCch=new TChain("Events");
     MCch->Add(preselection_MCsum_woQCD);

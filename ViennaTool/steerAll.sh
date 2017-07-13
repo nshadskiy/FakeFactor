@@ -5,10 +5,10 @@ sh BuildStructure.sh
 cd ../
 make -B
 
-./Preselection
+#./Preselection
 #./SRHisto
 #./CRHisto
-#./steerFF
+./steerFF
 #./fitFakeFactors
 #./calcCorrections
 #./convert_inputs

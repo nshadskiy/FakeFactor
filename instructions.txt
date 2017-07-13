@@ -1,5 +1,5 @@
---------------
---BuildStructure.sh--
---line2: user=jbrandstetter
---line3: fftype=FakeFactor_2016_MSSM_preapproval_dev
+##########################
+##BuildStructure.sh##
+##line2: user=jbrandstetter
+##line3: fftype=FakeFactor_2016_MSSM_preapproval_dev
 

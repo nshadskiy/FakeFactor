@@ -42,13 +42,7 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
 {
   TH1D *tightSR,*looseSR,*tightSR_alt,*allSR;
   TString suff=""; if (mode & _SS ) suff=" (SS) ";
-  if (mode & M2T) {                                      
-    tightSR = new TH1D("hh_t_mt2","Tight events in SR"+suff,nbins_mt2,hist_min_mt2,hist_max_mt2);
-    looseSR = new TH1D("hh_l_mt2","Loose events in SR"+suff,nbins_mt2,hist_min_mt2,hist_max_mt2);
-    tightSR_alt = new TH1D("hh_t_alt_mt2","Tight events alt SR"+suff,nbins_mt2,hist_min_mt2,hist_max_mt2);
-    allSR   = new TH1D("hh_a_mt2",  "All events in SR"+suff,nbins_mt2,hist_min_mt2,hist_max_mt2);
-  }
-  else if (mode & MT) {
+  if (mode & MT) {
     tightSR = new TH1D("hh_t_mt","Tight events in SR"+suff,nbins_mt,hist_min_mt,hist_max_mt);
     looseSR = new TH1D("hh_l_mt","Loose events in SR"+suff,nbins_mt,hist_min_mt,hist_max_mt);
     tightSR_alt = new TH1D("hh_t_alt_mt","Tight events in alt SR"+suff,nbins_mt,hist_min_mt,hist_max_mt);
@@ -60,12 +54,6 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
     tightSR_alt = new TH1D("hh_t_alt_mvis","Tight events in alt SR"+suff,w_mvis_n,w_mvis_v);
     allSR   = new TH1D("hh_a_mvis",  "All events in SR"+suff,w_mvis_n,w_mvis_v);
   }
-  /*else if (mode & MVIS) {
-    tightSR = new TH1D("hh_t_mvis","Tight events in SR"+suff,w_mvis_n,w_mvis_v);
-    looseSR = new TH1D("hh_l_mvis","Loose events in SR"+suff,w_mvis_n,w_mvis_v);
-    looseSR_tt = new TH1D("hh_ltt_mvis","Loose events in tt SR"+suff,w_mvis_n,w_mvis_v);
-    allSR   = new TH1D("hh_a_mvis",  "All events in SR"+suff,w_mvis_n,w_mvis_v);
-    }*/
   else if (mode & MVIS) {
     tightSR = new TH1D("hh_t_mvis","Tight events in SR"+suff,nbins_mvis,hist_min_mvis,hist_max_mvis);
     looseSR = new TH1D("hh_l_mvis","Loose events in SR"+suff,nbins_mvis,hist_min_mvis,hist_max_mvis);
@@ -90,38 +78,6 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
     tightSR_alt = new TH1D("hh_t_alt_lepPt","Tight events in alt SR"+suff,nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
     allSR   = new TH1D("hh_a_lepPt",  "All events in SR"+suff,nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
   }
-  else if (mode & MVAMET) {                                      
-    tightSR = new TH1D("hh_t_mvamet","Tight events in SR"+suff,nbins_mvamet,hist_min_mvamet,hist_max_mvamet);
-    looseSR = new TH1D("hh_l_mvamet","Loose events in SR"+suff,nbins_mvamet,hist_min_mvamet,hist_max_mvamet);
-    tightSR_alt = new TH1D("hh_t_alt_mvamet","Tight events in alt SR"+suff,nbins_mvamet,hist_min_mvamet,hist_max_mvamet);
-    allSR   = new TH1D("hh_a_mvamet",  "All events in SR"+suff,nbins_mvamet,hist_min_mvamet,hist_max_mvamet);
-  }
-  else if (mode & MET) {                                      
-    tightSR = new TH1D("hh_t_met","Tight events in SR"+suff,nbins_met,hist_min_met,hist_max_met);
-    looseSR = new TH1D("hh_l_met","Loose events in SR"+suff,nbins_met,hist_min_met,hist_max_met);
-    tightSR_alt = new TH1D("hh_t_alt_met","Tight events in alt SR"+suff,nbins_met,hist_min_met,hist_max_met);
-    allSR   = new TH1D("hh_a_met",  "All events in SR"+suff,nbins_met,hist_min_met,hist_max_met);
-  }
-  else if (mode & ETA) {                                      
-    tightSR = new TH1D("hh_t_eta","Tight events in SR"+suff,nbins_eta,hist_min_eta,hist_max_eta);
-    looseSR = new TH1D("hh_l_eta","Loose events in SR"+suff,nbins_eta,hist_min_eta,hist_max_eta);
-    tightSR_alt = new TH1D("hh_t_alt_eta","Tight events in alt SR"+suff,nbins_eta,hist_min_eta,hist_max_eta);
-    allSR   = new TH1D("hh_a_eta",  "All events in SR"+suff,nbins_eta,hist_min_eta,hist_max_eta);
-  }
-  else if (mode & MMTOT) {
-    Double_t mttot_bins[] = {0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,275,300,325,350,400,500,700,900,1100,3900};
-    Int_t nbins_mttot_new = sizeof(mttot_bins)/sizeof(Double_t)-1;
-    tightSR = new TH1D("hh_t_mttot","Tight events in SR"+suff,nbins_mttot_new, mttot_bins);
-    looseSR = new TH1D("hh_l_mttot","Loose events in SR"+suff,nbins_mttot_new, mttot_bins);
-    tightSR_alt = new TH1D("hh_t_alt_mttot","Tight events in alt SR"+suff,nbins_mttot_new, mttot_bins);
-    allSR   = new TH1D("hh_a_mttot",  "All events in SR"+suff,nbins_mttot_new, mttot_bins);
-  }
-  else if (mode & MJJ) {                                      
-    tightSR = new TH1D("hh_t_mjj","Tight events in SR"+suff,nbins_mjj,hist_min_mjj,hist_max_mjj);
-    looseSR = new TH1D("hh_l_mjj","Loose events in SR"+suff,nbins_mjj,hist_min_mjj,hist_max_mjj);
-    tightSR_alt = new TH1D("hh_t_alt_mjj","Tight events in alt SR"+suff,nbins_mjj,hist_min_mjj,hist_max_mjj);
-    allSR   = new TH1D("hh_a_mjj",  "All events in SR"+suff,nbins_mjj,hist_min_mjj,hist_max_mjj);
-  }
   
   else {
     std::cout<<"ERROR: no valid mode given. Exiting TNtupleAnalyzer::calcBgEstSim..."<<std::endl;
@@ -136,10 +92,8 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
   Int_t tau_ind=0;
   for (Int_t jentry=0; jentry<nentries;jentry++) {
     event_s->GetEntry(jentry);
-    if (APPLY_TO_ISOTAU){
-      tau_ind=event_s->tau_iso_ind;
-      if ( tau_ind<0 ) continue;
-    }
+    tau_ind=event_s->tau_iso_ind;
+    if ( tau_ind<0 ) continue;
 
     if ( !fulfillCategory(categoryMode) ) continue;
     if ( isInSR(mode,tau_ind) && ( !cuts || this->passesCuts(cuts,tau_ind) )  ){
@@ -257,12 +211,6 @@ void TSelectionAnalyzer::getCRHisto(TString preselection,Int_t mode,TString outp
     looseCR = new TH1D("hh_l_muiso","",w_muiso_n,w_muiso_v);
     tightSR_alt = new TH1D("hh_t_alt_muiso","",w_muiso_n,w_muiso_v);
     allCR   = new TH1D("hh_a_muiso","",w_muiso_n,w_muiso_v);
-  }
-  else if (mode & ZPT) {
-    tightCR = new TH1D("hh_t_zpt","",w_zpt_n,w_zpt_v);
-    looseCR = new TH1D("hh_l_zpt","",w_zpt_n,w_zpt_v);
-    tightSR_alt = new TH1D("hh_t_alt_zpt","",w_zpt_n,w_zpt_v);
-    allCR   = new TH1D("hh_a_zpt","",w_zpt_n,w_zpt_v);
   }
   else if (mode & LEPPT) {
     tightCR = new TH1D("hh_t_lepPt","",FI*nbins_lepPt,hist_min_lepPt,hist_max_lepPt);

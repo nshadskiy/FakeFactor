@@ -99,13 +99,6 @@ void CalcFF() {
       cout << endl << "################### Calculating FFs         ###############" << endl << endl;
       Analyzer->calcFFCorr(_W_JETS|m_gen_match,                    m_preselection_data,   pre_sub_wj,    p+FF_corr_Wjets_MCsum_noGen,  p+weight_Wjets);
       Analyzer->calcFFCorr(_W_JETS|m_gen_match,                    preselection_Wjets,   empty_vec_tstring,    p+FF_corr_Wjets_MC_noGen,  p+weight_Wjets);
-
-      /*if (useWJFF_forDY) Analyzer->calcFFCorr(_W_JETS|m_gen_match, m_preselection_data,   pre_sub_wj,    p+FF_corr_DY_MCsum_noGen,     p+weight_DY_J);
-      else               Analyzer->calcFFCorr(_DY|m_gen_match ,    m_preselection_data,   pre_sub_dy,    p+FF_corr_DY_MCsum_noGen,     p+weight_DY_J); //DY_J using FF from DY->mumu CR
-
-      Analyzer->calcFFCorr(_W_JETS|m_gen_match|SR,                    preselection_Wjets,   empty_vec_tstring,    p+FF_Wjets_only_SR,  p+weight_Wjets);
-      Analyzer->calcFFCorr(_DY|m_gen_match|SR,                    preselection_DY_J,   empty_vec_tstring,    p+FF_DY_J_only_SR,  p+weight_Wjets);
-      Analyzer->calcFFCorr(_DY|m_gen_match,                       preselection_DY_J,   empty_vec_tstring,    p+FF_DY_J_only,  p+weight_Wjets);*/
       
       cout << "Calculating TT FFs" << endl;
       if (useDYFF_forTT) Analyzer->calcFFCorr(_DY|m_gen_match,     m_preselection_data,   pre_sub_dy,    p+FF_corr_TT_MCsum_noGen,  p+weight_TT_J);
@@ -120,7 +113,6 @@ void CalcFF() {
 
     if(doCalc && CHAN==kTAU){
       Analyzer->calcFFCorr(_QCD|m_gen_match,   m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCD_MCsum_noGen, p+weight_QCD);
-      //Analyzer->plotFF(p+"FF_corr_QCD_MCsum_noGen_VTight.root",    p+"FF_corr_QCD_MCsum_noGen_VTight.root",    _QCD, pi+"ff_QCD_njetBinned"   ,"QCD m_{T}(#tau#tau) !vtightMVA", "QCD m_{T}(#mu#tau) vlooseMVA && !vtightMVA",PTDMJET_BINS,nPTDMJET_BINS+1);
       
       Analyzer->calcFFCorr(_QCD|m_gen_match|_AI,   m_preselection_data,   pre_sub_qcd,   p+"FF_corr_QCD_MCsum_noGen_AI.root", p+weight_QCD);
     }
@@ -138,117 +130,6 @@ void CalcFF() {
     }
   }
   
-  ///////////////////////////////////////////////////////////////////////////////////////
-  /////////////2b. Calc some FF for debugging (e.g. in SR)
-  ///////////////////////////////////////////////////////////////////////////////////////
-  
-  if (doDebugPlots==2){
-    cout << endl << "################### Calculating FFs (debug) ###############" << endl << endl;
-    //Analyzer->calcFFCorr(MUISO|VSVAR|DOALL|_QCD|m_gen_match,m_preselection_data,pre_sub_qcd,                p+FF_corr_QCD_MCsum_muiso);
-    Analyzer->calcFFCorr(MUISO|VSVAR|_QCD|m_gen_match,m_preselection_data,pre_sub_qcd,                      p+FF_corr_QCD_MCsum_muiso_CR);
-    //Analyzer->calcFFCorr(MUISO|VSVAR|SR|_QCD|m_gen_match,m_preselection_data,pre_sub_qcd,                   p+FF_corr_QCD_MCsum_muiso_SR);
-    Analyzer->calcFFCorr(NB   |VSVAR|_QCD|m_gen_match,m_preselection_data,pre_sub_qcd,                      p+FF_corr_QCD_MCsum_nb_CR);
-    Analyzer->calcFFCorr(NB   |VSVAR|_TT |m_gen_match,m_preselection_data,pre_sub_tt,                       p+FF_corr_TT_J_MCsum_nb_CR);
-    Analyzer->calcFFCorr(DRB  |VSVAR|_QCD|m_gen_match,m_preselection_data,pre_sub_qcd,                      p+FF_corr_QCD_MCsum_drb_CR);
-    Analyzer->calcFFCorr(DRB  |VSVAR|_TT |m_gen_match,m_preselection_data,pre_sub_tt,                       p+FF_corr_TT_J_MCsum_drb_CR);
-  }
-  
-  if (doDebugPlots && DOMC){
-    //Specific sample, vs nb
-    
-    if (doDebugPlots==2){
-      Analyzer->calcFFCorr(NB|VSVAR|_QCD|m_gen_match,preselection_QCD,empty_vec_tstring,                      p+FF_QCD_only_nb_CR);
-      Analyzer->calcFFCorr(NB|VSVAR|SR|_QCD|m_gen_match,preselection_QCD,empty_vec_tstring,                   p+FF_QCD_only_nb_SR);
-      Analyzer->calcFFCorr(NB|VSVAR|_TT|m_gen_match,preselection_TT_J,empty_vec_tstring,                      p+FF_TT_J_only_nb_CR);
-      Analyzer->calcFFCorr(NB|VSVAR|SR|_TT|m_gen_match,preselection_TT_J,empty_vec_tstring,                   p+FF_TT_J_only_nb_SR);
-      Analyzer->calcFFCorr(DRB|VSVAR|_QCD|m_gen_match,preselection_QCD,empty_vec_tstring,                     p+FF_QCD_only_drb_CR);
-      Analyzer->calcFFCorr(DRB|VSVAR|SR|_QCD|m_gen_match,preselection_QCD,empty_vec_tstring,                  p+FF_QCD_only_drb_SR);
-      Analyzer->calcFFCorr(DRB|VSVAR|_TT|m_gen_match,preselection_TT_J,empty_vec_tstring,                     p+FF_TT_J_only_drb_CR);
-      Analyzer->calcFFCorr(DRB|VSVAR|SR|_TT|m_gen_match,preselection_TT_J,empty_vec_tstring,                  p+FF_TT_J_only_drb_SR);
-    }
-    
-    if (doSRPlots){
-      //SR, all samples
-      cout << endl << "################### SR Plots ###############" << endl << endl;
-      Analyzer->calcFFCorr(_W_JETS|SR|m_gen_match,m_preselection_data,pre_sub_wj,                    p+FF_corr_Wjets_MCsum_noGen_SR,p+weight_Wjets);
-      if (useWJFF_forDY) Analyzer->calcFFCorr(_W_JETS|SR|m_gen_match,m_preselection_data,pre_sub_wj,    p+FF_corr_DY_MCsum_noGen_SR,p+weight_DY_J);
-      else               Analyzer->calcFFCorr(_DY|    SR|m_gen_match,m_preselection_data,pre_sub_dy,    p+FF_corr_DY_MCsum_noGen_SR,p+weight_DY_J);
-      if (useDYFF_forTT) Analyzer->calcFFCorr(_DY|    SR|m_gen_match,m_preselection_data,pre_sub_dy,    p+FF_corr_TT_MCsum_noGen_SR,p+weight_TT_J);
-      else               Analyzer->calcFFCorr(_TT|    SR|m_gen_match,m_preselection_data,pre_sub_tt,    p+FF_corr_TT_MCsum_noGen_SR,p+weight_TT_J);
-      if (DOQCD){ Analyzer->calcFFCorr(_QCD|SR|m_gen_match,m_preselection_data,pre_sub_qcd,             p+FF_corr_QCD_MCsum_noGen_SR,p+weight_QCD); }
-      
-      //SR, specific sample
-      Analyzer->calcFFCorr(_W_JETS|SR|m_gen_match,preselection_Wjets,empty_vec_tstring,                    p+FF_Wjets_only_SR,p+weight_Wjets);
-      if (useWJFF_forDY) Analyzer->calcFFCorr(_W_JETS|SR|m_gen_match,preselection_Wjets,empty_vec_tstring, p+FF_DY_J_only_SR,p+weight_DY_J);
-      else               Analyzer->calcFFCorr(_DY|    SR|m_gen_match,preselection_DY_J,empty_vec_tstring,  p+FF_DY_J_only_SR,p+weight_DY_J);
-      if (useDYFF_forTT) Analyzer->calcFFCorr(_DY|    SR|m_gen_match,preselection_DY_J,empty_vec_tstring,  p+FF_TT_J_only_SR,p+weight_TT_J);
-      else               Analyzer->calcFFCorr(_TT|    SR|m_gen_match,preselection_TT_J,empty_vec_tstring,  p+FF_TT_J_only_SR,p+weight_TT_J);
-      if (DOQCD){ Analyzer->calcFFCorr(_QCD|SR|m_gen_match,preselection_QCD,empty_vec_tstring,             p+FF_QCD_only_SR,p+weight_QCD); }
-      
-      //SR, specific sample, vs mT
-      Analyzer->calcFFCorr(MT|VSVAR|_W_JETS|SR|m_gen_match,preselection_Wjets,empty_vec_tstring,                    p+FF_Wjets_only_mt_SR,p+weight_Wjets);
-      if (useWJFF_forDY) Analyzer->calcFFCorr(MT|VSVAR|_W_JETS|SR|m_gen_match,preselection_Wjets,empty_vec_tstring, p+FF_DY_J_only_mt_SR,p+weight_DY_J);
-      else               Analyzer->calcFFCorr(MT|VSVAR|_DY|    SR|m_gen_match,preselection_DY_J,empty_vec_tstring,  p+FF_DY_J_only_mt_SR,p+weight_DY_J);
-      if (useDYFF_forTT) Analyzer->calcFFCorr(MT|VSVAR|_DY|    SR|m_gen_match,preselection_DY_J,empty_vec_tstring,  p+FF_TT_J_only_mt_SR,p+weight_TT_J);
-      else               Analyzer->calcFFCorr(MT|VSVAR|_TT|    SR|m_gen_match,preselection_TT_J,empty_vec_tstring,  p+FF_TT_J_only_mt_SR,p+weight_TT_J);
-      if (DOQCD){ Analyzer->calcFFCorr(MT|VSVAR|_QCD|SR|m_gen_match,preselection_QCD,empty_vec_tstring,             p+FF_QCD_only_mt_SR,p+weight_QCD); }
-      
-      //All regions, specific sample, vs mT
-      Analyzer->calcFFCorr(MT|VSVAR|DOALL|_W_JETS|m_gen_match,preselection_Wjets,empty_vec_tstring,                 p+FF_Wjets_only_mt,p+weight_Wjets); //done above
-      if (useWJFF_forDY) Analyzer->calcFFCorr(MT|VSVAR|DOALL|_W_JETS|m_gen_match,preselection_Wjets,empty_vec_tstring, p+FF_DY_J_only_mt,p+weight_DY_J);
-      else               Analyzer->calcFFCorr(MT|VSVAR|DOALL|_DY|m_gen_match,preselection_DY_J,empty_vec_tstring,      p+FF_DY_J_only_mt,p+weight_DY_J);
-      if (useDYFF_forTT) Analyzer->calcFFCorr(MT|VSVAR|DOALL|_DY|m_gen_match,preselection_DY_J,empty_vec_tstring,      p+FF_TT_J_only_mt,p+weight_TT_J);
-      else               Analyzer->calcFFCorr(MT|VSVAR|DOALL|_TT|m_gen_match,preselection_TT_J,empty_vec_tstring,      p+FF_TT_J_only_mt,p+weight_TT_J);
-      if (DOQCD){ Analyzer->calcFFCorr(MT|VSVAR|DOALL|_QCD|m_gen_match,preselection_QCD,empty_vec_tstring,          p+FF_QCD_only_mt,p+weight_QCD); }
-    }
-    
-    //CR, specific sample
-    Analyzer->calcFFCorr(_W_JETS|m_gen_match,preselection_Wjets,empty_vec_tstring,                       p+FF_Wjets_only,p+weight_Wjets);
-    if (useWJFF_forDY) Analyzer->calcFFCorr(_W_JETS|m_gen_match,preselection_Wjets,empty_vec_tstring,    p+FF_DY_J_only,p+weight_DY_J);
-    else               Analyzer->calcFFCorr(_DY|m_gen_match,preselection_DY_J,empty_vec_tstring,         p+FF_DY_J_only,p+weight_DY_J);
-    if (useDYFF_forTT) Analyzer->calcFFCorr(_DY|m_gen_match,preselection_DY_J,empty_vec_tstring,         p+FF_TT_J_only,p+weight_TT_J);
-    else               Analyzer->calcFFCorr(_TT|m_gen_match,preselection_TT_J,empty_vec_tstring,         p+FF_TT_J_only,p+weight_TT_J);
-    if (DOQCD){ Analyzer->calcFFCorr(_QCD|m_gen_match,preselection_QCD,empty_vec_tstring,                p+FF_QCD_only,p+weight_QCD); }
-    
-    //CR, specific sample, vs mT
-    Analyzer->calcFFCorr(MT|VSVAR|_W_JETS|m_gen_match,preselection_Wjets,empty_vec_tstring,                     p+FF_Wjets_only_mt_CR,p+weight_Wjets);
-    if (useWJFF_forDY) Analyzer->calcFFCorr(MT|VSVAR|_W_JETS|m_gen_match,preselection_Wjets,empty_vec_tstring,  p+FF_DY_J_only_mt_CR,p+weight_DY_J);
-    else               Analyzer->calcFFCorr(MT|VSVAR|_DY|m_gen_match,preselection_DY_J,empty_vec_tstring,       p+FF_DY_J_only_mt_CR,p+weight_DY_J);
-    if (useDYFF_forTT) Analyzer->calcFFCorr(MT|VSVAR|_DY|m_gen_match,preselection_DY_J,empty_vec_tstring,       p+FF_TT_J_only_mt_CR,p+weight_TT_J);
-    else               Analyzer->calcFFCorr(MT|VSVAR|_TT|m_gen_match,preselection_TT_J,empty_vec_tstring,       p+FF_TT_J_only_mt_CR,p+weight_TT_J);
-    if (DOQCD){ Analyzer->calcFFCorr(MT|VSVAR|_QCD|m_gen_match,preselection_QCD,empty_vec_tstring,              p+FF_QCD_only_mt_CR,p+weight_QCD); }
-    
-    //Specific sample, vs mTll
-    Analyzer->calcFFCorr(MTLL|VSVAR|DOALL|_DY|m_gen_match,preselection_DY_J,empty_vec_tstring,                p+FF_DY_J_only_mtll);
-    Analyzer->calcFFCorr(MTLL|VSVAR|_DY|m_gen_match,preselection_DY_J,empty_vec_tstring,                      p+FF_DY_J_only_mtll_CR);
-    
-    //Specific sample, vs mu iso
-    Analyzer->calcFFCorr(MUISO|VSVAR|DOALL|_QCD|m_gen_match,preselection_QCD,empty_vec_tstring,                p+FF_QCD_only_muiso);
-    Analyzer->calcFFCorr(MUISO|VSVAR|_QCD|m_gen_match,preselection_QCD,empty_vec_tstring,                      p+FF_QCD_only_muiso_CR);
-    Analyzer->calcFFCorr(MUISO|VSVAR|SR|_QCD|m_gen_match,preselection_QCD,empty_vec_tstring,                   p+FF_QCD_only_muiso_SR);
-    
-      }
-
-
-  /*if(CHAN==kMU){
-    Analyzer->plotFF(p+"FF_corr_QCD_MCsum_noGen.root",    p+"FF_corr_QCD_MCsum_noGen_mT50.root",    _QCD, pi+"ff_QCD_data_mt40_vs_mt50"   ,"FF in QCD (data #mu#tau m_{T}<40)", "FF in QCD (data #mu#tau m_{T}<50)");
-    
-    Analyzer->plotFF(p+"FF_corr_QCD_MCsum_noGen.root",    "fakefactor/mc_mt/FF_corr_QCD_MCsum_noGen.root",    _QCD, pi+"ff_QCD_data_vs_MC"   ,"FF in QCD (data #mu#tau)", "FF in QCD (sim #mu#tau)");
-    Analyzer->plotFF(p+"FF_corr_Wjets_MCsum_noGen.root",    "fakefactor/mc_mt/FF_corr_Wjets_MCsum_noGen.root",    _W_JETS, pi+"ff_Wjets_data_vs_MC"   ,"FF in Wjets (data #mu#tau)", "FF in Wjets (sim #mu#tau)");
-    //Analyzer->plotFF(p+"FF_corr_DY_MCsum_noGen.root",    "fakefactor/mc_mt/FF_corr_DY_MCsum_noGen.root",    _DY, pi+"ff_DY_J_data_vs_MC"   ,"FF in DY (data #mu#tau)", "FF in DY (sim #mu#tau)");
-    Analyzer->plotFF(p+"FF_corr_TT_MCsum_noGen.root",    p+"FF_TT_J_only.root",    _TT, pi+"ff_TT_CR_data_vs_MC"   ,"FF in TT CR(data #mu#tau)", "FF in TT CR(sim #mu#tau)");
-    
-    Analyzer->plotFF(p+"FF_corr_QCD_MCsum_noGen.root",    "fakefactor/data_et/FF_corr_QCD_MCsum_noGen.root",    _QCD, pi+"ff_QCD_data_mt_vs_et"   ,"FF in QCD (data #mu#tau)", "FF in QCD (data e#tau)");
-    Analyzer->plotFF(p+"FF_corr_Wjets_MCsum_noGen.root",    "fakefactor/data_et/FF_corr_Wjets_MCsum_noGen.root",    _W_JETS, pi+"ff_Wjets_data_mt_vs_et"   ,"FF in Wjets (data #mu#tau)", "FF in Wjets (data e#tau)");
-    Analyzer->plotFF(p+"FF_corr_DY_MCsum_noGen.root",    "fakefactor/data_et/FF_corr_DY_MCsum_noGen.root",    _DY, pi+"ff_DY_J_data_mt_vs_et"   ,"FF in DY (data #mu#tau)", "FF in DY (data e#tau)");
-    Analyzer->plotFF(p+"FF_TT_J_only_SR.root",    "fakefactor/data_et/FF_TT_J_only_SR.root",    _TT, pi+"ff_TT_MC_mt_vs_et"   ,"FF in TT (data #mu#tau)", "FF in TT (data e#tau)");
-    
-    //Analyzer->plotFF(p+"FF_corr_QCD_MCsum_noGen.root",    "../../../CMSSW_7_6_3/src/ViennaTool/fakefactor/data_mt/FF_corr_QCD_MCsum_noGen.root",    _QCD, pi+"ff_QCD_data2016_vs_data2015"   ,"FF in QCD (2016 #mu#tau)", "FF in QCD (2015 #mu#tau)");
-    //Analyzer->plotFF(p+"FF_corr_Wjets_MCsum_noGen.root",    "../../../CMSSW_7_6_3/src/ViennaTool/fakefactor/data_mt/FF_corr_Wjets_MCsum_noGen.root",    _W_JETS, pi+"ff_Wjets_data2016_vs_data2015"   ,"FF in Wjets (2016 #mu#tau)", "FF in Wjets (2015 #mu#tau)");
-    //Analyzer->plotFF(p+"FF_corr_TT_MCsum_noGen.root",    "../../../CMSSW_7_6_3/src/ViennaTool/fakefactor/data_mt/FF_corr_TT_MCsum_noGen.root",    _TT, pi+"ff_TT_data2016_vs_data2015"   ,"FF in TT (2016 #mu#tau)", "FF in TT (2015 #mu#tau)");
-    }*/
-
-
   delete Analyzer;
 
   

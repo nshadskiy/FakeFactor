@@ -25,17 +25,6 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   const int icr[nCR]=        {_W_JETS , _DY  , _TT  , _QCD};
   const TString scr[nCR]=    {s_Wjets, s_DY , s_TT , s_QCD};
 
-  /*
-  const int nCR=3;
-  const int icr[nCR]=        {_W_JETS , _DY  , _QCD};
-  const TString scr[nCR]=    {s_Wjets, s_DY , s_QCD};
-  */
-
-  /*
-  const int nCR=1;
-  const int icr[nCR]=        {_QCD};
-  const TString scr[nCR]=    {s_QCD};
-  */
 
   int nSA; if(useVV){nSA=nSAMPLES;}else{nSA=nSAMPLES-3;}
   const TString *ssa=vsuff;
@@ -105,7 +94,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
     Analyzer->getCRHisto(path_presel+s_preselection+"_Wjets.root", MT|NO_SR|_W_JETS|_SS , path_sim+s_CR+"_Wjets_mt_Wjets_SS_SR.root"  );
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //TEST
+    //get QCD AI lepPT MC subtracted CRs
     TString modes[] = {"l","t","t_alt"};
     Int_t nmodes = 3;
     if(!DOMC){
@@ -270,42 +259,6 @@ void CRHisto(int doCalc, int nCR, int nQU) {
       }
     }
   }
-
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //This is not needed now
-  /*
-  if(CHAN==kTAU){
-    cout << "Now producing SS signal plots..." << endl;
-    
-    for (int iv=0; iv<nVAR; iv++){ //loop over mt, mvis, pt
-      for (int iq=0; iq<nQU; iq++){ //loop over loose/tight
-        std::vector<TString> cr; 
-        for (int is=0; is<nSA; is++){ cr.push_back(path_sim+"SS_SR_"+ssa[is]+"_"+tvar[iv]+".root"); }
-        Analyzer->plotCR(cr, ty, path_sim+"SS_SR_data_"+tvar[iv]+".root", squ[iq],   ""  , m_path_img+"SS_SR_"+squ[iq]+"_"+tvar[iv], tvar_l[iv] ); 
-      }
-    }
-    
-    cout << "Now producing SR antiIso signal plots..." << endl;
-    
-    for (int iv=0; iv<nVAR; iv++){ //loop over mt, mvis, pt
-      for (int iq=0; iq<nQU; iq++){ //loop over loose/tight
-        std::vector<TString> cr; 
-        for (int is=0; is<nSA; is++){ cr.push_back(path_sim+"SR_antiIso_"+ssa[is]+"_"+tvar[iv]+".root"); }
-        Analyzer->plotCR(cr, ty, path_sim+"SR_antiIso_data_"+tvar[iv]+".root", squ[iq],   ""  , m_path_img+"SR_antiIso_"+squ[iq]+"_"+tvar[iv], tvar_l[iv] ); 
-      }
-    }
-    
-    cout << "Now producing SS SR antiIso signal plots..." << endl;
-    
-    for (int iv=0; iv<nVAR; iv++){ //loop over mt, mvis, pt
-      for (int iq=0; iq<nQU; iq++){ //loop over loose/tight
-        std::vector<TString> cr; 
-        for (int is=0; is<nSA; is++){ cr.push_back(path_sim+"SS_SR_antiIso_"+ssa[is]+"_"+tvar[iv]+".root"); }
-        Analyzer->plotCR(cr, ty, path_sim+"SS_SR_antiIso_data_"+tvar[iv]+".root", squ[iq],   ""  , m_path_img+"SS_SR_antiIso_"+squ[iq]+"_"+tvar[iv], tvar_l[iv] ); 
-      }
-    }
-
-    }*/
 
   delete Analyzer;
 
