@@ -38,8 +38,8 @@ const int requireGenMatch_whenCalcFF=0; //0 as default
 const int useDYFF_forTT=0; //0 as default
 const int useWJFF_forDY=0; //1 as default
 const int doCalcWeights=1; //calc fractions
-const int doFit=0; //template fit for fractions, default: 0
-const int doCalc=1; //calc FFs
+const int doTemplateFitForWeights=0; //template fit for fractions, default: 0
+const int doCalc=0; //calc FFs
 //////////////////////////////////////////////////
 const int fit_pT_bins = 1; //use fitted pT bins as input for ff
 const double fitMin = 30;

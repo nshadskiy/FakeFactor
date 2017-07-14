@@ -505,10 +505,12 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
   std::vector<TH1D*> res;
   TH1D* res_data=new TH1D();
   std::vector<TH1D*> h_w;
-  Int_t fit_result=this->doTemplateFit(h_data, h_templates, m_path_img, res, res_data, mode);
+  //Int_t fit_result=this->doTemplateFit(h_data, h_templates, m_path_img, res, res_data, mode);
+  //TEMPLATE fit no longer used for 2016 data!!!!
+  Int_t fit_result=1;
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////// This is a first version how to intercept categories in which the fit doesn't converge, histograms for QCD and the "rest" still need to be added
-  if( !doFit || fit_result!=0 || CHAN==kTAU || !inclusive_selection ){
+  //////////////////////////// 
+  if( !doTemplateFitForWeights || fit_result!=0 ){
     std::vector<TH1D*> h_check; //if fit doesn't converge, this vector contains all the necessary histograms
     TH1D* htmp_check;
     for (int i=0; i<NFIT; i++){
@@ -637,23 +639,6 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
     gPad->SaveAs(fracstring);
   }
 
-  /*if(!inclusive_selection){
-    for(Int_t icat=0; icat<nCAT; icat++) if(catMode[icat] & mode) {fracstring.ReplaceAll( ".png", categories[icat]+".png");}
-  }
-  gPad->SaveAs(fracstring);
-  if (ALLPLOTS){
-    fracstring=m_path_img+"frac.pdf";
-    if(!inclusive_selection){
-      for(Int_t icat=0; icat<nCAT; icat++) if(catMode[icat] & mode) {fracstring.ReplaceAll( ".pdf", categories[icat]+".pdf");}
-    }
-    gPad->SaveAs(fracstring);
-    fracstring=m_path_img+"frac.eps";
-    if(!inclusive_selection){
-      for(Int_t icat=0; icat<nCAT; icat++) if(catMode[icat] & mode) {fracstring.ReplaceAll( ".eps", categories[icat]+".eps");}
-    }
-  gPad->SaveAs(fracstring);
-  }*/
-
   //now some nicer plots
   if ( (CHAN != kTAU && nbins_weight == w_pt_n*w_dm_n) || (CHAN == kTAU && nbins_weight == w_mttot_n*w_dm_n) ){ //split by decay mode: only if total number of weight bins is #mt-bins*#dm-bins
     
@@ -682,9 +667,12 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
         }
         h_w_split[is].at(j)->SetMaximum(1.0);
         hs_split[is]->Add(h_w_split[is].at(j),"hist");
+      }
+      for (int j=NW-2; j>=0; j--){
         if (is==0){
           TString m_label="Multijet";
-          for (int il=0; il<nSAMPLES; il++){ if ( vsuff[il]==m_type[j] ) m_label=vlabel[il]; }
+          for (int il=nSAMPLES-1; il>=0; il--){ if ( vsuff[il]==m_type[j] ) m_label=vlabel[il]; }
+          cout << "M_LABEL: " << m_label << endl;
           leg->AddEntry(h_w_split[is].at(j),m_label,"f");
         }
       }
