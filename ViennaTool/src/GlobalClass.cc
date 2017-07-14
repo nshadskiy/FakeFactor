@@ -651,11 +651,6 @@ Int_t GlobalClass::fulfillCategory(Int_t categoryMode, Int_t ind){
     if(event_s->alltau_mt->at(ind) < MT_CUT) return 0;
     if(event_s->alltau_mt->at(ind) > 70) return 0;
   }
-  if ( categoryMode & _BTAG_LOOSEISO && (CHAN==kMU || CHAN==kEL) ){
-    if(event_s->bpt_1<20) return 0;    
-    if(event_s->njets > 1) return 0;
-    if(event_s->alltau_mt->at(ind) > 70) return 0;
-  }
   if ( categoryMode & _NOBTAG_TIGHT && (CHAN==kMU || CHAN==kEL) ){
     if(event_s->bpt_1>20) return 0;    
     if(event_s->alltau_mt->at(ind) > MT_CUT) return 0; 
@@ -663,10 +658,6 @@ Int_t GlobalClass::fulfillCategory(Int_t categoryMode, Int_t ind){
   if ( categoryMode & _NOBTAG_LOOSEMT && (CHAN==kMU || CHAN==kEL) ){
     if(event_s->bpt_1>20) return 0;    
     if(event_s->alltau_mt->at(ind) < MT_CUT) return 0;
-    if(event_s->alltau_mt->at(ind) > 70) return 0;
-  }
-  if ( categoryMode & _NOBTAG_LOOSEISO && (CHAN==kMU || CHAN==kEL) ){
-    if(event_s->bpt_1>20) return 0;    
     if(event_s->alltau_mt->at(ind) > 70) return 0;
   }
   
@@ -681,46 +672,10 @@ TString GlobalClass::getCatString_noSel(Int_t categoryMode){
   if ( categoryMode & _NOBTAG ) return categories[1];
   if ( categoryMode & _BTAG_TIGHT ) return categories[2];
   if ( categoryMode & _BTAG_LOOSEMT ) return categories[3];
-  if ( categoryMode & _BTAG_LOOSEISO ) return categories[4];
-  if ( categoryMode & _NOBTAG_TIGHT ) return categories[5];
-  if ( categoryMode & _NOBTAG_LOOSEMT ) return categories[6];
-  if ( categoryMode & _NOBTAG_LOOSEISO ) return categories[7];
+  if ( categoryMode & _NOBTAG_TIGHT ) return categories[4];
+  if ( categoryMode & _NOBTAG_LOOSEMT ) return categories[5];
 
   return "";
   
 }
 
-TString GlobalClass::getFracString(Int_t categoryMode){
-
-  if ( categoryMode & _CATFRAC_MT ) return "_catfrac_mt";
-  if ( categoryMode & _CATFRAC_ET ) return "_catfrac_et";
-  if ( categoryMode & _CATFRAC_TT ) return "_catfrac_tt";
-  
-  if ( CHAN==kEL && categoryMode & _INCLFRAC_MT ) return "_mtfrac";
-  if ( CHAN==kTAU && categoryMode & _INCLFRAC_MT ) return "_mtfrac";
-
-  return "";
-  
-}
-
-TString GlobalClass::getChannelString(Int_t categoryMode){
-
-  if(CHAN==kMU){
-    if(categoryMode & _INCLFRAC_MT) return "mt/incl";
-    if(categoryMode & _CATFRAC_MT) return "mt/ZZZZZ";
-  }
-  if(CHAN==kEL){
-    if(categoryMode & _INCLFRAC_ET) return "et/incl";
-    if(categoryMode & _CATFRAC_ET) return "et/ZZZZZ";
-    if(categoryMode & _INCLFRAC_MT) return "et/incl_mtfrac";
-    if(categoryMode & _CATFRAC_MT) return"et/ZZZZZ_mtfrac";
-  }
-  if(CHAN==kTAU){
-    if(categoryMode & _INCLFRAC_TT) return "tt/incl";
-    if(categoryMode & _CATFRAC_TT) return "tt/ZZZZZ";
-    if(categoryMode & _INCLFRAC_MT) return "tt/incl_mtfrac";
-    if(categoryMode & _CATFRAC_MT) return "tt/ZZZZZ_mtfrac";
-  }
-
-  return "mt/incl";
-}

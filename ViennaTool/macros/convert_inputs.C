@@ -635,10 +635,8 @@ TString getCatString(Int_t categoryMode){
   if ( categoryMode & _NOBTAG ) return categories[1];
   if ( categoryMode & _BTAG_TIGHT ) return categories[2];
   if ( categoryMode & _BTAG_LOOSEMT ) return categories[3];
-  if ( categoryMode & _BTAG_LOOSEISO ) return categories[4];
-  if ( categoryMode & _NOBTAG_TIGHT ) return categories[5];
-  if ( categoryMode & _NOBTAG_LOOSEMT ) return categories[6];
-  if ( categoryMode & _NOBTAG_LOOSEISO ) return categories[7];
+  if ( categoryMode & _NOBTAG_TIGHT ) return categories[4];
+  if ( categoryMode & _NOBTAG_LOOSEMT ) return categories[5];
   
   
   return "incl";

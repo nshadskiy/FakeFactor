@@ -119,14 +119,14 @@ void CalcFF() {
     
   }  
 
-  if(inclusive_selection){
+  if(inclusive_selection && doCalc){
     if(CHAN==kMU){
-      Analyzer->plotFF(p+"FF_corr_TT_MCsum_noGen.root",    p+"FF_TT_J_only.root",    _TT, pi+"ff_TT_CR_data_vs_MC"   ,"FF in TT CR(data #mu#tau)", "FF in TT CR(sim #mu#tau)");
-      Analyzer->plotFF(p+"FF_corr_TT_MCsum_noGen.root",    p+"FF_TT_J_only.root",    _TT, pi+"ff_TT_CR_data_vs_MC"   ,"FF in TT CR(data #mu#tau)", "FF in TT CR(sim #mu#tau)", "_alt");
+      Analyzer->plotFF(p+FF_corr_TT_MCsum_noGen,    p+FF_TT_J_only,    _TT, pi+"ff_TT_CR_data_vs_MC"   ,"FF in TT CR(data #mu#tau)", "FF in TT CR(sim #mu#tau)");
+      Analyzer->plotFF(p+FF_corr_TT_MCsum_noGen,    p+FF_TT_J_only,    _TT, pi+"ff_TT_CR_data_vs_MC"   ,"FF in TT CR(data #mu#tau)", "FF in TT CR(sim #mu#tau)", "_alt");
     }
     if(CHAN==kEL){
-      Analyzer->plotFF(p+"FF_corr_TT_MCsum_noGen.root",    p+"FF_TT_J_only.root",    _TT, pi+"ff_TT_CR_data_vs_MC"   ,"FF in TT CR(data e#tau)", "FF in TT CR(sim e#tau)");
-      Analyzer->plotFF(p+"FF_corr_TT_MCsum_noGen.root",    p+"FF_TT_J_only.root",    _TT, pi+"ff_TT_CR_data_vs_MC"   ,"FF in TT CR(data e#tau)", "FF in TT CR(sim e#tau)", "_alt");
+      Analyzer->plotFF(p+FF_corr_TT_MCsum_noGen,    p+FF_TT_J_only,    _TT, pi+"ff_TT_CR_data_vs_MC"   ,"FF in TT CR(data e#tau)", "FF in TT CR(sim e#tau)");
+      Analyzer->plotFF(p+FF_corr_TT_MCsum_noGen,    p+FF_TT_J_only,    _TT, pi+"ff_TT_CR_data_vs_MC"   ,"FF in TT CR(data e#tau)", "FF in TT CR(sim e#tau)", "_alt");
     }
   }
   

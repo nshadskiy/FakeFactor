@@ -66,11 +66,6 @@ void fitFakeFactors(){
               cf.set_err_scale( 3.0 ); //opt 1
               cf.set_err_cl( 0 );
             }
-          /*else if( CHAN==kEL && (  (modes.at(imode) & _QCD) && ijet == 0 ) ){
-            cf.set_fitFunc( "landau(0)+pol0(2)" );
-            cf.set_err_scale( 3.0 ); //opt 1
-            cf.set_err_cl( 0 );
-            }*/
           else if( CHAN==kEL ){
             cf.set_fitFunc( "landau(0)+pol0(2)" );
             cf.set_err_scale( 3.0 ); //opt 1
@@ -125,7 +120,7 @@ void fitFakeFactors(){
           cf.set_fitFromBin( 1+cat*nbins );
           cf.set_fitMin( fitMin );
           cf.set_fitMax( fitMax );
-          cf.set_histo_bins( fitBins );
+          cf.set_histo_bins( fitBins*10 ); //this is only done to get nicer plots -> reverted before saver the FFs
           
           std::vector<double> bins;
           cf.set_bin_centers( fake_histos.at(imode) , "bins_weighted", nbins ); //fitFromBin  needs to be set BEFORE
@@ -140,10 +135,6 @@ void fitFakeFactors(){
           for(int i=0; i<g_fit->GetN(); i++){
             Double_t x; Double_t y;
             g_fit->GetPoint(i,x,y);
-            /*if( i<=1 && g_fit->GetErrorYlow(i) > 1.4*g_fit->GetErrorYlow(i+1) )   g_fit->SetPointEYlow( i, g_fit->GetErrorYlow(i+1) );
-            if( i<=1 && g_fit->GetErrorYhigh(i) > 1.4*g_fit->GetErrorYhigh(i+1) ) g_fit->SetPointEYhigh( i, g_fit->GetErrorYhigh(i+1) );
-            if( i>1 && g_fit->GetErrorYlow(i) > 1.4*g_fit->GetErrorYlow(i-1) )   g_fit->SetPointEYlow( i, g_fit->GetErrorYlow(i-1) );
-            if( i>1 && g_fit->GetErrorYhigh(i) > 1.4*g_fit->GetErrorYhigh(i-1) ) g_fit->SetPointEYhigh( i, g_fit->GetErrorYhigh(i-1) );*/
             if(y-g_fit->GetErrorYlow(i)<0) g_fit->SetPointEYlow( i,y );
             if(y+g_fit->GetErrorYhigh(i)>=1.) g_fit->SetPointEYhigh( i,0.99-y );
           }
@@ -233,6 +224,13 @@ void fitFakeFactors(){
           gPad->RedrawAxis();
           c2->SaveAs(pi+"pTfit"+ending+".png");
           if(ALLPLOTS) c2->SaveAs(pi+"pTfit"+ending+".pdf");
+
+
+          cf.set_histo_bins( fitBins );          
+          cf.set_bin_centers( fake_histos.at(imode) , "bins_weighted", nbins ); //fitFromBin  needs to be set BEFORE          
+          cf.fitHisto();
+          g_fit=cf.returnFitGraph();
+          
           g_fit->SetName(convert.str().c_str());
           ff_fitted.cd();
           g_fit->Write();

@@ -39,12 +39,18 @@ const int useDYFF_forTT=0; //0 as default
 const int useWJFF_forDY=0; //1 as default
 const int doCalcWeights=1; //calc fractions
 const int doTemplateFitForWeights=0; //template fit for fractions, default: 0
-const int doCalc=0; //calc FFs
+const int doCalc=1; //calc FFs
 //////////////////////////////////////////////////
 const int fit_pT_bins = 1; //use fitted pT bins as input for ff
-const double fitMin = 30;
+#if( CHAN!=kTAU )
+const double fitMin =  30;
+const int fitBins  =  470;
+#endif
+#if( CHAN==kTAU )
+const double fitMin =  40;
+const int fitBins  =  460;
+#endif
 const double fitMax = 500;
-const int fitBins = 470;
 //////////////////////////////////////////////////
 //applyFF
 const int doBgEst=1; //calc bkg estimates for different FF contributions
@@ -88,3 +94,7 @@ const Double_t MT_CUT=40;
 
 const Double_t MZ=91.2;
 const Double_t QCD_SS_TO_OS=1.06;
+
+
+
+

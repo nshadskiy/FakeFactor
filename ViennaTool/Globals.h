@@ -53,17 +53,8 @@
 #define _NOBTAG            4
 #define _BTAG_TIGHT        8
 #define _BTAG_LOOSEMT     16
-#define _BTAG_LOOSEISO    32
-#define _NOBTAG_TIGHT     64
-#define _NOBTAG_LOOSEMT  128
-#define _NOBTAG_LOOSEISO 256
-
-#define _INCLFRAC_MT     4096
-#define _CATFRAC_MT      8192
-#define _INCLFRAC_ET    16384
-#define _CATFRAC_ET     32768
-#define _INCLFRAC_TT    65536
-#define _CATFRAC_TT    131072
+#define _NOBTAG_TIGHT     32
+#define _NOBTAG_LOOSEMT   64
 
 const Int_t promptE   =1;
 const Int_t promptMu  =2;
@@ -190,94 +181,24 @@ const TString FF_QCD_only_mvis_SS            = "FF_QCD_only_mvis_SS.root";
 const TString FF_QCD_only_mvis_iso           = "FF_QCD_only_mvis_iso.root";
 
 
-// Fake factor files (vs mt)
-const TString FF_Wjets_only_mt                  = "FF_Wjets_only_"+s_mt+".root";
-const TString FF_DY_J_only_mt                   = "FF_DY_J_only_"+s_mt+".root";
-const TString FF_TT_J_only_mt                   = "FF_TT_J_only_"+s_mt+".root";
-const TString FF_QCD_only_mt                    = "FF_QCD_only_"+s_mt+".root";
-
-const TString FF_Wjets_only_mt_SR               = "FF_Wjets_only_"+s_mt+"_"+s_SR+".root";
-const TString FF_DY_J_only_mt_SR                = "FF_DY_J_only_"+s_mt+"_"+s_SR+".root";
-const TString FF_TT_J_only_mt_SR                = "FF_TT_J_only_"+s_mt+"_"+s_SR+".root";
-const TString FF_QCD_only_mt_SR                 = "FF_QCD_only_"+s_mt+"_"+s_SR+".root";
-
-const TString FF_Wjets_only_mt_CR               = "FF_Wjets_only_"+s_mt+"_"+s_CR+".root";
-const TString FF_DY_J_only_mt_CR                = "FF_DY_J_only_"+s_mt+"_"+s_CR+".root";
-const TString FF_TT_J_only_mt_CR                = "FF_TT_J_only_"+s_mt+"_"+s_CR+".root";
-const TString FF_QCD_only_mt_CR                 = "FF_QCD_only_"+s_mt+"_"+s_CR+".root";
-
-const TString FF_Wjets_only_mt_fit              = "FF_Wjets_only_"+s_mt+"_fit.root";
-const TString FF_Wjets_only_mt_1p_fit           = "FF_Wjets_only_"+s_mt+"_1p_fit.root";
-const TString FF_Wjets_only_mt_3p_fit           = "FF_Wjets_only_"+s_mt+"_3p_fit.root";
-
-//Fake factor files (vs mvis)
-const TString FF_QCD_only_mvis                    = "FF_QCD_only_"+s_mvis+".root";
-
-const TString FF_QCD_only_mvis_SR                 = "FF_QCD_only_"+s_mvis+"_"+s_SR+".root";
-
-// Fake factor files (vs mtll)
-const TString FF_Wjets_only_mtll                  = "FF_Wjets_only_"+s_mtll+".root";
-const TString FF_DY_J_only_mtll                   = "FF_DY_J_only_"+s_mtll+".root";
-const TString FF_TT_J_only_mtll                   = "FF_TT_J_only_"+s_mtll+".root";
-const TString FF_QCD_only_mtll                    = "FF_QCD_only_"+s_mtll+".root";
-
-const TString FF_Wjets_only_mtll_SR               = "FF_Wjets_only_"+s_mtll+"_"+s_SR+".root";
-const TString FF_DY_J_only_mtll_SR                = "FF_DY_J_only_"+s_mtll+"_"+s_SR+".root";
-const TString FF_TT_J_only_mtll_SR                = "FF_TT_J_only_"+s_mtll+"_"+s_SR+".root";
-const TString FF_QCD_only_mtll_SR                 = "FF_QCD_only_"+s_mtll+"_"+s_SR+".root";
-
-const TString FF_Wjets_only_mtll_CR               = "FF_Wjets_only_"+s_mtll+"_"+s_CR+".root";
-const TString FF_DY_J_only_mtll_CR                = "FF_DY_J_only_"+s_mtll+"_"+s_CR+".root";
-const TString FF_TT_J_only_mtll_CR                = "FF_TT_J_only_"+s_mtll+"_"+s_CR+".root";
-const TString FF_QCD_only_mtll_CR                 = "FF_QCD_only_"+s_mtll+"_"+s_CR+".root";
-
-const TString FF_QCD_only_muiso                   = "FF_QCD_only_"+s_muiso+".root";
-const TString FF_QCD_only_muiso_CR                = "FF_QCD_only_"+s_muiso+"_"+s_CR+".root";
-const TString FF_QCD_only_muiso_SR                = "FF_QCD_only_"+s_muiso+"_"+s_SR+".root";
-const TString FF_corr_QCD_MCsum_muiso             = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_"+s_muiso+".root";
-const TString FF_corr_QCD_MCsum_muiso_CR          = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_"+s_muiso+"_"+s_CR+".root";
-const TString FF_corr_QCD_MCsum_muiso_SR          = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_"+s_muiso+"_"+s_SR+".root";
-
-const TString FF_QCD_only_nb_CR                   = "FF_QCD_only_"+s_nb+"_"+s_CR+".root";
-const TString FF_QCD_only_nb_SR                   = "FF_QCD_only_"+s_nb+"_"+s_SR+".root";
-const TString FF_TT_J_only_nb_CR                  = "FF_TT_J_only_"+s_nb+"_"+s_CR+".root";
-const TString FF_TT_J_only_nb_SR                  = "FF_TT_J_only_"+s_nb+"_"+s_SR+".root";
-const TString FF_corr_QCD_MCsum_nb_CR             = "FF_"+s_corr+"_QCD_" +s_MCsum+"_noGen_"+s_nb+"_"+s_CR+".root";
-const TString FF_corr_TT_J_MCsum_nb_CR            = "FF_"+s_corr+"_TT_J_"+s_MCsum+"_noGen_"+s_nb+"_"+s_CR+".root";
-
-const TString FF_QCD_only_drb_CR                   = "FF_QCD_only_"+s_drb+"_"+s_CR+".root";
-const TString FF_QCD_only_drb_SR                   = "FF_QCD_only_"+s_drb+"_"+s_SR+".root";
-const TString FF_TT_J_only_drb_CR                  = "FF_TT_J_only_"+s_drb+"_"+s_CR+".root";
-const TString FF_TT_J_only_drb_SR                  = "FF_TT_J_only_"+s_drb+"_"+s_SR+".root";
-const TString FF_corr_QCD_MCsum_drb_CR             = "FF_"+s_corr+"_QCD_" +s_MCsum+"_noGen_"+s_drb+"_"+s_CR+".root";
-const TString FF_corr_TT_J_MCsum_drb_CR            = "FF_"+s_corr+"_TT_J_"+s_MCsum+"_noGen_"+s_drb+"_"+s_CR+".root";
-
-const TString FF_corr_DY_J_MCsum_noGen_mtll_CR    = "FF_"+s_corr+"_DY_J_"+s_MCsum+"_noGen_"+s_mtll+"_"    +s_CR+".root";
-const TString FF_corr_DY_J_MCsum_noGen_mtll_fit_CR= "FF_"+s_corr+"_DY_J_"+s_MCsum+"_noGen_"+s_mtll+"_fit_"+s_CR+".root";
-const TString FF_corr_DY_J_MCsum_noGen_mtll_1p_fit_CR= "FF_"+s_corr+"_DY_J_"+s_MCsum+"_noGen_"+s_mtll+"_1p_fit_"+s_CR+".root";
-const TString FF_corr_DY_J_MCsum_noGen_mtll_3p_fit_CR= "FF_"+s_corr+"_DY_J_"+s_MCsum+"_noGen_"+s_mtll+"_3p_fit_"+s_CR+".root";
-const TString FF_DY_J_only_mtll_fit_CR             = "FF_DY_J_only_"+s_mtll+"_fit_"+s_CR+".root";
-const TString FF_DY_J_only_mtll_1p_fit_CR          = "FF_DY_J_only_"+s_mtll+"_1p_fit_"+s_CR+".root";
-const TString FF_DY_J_only_mtll_3p_fit_CR          = "FF_DY_J_only_"+s_mtll+"_3p_fit_"+s_CR+".root";
-
 // Fakefactor files (CR corrected)
-const TString FF_corr_Wjets_data                    = "FF_"+s_corr+"_Wjets_data.root";
-const TString FF_corr_Wjets_data_weighted           = "FF_"+s_corr+"_Wjets_data_"+s_weighted+".root";
-const TString FF_corr_Wjets_MCsum_noGen             = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen.root";
-const TString FF_corr_Wjets_MCsum_noGen_fitted      = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_fitted.root";
-const TString FF_corr_Wjets_MC_noGen                = "FF_"+s_corr+"_Wjets_MC_noGen.root";
-const TString FF_corr_Wjets_MC_noGen_fitted         = "FF_"+s_corr+"_Wjets_MC_noGen_fitted.root";
-const TString FF_corr_Wjets_MCsum_noGen_nonclosure  = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_nonclosure.root";
-const TString FF_corr_Wjets_MCsum_noGen_nonclosure_SS_SR  = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_nonclosure_SS_SR.root";
-const TString FF_corr_Wjets_MC_noGen_nonclosure  = "FF_"+s_corr+"_Wjets_MC_noGen_nonclosure.root";
-const TString FF_corr_Wjets_MC_noGen_mtcorr      = "FF_"+s_corr+"_Wjets_MC_noGen_mtcorr.root";
-const TString FF_corr_Wjets_MC_noGen_mtcorr_SS_SR      = "FF_"+s_corr+"_Wjets_MC_noGen_mtcorr_SS_SR.root";
-const TString FF_corr_Wjets_MCsum_noGen_weighted    = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_"+s_weighted+".root";
-const TString FF_corr_Wjets_MCsum_noGen_SR          = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_"+s_SR+".root";
-const TString FF_corr_Wjets_MCsum_noGen_SR_weighted = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_"+s_SR+"_"+s_weighted+".root";
-const TString FF_corr_Wjets_MCsum_Gen               = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_Gen.root";
-const TString FF_corr_Wjets_MCsum_Gen_fitted        = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_Gen_fitted.root";
-const TString FF_corr_Wjets_MCsum_Gen_weighted      = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_Gen_"+s_weighted+".root";
+const TString FF_corr_Wjets_data                                = "FF_"+s_corr+"_Wjets_data.root";
+const TString FF_corr_Wjets_data_weighted                       = "FF_"+s_corr+"_Wjets_data_"+s_weighted+".root";
+const TString FF_corr_Wjets_MCsum_noGen                         = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen.root";
+const TString FF_corr_Wjets_MCsum_noGen_fitted                  = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_fitted.root";
+const TString FF_corr_Wjets_MC_noGen                            = "FF_"+s_corr+"_Wjets_MC_noGen.root";
+const TString FF_corr_Wjets_MC_noGen_fitted                     = "FF_"+s_corr+"_Wjets_MC_noGen_fitted.root";
+const TString FF_corr_Wjets_MCsum_noGen_nonclosure              = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_nonclosure.root";
+const TString FF_corr_Wjets_MCsum_noGen_nonclosure_SS_SR        = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_nonclosure_SS_SR.root";
+const TString FF_corr_Wjets_MC_noGen_nonclosure                 = "FF_"+s_corr+"_Wjets_MC_noGen_nonclosure.root";
+const TString FF_corr_Wjets_MC_noGen_mtcorr                     = "FF_"+s_corr+"_Wjets_MC_noGen_mtcorr.root";
+const TString FF_corr_Wjets_MC_noGen_mtcorr_SS_SR               = "FF_"+s_corr+"_Wjets_MC_noGen_mtcorr_SS_SR.root";
+const TString FF_corr_Wjets_MCsum_noGen_weighted                = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_"+s_weighted+".root";
+const TString FF_corr_Wjets_MCsum_noGen_SR                      = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_"+s_SR+".root";
+const TString FF_corr_Wjets_MCsum_noGen_SR_weighted             = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_"+s_SR+"_"+s_weighted+".root";
+const TString FF_corr_Wjets_MCsum_Gen                           = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_Gen.root";
+const TString FF_corr_Wjets_MCsum_Gen_fitted                    = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_Gen_fitted.root";
+const TString FF_corr_Wjets_MCsum_Gen_weighted                  = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_Gen_"+s_weighted+".root";
 
 const TString FF_corr_DY_data                    = "FF_"+s_corr+"_DY_data.root";
 const TString FF_corr_DY_data_weighted           = "FF_"+s_corr+"_DY_data_"+s_weighted+".root";
@@ -298,24 +219,25 @@ const TString FF_corr_TT_MCsum_Gen               = "FF_"+s_corr+"_TT_"+s_MCsum+"
 const TString FF_corr_TT_MCsum_Gen_weighted      = "FF_"+s_corr+"_TT_"+s_MCsum+"_Gen_"+s_weighted+".root";
 const TString FF_corr_TT_MC_noGen_nonclosure     = "FF_"+s_corr+"_TT_MC_noGen_nonclosure.root";
 
-const TString FF_corr_QCD_data                   = "FF_"+s_corr+"_QCD_data.root";
-const TString FF_corr_QCD_data_weighted          = "FF_"+s_corr+"_QCD_data_"+s_weighted+".root";
-const TString FF_corr_QCD_MCsum_noGen            = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen.root";
-const TString FF_corr_QCD_MCsum_noGen_fitted     = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_fitted.root";
-const TString FF_corr_QCD_MCsum_noGen_muisocorr  = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_muisocorr.root";
-const TString FF_corr_QCD_MCsum_noGen_muisocorr_AI  = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_muisocorr_AI.root";
-const TString FF_corr_QCD_MCsum_noGen_nonclosure = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure.root";
-const TString FF_corr_QCD_MCsum_noGen_nonclosure_AI = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure_AI.root";
-const TString FF_corr_QCD_MCsum_noGen_OSSScorr  = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_OSSScorr.root";
-const TString FF_corr_QCD_MCsum_noGen_OS           = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_OS.root";  
-const TString FF_corr_QCD_MCsum_noGen_weighted   = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_"+s_weighted+".root";
-const TString FF_corr_QCD_MCsum_noGen_SR         = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_"+s_SR+".root";
-const TString FF_corr_QCD_MCsum_noGen_AI         = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_AI.root";
-const TString FF_corr_QCD_MCsum_noGen_AI_fitted  = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_AI_fitted.root";
-const TString FF_corr_QCD_MCsum_noGen_SR_weighted= "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_"+s_SR+"_"+s_weighted+".root";
-const TString FF_corr_QCD_MCsum_Gen              = "FF_"+s_corr+"_QCD_"+s_MCsum+"_Gen.root";
-const TString FF_corr_QCD_MCsum_Gen_fitted       = "FF_"+s_corr+"_QCD_"+s_MCsum+"_Gen_fitted.root";
-const TString FF_corr_QCD_MCsum_Gen_weighted     = "FF_"+s_corr+"_QCD_"+s_MCsum+"_Gen_"+s_weighted+".root";
+const TString FF_corr_QCD_data                                 = "FF_"+s_corr+"_QCD_data.root";
+const TString FF_corr_QCD_data_weighted                        = "FF_"+s_corr+"_QCD_data_"+s_weighted+".root";
+const TString FF_corr_QCD_MCsum_noGen                          = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen.root";
+const TString FF_corr_QCD_MCsum_noGen_fitted                   = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_fitted.root";
+const TString FF_corr_QCD_MCsum_noGen_muisocorr                = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_muisocorr.root";
+const TString FF_corr_QCD_MCsum_noGen_muisocorr_AI             = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_muisocorr_AI.root";
+const TString FF_corr_QCD_MCsum_noGen_nonclosure               = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure.root";
+const TString FF_corr_QCD_MCsum_noGen_nonclosure_AI            = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure_AI.root";
+const TString FF_corr_QCD_MCsum_noGen_nonclosure_lepPt         = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure_lepPt.root";
+const TString FF_corr_QCD_MCsum_noGen_OSSScorr                 = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_OSSScorr.root";
+const TString FF_corr_QCD_MCsum_noGen_OS                       = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_OS.root";  
+const TString FF_corr_QCD_MCsum_noGen_weighted                 = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_"+s_weighted+".root";
+const TString FF_corr_QCD_MCsum_noGen_SR                       = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_"+s_SR+".root";
+const TString FF_corr_QCD_MCsum_noGen_AI                       = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_AI.root";
+const TString FF_corr_QCD_MCsum_noGen_AI_fitted                = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_AI_fitted.root";
+const TString FF_corr_QCD_MCsum_noGen_SR_weighted              = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_"+s_SR+"_"+s_weighted+".root";
+const TString FF_corr_QCD_MCsum_Gen                            = "FF_"+s_corr+"_QCD_"+s_MCsum+"_Gen.root";
+const TString FF_corr_QCD_MCsum_Gen_fitted                     = "FF_"+s_corr+"_QCD_"+s_MCsum+"_Gen_fitted.root";
+const TString FF_corr_QCD_MCsum_Gen_weighted                   = "FF_"+s_corr+"_QCD_"+s_MCsum+"_Gen_"+s_weighted+".root";
 
 const TString FF_corr_QCDISO_MCsum_noGen            = "FF_"+s_corr+"_QCDISO_"+s_MCsum+"_noGen.root";
 
@@ -326,150 +248,6 @@ const TString FF_corr_MCsum_Gen_sum              = "FF_"+s_corr+"_"+s_MCsum+"_Ge
 const TString FF_corr_MC_noGen_sum               = "FF_"+s_corr+"_"+s_MC+"_noGen_sum.root";
 const TString FF_corr_MC_Gen_sum                 = "FF_"+s_corr+"_"+s_MC+"_Gen_sum.root";
 
-
-// Background estimation files
-// TODO check if '_weighted' is necessary for MCsum files, remove it if redundant!
-const TString bg_est_Wjets_mt_data                   = "bg_est_Wjets_"+s_mt+"_data.root";
-const TString bg_est_Wjets_mt_MC_Gen                 = "bg_est_Wjets_"+s_mt+"_"+s_MC+"_Gen.root";
-const TString bg_est_Wjets_mt_MC_noGen               = "bg_est_Wjets_"+s_mt+"_"+s_MC+"_noGen.root";
-const TString bg_est_Wjets_mt_MCsum_Gen              = "bg_est_Wjets_"+s_mt+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_Wjets_mt_MCsum_noGen            = "bg_est_Wjets_"+s_mt+"_"+s_MCsum+"_noGen.root";
-const TString bg_est_Wjets_mvis_data                 = "bg_est_Wjets_"+s_mvis+"_data.root";
-const TString bg_est_Wjets_mvis_MC_Gen               = "bg_est_Wjets_"+s_mvis+"_"+s_MC+"_Gen.root";
-const TString bg_est_Wjets_mvis_MC_noGen             = "bg_est_Wjets_"+s_mvis+"_"+s_MC+"_noGen.root";
-const TString bg_est_Wjets_mvis_MCsum_Gen            = "bg_est_Wjets_"+s_mvis+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_Wjets_mvis_MCsum_noGen          = "bg_est_Wjets_"+s_mvis+"_"+s_MCsum+"_noGen.root";
-const TString bg_est_Wjets_pt_data                   = "bg_est_Wjets_"+s_pt+"_data.root";
-const TString bg_est_Wjets_pt_MC_Gen                 = "bg_est_Wjets_"+s_pt+"_"+s_MC+"_Gen.root";
-const TString bg_est_Wjets_pt_MC_noGen               = "bg_est_Wjets_"+s_pt+"_"+s_MC+"_noGen.root";
-const TString bg_est_Wjets_pt_MCsum_Gen              = "bg_est_Wjets_"+s_pt+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_Wjets_pt_MCsum_noGen            = "bg_est_Wjets_"+s_pt+"_"+s_MCsum+"_noGen.root";
-
-const TString bg_est_corr_Wjets_mt_data                   = "bg_est_"+s_corr+"_Wjets_"+s_mt+"_data.root";
-const TString bg_est_corr_Wjets_mt_MC_Gen                 = "bg_est_"+s_corr+"_Wjets_"+s_mt+"_"+s_MC+"_Gen.root";
-const TString bg_est_corr_Wjets_mt_MC_noGen               = "bg_est_"+s_corr+"_Wjets_"+s_mt+"_"+s_MC+"_noGen.root";
-const TString bg_est_corr_Wjets_mt_MCsum_Gen              = "bg_est_"+s_corr+"_Wjets_"+s_mt+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_corr_Wjets_mt_MCsum_noGen            = "bg_est_"+s_corr+"_Wjets_"+s_mt+"_"+s_MCsum+"_noGen.root";
-const TString bg_est_corr_Wjets_mvis_data                 = "bg_est_"+s_corr+"_Wjets_"+s_mvis+"_data.root";
-const TString bg_est_corr_Wjets_mvis_MC_Gen               = "bg_est_"+s_corr+"_Wjets_"+s_mvis+"_"+s_MC+"_Gen.root";
-const TString bg_est_corr_Wjets_mvis_MC_noGen             = "bg_est_"+s_corr+"_Wjets_"+s_mvis+"_"+s_MC+"_noGen.root";
-const TString bg_est_corr_Wjets_mvis_MCsum_Gen            = "bg_est_"+s_corr+"_Wjets_"+s_mvis+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_corr_Wjets_mvis_MCsum_noGen          = "bg_est_"+s_corr+"_Wjets_"+s_mvis+"_"+s_MCsum+"_noGen.root";
-const TString bg_est_corr_Wjets_pt_data                   = "bg_est_"+s_corr+"_Wjets_"+s_pt+"_data.root";
-const TString bg_est_corr_Wjets_pt_MC_Gen                 = "bg_est_"+s_corr+"_Wjets_"+s_pt+"_"+s_MC+"_Gen.root";
-const TString bg_est_corr_Wjets_pt_MC_noGen               = "bg_est_"+s_corr+"_Wjets_"+s_pt+"_"+s_MC+"_noGen.root";
-const TString bg_est_corr_Wjets_pt_MCsum_Gen              = "bg_est_"+s_corr+"_Wjets_"+s_pt+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_corr_Wjets_pt_MCsum_noGen            = "bg_est_"+s_corr+"_Wjets_"+s_pt+"_"+s_MCsum+"_noGen.root";
-
-const TString bg_est_DY_J_mt_data                   = "bg_est_DY_J_"+s_mt+"_data.root";
-const TString bg_est_DY_J_mt_MC_Gen                 = "bg_est_DY_J_"+s_mt+"_"+s_MC+"_Gen.root";
-const TString bg_est_DY_J_mt_MC_noGen               = "bg_est_DY_J_"+s_mt+"_"+s_MC+"_noGen.root";
-const TString bg_est_DY_J_mt_MCsum_Gen              = "bg_est_DY_J_"+s_mt+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_DY_J_mt_MCsum_noGen            = "bg_est_DY_J_"+s_mt+"_"+s_MCsum+"_noGen.root";
-const TString bg_est_DY_J_mvis_data                 = "bg_est_DY_J_"+s_mvis+"_data.root";
-const TString bg_est_DY_J_mvis_MC_Gen               = "bg_est_DY_J_"+s_mvis+"_"+s_MC+"_Gen.root";
-const TString bg_est_DY_J_mvis_MC_noGen             = "bg_est_DY_J_"+s_mvis+"_"+s_MC+"_noGen.root";
-const TString bg_est_DY_J_mvis_MCsum_Gen            = "bg_est_DY_J_"+s_mvis+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_DY_J_mvis_MCsum_noGen          = "bg_est_DY_J_"+s_mvis+"_"+s_MCsum+"_noGen.root";
-const TString bg_est_DY_J_pt_data                   = "bg_est_DY_J_"+s_pt+"_data.root";
-const TString bg_est_DY_J_pt_MC_Gen                 = "bg_est_DY_J_"+s_pt+"_"+s_MC+"_Gen.root";
-const TString bg_est_DY_J_pt_MC_noGen               = "bg_est_DY_J_"+s_pt+"_"+s_MC+"_noGen.root";
-const TString bg_est_DY_J_pt_MCsum_Gen              = "bg_est_DY_J_"+s_pt+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_DY_J_pt_MCsum_noGen            = "bg_est_DY_J_"+s_pt+"_"+s_MCsum+"_noGen.root";
-
-const TString bg_est_corr_DY_J_mt_data                   = "bg_est_"+s_corr+"_DY_J_"+s_mt+"_data.root";
-const TString bg_est_corr_DY_J_mt_MC_Gen                 = "bg_est_"+s_corr+"_DY_J_"+s_mt+"_"+s_MC+"_Gen.root";
-const TString bg_est_corr_DY_J_mt_MC_noGen               = "bg_est_"+s_corr+"_DY_J_"+s_mt+"_"+s_MC+"_noGen.root";
-const TString bg_est_corr_DY_J_mt_MCsum_Gen              = "bg_est_"+s_corr+"_DY_J_"+s_mt+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_corr_DY_J_mt_MCsum_noGen            = "bg_est_"+s_corr+"_DY_J_"+s_mt+"_"+s_MCsum+"_noGen.root";
-const TString bg_est_corr_DY_J_mvis_data                 = "bg_est_"+s_corr+"_DY_J_"+s_mvis+"_data.root";
-const TString bg_est_corr_DY_J_mvis_MC_Gen               = "bg_est_"+s_corr+"_DY_J_"+s_mvis+"_"+s_MC+"_Gen.root";
-const TString bg_est_corr_DY_J_mvis_MC_noGen             = "bg_est_"+s_corr+"_DY_J_"+s_mvis+"_"+s_MC+"_noGen.root";
-const TString bg_est_corr_DY_J_mvis_MCsum_Gen            = "bg_est_"+s_corr+"_DY_J_"+s_mvis+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_corr_DY_J_mvis_MCsum_noGen          = "bg_est_"+s_corr+"_DY_J_"+s_mvis+"_"+s_MCsum+"_noGen.root";
-const TString bg_est_corr_DY_J_pt_data                   = "bg_est_"+s_corr+"_DY_J_"+s_pt+"_data.root";
-const TString bg_est_corr_DY_J_pt_MC_Gen                 = "bg_est_"+s_corr+"_DY_J_"+s_pt+"_"+s_MC+"_Gen.root";
-const TString bg_est_corr_DY_J_pt_MC_noGen               = "bg_est_"+s_corr+"_DY_J_"+s_pt+"_"+s_MC+"_noGen.root";
-const TString bg_est_corr_DY_J_pt_MCsum_Gen              = "bg_est_"+s_corr+"_DY_J_"+s_pt+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_corr_DY_J_pt_MCsum_noGen            = "bg_est_"+s_corr+"_DY_J_"+s_pt+"_"+s_MCsum+"_noGen.root";
-
-const TString bg_est_TT_J_mt_data                   = "bg_est_TT_J_"+s_mt+"_data.root";
-const TString bg_est_TT_J_mt_MC_Gen                 = "bg_est_TT_J_"+s_mt+"_"+s_MC+"_Gen.root";
-const TString bg_est_TT_J_mt_MC_noGen               = "bg_est_TT_J_"+s_mt+"_"+s_MC+"_noGen.root";
-const TString bg_est_TT_J_mt_MCsum_Gen              = "bg_est_TT_J_"+s_mt+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_TT_J_mt_MCsum_noGen            = "bg_est_TT_J_"+s_mt+"_"+s_MCsum+"_noGen.root";
-const TString bg_est_TT_J_mvis_data                 = "bg_est_TT_J_"+s_mvis+"_data.root";
-const TString bg_est_TT_J_mvis_MC_Gen               = "bg_est_TT_J_"+s_mvis+"_"+s_MC+"_Gen.root";
-const TString bg_est_TT_J_mvis_MC_noGen             = "bg_est_TT_J_"+s_mvis+"_"+s_MC+"_noGen.root";
-const TString bg_est_TT_J_mvis_MCsum_Gen            = "bg_est_TT_J_"+s_mvis+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_TT_J_mvis_MCsum_noGen          = "bg_est_TT_J_"+s_mvis+"_"+s_MCsum+"_noGen.root";
-const TString bg_est_TT_J_pt_data                   = "bg_est_TT_J_"+s_pt+"_data.root";
-const TString bg_est_TT_J_pt_MC_Gen                 = "bg_est_TT_J_"+s_pt+"_"+s_MC+"_Gen.root";
-const TString bg_est_TT_J_pt_MC_noGen               = "bg_est_TT_J_"+s_pt+"_"+s_MC+"_noGen.root";
-const TString bg_est_TT_J_pt_MCsum_Gen              = "bg_est_TT_J_"+s_pt+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_TT_J_pt_MCsum_noGen            = "bg_est_TT_J_"+s_pt+"_"+s_MCsum+"_noGen.root";
-
-const TString bg_est_corr_TT_J_mt_data                   = "bg_est_"+s_corr+"_TT_J_"+s_mt+"_data.root";
-const TString bg_est_corr_TT_J_mt_MC_Gen                 = "bg_est_"+s_corr+"_TT_J_"+s_mt+"_"+s_MC+"_Gen.root";
-const TString bg_est_corr_TT_J_mt_MC_noGen               = "bg_est_"+s_corr+"_TT_J_"+s_mt+"_"+s_MC+"_noGen.root";
-const TString bg_est_corr_TT_J_mt_MCsum_Gen              = "bg_est_"+s_corr+"_TT_J_"+s_mt+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_corr_TT_J_mt_MCsum_noGen            = "bg_est_"+s_corr+"_TT_J_"+s_mt+"_"+s_MCsum+"_noGen.root";
-const TString bg_est_corr_TT_J_mvis_data                 = "bg_est_"+s_corr+"_TT_J_"+s_mvis+"_data.root";
-const TString bg_est_corr_TT_J_mvis_MC_Gen               = "bg_est_"+s_corr+"_TT_J_"+s_mvis+"_"+s_MC+"_Gen.root";
-const TString bg_est_corr_TT_J_mvis_MC_noGen             = "bg_est_"+s_corr+"_TT_J_"+s_mvis+"_"+s_MC+"_noGen.root";
-const TString bg_est_corr_TT_J_mvis_MCsum_Gen            = "bg_est_"+s_corr+"_TT_J_"+s_mvis+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_corr_TT_J_mvis_MCsum_noGen          = "bg_est_"+s_corr+"_TT_J_"+s_mvis+"_"+s_MCsum+"_noGen.root";
-const TString bg_est_corr_TT_J_pt_data                   = "bg_est_"+s_corr+"_TT_J_"+s_pt+"_data.root";
-const TString bg_est_corr_TT_J_pt_MC_Gen                 = "bg_est_"+s_corr+"_TT_J_"+s_pt+"_"+s_MC+"_Gen.root";
-const TString bg_est_corr_TT_J_pt_MC_noGen               = "bg_est_"+s_corr+"_TT_J_"+s_pt+"_"+s_MC+"_noGen.root";
-const TString bg_est_corr_TT_J_pt_MCsum_Gen              = "bg_est_"+s_corr+"_TT_J_"+s_pt+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_corr_TT_J_pt_MCsum_noGen            = "bg_est_"+s_corr+"_TT_J_"+s_pt+"_"+s_MCsum+"_noGen.root";
-
-const TString bg_est_QCD_mt_data                   = "bg_est_QCD_"+s_mt+"_data.root";
-const TString bg_est_QCD_mt_MC_Gen                 = "bg_est_QCD_"+s_mt+"_"+s_MC+"_Gen.root";
-const TString bg_est_QCD_mt_MC_noGen               = "bg_est_QCD_"+s_mt+"_"+s_MC+"_noGen.root";
-const TString bg_est_QCD_mt_MCsum_Gen              = "bg_est_QCD_"+s_mt+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_QCD_mt_MCsum_noGen            = "bg_est_QCD_"+s_mt+"_"+s_MCsum+"_noGen.root";
-const TString bg_est_QCD_mvis_data                 = "bg_est_QCD_"+s_mvis+"_data.root";
-const TString bg_est_QCD_mvis_MC_Gen               = "bg_est_QCD_"+s_mvis+"_"+s_MC+"_Gen.root";
-const TString bg_est_QCD_mvis_MC_noGen             = "bg_est_QCD_"+s_mvis+"_"+s_MC+"_noGen.root";
-const TString bg_est_QCD_mvis_MCsum_Gen            = "bg_est_QCD_"+s_mvis+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_QCD_mvis_MCsum_noGen          = "bg_est_QCD_"+s_mvis+"_"+s_MCsum+"_noGen.root";
-const TString bg_est_QCD_pt_data                   = "bg_est_QCD_"+s_pt+"_data.root";
-const TString bg_est_QCD_pt_MC_Gen                 = "bg_est_QCD_"+s_pt+"_"+s_MC+"_Gen.root";
-const TString bg_est_QCD_pt_MC_noGen               = "bg_est_QCD_"+s_pt+"_"+s_MC+"_noGen.root";
-const TString bg_est_QCD_pt_MCsum_Gen              = "bg_est_QCD_"+s_pt+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_QCD_pt_MCsum_noGen            = "bg_est_QCD_"+s_pt+"_"+s_MCsum+"_noGen.root";
-
-const TString bg_est_corr_QCD_mt_data                   = "bg_est_"+s_corr+"_QCD_"+s_mt+"_data.root";
-const TString bg_est_corr_QCD_mt_MC_Gen                 = "bg_est_"+s_corr+"_QCD_"+s_mt+"_"+s_MC+"_Gen.root";
-const TString bg_est_corr_QCD_mt_MC_noGen               = "bg_est_"+s_corr+"_QCD_"+s_mt+"_"+s_MC+"_noGen.root";
-const TString bg_est_corr_QCD_mt_MCsum_Gen              = "bg_est_"+s_corr+"_QCD_"+s_mt+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_corr_QCD_mt_MCsum_noGen            = "bg_est_"+s_corr+"_QCD_"+s_mt+"_"+s_MCsum+"_noGen.root";
-const TString bg_est_corr_QCD_mvis_data                 = "bg_est_"+s_corr+"_QCD_"+s_mvis+"_data.root";
-const TString bg_est_corr_QCD_mvis_MC_Gen               = "bg_est_"+s_corr+"_QCD_"+s_mvis+"_"+s_MC+"_Gen.root";
-const TString bg_est_corr_QCD_mvis_MC_noGen             = "bg_est_"+s_corr+"_QCD_"+s_mvis+"_"+s_MC+"_noGen.root";
-const TString bg_est_corr_QCD_mvis_MCsum_Gen            = "bg_est_"+s_corr+"_QCD_"+s_mvis+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_corr_QCD_mvis_MCsum_noGen          = "bg_est_"+s_corr+"_QCD_"+s_mvis+"_"+s_MCsum+"_noGen.root";
-const TString bg_est_corr_QCD_pt_data                   = "bg_est_"+s_corr+"_QCD_"+s_pt+"_data.root";
-const TString bg_est_corr_QCD_pt_MC_Gen                 = "bg_est_"+s_corr+"_QCD_"+s_pt+"_"+s_MC+"_Gen.root";
-const TString bg_est_corr_QCD_pt_MC_noGen               = "bg_est_"+s_corr+"_QCD_"+s_pt+"_"+s_MC+"_noGen.root";
-const TString bg_est_corr_QCD_pt_MCsum_Gen              = "bg_est_"+s_corr+"_QCD_"+s_pt+"_"+s_MCsum+"_Gen.root";
-const TString bg_est_corr_QCD_pt_MCsum_noGen            = "bg_est_"+s_corr+"_QCD_"+s_pt+"_"+s_MCsum+"_noGen.root";
-
-const TString bg_est_corr_QCDISO_mvis_MCsum_noGen       = "bg_est_"+s_corr+"_QCDISO_"+s_mvis+"_"+s_MCsum+"_noGen.root";
-const TString bg_est_corr_QCDISO_mt_MCsum_noGen         = "bg_est_"+s_corr+"_QCDISO_"+s_mt+"_"+s_MCsum+"_noGen.root";
-const TString bg_est_corr_QCDISO_pt_MCsum_noGen         = "bg_est_"+s_corr+"_QCDISO_"+s_pt+"_"+s_MCsum+"_noGen.root";
-
-
-// Background estimation files CR norm
-const TString bg_est_Wjets_mt_CRnorm    = "bg_est_CRNorm_Wjets_"+s_mt+".root";
-const TString bg_est_Wjets_mvis_CRnorm  = "bg_est_CRNorm_Wjets_"+s_mvis+".root";
-const TString bg_est_Wjets_pt_CRnorm    = "bg_est_CRNorm_Wjets_"+s_pt+".root";
-
-const TString bg_est_DY_mt_CRnorm   = "bg_est_CRNorm_DY_"+s_mt+".root";
-const TString bg_est_DY_mvis_CRnorm = "bg_est_CRNorm_DY_"+s_mvis+".root";
-const TString bg_est_DY_pt_CRnorm   = "bg_est_CRNorm_DY_"+s_pt+".root";
 
 // In SR
 const TString SR_Wjets_mt_sim     = path_sim + s_SR+"_Wjets_"+s_mt+".root";
@@ -607,11 +385,11 @@ const TString CR_QCD_mt_DY     = path_sim + s_CR+"_QCD_"+s_mt+"_DY.root";
 const TString CR_QCD_mt_TT      = path_sim + s_CR+"_QCD_"+s_mt+"_TT.root";
 const TString CR_QCD_mt_QCD        = path_sim + s_CR+"_QCD_"+s_mt+"_QCD.root";
 
-const TString CR_QCD_mvis_data_MCsubtracted     = path_sim+s_CR+"_QCD_"+s_mvis+"_data_MCsubtracted.root";
+const TString CR_QCD_mvis_data_MCsubtracted      = path_sim+s_CR+"_QCD_"+s_mvis+"_data_MCsubtracted.root";
 const TString CR_QCD_mvis_AI_data_MCsubtracted   = path_sim+s_CR+"_QCD_"+s_mvis+"_AI_data_MCsubtracted.root";
 const TString CR_QCD_muiso_data_MCsubtracted     = path_sim+s_CR+"_QCD_muiso_data_MCsubtracted.root";
-const TString CR_Wjets_mvis_data_MCsubtracted   = path_sim+s_CR+"_Wjets_"+s_mvis+"_data_MCsubtracted.root";
-// Empty histograms as placeholders
+const TString CR_Wjets_mvis_data_MCsubtracted    = path_sim+s_CR+"_Wjets_"+s_mvis+"_data_MCsubtracted.root";
+const TString CR_QCD_lepPt_data_MCsubtracted     = path_sim+s_CR+"_QCD_"+s_lepPt+"_data_MCsubtrachted.root";
 const TString empty_mt="empty_"+s_SR+"_"+s_mt+".root";
 
 // Signal region
@@ -619,54 +397,28 @@ const TString SR_MCsum         = path_sim+s_SR+"_"+s_MCsum;
 const TString SR_MCsum_mt      = SR_MCsum+"_"+s_mt+".root";
 const TString SR_MCsum_mvis    = SR_MCsum+"_"+s_mvis+".root";
 const TString SR_MCsum_pt      = SR_MCsum+"_"+s_pt+".root";
-const TString SR_MCsum_mt2      = SR_MCsum+"_"+s_mt2+".root";
 const TString SR_MCsum_lepPt      = SR_MCsum+"_"+s_lepPt+".root";
-const TString SR_MCsum_mvamet      = SR_MCsum+"_"+s_mvamet+".root";
-const TString SR_MCsum_met      = SR_MCsum+"_"+s_met+".root";
-const TString SR_MCsum_mjj      = SR_MCsum+"_"+s_mjj+".root";
 const TString SR_MCsum_svfit      = SR_MCsum+"_"+s_svfit+".root";
-const TString SR_MCsum_eta      = SR_MCsum+"_"+s_eta+".root";
-const TString SR_MCsum_mttot      = SR_MCsum+"_"+s_mttot+".root";
 
 const TString SR_MCsum_woQCD       = path_sim+s_SR+"_"+s_MCsum+"_woQCD";
 const TString SR_MCsum_woQCD_mt    = SR_MCsum_woQCD+"_"+s_mt+".root";
 const TString SR_MCsum_woQCD_mvis  = SR_MCsum_woQCD+"_"+s_mvis+".root";
 const TString SR_MCsum_woQCD_pt    = SR_MCsum_woQCD+"_"+s_pt+".root";
 
-const TString SR_data       = path_sim+s_SR+"_data";
-const TString SR_data_mt    = SR_data+"_"+s_mt+".root";
-const TString SR_data_mvis  = SR_data+"_"+s_mvis+".root";
+const TString SR_data                       = path_sim+s_SR+"_data";
+const TString SR_data_mt                    = SR_data+"_"+s_mt+".root";
+const TString SR_data_mvis                  = SR_data+"_"+s_mvis+".root";
 const TString SR_data_mvis_AI_MCsubtracted  = SR_data+"_"+s_mvis+"_AI_MCsubtracted.root";
-const TString SR_data_pt    = SR_data+"_"+s_pt+".root";
-const TString SR_data_mt2    = SR_data+"_"+s_mt2+".root";
-const TString SR_data_lepPt    = SR_data+"_"+s_lepPt+".root";
-const TString SR_data_mvamet    = SR_data+"_"+s_mvamet+".root";
-const TString SR_data_met    = SR_data+"_"+s_met+".root";
-const TString SR_data_jj    = SR_data+"_"+s_mjj+".root";
-const TString SR_data_svfit    = SR_data+"_"+s_svfit+".root";
-const TString SR_data_eta    = SR_data+"_"+s_eta+".root";
-const TString SR_data_mttot    = SR_data+"_"+s_mttot+".root";
+const TString SR_data_pt                    = SR_data+"_"+s_pt+".root";
+const TString SR_data_lepPt                 = SR_data+"_"+s_lepPt+".root";
+const TString SR_data_svfit                 = SR_data+"_"+s_svfit+".root";
 
-const TString SR_signal       = path_sim+s_SR+"_signal";
-const TString SR_signal_mt_sim    = SR_signal+"_"+s_mt+".root";
-const TString SR_signal_mvis_sim  = SR_signal+"_"+s_mvis+".root";
-const TString SR_signal_pt_sim    = SR_signal+"_"+s_pt+".root";
-const TString SR_signal_mt2_sim    = SR_signal+"_"+s_mt2+".root";
-const TString SR_signal_lepPt_sim    = SR_signal+"_"+s_lepPt+".root";
-const TString SR_signal_mvamet_sim    = SR_signal+"_"+s_mvamet+".root";
-const TString SR_signal_met_sim    = SR_signal+"_"+s_met+".root";
-const TString SR_signal_mjj_sim    = SR_signal+"_"+s_mjj+".root";
-const TString SR_signal_svfit_sim    = SR_signal+"_"+s_svfit+".root";
-const TString SR_signal_eta_sim    = SR_signal+"_"+s_eta+".root";
-const TString SR_signal_mttot_sim    = SR_signal+"_"+s_mttot+".root";
-
-const TString SR_SUSYGluGluToBBHToTauTau_M1000_mt_sim       = path_sim+s_SR+"_SUSYGluGluToBBHToTauTau_M1000_mt.root";
-const TString SR_SUSYGluGluToBBHToTauTau_M2000_mt_sim       = path_sim+s_SR+"_SUSYGluGluToBBHToTauTau_M2000_mt.root";
-const TString SR_SUSYGluGluToBBHToTauTau_M2900_mt_sim       = path_sim+s_SR+"_SUSYGluGluToBBHToTauTau_M2900_mt.root";
-const TString SR_SUSYGluGluToHToTauTau_M1000_mt_sim       = path_sim+s_SR+"_SUSYGluGluToHToTauTau_M1000_mt.root";
-const TString SR_SUSYGluGluToHToTauTau_M2000_mt_sim       = path_sim+s_SR+"_SUSYGluGluToHToTauTau_M2000_mt.root";
-const TString SR_SUSYGluGluToHToTauTau_M2900_mt_sim       = path_sim+s_SR+"_SUSYGluGluToHToTauTau_M2900_mt.root";
-
+const TString SR_signal                = path_sim+s_SR+"_signal";
+const TString SR_signal_mt_sim         = SR_signal+"_"+s_mt+".root";
+const TString SR_signal_mvis_sim       = SR_signal+"_"+s_mvis+".root";
+const TString SR_signal_pt_sim         = SR_signal+"_"+s_pt+".root";
+const TString SR_signal_lepPt_sim      = SR_signal+"_"+s_lepPt+".root";
+const TString SR_signal_svfit_sim      = SR_signal+"_"+s_svfit+".root";
 
 const TString SS_SR_data       = path_sim+s_SS_SR+"_data";
 const TString SS_SR_data_mt    = SS_SR_data+"_"+s_mt+".root";
@@ -692,88 +444,38 @@ const Int_t N_m_DY = sizeof(Mt_cuts_DY)/sizeof(Double_t);
 const Int_t N_m_TT = sizeof(Mt_cuts_TT)/sizeof(Double_t);
 const Int_t N_m_QCD = sizeof(Mt_cuts_QCD)/sizeof(Double_t);
 
-/*
-Double_t Pt_cuts_Wjets[] = {20.,30.,40.,60.,80.,100.,150.};
-Double_t Pt_cuts_DY[]    = {20.,30.,40.,60.,80.,100.,150.};
-Double_t Pt_cuts_TT[] = {20.,30.,40.,60.,80.,100.,150.};
-Double_t Pt_cuts_QCD[]   = {20.,30.,40.,60.,80.,100.,150.};
-*/
+//////////////////////////////////////////////////////////////////////////////////
+//PT CUTS
+//fb pre-approval
+#if(CHAN==kMU)
+const Double_t Pt_cuts_Wjets[]    = {30.,34,39,50,60,75,90,110,140,180,500};//lower boundaries of the pt bins, there are no data with pt<30.
+const Double_t Pt_cuts_DY[]       = {30.,40.};
+const Double_t Pt_cuts_TT_SR[]    = {30.,32.5,35.,40.,45,50,70,90,115,175,500};
+const Double_t Pt_cuts_TT_CR[]    = {30.};
+const Double_t Pt_cuts_QCD[]      = {30,35,40,50,70,120,500};
+const Double_t Pt_cuts_QCD_AI[]   = {30,35,40,50,75,120,500};
+#endif
 
-//mutau, etau 12.9 fb
-/*const Double_t Pt_cuts_Wjets[] = {20.,22.5,25.,27.5,30.,35.,40.,50.,70.,100.,150.};//lower boundaries of the pt bins, there are no data with pt<20.
-const Double_t Pt_cuts_DY[]    = {20.,25.,30.,40.};
-//const Double_t Pt_cuts_TT[]    = {20.,25.,30.,40.};
-const Double_t Pt_cuts_TT_SR[]     = {20.,22.5,25.,27.5,30.,35.,40.,50.,80.,150.};
-const Double_t Pt_cuts_TT_CR[]     = {20.};
-//const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.,100.};
-const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.};
-const Double_t Pt_cuts_QCD_AI[] ={20.,25.,30.,40};*/
+#if(CHAN==kEL)
+const Double_t Pt_cuts_Wjets[]    = {30.,35,40,50,60,75,95,120,170,500};
+const Double_t Pt_cuts_DY[]       = {30.,40.};
+const Double_t Pt_cuts_TT_SR[]    = {30.,32.,34,37.,40,45,50,70,110,160,500};
+const Double_t Pt_cuts_TT_CR[]    = {30.};
+const Double_t Pt_cuts_QCD[]      = {30,32.5,35,40,50,60,70,80,110,500};
+const Double_t Pt_cuts_QCD_AI[]   = {30,35,45,55,80,500};
+#endif
 
-//mutau 35.6 fb old
-/*const Double_t Pt_cuts_Wjets[] = {30.,32.5,35,40,50,70,100,150};//lower boundaries of the pt bins, there are no data with pt<20.
-const Double_t Pt_cuts_DY[]    = {30.,40.};
-const Double_t Pt_cuts_TT_SR[]     = {30.,32.5,35.,40.,50,65,85,120,160};
-const Double_t Pt_cuts_TT_CR[]     = {30.};
-const Double_t Pt_cuts_QCD[]   = {30,32.5,35,40,45,50,57.5,70,90,120,200};
-const Double_t Pt_cuts_QCD_AI[] ={30,35,40,50,80};*/
-
-//mutau 35.6 fb pre-approval
-/*const Double_t Pt_cuts_Wjets[] = {30.,34,39,50,60,75,90,110,140,180,500};//lower boundaries of the pt bins, there are no data with pt<20.
-const Double_t Pt_cuts_DY[]    = {30.,40.};
-const Double_t Pt_cuts_TT_SR[]     = {30.,32.5,35.,40.,45,50,70,90,115,175,500};
-const Double_t Pt_cuts_TT_CR[]     = {30.};
-//const Double_t Pt_cuts_QCD[]   = {30,35,40,50,60,70,80,105,140};
-const Double_t Pt_cuts_QCD[]   = {30,35,40,50,70,120,500};
-const Double_t Pt_cuts_QCD_AI[] ={30,35,40,50,75,120,500};*/
-
-//etau 35.6 fb pre-approval
-/*const Double_t Pt_cuts_Wjets[] = {30.,35,40,50,60,75,95,120,170,500};//lower boundaries of the pt bins, there are no data with pt<20.
-const Double_t Pt_cuts_DY[]    = {30.,40.};
-const Double_t Pt_cuts_TT_SR[]     = {30.,32.,34,37.,40,45,50,70,110,160,500};
-const Double_t Pt_cuts_TT_CR[]     = {30.};
-//const Double_t Pt_cuts_QCD[]   = {30,35,40,50,60,70,80,105,140};
-const Double_t Pt_cuts_QCD[]   = {30,32.5,35,40,50,60,70,80,110,500};
-const Double_t Pt_cuts_QCD_AI[] = {30,35,45,55,80,500};*/
-
-/*const Double_t Pt_cuts_Wjets[] = {30.,35,40,50,70,100,150};//lower boundaries of the pt bins, there are no data with pt<20.
-const Double_t Pt_cuts_DY[]    = {30.,40.};
-const Double_t Pt_cuts_TT_SR[]     = {30.,32.5,35.,40.,50,65,85,120,160};
-const Double_t Pt_cuts_TT_CR[]     = {30.};
-const Double_t Pt_cuts_QCD[]   = {30,35,40,45,50,70,90,120,180};
-const Double_t Pt_cuts_QCD_AI[] ={30,35,40,50,80};*/
-
-//etau 35.6 fb old
-/*const Double_t Pt_cuts_Wjets[] = {30.,32.5,35,40,50,65,95,150};//lower boundaries of the pt bins, there are no data with pt<20.
-const Double_t Pt_cuts_DY[]    = {30.,40.};
-//const Double_t Pt_cuts_TT[]    = {20,22.5,27,32,40,50,85};
-const Double_t Pt_cuts_TT_SR[]     = {30.,32.5,35.,40.,50,65,85,120,160};
-const Double_t Pt_cuts_TT_CR[]     = {30.};
-//const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.,100.};
-const Double_t Pt_cuts_QCD[]   = {30,35,40,45,55,75,110};
-const Double_t Pt_cuts_QCD_AI[] ={30,33,40,50,80};*/
-
-
-//tautau 12.9 fb
-/*const Double_t Pt_cuts_Wjets[] = {20.,22.5,25.,27.5,30.,35.,40.,50.,70.,100.,150.};//lower boundaries of the pt bins, there are no data with pt<20.
-const Double_t Pt_cuts_DY[]    = {20.,25.,30.,40.};
-//const Double_t Pt_cuts_TT[]    = {20.,25.,30.,40.};
-const Double_t Pt_cuts_TT_SR[]     = {20.,22.5,25.,27.5,30.,35.,40.,50.,80.,150.};
-const Double_t Pt_cuts_TT_CR[]     = {20.};
-//const Double_t Pt_cuts_QCD[]   = {20.,22.5,25.,27.5,30.,35.,40.,50.,100.};
-const Double_t Pt_cuts_QCD[]   = {40.,45.,50.,60,70,90,120,200};
-const Double_t Pt_cuts_QCD_AI[] ={20.,25.,30.,40,50,70,100};*/
-
-//tautau 35.6 fb pre-approval
-const Double_t Pt_cuts_Wjets[] = {40.,50.,70.,100.,150.};//lower boundaries of the pt bins, there are no data with pt<20.
-const Double_t Pt_cuts_DY[]    = {40.};
-const Double_t Pt_cuts_TT_SR[]     = {40.,50.,80.,150.};
-const Double_t Pt_cuts_TT_CR[]     = {40.};
-const Double_t Pt_cuts_QCD[]   = {40.,42.5,45.,50.,55,60,65,75,95,155};
-const Double_t Pt_cuts_QCD_AI[] ={40,42.5,45,50,60,75,115,180};
+#if(CHAN==kTAU)
+const Double_t Pt_cuts_Wjets_tt[]    = {40.,};
+const Double_t Pt_cuts_DY_tt[]       = {40.};
+const Double_t Pt_cuts_TT_SR_tt[]    = {40.};
+const Double_t Pt_cuts_TT_CR_tt[]    = {40.};
+const Double_t Pt_cuts_QCD_tt[]      = {40.,42.5,45.,50.,55,60,65,75,95,155};
+const Double_t Pt_cuts_QCD_AI_tt[]   = {40,42.5,45,50,60,75,115,180};
+#endif
 
 const Int_t N_p_Wjets = sizeof(Pt_cuts_Wjets)/sizeof(Double_t);
 const Int_t N_p_DY = sizeof(Pt_cuts_DY)/sizeof(Double_t);
-//const Int_t N_p_TT = sizeof(Pt_cuts_TT)/sizeof(Double_t);
 const Int_t N_p_TT_SR = sizeof(Pt_cuts_TT_SR)/sizeof(Double_t);
 const Int_t N_p_TT_CR = sizeof(Pt_cuts_TT_CR)/sizeof(Double_t);
 const Int_t N_p_QCD = sizeof(Pt_cuts_QCD)/sizeof(Double_t);
@@ -820,28 +522,16 @@ const Int_t N_j_QCD = sizeof(Njet_cuts_QCD)/sizeof(Int_t);
 
 const Int_t nbins_svfit=35;  const Double_t hist_min_svfit=0.;  const Double_t hist_max_svfit=350.;
 const Int_t nbins_lepPt=20;  const Double_t hist_min_lepPt=20.; const Double_t hist_max_lepPt=120.;
-const Int_t nbins_mvamet=20; const Double_t hist_min_mvamet=0.; const Double_t hist_max_mvamet=200.;
-const Int_t nbins_met=20;    const Double_t hist_min_met=0.;    const Double_t hist_max_met=200.;
-const Int_t nbins_mjj=20;    const Double_t hist_min_mjj=70;    const Double_t hist_max_mjj=1400;
-const Int_t nbins_mt2=20;    const Double_t hist_min_mt2=0.;    const Double_t hist_max_mt2=200.;
 const Int_t nbins_mt=25;     const Double_t hist_min_mt=0.;     const Double_t hist_max_mt=250.;
 const Int_t nbins_mvis=25;   const Double_t hist_min_mvis=0.;   const Double_t hist_max_mvis=250.;
 const Int_t nbins_pt=25;     const Double_t hist_min_pt=20.;    const Double_t hist_max_pt=100.;
-const Int_t nbins_eta=25;    const Double_t hist_min_eta=-2.5;  const Double_t hist_max_eta=2.5;
-const Int_t nbins_mttot=25;  const Double_t hist_min_mttot=0.;  const Double_t hist_max_mttot=250.;
 
 //binning constants: weight
 const Double_t w_mt_v[]={0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250};
-//const Double_t w_mt_v[]={0,10,20,30,40,50,60,80,100,140,200,300};
-//const Double_t w_mt_v[]={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,20,25,30,35,40,50,60,80,120,250};
 
-//const Double_t w_mt_v[]={20,25,30,35,40,50,60,80,120,250};
-//const Double_t w_mt_v[]={40,50,60,80,120,250};
 const Int_t    w_mt_n=(sizeof(w_mt_v)/sizeof(Double_t)) -1;
 
 const Double_t w_pt_v[]={30,40,60,100,250};
-//const Double_t w_pt_v[]={20,25,30,35,40,50,60,80,120,250};
-//const Double_t w_pt_v[]={40,45,50,60,80,120,250};
 const Double_t w_mttot_v[]={0,70,100,120,140,170,200,270,1000};
 const Int_t    w_pt_n=(sizeof(w_pt_v)/sizeof(Double_t)) -1;
 const Int_t    w_mttot_n=(sizeof(w_mttot_v)/sizeof(Double_t)) -1;
@@ -852,11 +542,7 @@ const Int_t w_mvis_n=(sizeof(w_mvis_v)/sizeof(Double_t)) -1;
 const Double_t w_lepPt_v[]={20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120};
 const Int_t w_lepPt_n=(sizeof(w_lepPt_v)/sizeof(Double_t)) -1;
 
-const Double_t w_zpt_v[]={0,10,20,30,40,50,60,80,120,200};
-const Int_t w_zpt_n=(sizeof(w_zpt_v)/sizeof(Double_t)) -1;
-
 const Double_t w_muiso_v[]={0.00,0.02,0.05,0.1,0.15,0.2,0.25,0.3,0.4,0.5,0.7};
-//const Double_t w_muiso_v[]={0.00,0.05,0.1,0.15};
 const Int_t w_muiso_n=(sizeof(w_muiso_v)/sizeof(Double_t)) -1;
 
 const Int_t    w_dm_v[]={0,4,15};
@@ -885,7 +571,6 @@ const TString tvarCR_l[nVARCR]={"m_{T} [GeV]","m_{vis} [GeV]","p_{T} [GeV]","#mu
 
 //plotting constants
 const Double_t p_mt_v[]={0,10,20,30,40,50,60,70,100,150,250,500};
-//const Double_t p_mt_v[]={0,50,70,80,90,100,120,140,180,250};
 const Int_t    p_mt_n=(sizeof(p_mt_v)/sizeof(Double_t)) -1;
 
 const Double_t p_mvis_v[]={0,50,75,100,200};
@@ -910,50 +595,30 @@ const Double_t p_nbjets_v[]={-0.5,0.5};
 const Int_t    p_nbjets_n=(sizeof(p_nbjets_v)/sizeof(Double_t)) -1;
 
 
-
-//const TString corr_histo_file_name=FF_DY_J_only_mtll_CR;
-//const Int_t   corr_nbin=p_mt_n;
-//const Int_t   corr_norm=8;
-
 //const double global_tmp;
 const TString sNum[]={"0","1","2","3","4","5","6","7","8","9"};
 
 // Plotting colors
-const Int_t color_Wjets=kRed;
-const Int_t color_DY_J=kBlue;
-const Int_t color_DY_TT=kYellow;
-const Int_t color_DY_L=kViolet;
-const Int_t color_TT_J=kGreen;
-const Int_t color_TT_T=kGreen+2;
-const Int_t color_TT_L=kGreen-1;
-const Int_t color_sum=kMagenta;
-const Int_t color_QCD=kCyan;
+const Int_t color_Wjets =kRed;
+const Int_t color_DY_J  =kBlue;
+const Int_t color_DY_TT =kYellow;
+const Int_t color_DY_L  =kViolet;
+const Int_t color_TT_J  =kGreen;
+const Int_t color_TT_T  =kGreen+2;
+const Int_t color_TT_L  =kGreen-1;
+const Int_t color_sum   =kMagenta;
+const Int_t color_QCD   =kCyan;
 
 const int nSAMPLES=10;
 const int nSAMPLES_COMP=7;
 static const TString vlabel[nSAMPLES]={"W+jets","ttJ (j#rightarrow#tau)","ttT (#tau#rightarrow#tau)","ttL (l#rightarrow#tau)","ZJ (j#rightarrow#tau)","ZTT (#tau#rightarrow#tau)","ZL (l#rightarrow#tau)","VV (j#rightarrow#tau)", "VV (#tau#rightarrow#tau)","VV (l#rightarrow#tau)"};
-static const TString vlabel_compare[nSAMPLES_COMP]={"W+jets","tt","ZJ (j#rightarrow#tau)","ZTT (#tau#rightarrow#tau)","ZL (l#rightarrow#tau)","VV","QCD"};
-static const TString vlabel_compare2[nSAMPLES_COMP-3]={"W+jets","tt","ZJ","QCD"};
-static const TString vlabel_w_ff[nSAMPLES-3]={"ttT (#tau#rightarrow#tau)","ttL (l#rightarrow#tau)","ZTT (#tau#rightarrow#tau)","ZL (l#rightarrow#tau)","jet #rightarrow #tau fakes","VV (#tau#rightarrow#tau)","VV (l#rightarrow#tau)"};
-static const TString vlabel_check[nSAMPLES-6]={"W+jets","QCD","ttJ (j#rightarrow#tau)","ZJ   (j#rightarrow#tau)"};
 static const TString vname[nSAMPLES]= {"Wjets" ,"ttJ"                   ,"ttT"                      ,"ttL"                   ,"ZJ"                     ,"ZTT"                      ,"ZL"                     ,"QCD", "VVT", "VVL"};
 static const TString vsuff[nSAMPLES]= {"Wjets" ,"TT_J"                  ,"TT_T"                     ,"TT_L"                  ,"DY_J"                   ,"DY_TT"                    ,"DY_L"                   ,"VV_J", "VV_T", "VV_L"};
 const Int_t vcolor[nSAMPLES]=         {kRed    ,kGreen                  ,kGreen+2                   ,kGreen-1                ,kBlue                    ,kYellow                    ,kViolet                  ,kYellow-5, kYellow-6,kYellow-8};
-//static const TString vsuff[nSAMPLES]= {"Wjets" ,"TT_J"                  ,"TT_T"                     ,"TT_L"                  ,"DY_J"                   ,"DY_TT"                    ,"DY_L"                   ,"VV_J", "VV_T", "VV_L"};
-//const Int_t vcolor[nSAMPLES]=         {kRed    ,kGreen                  ,kGreen+2                   ,kGreen-1                ,kBlue                    ,kYellow                    ,kViolet                  ,kYellow-5, kYellow-6,kYellow-7};
-const Int_t vcolor_compare[nSAMPLES_COMP]= {kRed    ,kGreen                  ,kBlue                      ,kYellow                 ,kViolet                  ,kYellow-5                  ,kCyan};
-const Int_t vcolor_compare2[nSAMPLES_COMP-3]= {kRed    ,kGreen                  ,kBlue                      ,kCyan};
-const Int_t vcolor_run1[nSAMPLES-1]=  {kRed    ,kGreen                  ,kGreen+2                   ,kGreen-1                ,kBlue                    ,kViolet                  ,kCyan, kYellow-5, kYellow-6};
-const Int_t vcolor_FF[nSAMPLES-3]=  {kGreen+2                  ,kGreen-1                ,kYellow                    ,kViolet                  ,kCyan, kYellow-5, kYellow-6};
-const Int_t vcolor_check[nSAMPLES-6]=  {kRed                  ,kCyan                ,kBlue                    ,kGreen};
+
 const int smap[nSAMPLES]=      {0,2,6,7,1,4,5,3,8,9};
 const int smap_noqcd[nSAMPLES-1]={0,2,5,6,1,3,4,7,8};
 
-//int smap[]=      {0,2,6,7,1,4,5,3};
-//int smap_noqcd[]={0,2,6,1,4,5,3};
-
-const unsigned n_ff=4;
-const Int_t vlabel_i_ff[n_ff]={0,4,1,7};
 
 const unsigned NC=10;
 const TString c_text[NC]={"1p","3p","pt1","pt2","pt3","eta1","eta2","eta3","jet0","jet1"};
@@ -961,10 +626,7 @@ const Int_t c_cuts[NC]={NP1,NP3,PT1,PT2,PT3,ETA1,ETA2,ETA3,JET0,JET1};
 
 static const std::vector<TString> empty_vec_tstring;
 
-const Int_t nCAT=8;
-const TString categories[nCAT] = { "_btag", "_nobtag", "_btag_tight", "_btag_loosemt", "_btag_looseiso", "_nobtag_tight", "_nobtag_loosemt", "_nobtag_looseiso" };
-const Int_t catMode[nCAT] = {_BTAG, _NOBTAG, _BTAG_TIGHT, _BTAG_LOOSEMT, _BTAG_LOOSEISO, _NOBTAG_TIGHT, _NOBTAG_LOOSEMT, _NOBTAG_LOOSEISO};
+const Int_t nCAT=6;
+const TString categories[nCAT] = { "_btag", "_nobtag", "_btag_tight", "_btag_loosemt", "_nobtag_tight", "_nobtag_loosemt" };
+const Int_t catMode[nCAT] = {_BTAG, _NOBTAG, _BTAG_TIGHT, _BTAG_LOOSEMT, _NOBTAG_TIGHT, _NOBTAG_LOOSEMT};
 
-//const Int_t nCAT=4;
-//const TString categories[nCAT] = { "_0jet", "_1jet", "_2jet", "_anyb"};
-//const Int_t catMode[nCAT] = {_0JET, _1JET, _2JET, _ANYB };

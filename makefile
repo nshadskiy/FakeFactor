@@ -34,7 +34,7 @@ convert_inputs: ViennaTool/macros/convert_inputs.C
 	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ GaussianKernelSmoother.o ViennaTool/macros/convert_inputs.C
 
 fitFakeFactors: ViennaTool/macros/fitFakeFactors.C
-	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ CustomFit.o SignalClass.o PlotterClass.o GlobalClass.o ViennaTool/macros/fitFakeFactors.C
+	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ CustomFit.o SignalClass.o GlobalClass.o PlotterClass.o ViennaTool/macros/fitFakeFactors.C
 
 clean:
 	rm *.o test Preselection SRHisto CRHisto convert_inputs ApplyFF fitFakeFactors calcCorrections

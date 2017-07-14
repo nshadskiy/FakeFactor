@@ -57,8 +57,6 @@ class GlobalClass{
   Int_t getPInd( Int_t dm );
   Int_t fulfillCategory(Int_t categoryMode=0, Int_t ind=0);
   TString getCatString_noSel(Int_t categoryMode=0);
-  TString getFracString(Int_t categoryMode=0);
-  TString getChannelString(Int_t categoryMode=0);
 
   Int_t getNpts(const Int_t mode, const Int_t ind=0);
   Int_t getNtracks(const Int_t mode, const Int_t ind=0);

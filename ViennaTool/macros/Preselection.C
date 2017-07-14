@@ -109,12 +109,12 @@ void Preselection() {
     Analyzer->closeFile();
     compressFile(preselection_QCD);
   }
-  if( num==20 || num==0 ){
+  /*if( num==20 || num==0 ){
     Analyzer->loadFile(SIGNALfile,"TauCheck");
     Analyzer->select(preselection_signal,0);
     Analyzer->closeFile();
     compressFile(preselection_signal);
-  }
+    }*/
   //////////////////////////////////////////////////////////////////////////////
   
   if (num==0) {
