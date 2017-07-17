@@ -52,17 +52,6 @@ const int fitBins  =  460;
 #endif
 const double fitMax = 500;
 //////////////////////////////////////////////////
-//applyFF
-const int doBgEst=1; //calc bkg estimates for different FF contributions
-const int doCalcUncertainties=0; //calc uncertainties (at the moment only TT)
-const int doPlots=0;  //these plots don't have any systematic uncertainties, so default is 0
-//applyUncertainties
-const int doApplyUncertainties=1; //apply public uncertainties to FF bkg estimates
-const int doFinalPlots=1; //final plots of bkg estimates with FFs, comparisons with run1 and MCsum, ...
-const int plotSplittedFFs=0;
-const int doComparePlots=0;
-const int doSSSRPlots=0;
-///////////////////////////////////////////////////
 const int NB_MTCORR = 2;
 const int USE_FIT_BINS = 0; //1: the mT correction is used for x value -0.5 - +0.5: mT=0-10 etc
 //const Double_t FIT_BINS[]={0,10,20,30,40,150};
@@ -96,5 +85,36 @@ const Double_t MZ=91.2;
 const Double_t QCD_SS_TO_OS=1.06;
 
 
-
+//////////////////////////////////////////////////
+//extra fit uncertainties
+const int useExtraFitUncertainties = 1;
+const Double_t QCD_fitErr_dm0njet0_mt = 0.02;
+const Double_t QCD_fitErr_dm0njet1_mt = 0.04;
+const Double_t QCD_fitErr_dm1njet0_mt = 0.08;
+const Double_t QCD_fitErr_dm1njet1_mt = 0.08;
+const Double_t W_fitErr_dm0njet0_mt = 0.02;
+const Double_t W_fitErr_dm0njet1_mt = 0.02;
+const Double_t W_fitErr_dm1njet0_mt = 0.05;
+const Double_t W_fitErr_dm1njet1_mt = 0.05;
+const Double_t QCD_fitErr_dm0njet0_et = 0.02;
+const Double_t QCD_fitErr_dm0njet1_et = 0.04;
+const Double_t QCD_fitErr_dm1njet0_et = 0.08;
+const Double_t QCD_fitErr_dm1njet1_et = 0.08;
+const Double_t W_fitErr_dm0njet0_et = 0.02;
+const Double_t W_fitErr_dm0njet1_et = 0.02;
+const Double_t W_fitErr_dm1njet0_et = 0.05;
+const Double_t W_fitErr_dm1njet1_et = 0.05;
+const Double_t QCD_fitErr_dm0njet0_tt = 0.02;
+const Double_t QCD_fitErr_dm0njet1_tt = 0.04;
+const Double_t QCD_fitErr_dm1njet0_tt = 0.08;
+const Double_t QCD_fitErr_dm1njet1_tt = 0.08;
+//extra OSSS uncertainties
+const int useExtraOSSSuncertainty = 1;
+const Double_t OSSSuncertainty_mt = 0.1;
+const Double_t OSSSuncertainty_et = 0.1;
+const Double_t OSSSuncertainty_tt = 0.1;
+//uncertainties for substituting DY FFs
+const int useWToDYUncertainty = 1;
+const Double_t WToDYUncertainty_mt = 0.05;
+const Double_t WToDYUncertainty_et = 0.05;
 
