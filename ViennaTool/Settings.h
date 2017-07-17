@@ -9,7 +9,7 @@ const TString user="jbrandstetter";
 const TString analysis="FakeFactor_2016_MSSM_preapproval";
 const Double_t luminosity=35.9; //27.9 for ABCDEFG, 20.2 for ABCDEFG
 
-const int CHAN = kMU; //kMU,kEL,kTAU
+const int CHAN = kMU;
 const int use_svfit = 0;
 const TString ver = "v16";
 ///////////////////////////////////////////////////
