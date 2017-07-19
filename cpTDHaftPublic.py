@@ -248,13 +248,17 @@ if __name__ == '__main__':
     QCDWUncertainties=['uncertainties_QCD_W.root','uncertainties_QCD_W_alt.root']
     FF3D=['FakeFactors_Data_QCD_3D.root','FakeFactors_Data_W_3D.root','FakeFactors_Data_TT_3D.root']
     ttFF3D=['FakeFactors_Data_QCD_3D.root']
-    altFF3D=['FakeFactors_Data_QCD_3D_alt.root','FakeFactors_Data_W_3D_alt.root','FakeFactors_Data_TT_3D_alt.root']
-    ttaltFF3D=['FakeFactors_Data_QCD_3D_alt.root']
+    altFF3D=[]
+    #altFF3D=['FakeFactors_Data_QCD_3D_alt.root','FakeFactors_Data_W_3D_alt.root','FakeFactors_Data_TT_3D_alt.root']
+    ttaltFF3D=[]
+    #ttaltFF3D=['FakeFactors_Data_QCD_3D_alt.root']
     fractions=['frac_qcd.root','frac_tt.root','frac_dy.root','frac_wjets.root']
     corrections=['Correction_Data_QCD_MuIso.root','Correction_Data_QCD_MVis.root','Correction_Data_QCD_OSSS.root','Correction_Data_W_MVis.root','Correction_MC_W_MT.root','Correction_MC_TT_MVis.root','uncertainties_TT.root']
-    altcorrections=['Correction_Data_QCD_MuIso_alt.root','Correction_Data_QCD_MVis_alt.root','Correction_Data_QCD_OSSS_alt.root','Correction_Data_W_MVis_alt.root','Correction_MC_W_MT_alt.root','Correction_MC_TT_MVis_alt.root','uncertainties_TT_alt.root']
+    altcorrections=[]
+    #altcorrections=['Correction_Data_QCD_MuIso_alt.root','Correction_Data_QCD_MVis_alt.root','Correction_Data_QCD_OSSS_alt.root','Correction_Data_W_MVis_alt.root','Correction_MC_W_MT_alt.root','Correction_MC_TT_MVis_alt.root','uncertainties_TT_alt.root']
     ttcorrections=['Correction_Data_QCD_PT.root','Correction_Data_QCD_MVis.root','Correction_Data_QCD_OSSS.root']
-    ttaltcorrections=['Correction_Data_QCD_PT_alt.root','Correction_Data_QCD_MVis_alt.root','Correction_Data_QCD_OSSS_alt.root']
+    ttaltcorrections=[]
+    #ttaltcorrections=['Correction_Data_QCD_PT_alt.root','Correction_Data_QCD_MVis_alt.root','Correction_Data_QCD_OSSS_alt.root']
     ch = CMCHandler(channel, source, dest, in_categories, categories, in_altcategories, altcategories, in_ttcategories, ttcategories, QCDWUncertainties, FF3D, altFF3D, ttFF3D, fractions, corrections, altcorrections, ttcorrections)
     ch.checkFolderStructure(recreate = args.force)
     if(channel=="tt"):
