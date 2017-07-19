@@ -2005,7 +2005,7 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
 }
 
 
-void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TString CR_file, TString nonclosure_corr, TString ff_output, const TString tight_cat, const Int_t tau_ind){
+void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TString CR_file, TString nonclosure_corr, TString ff_output, const TString tight_cat, const Int_t doPlot, const Int_t tau_ind){
 
   cout << "Calculating corrections for " << ff_output << endl;
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
@@ -2096,8 +2096,10 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   output_h->SetMinimum(0.);
   c2->SetName("mt_corr"+sample+"_c");
   c2->Write();
-  if(!CALC_SS_SR) c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/mtcorr"+sample+tight_cat+".png");
-  if(CALC_SS_SR) c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/mtcorr"+sample+tight_cat+"_SS_SR.png");
+  if(doPlot){
+    if(!CALC_SS_SR) c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/mtcorr"+sample+tight_cat+".png");
+    if(CALC_SS_SR) c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/mtcorr"+sample+tight_cat+"_SS_SR.png");
+  }
 
   FF_lookup.Close();compare.Close();output->Close();
   if( raw_ff.Contains("_fitted") ){

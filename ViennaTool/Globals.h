@@ -447,31 +447,29 @@ const Int_t N_m_QCD = sizeof(Mt_cuts_QCD)/sizeof(Double_t);
 //////////////////////////////////////////////////////////////////////////////////
 //PT CUTS
 //fb pre-approval
-#if(CHAN==kMU)
+#if(kMU-CHAN)
 const Double_t Pt_cuts_Wjets[]    = {30.,34,39,50,60,75,90,110,140,180,500};//lower boundaries of the pt bins, there are no data with pt<30.
 const Double_t Pt_cuts_DY[]       = {30.,40.};
 const Double_t Pt_cuts_TT_SR[]    = {30.,32.5,35.,40.,45,50,70,90,115,175,500};
 const Double_t Pt_cuts_TT_CR[]    = {30.};
 const Double_t Pt_cuts_QCD[]      = {30,35,40,50,70,120,500};
 const Double_t Pt_cuts_QCD_AI[]   = {30,35,40,50,75,120,500};
-#endif
 
-#if(CHAN==kEL)
+#elif(kEL-CHAN)
 const Double_t Pt_cuts_Wjets[]    = {30.,35,40,50,60,75,95,120,170,500};
 const Double_t Pt_cuts_DY[]       = {30.,40.};
 const Double_t Pt_cuts_TT_SR[]    = {30.,32.,34,37.,40,45,50,70,110,160,500};
 const Double_t Pt_cuts_TT_CR[]    = {30.};
 const Double_t Pt_cuts_QCD[]      = {30,32.5,35,40,50,60,70,80,110,500};
 const Double_t Pt_cuts_QCD_AI[]   = {30,35,45,55,80,500};
-#endif
 
-#if(CHAN==kTAU)
-const Double_t Pt_cuts_Wjets_tt[]    = {40.,};
-const Double_t Pt_cuts_DY_tt[]       = {40.};
-const Double_t Pt_cuts_TT_SR_tt[]    = {40.};
-const Double_t Pt_cuts_TT_CR_tt[]    = {40.};
-const Double_t Pt_cuts_QCD_tt[]      = {40.,42.5,45.,50.,55,60,65,75,95,155};
-const Double_t Pt_cuts_QCD_AI_tt[]   = {40,42.5,45,50,60,75,115,180};
+#else
+const Double_t Pt_cuts_Wjets[]    = {40.,};
+const Double_t Pt_cuts_DY[]       = {40.};
+const Double_t Pt_cuts_TT_SR[]    = {40.};
+const Double_t Pt_cuts_TT_CR[]    = {40.};
+const Double_t Pt_cuts_QCD[]      = {40.,42.5,45.,50.,55,60,65,75,95,155};
+const Double_t Pt_cuts_QCD_AI[]   = {40,42.5,45,50,60,75,115,180};
 #endif
 
 const Int_t N_p_Wjets = sizeof(Pt_cuts_Wjets)/sizeof(Double_t);

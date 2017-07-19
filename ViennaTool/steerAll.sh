@@ -9,12 +9,12 @@ sh BuildStructure.sh
 cd ../
 make -B
 
-#./Preselection
-#./SRHisto
-#./CRHisto
-#./steerFF
-#./fitFakeFactors
-#./calcCorrections
+./Preselection
+./SRHisto
+./CRHisto
+./steerFF
+./fitFakeFactors
+./calcCorrections
 python plotCorrections.py --channel $channel
 ./convert_inputs
 python cpTDHaftPublic.py --destination $output --channel $channel
