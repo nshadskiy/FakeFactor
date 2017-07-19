@@ -16,6 +16,8 @@ cd ../../
 
 scram b
 
+git init
+
 git remote add origin git@github.com:jbrands/FakeFactor.git
 
 git pull origin FF2016MSSM_dev
