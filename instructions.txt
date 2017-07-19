@@ -10,3 +10,5 @@
 #-line10:  output_folder="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170718/" -> or similar, adjust to user: FFs will be put there
 #-line13:  CHAN=kMU/kEL/kTAU
 
+##########################
+#Run FF tool with sh steerAll.sh in ViennaTool folder
