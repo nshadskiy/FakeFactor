@@ -24,22 +24,20 @@ void SRHisto() {
     ps.push_back(preselection_Wjets); ps.push_back(preselection_TT_T); ps.push_back(preselection_TT_J); ps.push_back(preselection_TT_L);
     if( useVV ) {ps.push_back(preselection_VV_T); ps.push_back(preselection_VV_J); ps.push_back(preselection_VV_L);}
     ps.push_back(preselection_DY_TT); ps.push_back(preselection_DY_J); ps.push_back(preselection_DY_L); 
-    ps.push_back(preselection_QCD);
-    ps.push_back(preselection_signal);
+    if(DOQCD) ps.push_back(preselection_QCD);
 
     std::vector<TString> fl;
     fl.push_back(SR_data_mt); 
     fl.push_back(SR_Wjets_mt_sim); fl.push_back(SR_TT_T_mt_sim); fl.push_back(SR_TT_J_mt_sim); fl.push_back(SR_TT_L_mt_sim);
     if( useVV ) {fl.push_back(SR_VV_T_mt_sim); fl.push_back(SR_VV_J_mt_sim); fl.push_back(SR_VV_L_mt_sim);}
     fl.push_back(SR_DY_TT_mt_sim); fl.push_back(SR_DY_J_mt_sim); fl.push_back(SR_DY_L_mt_sim); 
-    fl.push_back(SR_QCD_mt_sim);
-    fl.push_back(SR_signal_mt_sim);
+    if(DOQCD) fl.push_back(SR_QCD_mt_sim);
     
     
     //  if (DOQCD) fl.push_back(SR_QCD_mt_sim);
 
     Int_t nVARused = nVAR-1; //no muiso is needed here
-    const TString r1[nVARused]={"_pt","_mt","_mvis","_pt"}; //
+    const TString r1[nVARused]={"_pt","_mt","_mvis"}; //
     const TString r2[nVARused]={ "_mt", "_mvis", "_pt"}; //"_mt2","_lepPt","_mvamet","_met","_eta", "_mttot","_mjj"};
 
     TString tmp,tmp2;

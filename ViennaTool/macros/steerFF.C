@@ -64,11 +64,10 @@ void CalcFF() {
   if(doCalcWeights && !CALC_SS_SR){
     cout << endl << "################### Calculating FF weights  ###############" << endl << endl;
     if(inclusive_selection) Analyzer->calcFFweights(m_preselection_data,wf, ps, pi, p, p+template_file_name);
-    else{
+    if(exclusive_selection){
       for(Int_t icat=0;icat<nCAT;icat++){
         if(CHAN==kTAU && icat>2) continue;
-      //for(Int_t icat=0;icat<8;icat++){
-      //for(Int_t icat=3;icat<4;icat++){
+        
         TString m_preselection_data_tmp=m_preselection_data; //m_preselection_data_tmp.ReplaceAll( ".root",categories[icat]+".root" );
         std::vector<TString> wf; wf.push_back(p+a_weight[0]); wf.push_back(p+a_weight[1]); wf.push_back(p+a_weight[2]); if (DOQCD) wf.push_back(p+a_weight[3]);
         //for(Int_t iwf; iwf<wf.size();iwf++) wf.at(iwf).ReplaceAll( ".root",categories[icat]+".root" );
@@ -77,7 +76,7 @@ void CalcFF() {
         ps.push_back(preselection_DY_TT); ps.push_back(preselection_DY_L); ps.push_back(preselection_TT_T); ps.push_back(preselection_TT_L);
         if(useVV) {ps.push_back(preselection_VV_T); ps.push_back(preselection_VV_L);}
         //for(Int_t ips=0; ips<ps.size();ips++) ps.at(ips).ReplaceAll( ".root",categories[icat]+".root" );
-        Analyzer->calcFFweights(m_preselection_data_tmp,wf, ps, pi, p, template_file_name_tmp, catMode[icat]);
+        Analyzer->calcFFweights(m_preselection_data_tmp,wf, ps, pi, p, template_file_name_tmp, 0, catMode[icat]);
       }
     }
   }

@@ -5,9 +5,8 @@ using namespace std;
 
 void test(){
 
-  //TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170328_tight/mt/_btagHigh/fakeFactors_20170328_tight.root";
-  //TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170502_extraCat_vtight/tt/nobtag_looseiso/fakeFactors_20170502_extraCat_vtight.root";
-  TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170515_tight/et/inclusive/fakeFactors_20170515_tight.root";
+  TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170628_tight/mt/inclusive/fakeFactors_20170628_tight.root";
+  //TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170718/mt/inclusive/fakeFactors_mt_inclusive.root";
   //TString fname="/afs/hephy.at/work/j/jbrandstetter/cmssw/CMSSW_8_0_20/src/HTTutilities/Jet2TauFakes/data/mt/boosted/fakeFactors_20170228.root";
   //TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170217_MC/mt/incl/fakeFactors_20170217_MC.root";
   //TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170212/tt/incl/fakeFactors_20170212.root";
@@ -28,11 +27,11 @@ void test(){
   inputs[4] = 100; //mvis
   inputs[5] = 200; //mttot;
   inputs[6] = 0.99;*/
-  inputs[0] = 500; //tau_pt;
+  inputs[0] = 100; //tau_pt;
   inputs[1] = 0;  //tau_decay
   inputs[2] = 0;  //njets
   inputs[3] = 100; //mvis;
-  inputs[4] = 50; //mt
+  inputs[4] = 30; //mt
   inputs[5] = 0.1; //muiso;
 
   // Retrieve fake factors
@@ -41,8 +40,8 @@ void test(){
   //double ff_nom_w = ff_w->value(inputs);
   //double ff_nom_tt = ff_tt->value(inputs);
 
-  //double syst_qcd_up = ff->value(inputs, "ff_qcd_syst_up");
-  //double syst_qcd_down = ff->value(inputs, "ff_qcd_syst_down");
+  double syst_qcd_up = ff->value(inputs, "ff_qcd_syst_up");
+  double syst_qcd_down = ff->value(inputs, "ff_qcd_syst_down");
   double syst_w_up = ff->value(inputs, "ff_w_syst_up");
   double syst_w_down = ff->value(inputs, "ff_w_syst_down");
   /*double frac_syst_w_up = ff->value(inputs, "ff_w_frac_syst_up");
@@ -65,14 +64,14 @@ void test(){
   double stat_dm1_njet0_qcd_down = ff->value(inputs, "ff_qcd_dm1_njet0_stat_down");
   double stat_dm1_njet1_qcd_up = ff->value(inputs, "ff_qcd_dm1_njet1_stat_up");
   double stat_dm1_njet1_qcd_down = ff->value(inputs, "ff_qcd_dm1_njet1_stat_down");
-  /*double stat_dm0_njet0_w_up = ff->value(inputs, "ff_w_dm0_njet0_stat_up");
+  double stat_dm0_njet0_w_up = ff->value(inputs, "ff_w_dm0_njet0_stat_up");
   double stat_dm0_njet0_w_down = ff->value(inputs, "ff_w_dm0_njet0_stat_down");
   double stat_dm0_njet1_w_up = ff->value(inputs, "ff_w_dm0_njet1_stat_up");
   double stat_dm0_njet1_w_down = ff->value(inputs, "ff_w_dm0_njet1_stat_down");
   double stat_dm1_njet0_w_up = ff->value(inputs, "ff_w_dm1_njet0_stat_up");
   double stat_dm1_njet0_w_down = ff->value(inputs, "ff_w_dm1_njet0_stat_down");
   double stat_dm1_njet1_w_up = ff->value(inputs, "ff_w_dm1_njet1_stat_up");
-  double stat_dm1_njet1_w_down = ff->value(inputs, "ff_w_dm1_njet1_stat_down");*/
+  double stat_dm1_njet1_w_down = ff->value(inputs, "ff_w_dm1_njet1_stat_down");
   /*/double stat_w_up = ff->value(inputs, "ff_w_stat_up");
   double stat_w_down = ff->value(inputs, "ff_w_stat_down");
   double stat_tt_up = ff->value(inputs, "ff_tt_stat_up");
@@ -83,8 +82,8 @@ void test(){
   //^cout << "ff qcd= " << ff_nom_qcd << endl;
   cout << " ----- Systematic uncertainties ----- " << endl;
   cout << "Uncertainties on corrections: " << endl;
-  //cout << "syst(qcd)_up= " << (syst_qcd_up-ff_nom)/ff_nom*100 << "%" <<  endl;
-  //cout << "syst(qcd)_down= " << (syst_qcd_down-ff_nom)/ff_nom*100 << "%" <<  endl;
+  cout << "syst(qcd)_up= " << (syst_qcd_up-ff_nom)/ff_nom*100 << "%" <<  endl;
+  cout << "syst(qcd)_down= " << (syst_qcd_down-ff_nom)/ff_nom*100 << "%" <<  endl;
   cout << "syst(w)_up= " << (syst_w_up-ff_nom)/ff_nom*100 << "%" <<  endl;
   cout << "syst(w)_down= " << (syst_w_down-ff_nom)/ff_nom*100 << "%" <<  endl;
   /*cout << "frac syst(w)_up= " << (frac_syst_w_up-ff_nom)/ff_nom*100 << "%" <<  endl;
@@ -106,14 +105,14 @@ void test(){
   cout << "stat(qcd_down)10= " << (stat_dm1_njet0_qcd_down-ff_nom)/ff_nom*100 << "%" << endl;
   cout << "stat(qcd_up)11= " << (stat_dm1_njet1_qcd_up-ff_nom)/ff_nom*100 << "%" << endl;
   cout << "stat(qcd_down)11= " << (stat_dm1_njet1_qcd_down-ff_nom)/ff_nom*100 << "%" << endl;
-  /*cout << "stat(w_up)00= " << (stat_dm0_njet0_w_up-ff_nom)/ff_nom*100 << "%" << endl;
+  cout << "stat(w_up)00= " << (stat_dm0_njet0_w_up-ff_nom)/ff_nom*100 << "%" << endl;
   cout << "stat(w_down)00= " << (stat_dm0_njet0_w_down-ff_nom)/ff_nom*100 << "%" << endl;
   cout << "stat(w_up)01= " << (stat_dm0_njet1_w_up-ff_nom)/ff_nom*100 << "%" << endl;
   cout << "stat(w_down)01= " << (stat_dm0_njet1_w_down-ff_nom)/ff_nom*100 << "%" << endl;
   cout << "stat(w_up)10= " << (stat_dm1_njet0_w_up-ff_nom)/ff_nom*100 << "%" << endl;
   cout << "stat(w_down)10= " << (stat_dm1_njet0_w_down-ff_nom)/ff_nom*100 << "%" << endl;
   cout << "stat(w_up)11= " << (stat_dm1_njet1_w_up-ff_nom)/ff_nom*100 << "%" << endl;
-  cout << "stat(w_down)11= " << (stat_dm1_njet1_w_down-ff_nom)/ff_nom*100 << "%" << endl;*/
+  cout << "stat(w_down)11= " << (stat_dm1_njet1_w_down-ff_nom)/ff_nom*100 << "%" << endl;
 
   delete ff;
   delete ff_qcd_os;

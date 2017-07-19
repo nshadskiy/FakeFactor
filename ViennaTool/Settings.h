@@ -7,13 +7,15 @@
 
 const TString user="jbrandstetter";
 const TString analysis="FakeFactor_2016_MSSM_preapproval";
+const TString output_folder="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170718/";
 const Double_t luminosity=35.9; //27.9 for ABCDEFG, 20.2 for ABCDEFG
 
 const int CHAN = kMU;
 const int use_svfit = 0;
 const TString ver = "v16";
 ///////////////////////////////////////////////////
-const int inclusive_selection=1; //0: splitting FF procedure in categories defined in Globals.h
+const int inclusive_selection=1; 
+const int exclusive_selection=1; 
 const int useVV=1;
 const int useMVAMET=0;
 ///////////////////////////////////////////////////

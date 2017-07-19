@@ -23,7 +23,7 @@ void combineQCDSystematics( TString fQCD_nonclosure, TString sys_nonclosure, TSt
 void combineWSystematics( TString fW_nonclosure, TString sys_nonclosure, TString fW_mtcorr, TString sys_mtcorr, TString fout, TString tout, const TString tight_cat="");
 void combineTTSystematics( TString fTT_nonclosure, TString sys_nonclosure, TString fout, TString tout, const TString tight_cat="");
 
-void convert_inputs(Int_t categoryMode=0){
+void convert_inputs(Int_t inclusive=1, Int_t categoryMode=0){
 
   TString fn;
   TString fn3d;
@@ -56,7 +56,7 @@ void convert_inputs(Int_t categoryMode=0){
   catString.ReplaceAll("incl","");
   
 
-  if(inclusive_selection){
+  if(inclusive){
     fn="FF_corr_Wjets_MCsum_noGen"+SSstring+".root";
     fn3d="FF_corr_Wjets_MCsum_noGen"+SSstring+".root";
     hn="c_t";
@@ -308,12 +308,12 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
           err_dm0njet0=QCD_fitErr_dm0njet0_mt; 
           err_dm0njet1=QCD_fitErr_dm0njet1_mt; 
           err_dm1njet0=QCD_fitErr_dm1njet0_mt; 
-          err_dm1njet1=QCD_fitErr_dm0njet1_mt; 
+          err_dm1njet1=QCD_fitErr_dm1njet1_mt; 
         } else if(fn.Contains("_Wjets")){
           err_dm0njet0=W_fitErr_dm0njet0_mt; 
           err_dm0njet1=W_fitErr_dm0njet1_mt; 
           err_dm1njet0=W_fitErr_dm1njet0_mt; 
-          err_dm1njet1=W_fitErr_dm0njet1_mt; 
+          err_dm1njet1=W_fitErr_dm1njet1_mt; 
         }
       }
       else if( CHAN==kEL ){
@@ -321,20 +321,20 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
           err_dm0njet0=QCD_fitErr_dm0njet0_et; 
           err_dm0njet1=QCD_fitErr_dm0njet1_et; 
           err_dm1njet0=QCD_fitErr_dm1njet0_et; 
-          err_dm1njet1=QCD_fitErr_dm0njet1_et; 
+          err_dm1njet1=QCD_fitErr_dm1njet1_et; 
         } else if(fn.Contains("_Wjets")){
           err_dm0njet0=W_fitErr_dm0njet0_et; 
           err_dm0njet1=W_fitErr_dm0njet1_et; 
           err_dm1njet0=W_fitErr_dm1njet0_et; 
-          err_dm1njet1=W_fitErr_dm0njet1_et; 
+          err_dm1njet1=W_fitErr_dm1njet1_et; 
         }
       }
-      if( CHAN==kTAU ){
+      else if( CHAN==kTAU ){
         if(fn.Contains("_QCD")){
           err_dm0njet0=QCD_fitErr_dm0njet0_tt; 
           err_dm0njet1=QCD_fitErr_dm0njet1_tt; 
           err_dm1njet0=QCD_fitErr_dm1njet0_tt; 
-          err_dm1njet1=QCD_fitErr_dm0njet1_tt; 
+          err_dm1njet1=QCD_fitErr_dm1njet1_tt; 
         }
       }
     }
@@ -668,7 +668,7 @@ void combineQCDSystematics( TString fQCD_nonclosure, TString sys_nonclosure, TSt
       for(Int_t j=0; j<=sys_otherLep_t->GetN(); j++){
         //if(!CALC_SS_SR) out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) ) );
         if(!CALC_SS_SR){
-          Float_t binContent = TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) + TMath::Power(sys_OSSS_t->GetY()[i],2) + addUncertainty );
+          Float_t binContent = TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) + TMath::Power(sys_OSSS_t->GetY()[i],2) + TMath::Power(addUncertainty,2) );
           if(binContent>1) binContent=0;
           out_t->SetBinContent(i,j,binContent );
         }
@@ -694,7 +694,7 @@ void combineQCDSystematics( TString fQCD_nonclosure, TString sys_nonclosure, TSt
       for(Int_t j=0; j<=sys_otherLep_t->GetN(); j++){
         //if(!CALC_SS_SR) out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) ) );
         if(!CALC_SS_SR){
-          Float_t binContent=TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) + TMath::Power(sys_OSSS_t->GetY()[i],2) + addUncertainty );
+          Float_t binContent=TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) + TMath::Power(sys_OSSS_t->GetY()[i],2) + TMath::Power(addUncertainty,2) );
           if(binContent>1)binContent=0;
           out_t->SetBinContent(i,j,binContent);
         }
@@ -722,8 +722,8 @@ void combineWSystematics( TString fW_nonclosure, TString sys_nonclosure, TString
     else if(CHAN==kEL) additionalDYuncertainty=WToDYUncertainty_et;
   }
   TH2D *out_t = new TH2D(tout, tout, sys_nonclosure_t->GetN(), sys_nonclosure_t->GetX()[0], sys_nonclosure_t->GetX()[sys_nonclosure_t->GetN()-1], sys_mtcorr_t->GetN(), sys_mtcorr_t->GetX()[0], sys_mtcorr_t->GetX()[sys_mtcorr_t->GetN()-1]);
-  for(Int_t i=0; i<sys_nonclosure_t->GetN(); i++){
-    for(Int_t j=0; j<sys_mtcorr_t->GetN(); j++){
+  for(Int_t i=0; i<=sys_nonclosure_t->GetN(); i++){
+    for(Int_t j=0; j<=sys_mtcorr_t->GetN(); j++){
       //out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_mtcorr_t->GetY()[j],2) ) );
       out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_mtcorr_t->GetY()[j],2) + TMath::Power(additionalDYuncertainty,2) ) );
     }
@@ -758,7 +758,7 @@ void combineTTSystematics( TString fTT_nonclosure, TString sys_nonclosure, TStri
 
   TH2D *out_t = new TH2D(tout, tout, 2,0,2,sys_nonclosure_t->GetN(), sys_nonclosure_t->GetX()[0], sys_nonclosure_t->GetX()[sys_nonclosure_t->GetN()-1]);
   for(Int_t i=0; i<2; i++){
-    for(Int_t j=0; j<sys_nonclosure_t->GetN(); j++){
+    for(Int_t j=0; j<=sys_nonclosure_t->GetN(); j++){
       if(!DOMC)out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2)+TMath::Power(scale_factors[i],2) ));
       else out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) ) );
     }
@@ -774,11 +774,12 @@ void combineTTSystematics( TString fTT_nonclosure, TString sys_nonclosure, TStri
   
 #ifndef __CINT__
 int main(int argc, char* argv[]) {
-  if(!inclusive_selection){
+  if(inclusive_selection) convert_inputs();
+  if(exclusive_selection){
     for(Int_t icat=0; icat<nCAT; icat++){
       if(CHAN==kTAU && icat >= 2) continue;
       cout << icat << endl;
-      convert_inputs(catMode[icat]);
+      convert_inputs(0,catMode[icat]);
     }
   }
   else convert_inputs();

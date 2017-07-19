@@ -219,20 +219,32 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    source = 'ViennaTool/ff_2d/{0}/'.format( args.channel )
-    dest = '/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/{0}/{1}/'.format( args.destination, args.channel )
+    channel = args.channel
+    if(args.channel=="kMU"):
+        channel = "mt"
+    elif(args.channel=="kEL"):
+        channel = "et"
+    elif(args.channel=="kTAU"):
+        channel = "tt"
+    
+    source = 'ViennaTool/ff_2d/{0}/'.format( channel )
+    dest = '{0}/{1}/'.format( args.destination, channel )
 
     print("Source:",source)
     print("Destination:",dest)
 
     in_categories=['incl','_btag','_nobtag','_btag_tight','_btag_loosemt','_nobtag_tight','_nobtag_loosemt']
-    in_altcategories=['_btag_looseiso','_nobtag_looseiso']
+    in_altcategories=[]
+    #in_altcategories=['_btag_looseiso','_nobtag_looseiso']
     in_ttcategories=['incl','_btag','_nobtag']
-    in_ttaltcategories=['_btag',"_nobtag"]
+    in_ttaltcategories=[]
+    #in_ttaltcategories=['_btag',"_nobtag"]
     categories=['inclusive','btag','nobtag','btag_tight','btag_loosemt','nobtag_tight','nobtag_loosemt']
-    altcategories=['btag_looseiso','nobtag_looseiso']
+    altcategories=[]
+    #altcategories=['btag_looseiso','nobtag_looseiso']
     ttcategories=['inclusive','btag','nobtag']
-    ttaltcategories=['btag_looseiso','nobtag_looseiso']
+    ttaltcategories=[]
+    #ttaltcategories=['btag_looseiso','nobtag_looseiso']
     QCDWUncertainties=['uncertainties_QCD_W.root','uncertainties_QCD_W_alt.root']
     FF3D=['FakeFactors_Data_QCD_3D.root','FakeFactors_Data_W_3D.root','FakeFactors_Data_TT_3D.root']
     ttFF3D=['FakeFactors_Data_QCD_3D.root']
@@ -243,40 +255,15 @@ if __name__ == '__main__':
     altcorrections=['Correction_Data_QCD_MuIso_alt.root','Correction_Data_QCD_MVis_alt.root','Correction_Data_QCD_OSSS_alt.root','Correction_Data_W_MVis_alt.root','Correction_MC_W_MT_alt.root','Correction_MC_TT_MVis_alt.root','uncertainties_TT_alt.root']
     ttcorrections=['Correction_Data_QCD_PT.root','Correction_Data_QCD_MVis.root','Correction_Data_QCD_OSSS.root']
     ttaltcorrections=['Correction_Data_QCD_PT_alt.root','Correction_Data_QCD_MVis_alt.root','Correction_Data_QCD_OSSS_alt.root']
-    ch = CMCHandler(args.channel, source, dest, in_categories, categories, in_altcategories, altcategories, in_ttcategories, ttcategories, QCDWUncertainties, FF3D, altFF3D, ttFF3D, fractions, corrections, altcorrections, ttcorrections)
+    ch = CMCHandler(channel, source, dest, in_categories, categories, in_altcategories, altcategories, in_ttcategories, ttcategories, QCDWUncertainties, FF3D, altFF3D, ttFF3D, fractions, corrections, altcorrections, ttcorrections)
     ch.checkFolderStructure(recreate = args.force)
-    if(args.channel=="tt"):
+    if(channel=="tt"):
         ch.copyQCDWUncertainties_tt()
     else:
         ch.copyQCDWUncertainties()
     ch.copyFFinput()
     ch.copyFFfrac()
     ch.copyFFcorrections()
-    # if not args.merge:
-    #     ch.copyFiles(ftype = 'tree',
-    #                  recreate = args.force)
-
-    # miss = ch.validateCopy()
-    # if miss != []:
-    #     print( 'There are files missing: {0}'.format( miss ) )
-    #     sys.exit()
-
-    # if args.type == 'mc':
-    #     ch.copyFiles(ftype = 'Skim',
-    #                  ignore = True,
-    #                  max_proc=8)
-   
-    
-
-    #     ch.getSkimCount()
-
-    # # elif args.type == 'data':
-    # #     ch.copyFiles(ftype = 'RLTInfo',
-    # #                  ignore = True,
-    # #                  max_proc=8)
-    
-    # ch.mergeTrees()   
-    # ch.cleanup(rtype = args.type)
 
 
 

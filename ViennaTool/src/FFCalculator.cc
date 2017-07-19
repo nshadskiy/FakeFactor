@@ -134,7 +134,7 @@ FFCalculator::~FFCalculator()
 {
 }
 
-void FFCalculator::calcFFweights(const TString data_file, const std::vector<TString> weight_files, const std::vector<TString> presel_files, const TString m_path_img, const TString m_path_w, const TString tf_name, Int_t mode)
+void FFCalculator::calcFFweights(const TString data_file, const std::vector<TString> weight_files, const std::vector<TString> presel_files, const TString m_path_img, const TString m_path_w, const TString tf_name, Int_t inclusive, Int_t mode)
 {
   std::cout << "In calcFFweights" << std::endl;
 
@@ -156,7 +156,7 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
   std::vector<TH1D*> h_w_tight; h_w_tight.resize(PS_SIZE+1);
 
   TString hss_string = "h_ss_n"; TString h_qcd_rest_n = "h_qcd_rest";
-  if(!inclusive_selection){
+  if(!inclusive){
     for(Int_t icat=0; icat<nCAT; icat++){
       if(catMode[icat] & mode) {hss_string = hss_string + categories[icat];}
       if(catMode[icat] & mode) {h_qcd_rest_n = h_qcd_rest_n + categories[icat];}
@@ -201,7 +201,7 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
     TFile *ft=new TFile(tf_name,"RECREATE");
     for (int i=(int)fnames.size()-1; i>=0; i--){
       TString stmp=fnames.at(i); cout << stmp << endl; stmp.ReplaceAll(CF+".root",""); stmp.ReplaceAll(path_presel+"preselection_",""); stmp.ReplaceAll("_woQCD",""); stmp.ReplaceAll("MCsum","data"); cout << stmp << endl;
-      if(!inclusive_selection){
+      if(!inclusive){
         for(Int_t icat=0; icat<nCAT; icat++){
           if(catMode[icat] & mode) {stmp = stmp + categories[icat];}
         }
@@ -213,7 +213,7 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
     TFile *ft_tt=new TFile(tf_name_tt,"RECREATE");
     for (int i=(int)fnames.size()-1; i>=0; i--){
       TString stmp=fnames.at(i); cout << stmp << endl; stmp.ReplaceAll(".root",""); stmp.ReplaceAll(path_presel+"preselection_",""); stmp.ReplaceAll("_woQCD",""); stmp.ReplaceAll("MCsum","data"); cout << stmp << endl;
-      if(!inclusive_selection){
+      if(!inclusive){
         for(Int_t icat=0; icat<nCAT; icat++){
           if(catMode[icat] & mode) {stmp = stmp + categories[icat];}
         }
@@ -224,7 +224,7 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
     ft->cd();
 
     TString h_template_QCD="h_template_QCD";
-    if(!inclusive_selection){
+    if(!inclusive){
       for(Int_t icat=0; icat<nCAT; icat++) if(catMode[icat] & mode) {h_template_QCD=h_template_QCD+categories[icat];}
     }
     TH1D* h_template=(TH1D*)h_ss->Clone(h_template_QCD);
@@ -244,7 +244,7 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //FIXME: Do it after checking if fit converges!
     TString h_template_QCD_rest="h_template_QCD_rest";
-    if(!inclusive_selection){
+    if(!inclusive){
       for(Int_t icat=0; icat<nCAT; icat++) if(catMode[icat] & mode) {h_template_QCD_rest=h_template_QCD_rest+categories[icat];}
     }
     TH1D* h_template_qcd=(TH1D*)h_qcd_rest->Clone(h_template_QCD_rest);
@@ -259,7 +259,7 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
     ft->Close();
     ft_tt->Close();
 
-    this->calcWeightFromFit(tf_name,m_path_img,m_path_w,"",mode);
+    this->calcWeightFromFit(tf_name,m_path_img,m_path_w,"",inclusive,mode);
     //if(CHAN==kTAU)this->calcWeightFromFit(tf_name_tt,m_path_img,m_path_w,"_vlooseAntiIso",mode); //might be interesting for other channels as well
 
   } else{     //do weights from MC, and QCD=data-rest MC
@@ -363,7 +363,7 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
 } //end of calcFFweights
 
 //can also be called from external
-void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_img, const TString m_path_w, const TString isolation, Int_t mode){
+void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_img, const TString m_path_w, const TString isolation, Int_t inclusive, Int_t mode){
 
   TString m_data="h_template_data";
   if(!DOQCD) m_data="h_template_woQCDdata";
@@ -372,21 +372,21 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
   m_fix.push_back("h_template_TT_L"); m_fix.push_back("h_template_TT_T"); m_fix.push_back("h_template_DY_L"); m_fix.push_back("h_template_DY_TT");
   if(useVV) {m_fix.push_back("h_template_VV_L"); m_fix.push_back("h_template_VV_T");}
   const int NFIX=m_fix.size();
-  if(!inclusive_selection){
+  if(!inclusive){
     for(Int_t icat=0; icat<nCAT; icat++){
       for(Int_t ifix=0;ifix<NFIX;ifix++) if(catMode[icat] & mode) {m_fix.at(ifix)=m_fix.at(ifix)+categories[icat];}
     }
   }
   const int NFIT=2;
   TString m_fit[NFIT]={ "h_template_Wjets", "h_template_QCD" };
-  if(!inclusive_selection){
+  if(!inclusive){
     for(Int_t icat=0; icat<nCAT; icat++){
       for(Int_t ifit=0;ifit<NFIT;ifit++) if(catMode[icat] & mode) {m_fit[ifit]=m_fit[ifit]+categories[icat];}
     }
   }
   const int NSUM=2;
   TString m_sum[NSUM]={ "h_template_DY_J", "h_template_TT_J" };
-  if(!inclusive_selection){
+  if(!inclusive){
     for(Int_t icat=0; icat<nCAT; icat++){
       for(Int_t isum=0;isum<NSUM;isum++) if(catMode[icat] & mode) {m_sum[isum]=m_sum[isum]+categories[icat];}
     }
@@ -430,7 +430,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
   TH1D *htmp;
 
   TString m_data_tmp = m_data;
-  if(!inclusive_selection){
+  if(!inclusive){
     for(Int_t icat=0; icat<nCAT; icat++){
       if(catMode[icat] & mode) {m_data_tmp = m_data_tmp + categories[icat];}
     }
@@ -606,7 +606,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
   for (int i=0; i<NW-1; i++){
     if ( !DOQCD && m_type[i].Contains("QCD") ) continue;
     TString wname=m_path_w+"weight_"+m_type[i]+isolation;
-    if(!inclusive_selection){
+    if(!inclusive){
       for(Int_t icat=0; icat<nCAT; icat++) if(catMode[icat] & mode) {wname=wname+categories[icat];}
     }
     if(CALC_SS_SR) wname=wname+"_SS_SR";
@@ -1443,9 +1443,19 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   h2->Write();
 
   gsk.set_doErrors(1);
-  gsk.set_lastBinFrom(185);
+  //gsk.set_lastBinFrom(185);
   gsk.getContSmoothHisto();
   TGraphAsymmErrors *g=   gsk.returnSmoothedGraph();
+
+  Double_t x185; Double_t y185;
+  g->GetPoint(185,x185,y185);
+  for(int i=0; i<g->GetN(); i++){
+    Double_t x; Double_t y;
+    if(i>185){
+      g->GetPoint(i,x,y);
+      g->SetPoint(i,x,y185);
+    }
+  }
 
 
   g->SetTitle("nonclosure"+sample);
@@ -1938,10 +1948,26 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
   h2->Write();
 
   gsk.set_doErrors(1);
-  if(CHAN==kMU)gsk.set_lastBinFrom(180);
-  if(CHAN==kEL)gsk.set_lastBinFrom(110);
+  //if(CHAN==kMU)gsk.set_lastBinFrom(180);
+  //if(CHAN==kEL)gsk.set_lastBinFrom(110);
   gsk.getContSmoothHisto();
   TGraphAsymmErrors *g=   gsk.returnSmoothedGraph();
+
+  Double_t x200; Double_t y200;
+  if(CHAN==kMU)g->GetPoint(180,x200,y200);
+  if(CHAN==kEL)g->GetPoint(110,x200,y200);
+  for(int i=0; i<g->GetN(); i++){
+    Double_t x; Double_t y;
+    if(CHAN==kMU && i>180){
+      g->GetPoint(i,x,y);
+      g->SetPoint(i,x,y200);
+    }
+    else if(CHAN==kEL && i>110){
+      g->GetPoint(i,x,y);
+      g->SetPoint(i,x,y200);
+    }
+    
+  }
     
   g->SetTitle("OSSS_corr"+sample);
   g->SetName("OSSS_corr"+sample);

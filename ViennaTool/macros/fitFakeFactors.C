@@ -225,13 +225,24 @@ void fitFakeFactors(){
           c2->SaveAs(pi+"pTfit"+ending+".png");
           if(ALLPLOTS) c2->SaveAs(pi+"pTfit"+ending+".pdf");
 
-
-          cf.set_histo_bins( fitBins );          
+          cf.set_fitFromBin( 1+cat*nbins );
+          cf.set_fitMin( fitMin );
+          cf.set_fitMax( fitMax );
+          cf.set_histo_bins( fitBins );                     
           cf.set_bin_centers( fake_histos.at(imode) , "bins_weighted", nbins ); //fitFromBin  needs to be set BEFORE          
           cf.fitHisto();
           g_fit=cf.returnFitGraph();
+
+          for(int i=0; i<g_fit->GetN(); i++){
+            Double_t x; Double_t y;
+            g_fit->GetPoint(i,x,y);
+            if(y-g_fit->GetErrorYlow(i)<0) g_fit->SetPointEYlow( i,y );
+            if(y+g_fit->GetErrorYhigh(i)>=1.) g_fit->SetPointEYhigh( i,0.99-y );
+          }
           
           g_fit->SetName(convert.str().c_str());
+          g_fit->GetYaxis()->SetRangeUser(0.,1.);
+          g_fit->GetXaxis()->SetRangeUser(fitMin-0.1,fitMax+7);
           ff_fitted.cd();
           g_fit->Write();
           
