@@ -44,11 +44,13 @@ const int doTemplateFitForWeights=0; //template fit for fractions, default: 0
 const int doCalc=1; //calc FFs
 //////////////////////////////////////////////////
 const int fit_pT_bins = 1; //use fitted pT bins as input for ff
-#if( CHAN!=kTAU )
+#if( kMU-CHAN )
 const double fitMin =  30;
 const int fitBins  =  470;
-#endif
-#if( CHAN==kTAU )
+#elif( kEL-CHAN )
+const double fitMin =  30;
+const int fitBins  =  470;
+#else
 const double fitMin =  40;
 const int fitBins  =  460;
 #endif
