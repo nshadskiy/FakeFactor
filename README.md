@@ -1,6 +1,9 @@
 # FakeFactor
 
 ############################
+cmsrel CMSSW_8_0_25
+
+cd CMSSW_8_0_25/src/; scram b -j 8
 
 git clone https://github.com/CMS-HTT/Jet2TauFakes.git HTTutilities/Jet2TauFakes
 
