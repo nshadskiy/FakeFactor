@@ -1,5 +1,12 @@
 ##########################
-##BuildStructure.sh##
-##line2: user=jbrandstetter
-##line3: fftype=FakeFactor_2016_MSSM_preapproval_dev
+#--BuildStructure.sh
+#-line2: user=YourUserName@Hephy
+#-line3: fftype=FakeFactor_2016_MSSM_preapproval_dev -> can be changed 
+
+##########################
+#--ViennaTool/Settings.sh
+#-line8:   user="YourUserName@Hephy"
+#-line9:   analysis="FakeFactor_2016_MSSM_preapproval_dev"
+#-line10:  output_folder="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170718/" -> or similar, adjust to user: FFs will be put there
+#-line13:  CHAN=kMU/kEL/kTAU
 
