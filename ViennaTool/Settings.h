@@ -6,11 +6,11 @@
 
 
 const TString user="jbrandstetter";
-const TString analysis="FakeFactor_2016_MSSM_preapproval";
+const TString analysis="FakeFactor_2016_MSSM_preapproval_dev";
 const TString output_folder="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170718/";
-const Double_t luminosity=35.9; //27.9 for ABCDEFG, 20.2 for ABCDEFG
+const Double_t luminosity=35.9; 
 
-const int CHAN = kMU;
+const int CHAN = kEL;
 const int use_svfit = 0;
 const TString ver = "v16";
 ///////////////////////////////////////////////////
