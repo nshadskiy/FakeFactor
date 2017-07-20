@@ -389,7 +389,7 @@ const TString CR_QCD_mvis_data_MCsubtracted      = path_sim+s_CR+"_QCD_"+s_mvis+
 const TString CR_QCD_mvis_AI_data_MCsubtracted   = path_sim+s_CR+"_QCD_"+s_mvis+"_AI_data_MCsubtracted.root";
 const TString CR_QCD_muiso_data_MCsubtracted     = path_sim+s_CR+"_QCD_muiso_data_MCsubtracted.root";
 const TString CR_Wjets_mvis_data_MCsubtracted    = path_sim+s_CR+"_Wjets_"+s_mvis+"_data_MCsubtracted.root";
-const TString CR_QCD_lepPt_data_MCsubtracted     = path_sim+s_CR+"_QCD_"+s_lepPt+"_data_MCsubtrachted.root";
+const TString CR_QCD_lepPt_data_MCsubtracted     = path_sim+s_CR+"_QCD_"+s_lepPt+"_data_MCsubtracted.root";
 const TString empty_mt="empty_"+s_SR+"_"+s_mt+".root";
 
 // Signal region
@@ -445,33 +445,6 @@ const Int_t N_m_TT = sizeof(Mt_cuts_TT)/sizeof(Double_t);
 const Int_t N_m_QCD = sizeof(Mt_cuts_QCD)/sizeof(Double_t);
 
 //////////////////////////////////////////////////////////////////////////////////
-//PT CUTS
-//fb pre-approval
-#if(kMU-CHAN)
-const Double_t Pt_cuts_Wjets[]    = {30.,34,39,50,60,75,90,110,140,180,500};//lower boundaries of the pt bins, there are no data with pt<30.
-const Double_t Pt_cuts_DY[]       = {30.,40.};
-const Double_t Pt_cuts_TT_SR[]    = {30.,32.5,35.,40.,45,50,70,90,115,175,500};
-const Double_t Pt_cuts_TT_CR[]    = {30.};
-const Double_t Pt_cuts_QCD[]      = {30,35,40,50,70,120,500};
-const Double_t Pt_cuts_QCD_AI[]   = {30,35,40,50,75,120,500};
-
-#elif(kEL-CHAN)
-const Double_t Pt_cuts_Wjets[]    = {30.,35,40,50,60,75,95,120,170,500};
-const Double_t Pt_cuts_DY[]       = {30.,40.};
-const Double_t Pt_cuts_TT_SR[]    = {30.,32.,34,37.,40,45,50,70,110,160,500};
-const Double_t Pt_cuts_TT_CR[]    = {30.};
-const Double_t Pt_cuts_QCD[]      = {30,32.5,35,40,50,60,70,80,110,500};
-const Double_t Pt_cuts_QCD_AI[]   = {30,35,45,55,80,500};
-
-#else
-const Double_t Pt_cuts_Wjets[]    = {40.,};
-const Double_t Pt_cuts_DY[]       = {40.};
-const Double_t Pt_cuts_TT_SR[]    = {40.};
-const Double_t Pt_cuts_TT_CR[]    = {40.};
-const Double_t Pt_cuts_QCD[]      = {40.,42.5,45.,50.,55,60,65,75,95,155};
-const Double_t Pt_cuts_QCD_AI[]   = {40,42.5,45,50,60,75,115,180};
-#endif
-
 const Int_t N_p_Wjets = sizeof(Pt_cuts_Wjets)/sizeof(Double_t);
 const Int_t N_p_DY = sizeof(Pt_cuts_DY)/sizeof(Double_t);
 const Int_t N_p_TT_SR = sizeof(Pt_cuts_TT_SR)/sizeof(Double_t);

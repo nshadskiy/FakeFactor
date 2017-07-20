@@ -5,10 +5,11 @@
 
 ##########################
 #--ViennaTool/Settings.sh
-#-line8:   user="YourUserName@Hephy"
-#-line9:   analysis="FakeFactor_2016_MSSM_preapproval_dev"
-#-line10:  output_folder="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170718/" -> or similar, adjust to user: FFs will be put there
-#-line13:  CHAN=kMU/kEL/kTAU
+#-line9:   user="YourUserName@Hephy"
+#-line10:   analysis="FakeFactor_2016_MSSM_preapproval_dev"
+#-line11:  output_folder="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170718/" -> or similar, adjust to user: FFs will be put there
+#-line6:  selCHAN=kMU/kEL/kTAU
+#-line7:  CHAN=kMU/kEL/kTAU
 
 ##########################
 #Run FF tool with sh steerAll.sh in ViennaTool folder

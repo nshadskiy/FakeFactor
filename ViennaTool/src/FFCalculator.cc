@@ -1647,6 +1647,16 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   gsk.set_doErrors(1);
   gsk.getContSmoothHisto();
   TGraphAsymmErrors *g=   gsk.returnSmoothedGraph();
+
+  Double_t xV; Double_t yV;
+  g->GetPoint(375,xV,yV);
+  for(int i=0; i<g->GetN(); i++){
+    Double_t x; Double_t y;
+    if(i>375){
+      g->GetPoint(i,x,y);
+      g->SetPoint(i,x,yV);
+    }
+  }
   
   ///////////////////////////////////////////////////////////////
   g->SetTitle("nonclosure"+sample);

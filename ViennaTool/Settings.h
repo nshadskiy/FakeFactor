@@ -3,14 +3,14 @@
 #define kMU          0
 #define kEL          1
 #define kTAU         2
-
+#define selCHAN      kTAU
+const int CHAN     = kTAU;
 
 const TString user="jbrandstetter";
 const TString analysis="FakeFactor_2016_MSSM_preapproval_dev";
 const TString output_folder="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170718/";
 const Double_t luminosity=35.9; 
 
-const int CHAN = kEL;
 const int use_svfit = 0;
 const TString ver = "v16";
 ///////////////////////////////////////////////////
@@ -19,7 +19,6 @@ const int exclusive_selection=1;
 const int useVV=1;
 const int useMVAMET=0;
 ///////////////////////////////////////////////////
-const int COINFLIP=1; //only for tautau channel: decide if usage of double count or coin flip
 const int DEBUG=1; //set to 1 for additional output
 const int ALLPLOTS=1; //set to 1 for PDFs etc
 const int DOQCD=1; //set to 1 to include QCD estimate, 0 for w/o; only works for MC
@@ -44,16 +43,46 @@ const int doTemplateFitForWeights=0; //template fit for fractions, default: 0
 const int doCalc=1; //calc FFs
 //////////////////////////////////////////////////
 const int fit_pT_bins = 1; //use fitted pT bins as input for ff
-#if( kMU-CHAN )
+//////////////////////////////////////////////////
+//MUTAU Settings
+#if(selCHAN==kMU)
 const double fitMin =  30;
 const int fitBins  =  470;
-#elif( kEL-CHAN )
+const int COINFLIP=1;
+const Double_t Pt_cuts_Wjets[]    = {30.,34,39,50,60,75,90,110,140,180,500};
+const Double_t Pt_cuts_DY[]       = {30.,40.};
+const Double_t Pt_cuts_TT_SR[]    = {30.,32.5,35.,40.,45,50,70,90,115,175,500};
+const Double_t Pt_cuts_TT_CR[]    = {30.};
+const Double_t Pt_cuts_QCD[]      = {30,35,40,50,70,120,500};
+const Double_t Pt_cuts_QCD_AI[]   = {30,35,40,50,75,120,500};
+#endif
+//////////////////////////////////////////////////
+//ETAU Settings
+#if(selCHAN==kEL)
 const double fitMin =  30;
 const int fitBins  =  470;
-#else
+const int COINFLIP=1;
+const Double_t Pt_cuts_Wjets[]    = {30.,35,40,50,60,75,95,120,170,500};
+const Double_t Pt_cuts_DY[]       = {30.,40.};
+const Double_t Pt_cuts_TT_SR[]    = {30.,32.,34,37.,40,45,50,70,110,160,500};
+const Double_t Pt_cuts_TT_CR[]    = {30.};
+const Double_t Pt_cuts_QCD[]      = {30,32.5,35,40,50,60,70,80,110,500};
+const Double_t Pt_cuts_QCD_AI[]   = {30,35,45,55,80,500};
+#endif
+//////////////////////////////////////////////////
+//TAUTAU Settings
+#if(selCHAN==kTAU)
 const double fitMin =  40;
 const int fitBins  =  460;
+const int COINFLIP=0;
+const Double_t Pt_cuts_Wjets[]    = {40.,};
+const Double_t Pt_cuts_DY[]       = {40.};
+const Double_t Pt_cuts_TT_SR[]    = {40.};
+const Double_t Pt_cuts_TT_CR[]    = {40.};
+const Double_t Pt_cuts_QCD[]      = {40.,42.5,45.,50.,55,60,65,75,95,155};
+const Double_t Pt_cuts_QCD_AI[]   = {40,42.5,45,50,60,75,115,180};
 #endif
+//////////////////////////////////////////////////
 const double fitMax = 500;
 //////////////////////////////////////////////////
 const int NB_MTCORR = 2;
