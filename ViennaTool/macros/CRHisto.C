@@ -90,8 +90,8 @@ void CRHisto(int doCalc, int nCR, int nQU) {
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //get Wjet SS histos for corrections
-    Analyzer->getCRHisto(path_presel+s_preselection+"_Wjets.root", MVIS|_W_JETS|_SS , path_sim+s_CR+"_Wjets_mvis_Wjets_SS_SR.root"  );
-    Analyzer->getCRHisto(path_presel+s_preselection+"_Wjets.root", MT|NO_SR|_W_JETS|_SS , path_sim+s_CR+"_Wjets_mt_Wjets_SS_SR.root"  );
+    Analyzer->getCRHisto(path_presel+s_preselection+Wjets, MVIS|_W_JETS|_SS , path_sim+s_CR+"_Wjets_mvis_Wjets_SS_SR.root"  );
+    Analyzer->getCRHisto(path_presel+s_preselection+Wjets, MT|NO_SR|_W_JETS|_SS , path_sim+s_CR+"_Wjets_mt_Wjets_SS_SR.root"  );
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //get QCD AI lepPT MC subtracted CRs
