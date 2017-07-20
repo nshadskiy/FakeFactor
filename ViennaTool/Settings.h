@@ -3,14 +3,14 @@
 #define kMU          0
 #define kEL          1
 #define kTAU         2
+///////////////////////////////////////////////////
 #define selCHAN      kTAU
 const int CHAN     = kTAU;
-
-const TString user="jbrandstetter";
-const TString analysis="FakeFactor_2016_MSSM_preapproval_dev";
-const TString output_folder="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170718/";
+const TString analysis      ="FakeFactor_2016_MSSM_preapproval_dev";
+const TString output_folder ="$HOME/public/Htautau/FakeRate2016/20170718/";
+///////////////////////////////////////////////////
+const TString user="whoami";
 const Double_t luminosity=35.9; 
-
 const int use_svfit = 0;
 const TString ver = "v16";
 ///////////////////////////////////////////////////
