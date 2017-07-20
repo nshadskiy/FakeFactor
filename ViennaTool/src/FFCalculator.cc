@@ -682,14 +682,18 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
       //      hs_split[is]->GetYaxis()->SetRangeUser(0.0,1.0);
       hs_split[is]->SetMaximum(1.0);
       c1s->SetLogx();
+
+      TString fracstring=m_path_img+"frac_split"+sNum[is]+isolation+".png";
+      fracstring.ReplaceAll( ".png", getCatString_noSel(mode)+".png" );
+      if(CALC_SS_SR) fracstring.ReplaceAll(".png","_SS_SR.png");
+      gPad->SaveAs(fracstring);
+      
       if(CHAN != kTAU)hs_split[is]->GetXaxis()->SetTitle(labelPt);
       else hs_split[is]->GetXaxis()->SetTitle("m_{T,tot} [GeV]");
       hs_split[is]->GetYaxis()->SetTitle("Fraction");
       hs_split[is]->Draw();
       leg->Draw();
-      TString fracstring=m_path_img+"frac_split"+sNum[is]+isolation+".png";
-      fracstring.ReplaceAll( ".png", getCatString_noSel(mode)+".png" );
-      if(CALC_SS_SR) fracstring.ReplaceAll(".png","_SS_SR.png");
+      
       gPad->SaveAs(fracstring);
       
       if (ALLPLOTS){
