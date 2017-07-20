@@ -137,18 +137,18 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
       hmc->GetXaxis()->SetLabelSize(0);
     }
   } else{ //other plot
+    hdata->Draw();
+    hs->Draw("same");
     hs->SetMaximum(hmax*1.3);
     hs->SetTitle("");
-    hs->Draw();
     hmc->Draw("e2 same");
-    hdata->Draw("same");
-    hs->GetXaxis()->SetTitle(xLabel);
+    hdata->GetXaxis()->SetTitle("");
 
     float bw=hdata->GetBinWidth(1);
     TString m_ytitle="Events / "; m_ytitle+=(int)bw; m_ytitle+=" GeV";
-    hs->GetYaxis()->SetTitle(m_ytitle);
-    hs->GetYaxis()->SetTitleOffset(1.25);
-    hs->GetXaxis()->SetLabelSize(0);
+    hdata->GetYaxis()->SetTitle(m_ytitle);
+    hdata->GetYaxis()->SetTitleOffset(1.25);
+    hdata->GetXaxis()->SetLabelSize(0);
   }
 
   //  hs->Draw("hist");
