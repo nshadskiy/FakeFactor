@@ -7,7 +7,7 @@ echo $HOME$output
 
 sed s/user=\"whoami\"/user=\"$USER\"/g Settings.h >/tmp/Settings.h
 cp /tmp/Settings.h .
-rm /tmp/Settgins.h
+rm /tmp/Settings.h
 sed s/user=whoami/user=$USER/g BuildStructure.sh >/tmp/BuildStructure.sh
 cp /tmp/BuildStructure.sh .
 rm /tmp/BuildStructure.sh
