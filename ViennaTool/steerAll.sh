@@ -8,9 +8,9 @@ echo $HOME$output
 sed s/user=\"whoami\"/user=\"$USER\"/g Settings.h >/tmp/Settings$USER.h
 yes | mv /tmp/Settings$USER.h Settings.h
 sed s/user=whoami/user=$USER/g BuildStructure.sh >/tmp/BuildStructure$USER.sh
-yes | mv /tmp/BuildStructure$USER.sh Buildstructure.sh
+yes | mv /tmp/BuildStructure$USER.sh BuildStructure.sh
 sed s/fftype=fftype/fftype=$analysis/g BuildStructure.sh >/tmp/BuildStructure$USER.sh
-yes | mv /tmp/BuildStructure$USER.sh Buildstructure.sh
+yes | mv /tmp/BuildStructure$USER.sh BuildStructure.sh
 
 echo "Compiling the framework"
 sh BuildStructure.sh
