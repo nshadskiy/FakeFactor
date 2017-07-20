@@ -3,7 +3,7 @@
 channel=$(grep 'int CHAN' "Settings.h" | awk -F'[=;]' '{print $2}')
 output=$(grep 'output_folder' "Settings.h" | awk -F'[=;]' '{print $2}' | tr -d '"')
 analysis=$(grep 'analysis' "Settings.h" | awk -F'[=;]' '{print $2}' | tr -d '"')
-echo $output
+echo $HOME$output
 
 sed s/user=\"whoami\"/user=\"$USER\"/g Settings.h >/tmp/Settings.h
 cp /tmp/Settings.h .
@@ -25,6 +25,6 @@ make -B
 ./calcCorrections
 python plotCorrections.py --channel $channel
 ./convert_inputs
-python cpTDHaftPublic.py --destination $output --channel $channel
-python producePublicFakeFactors.py --input $output --channel $channel
+python cpTDHaftPublic.py --destination $HOME$output --channel $channel
+python producePublicFakeFactors.py --input $HOME$output --channel $channel
 

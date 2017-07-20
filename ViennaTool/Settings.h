@@ -7,7 +7,7 @@
 #define selCHAN      kTAU
 const int CHAN     = kTAU;
 const TString analysis      ="FakeFactor_2016_MSSM_preapproval_dev";
-const TString output_folder ="$HOME/public/Htautau/FakeRate2016/20170718/";
+const TString output_folder ="/public/Htautau/FakeRate2016/20170718/";
 ///////////////////////////////////////////////////
 const TString user="whoami";
 const Double_t luminosity=35.9; 
