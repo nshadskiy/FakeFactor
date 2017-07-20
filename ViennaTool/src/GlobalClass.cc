@@ -54,26 +54,19 @@ Int_t GlobalClass::isLoose(const Int_t mode, const Int_t ind) //default: 0,0
 {
   if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != 6 ) return 0; }
 
-  if (USE_MVA_ISO){
-    //    if ( event_s->alltau_vlooseMVA->at(ind) && !event_s->alltau_tightMVA->at(ind)) return 1;
-    if ( calcVTightFF && !event_s->alltau_vtightMVA->at(ind)) return 1; 
-    if ( !calcVTightFF && !event_s->alltau_tightMVA->at(ind)) return 1; 
-  } else{
-    if (event_s->alltau_beta->at(ind)<100 && !event_s->alltau_mediumBeta->at(ind)) return 1;
+  if( CHAN == kTAU ){
+    if ( !event_s->alltau_mediumMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
   }
-  //if (event_s->alltau_beta->at(ind)<100 && !event_s->alltau_looseBeta->at(ind)) return 1;
-
+  else if ( !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
+  
   return 0;
 }
 
-Int_t GlobalClass::isLoose_tt(const Int_t mode, const Int_t ind) //default: 0,0
+Int_t GlobalClass::isTight_alt(const Int_t mode, const Int_t ind) //default: 0,0
 {
   if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != 6 ) return 0; }
 
-  if (USE_MVA_ISO){
-    if ( calcVTightFF && !event_s->alltau_vtightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1; 
-    if ( !calcVTightFF && !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1; 
-  }
+  if ( event_s->alltau_mediumMVA->at(ind) && !event_s->alltau_vtightMVA->at(ind) ) return 1; 
 
   return 0;
 }
@@ -82,19 +75,27 @@ Int_t GlobalClass::isTight(const Int_t mode, const Int_t ind) //default: 0,0
 {
   if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != 6 ) return 0; }
 
-  if (USE_MVA_ISO){
-    if ( calcVTightFF && event_s->alltau_vtightMVA->at(ind)) return 1; 
-    if ( !calcVTightFF && event_s->alltau_tightMVA->at(ind)) return 1; 
-  } else{
-    if (event_s->alltau_mediumBeta->at(ind)) return 1;
+  if(CHAN == kTAU){
+    if ( event_s->alltau_mediumMVA->at(ind)) return 1;
   }
-  //  if (event_s->alltau_looseBeta->at(ind)) return 1;
+  else{
+    if ( event_s->alltau_tightMVA->at(ind)) return 1;
+  }
 
   return 0;
 }
 
 Int_t GlobalClass::isInSR(const Int_t mode, const Int_t ind)
 {
+
+  Double_t isolation; Double_t antiIso_min; Double_t antiIso_max;
+  if(CHAN==kMU) isolation=LEP_ISO_CUT;
+  if(CHAN==kEL) isolation=LEP_ISO_CUT_ET;
+  antiIso_min=isolation; antiIso_max=isolation+0.1;
+  //antiIso_min=isolation+0.15; antiIso_max=isolation+0.35;
+
+  //MSSM definition of SR
+  //if( !( event_s->nbtag == 0 || (event_s->nbtag>0 && event_s->njets<=1) ) ) return 0;
   if ( mode & GEN_MATCH ) {
     if ( event_s->alltau_gen_match->at(ind)!=realJet ) return 0; //FIX ME
   }
@@ -119,9 +120,10 @@ Int_t GlobalClass::isInSR(const Int_t mode, const Int_t ind)
     if ( mode & _AI && event_s->lep_iso<TAU1_ISO_CUT ) return 1;
     else if ( !(mode & _AI) && event_s->lep_iso>TAU1_ISO_CUT ) return 1; //0.5 for tight, >9 for vtight
   }else{
-    if ( mode & _AI && event_s->lep_iso>0.1 && event_s->lep_iso<0.2 ) return 1; //for QCD OS/SS check
-    else if ( !(mode & _AI) && (event_s->lep_iso<LEP_ISO_CUT) || ( mode & MUISO ) ) return 1;
+    if ( mode & _AI && event_s->lep_iso>antiIso_min && event_s->lep_iso<antiIso_max ) return 1; //for QCD OS/SS check
+    else if ( !(mode & _AI) && (event_s->lep_iso<isolation) || ( mode & MUISO ) ) return 1;
   }
+    
 
   return 0;
 
@@ -143,6 +145,12 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
     if ( event_s->alltau_gen_match->at(ind)!=realJet ) return 0;
   }
 
+  Double_t isolation=0; Double_t antiIso_min; Double_t antiIso_max;
+  if(CHAN==kMU) isolation=LEP_ISO_CUT;
+  if(CHAN==kEL) isolation=LEP_ISO_CUT_ET;
+  antiIso_min=isolation; antiIso_max=isolation+0.1;
+  //antiIso_min=isolation+0.15; antiIso_max=isolation+0.35;
+  
   if (DEBUG==2) std::cout << "In TNtupleAnalyzer::isInCR" << std::endl;
 
   if  ((mode & _W_JETS && CHAN==kTAU)                   && 
@@ -158,7 +166,7 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
        ( (event_s->alltau_mt->at(ind)>70) ||(mode & NO_SR)) &&
        event_s->passesDLVeto              &&
        event_s->passes3LVeto              &&
-       event_s->lep_iso < LEP_ISO_CUT     &&
+       event_s->lep_iso < isolation     &&
        event_s->bpt_1<20                  &&
        ( ( event_s->lep_q*event_s->alltau_q->at(ind)<0 && !CALC_SS_SR ) || ( event_s->lep_q*event_s->alltau_q->at(ind)>=0 && CALC_SS_SR ) ) //for SS region check
        )
@@ -166,7 +174,7 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
   else if ((mode & _DY)                   &&
 	   //	   event_s->lep_q*event_s->alltau_q->at(ind)<0. && //REMOVE? (orig: with)
 	   //	   event_s->alltau_mt->at(ind)<MT_CUT   && //X (orig: with)
-           event_s->lep_iso < LEP_ISO_CUT        &&
+           event_s->lep_iso < isolation        &&
 	   event_s->alltau_dRToLep->at(ind) > DR_TAU_LEP_CUT    &&
 	   //TEST  fabs( event_s->alltau_mvis->at(ind)  - (MZ-1.2) )>10 &&  //1.2 because reco distribution has more entries below the peak
 	   event_s->m_leplep>70                &&
@@ -185,18 +193,8 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
 	   event_s->n_iso_otherLep >= 1                             &&
 	   event_s->alltau_dRToLep->at(ind) > DR_TAU_LEP_CUT    &&
 	   event_s->alltau_dRToOtherLep->at(ind) > DR_TAU_LEP_CUT    &&
-	   //	   event_s->mu2_iso<0.3               &&
+	   event_s->njets>1               &&
 	   event_s->bpt_1>=20)
-    returnVal=1;
-  else if ((mode & _QCDISO)                     &&
-	   (  (  CALC_SS_SR && event_s->alltau_mt->at(ind)<MT_CUT   && ( ( event_s->lep_iso > 0.05 && event_s->lep_iso<0.15 ) || ( mode & MUISO ) ) ) || //TRY
-	      ( !CALC_SS_SR && event_s->alltau_mt->at(ind)<MT_CUT   &&   ( event_s->lep_iso > 0.10 && event_s->lep_iso<0.20 )                     ) ) && //TRY
-	   //	   (  (  CALC_SS_SR && event_s->alltau_mt->at(ind)<MT_CUT   && ( event_s->lep_iso<LEP_ISO_CUT || ( mode & MUISO ) ) ) || //DEFAULT
-	   //	      ( !CALC_SS_SR                                     && event_s->lep_iso>LEP_ISO_CUT )   ) && //DEFAULT
-	   event_s->passesDLVeto             &&
-	   event_s->passes3LVeto             &&
-	   event_s->lep_q*event_s->alltau_q->at(ind)>=0. 
-	   )
     returnVal=1;
   else if ((mode &_QCD && mode & SR && CHAN==kTAU)                   &&
            (event_s->lep_iso>TAU1_ISO_CUT) &&
@@ -205,18 +203,20 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
     returnVal=1;
   else if ((mode &_QCD && CHAN==kTAU)                   &&
            ( (!(mode & _AI) && event_s->lep_iso>TAU1_ISO_CUT) || ((mode & _AI) && event_s->lep_iso<TAU1_ISO_CUT) ) &&
-           (event_s->lep_q*event_s->alltau_q->at(ind)>=0.)
+           (event_s->lep_q*event_s->alltau_q->at(ind)>=0.) &&
+           event_s->passesDLVeto &&
+           event_s->passes3LVeto
            )
     returnVal=1;
   else if ((mode & _QCD)                  &&
-	   (  ( !CALC_SS_SR && !(mode & _AI) && event_s->alltau_mt->at(ind)<MT_CUT   && ( ( event_s->lep_iso > 0.05 && event_s->lep_iso<0.15 ) || ( mode & MUISO ) ) ) || //TRY
-	      (  (CALC_SS_SR) && event_s->alltau_mt->at(ind)<MT_CUT   &&  ( ( event_s->lep_iso > 0.1 && event_s->lep_iso<0.2 ) || ( mode & MUISO) )                    ) || //TRY
-              (  mode & _AI && event_s->alltau_mt->at(ind)<MT_CUT   &&   ( event_s->lep_iso > 0.10 && event_s->lep_iso<0.20 )                     ) ) && //TRY
+	   (  ( !CALC_SS_SR && !(mode & _AI) && event_s->alltau_mt->at(ind)<40 && event_s->lep_q*event_s->alltau_q->at(ind)>0.  && ( ( event_s->lep_iso > 0.05 && event_s->lep_iso<0.15 ) || ( mode & MUISO ) ) ) || //TRY
+	      (  (CALC_SS_SR) && event_s->alltau_mt->at(ind)<40   && event_s->lep_q*event_s->alltau_q->at(ind)<0. && ( ( event_s->lep_iso > 0.15 && event_s->lep_iso<0.25 ) || ( mode & MUISO) )                    ) || //TRY
+              (  mode & _AI && event_s->alltau_mt->at(ind)<40   &&   ( event_s->lep_iso > antiIso_min && event_s->lep_iso<antiIso_max )                     ) ) && //TRY
 	   //	   (  ( !CALC_SS_SR && event_s->alltau_mt->at(ind)<MT_CUT   && ( event_s->lep_iso<LEP_ISO_CUT || ( mode & MUISO ) ) ) || //DEFAULT
 	   //	      (  CALC_SS_SR                                     && event_s->lep_iso>LEP_ISO_CUT )   ) && //DEFAULT
+           (event_s->lep_q*event_s->alltau_q->at(ind)>=0.) &&
 	   event_s->passesDLVeto             &&
-	   event_s->passes3LVeto             &&
-	   event_s->lep_q*event_s->alltau_q->at(ind)>=0.
+	   event_s->passes3LVeto        
 	   )
     returnVal=1;
   else returnVal=0; 
@@ -249,13 +249,39 @@ Int_t GlobalClass::getWeightIndex_mt(Double_t mt){
   return -1; //should never get here
 }
 
+Int_t GlobalClass::getWeightIndex_pt(Double_t pt){
+  for (int i=0; i<w_pt_n; i++){
+    if ( pt>w_pt_v[i] && pt<w_pt_v[i+1] ) return i;
+  }
+  if (pt>w_pt_v[w_pt_n]) return 1e6; //overflow - one for all dimensions, though!
+  //  if (mt>w_mt_v[w_mt_n]) return w_mt_n-1; //put overflow in last bin
+  //  if (mt>w_mt_v[w_mt_n]) return w_mt_n; //overflow - only suitable for 1D!
+  if (pt<w_pt_v[0]) return -1; //underflow
+
+  return -1; //should never get here
+}
+
+Int_t GlobalClass::getWeightIndex_mttot(Double_t mttot){
+  for (int i=0; i<w_mttot_n; i++){
+    if ( mttot>w_mttot_v[i] && mttot<w_mttot_v[i+1] ) return i;
+  }
+  if (mttot>w_mttot_v[w_mttot_n]) return 1e6;
+  if (mttot<w_mttot_v[0]) return -1; //underflow
+
+  return -1; //should never get here
+}
+
 Int_t GlobalClass::getWeightIndex_mvis(Double_t mvis){
   for (int i=0; i<w_mvis_n; i++){
     if ( mvis>w_mvis_v[i] && mvis<w_mvis_v[i+1] ) return i;
   }
-  //if (mvis>w_mvis_v[w_mvis_n]) return 1; //overflow - one for all dimensions, though!
-  //if (mvis<w_mvis_v[0]) return 1; //underflow
+  return 1; //should never get here
+}
 
+Int_t GlobalClass::getWeightIndex_lepPt(Double_t lepPt){
+  for (int i=0; i<w_lepPt_n; i++){
+    if ( lepPt>w_lepPt_v[i] && lepPt<w_lepPt_v[i+1] ) return i;
+  }
   return 1; //should never get here
 }
 
@@ -278,12 +304,34 @@ Int_t GlobalClass::getWeightIndex_dm(Int_t dm){
 }
 //is under/overflow handled correctly above?
 
-Int_t GlobalClass::getWeightBin(Double_t mt, Int_t dm){
-  return ( this->getWeightIndex_mt(mt) + w_mt_n * this->getWeightIndex_dm(dm) );
+Int_t GlobalClass::getWeightBin(Double_t pt, Int_t dm){
+  if(CHAN != kTAU) return ( this->getWeightIndex_pt(pt) + w_pt_n * this->getWeightIndex_dm(dm) );
+  return ( this->getWeightIndex_mttot(pt) + w_mttot_n * this->getWeightIndex_dm(dm) );
 }
 
 Int_t GlobalClass::getWeightBin(const Int_t ind){
-  return ( this->getWeightBin(event_s->alltau_mt->at(ind),event_s->alltau_decay->at(ind)) );
+  if(CHAN != kTAU) return ( this->getWeightBin(event_s->alltau_pt->at(ind),event_s->alltau_decay->at(ind)) );
+  Double_t mt_tot = TMath::Sqrt( TMath::Power(event_s->alltau_mt->at(ind),2) + TMath::Power(event_s->alltau_mt2->at(ind),2) + 2*event_s->lep_pt*event_s->alltau_pt->at(ind)*(1-TMath::Cos( TVector2::Phi_mpi_pi( event_s->lep_phi-event_s->alltau_phi->at(ind) ) ) ) ); 
+  return ( this->getWeightBin(mt_tot,event_s->alltau_decay->at(ind)) );
+}
+
+Double_t GlobalClass::getFittedBinContent( const Int_t mode, vector<TGraphAsymmErrors*> fittedFFs, const Int_t ind){
+  
+  Int_t i_t=this->getTrackIndex(mode,ind);
+  Int_t i_j=this->getNjetIndex(mode,ind);
+  TGraphAsymmErrors *tmp = nullptr;
+  if( i_t == 0 && i_j == 0 ) tmp = fittedFFs.at(0);
+  if( i_t == 1 && i_j == 0 ) tmp = fittedFFs.at(1);
+  if( i_t == 0 && i_j == 1 ) tmp = fittedFFs.at(2);
+  if( i_t == 1 && i_j == 1 ) tmp = fittedFFs.at(3);
+
+  double x=0; double y=0; double cont=0;
+  for (int ipt=0; ipt<fitBins; ipt++){
+    tmp->GetPoint( ipt + 1,x,y );
+    if( event_s->alltau_pt->at(ind) < x && y>0 && y<100 ) return y;
+  }
+
+  return y;
 }
 
 Int_t GlobalClass::getBin(const Int_t mode, const Int_t ind)
@@ -302,7 +350,7 @@ Int_t GlobalClass::getBin(const Int_t mode, const Int_t ind)
     if (mode & NB)    return this->getIndex(p_nb_v,p_nb_n+1,event_s->nbtag);
     if (mode & DRB)   return this->getIndex(p_drb_v,p_drb_n+1,event_s->alltau_dRToB->at(ind) );
     //if (mode & DETA)  return this->getIndex(p_absdeta_v,p_absdeta_n+1,fabs(event_s->alltau_eta->at(ind)-event_s->lep_eta) );
-    if (mode & NJETS)  return this->getIndex(p_njets_v,p_njets_n+1,event_s->njets);
+    //if (mode & NJETS)  return this->getIndex(p_njets_v,p_njets_n+1,event_s->njets);
     //if (mode & NBJETS)  return this->getIndex(p_nbjets_v,p_nbjets_n+1,event_s->nbtag);
     
     //    if (mode & DRB){ cout << "X " << endl; cout << "X " << event_s->alltau_dRToB->size() << " " << ind << endl;  return this->getIndex(p_drb_v,p_drb_n+1,event_s->alltau_dRToB->at(ind) ); }
@@ -318,15 +366,17 @@ Int_t GlobalClass::getBin(const Int_t mode, const Int_t ind)
 
   if (mode & _W_JETS) {n_p=n_p_Wjets;n_e=n_e_Wjets;n_t=n_t_Wjets;n_j=n_j_Wjets;}
   else if ( (mode & _DY) ) {n_p=n_p_DY;n_e=n_e_DY;n_t=n_t_DY;n_j=n_j_DY;}
-  else if ( (mode & _TT) ) {n_p=n_p_TT;n_e=n_e_TT;n_t=n_t_TT;n_j=n_j_TT;}
-  else if ( (mode & _QCD) || (mode & _QCDISO) )     {n_p=n_p_QCD;n_e=n_e_QCD;n_t=n_t_QCD;n_j=n_j_QCD;}
+  else if ( (mode & _TT) && (mode & SR) )  {n_p=n_p_TT_SR;n_e=n_e_TT;n_t=n_t_TT;n_j=n_j_TT_SR;}
+  else if ( (mode & _TT) ) {n_p=n_p_TT_CR;n_e=n_e_TT;n_t=n_t_TT;n_j=n_j_TT_CR;}
+  //else if ( (mode & _TT) ) {n_p=n_p_TT;n_e=n_e_TT;n_t=n_t_TT;n_j=n_j_TT;}
+  else if ( (mode & _QCD) && (mode & _AI) ) {n_p=n_p_QCD_AI;n_e=n_e_QCD;n_t=n_t_QCD;n_j=n_j_QCD;}
+  else if ( (mode & _QCD) )     {n_p=n_p_QCD;n_e=n_e_QCD;n_t=n_t_QCD;n_j=n_j_QCD;}
   //  else {cout<<"getBin: Define a valid MODE!"<<std::endl;n_p=-99;n_e=-99;n_t=-99;}
   Int_t bin=i_e + i_p*n_e + i_t*n_p*n_e + i_j*n_t*n_p*n_e;
   // std::cout<<i_e<<" "<<i_p<<" "<<i_t<<" "<<bin<<" "<<std::endl;
 
   return(bin);// combined index of track-pt-eta bin
 }
-
 
 Int_t GlobalClass::nBins(const Int_t mode)
 {
@@ -342,8 +392,11 @@ Int_t GlobalClass::nBins(const Int_t mode)
 
   if (mode & _W_JETS) return(n_e_Wjets*n_p_Wjets*n_t_Wjets*n_m_Wjets*n_j_Wjets);
   else if ( (mode & _DY) ) return(n_e_DY*n_p_DY*n_t_DY*n_m_DY*n_j_DY);
-  else if ( (mode & _TT) ) return(n_e_TT*n_p_TT*n_t_TT*n_m_TT*n_j_TT);
-  else if ( (mode & _QCD) || (mode & _QCDISO) )   return(n_e_QCD*n_p_QCD*n_t_QCD*n_m_QCD*n_m_QCD*n_j_QCD);
+  else if ( (mode & _TT) && (mode & SR) ) return(n_e_TT*n_p_TT_SR*n_t_TT*n_m_TT*n_j_TT_SR);
+  else if ( (mode & _TT) ) return(n_e_TT*n_p_TT_CR*n_t_TT*n_m_TT*n_j_TT_CR);
+  //else if ( (mode & _TT) && (mode & SR) ) return(n_e_TT*n_p_TT*n_t_TT*n_m_TT*n_j_TT);
+  else if ( (mode & _QCD) && (mode & _AI) ) return(n_e_QCD*n_p_QCD_AI*n_t_QCD*n_m_QCD*n_m_QCD*n_j_QCD);
+  else if ( (mode & _QCD) )   return(n_e_QCD*n_p_QCD*n_t_QCD*n_m_QCD*n_m_QCD*n_j_QCD);
 
   std::cout<<"nBins(mode): No valid mode."<<std::endl;
   return -99;
@@ -361,12 +414,21 @@ Int_t GlobalClass::getPtIndex(const Int_t mode, const Int_t ind)
   } else if ( (mode & _DY) ) {
     for(Int_t i=0;i<n_p_DY;i++) if (pt>=pt_cuts_DY[i]) i_p++;
     return(--i_p);
+  } else if ( (mode & _TT) && (mode & SR) ) {
+    for(Int_t i=0;i<n_p_TT_SR;i++) if (pt>=pt_cuts_TT_SR[i]) i_p++;
+    return(--i_p);
   } else if ( (mode & _TT) ) {
-    for(Int_t i=0;i<n_p_TT;i++) if (pt>=pt_cuts_TT[i]) i_p++;
+    for(Int_t i=0;i<n_p_TT_CR;i++) if (pt>=pt_cuts_TT_CR[i]) i_p++;
     return(--i_p);
-  } else if ( (mode & _QCD) || (mode & _QCDISO) ) {
+    //} else if ( (mode & _TT) ) {
+    //for(Int_t i=0;i<n_p_TT;i++) if (pt>=pt_cuts_TT[i]) i_p++;
+    //return(--i_p);
+    } else if ( (mode & _QCD && mode & _AI) ) {
+    for(Int_t i=0;i<n_p_QCD_AI;i++) if (pt>=pt_cuts_QCD_AI[i]) i_p++;
+    return(--i_p);    
+  } else if ( (mode & _QCD) ) {
     for(Int_t i=0;i<n_p_QCD;i++) if (pt>=pt_cuts_QCD[i]) i_p++;
-    return(--i_p);
+    return(--i_p);    
   } else {cout<<"Define a valid mode!"<<std::endl;return(-99);}
 }
 
@@ -382,14 +444,49 @@ Int_t GlobalClass::getNjetIndex(const Int_t mode, const Int_t ind)
   } else if ( (mode & _DY) ) {
     for(Int_t i=0;i<n_j_DY;i++) if (njet>=njet_cuts_DY[i]) i_j++;
     return(--i_j);
-  } else if ( (mode & _TT) ) {
-    for(Int_t i=0;i<n_j_TT;i++) if (njet>=njet_cuts_TT[i]) i_j++;
+  } else if ( (mode & _TT) && (mode & SR) ) {
+    for(Int_t i=0;i<n_j_TT_SR;i++) if (njet>=njet_cuts_TT_SR[i]) i_j++;
     return(--i_j);
-  } else if ( (mode & _QCD) || (mode & _QCDISO) ) {
+  } else if ( (mode & _TT) ) {
+    for(Int_t i=0;i<n_j_TT_CR;i++) if (njet>=njet_cuts_TT_CR[i]) i_j++;
+    return(--i_j);
+    //} else if ( (mode & _TT) ) {
+    //for(Int_t i=0;i<n_j_TT;i++) if (njet>=njet_cuts_TT[i]) i_j++;
+    //return(--i_j);
+  } else if ( (mode & _QCD) ) {
     for(Int_t i=0;i<n_j_QCD;i++) if (njet>=njet_cuts_QCD[i]) i_j++;
     return(--i_j);
   } else {cout<<"Define a valid mode!"<<std::endl;return(-99);}
 }
+
+Int_t GlobalClass::getNjets(const Int_t mode, const Int_t ind)
+{
+  if(mode & _W_JETS) return N_j_Wjets;
+  else if(mode & _QCD) return N_j_QCD;
+  else if(mode & _DY) return N_j_DY;
+  else if(mode & _TT && mode & SR) return N_j_TT_SR;
+  else if(mode & _TT) return N_j_TT_CR;
+  else {cout<<"Define a valid mode!"<<std::endl;return(-99);}
+}
+Int_t GlobalClass::getNtracks(const Int_t mode, const Int_t ind)
+{
+  if(mode & _W_JETS) return N_t_Wjets;
+  else if(mode & _QCD) return N_t_QCD;
+  else if(mode & _DY) return N_t_DY;
+  else if(mode & _TT) return N_t_TT;
+  else {cout<<"Define a valid mode!"<<std::endl;return(-99);}
+}
+Int_t GlobalClass::getNpts(const Int_t mode, const Int_t ind)
+{
+  if(mode & _W_JETS) return N_p_Wjets;
+  else if(mode & _QCD && mode & _AI) return N_p_QCD_AI;
+  else if(mode & _QCD) return N_p_QCD;
+  else if(mode & _DY) return N_p_DY;
+  else if(mode & _TT && mode & SR) return N_p_TT_SR;
+  else if(mode & _TT) return N_p_TT_CR;
+  else {cout<<"Define a valid mode!"<<std::endl;return(-99);}
+}
+
 
 Int_t GlobalClass::getMtIndex(const Int_t mode, const Int_t ind)
 {
@@ -406,7 +503,7 @@ Int_t GlobalClass::getMtIndex(const Int_t mode, const Int_t ind)
   } else if ( (mode & _TT) ) {
     for(Int_t i=0;i<n_m_TT;i++) if (mt>=mt_cuts_TT[i]) i_m++;
     return(--i_m);
-  } else if ( (mode & _QCD) || (mode & _QCDISO) ) {
+  } else if ( (mode & _QCD) ) {
     for(Int_t i=0;i<n_m_QCD;i++) if (mt>=mt_cuts_QCD[i]) i_m++;
     return(--i_m);
   } else {cout<<"Define a valid mode!"<<std::endl;return(-99);}
@@ -427,7 +524,7 @@ Int_t GlobalClass::getEtaIndex(const Int_t mode, const Int_t ind)
   } else if ( (mode & _TT) ) {
     for(Int_t i=0;i<n_e_TT;i++) if (TMath::Abs(eta)>=eta_cuts_TT[i]) i_e++;
     return(--i_e);
-  } else if ( (mode & _QCD) || (mode & _QCDISO) ) {
+  } else if ( (mode & _QCD) ) {
     for(Int_t i=0;i<n_e_QCD;i++) if (TMath::Abs(eta)>=eta_cuts_QCD[i]) i_e++;
     return(--i_e);
   } else {cout<<"Define a valid mode!"<<std::endl;return(-99);}
@@ -448,7 +545,7 @@ Int_t GlobalClass::getTrackIndex(const Int_t mode, const Int_t ind)
   } else if ( (mode & _TT) ) {
     for(Int_t i=0;i<n_t_TT;i++) if (i_decayMode>=decay_cuts_TT[i]) i_t++;
     return(--i_t);
-  } else if ( (mode & _QCD) || (mode & _QCDISO) ) {
+  } else if ( (mode & _QCD) ) {
     for(Int_t i=0;i<n_t_QCD;i++) if (i_decayMode>=decay_cuts_QCD[i]) i_t++;
     return(--i_t);
   } else {cout<<"Define a valid mode!"<<std::endl;return(-99);}
@@ -495,18 +592,26 @@ Int_t GlobalClass::passesCuts(const Int_t cuts, const Int_t ind){
   if (cuts & ETA3){
     if ( fabs(event_s->alltau_eta->at(ind))<1.479 ) ret=ret && 0;
   }
+  if (cuts & JET0){
+    if ( event_s->njets!=0 ) ret=ret && 0;
+  }
+  if (cuts & JET1){
+    if ( event_s->njets<1 ) ret=ret && 0;
+  }
 
   return ret;
 }
 
 Double_t GlobalClass::selVal(const Int_t mode, const Int_t ind){
-  if      (mode & MT)   {return event_s->alltau_mt->at(ind);}
-  else if (mode & MVIS) {return event_s->alltau_mvis->at(ind);}
+
+  if (mode & MVIS) {return event_s->alltau_mvis->at(ind);}
   else if (mode & PT)   {return event_s->alltau_pt->at(ind);}
   else if (mode & MUISO) {return event_s->lep_iso;}
-  else if (mode & ZPT)   {return event_s->alltau_Zpt->at(ind);}
   else if (mode & SVFIT) {return event_s->alltau_svfit->at(ind);}
+  else if (mode & MT) {return event_s->alltau_mt->at(ind);}
+  else if (mode & LEPPT) {return event_s->lep_pt;}
   else{ std::cout << "selVal: Warning: no valid variable given!" << std::endl; return -1; }
+
 }
 
 Int_t GlobalClass::getPInd( Int_t dm ){
@@ -519,67 +624,58 @@ Int_t GlobalClass::getPInd( Int_t dm ){
 
 }
 
-Int_t GlobalClass::fulfillCategory(Int_t categoryMode){
-  
-  if ( categoryMode & _0JET && event_s->njets!=0) return 0;
-  if ( categoryMode & _1JET && event_s->njets!=1) return 0;
-  if ( categoryMode & _1JETZ050 && !(event_s->njets==1 && event_s->alltau_Zpt->at(0)<50) ) return 0;
-  if ( categoryMode & _1JETZ50100 && !(event_s->njets==1 && event_s->alltau_Zpt->at(0)>50 && event_s->alltau_Zpt->at(0)<100) ) return 0;
-  if ( categoryMode & _1JETZ100 && !(event_s->njets==1 && event_s->alltau_Zpt->at(0)>100) ) return 0;
-  if ( categoryMode & _2JET && event_s->njets<=1) return 0;
-  if ( categoryMode & _2JETVBF && !(event_s->njets>1 && event_s->mjj>500 && event_s->jdeta>3.5) ) return 0;
-  if ( categoryMode & _ANYB && event_s->nbtag==0) return 0;
+Int_t GlobalClass::fulfillCategory(Int_t categoryMode, Int_t ind){
 
+  if( inclusive_selection && (CHAN==kMU || CHAN==kEL) ){
+    if(event_s->alltau_mt->at(ind) > 70) return 0; 
+  }
+  
+  if ( categoryMode & _BTAG ){
+    if( (CHAN==kMU || CHAN==kEL) && event_s->alltau_mt->at(ind) > MT_CUT ) return 0;
+    if(event_s->bpt_1<20) return 0;
+    //if(event_s->bpt_2>20) return 0;
+    //if(event_s->njets > 1) return 0;
+  }
+  if ( categoryMode & _NOBTAG ){
+    if( (CHAN==kMU || CHAN==kEL) && event_s->alltau_mt->at(ind) > MT_CUT ) return 0;
+    if(event_s->bpt_1>20) return 0;    
+  }
+  if ( categoryMode & _BTAG_TIGHT && (CHAN==kMU || CHAN==kEL) ){
+    if(event_s->bpt_1<20) return 0;    
+    //if(event_s->njets > 1) return 0;
+    if(event_s->alltau_mt->at(ind) > MT_CUT) return 0; 
+  }
+  if ( categoryMode & _BTAG_LOOSEMT && (CHAN==kMU || CHAN==kEL) ){
+    if(event_s->bpt_1<20) return 0;    
+    //if(event_s->njets > 1) return 0;
+    if(event_s->alltau_mt->at(ind) < MT_CUT) return 0;
+    if(event_s->alltau_mt->at(ind) > 70) return 0;
+  }
+  if ( categoryMode & _NOBTAG_TIGHT && (CHAN==kMU || CHAN==kEL) ){
+    if(event_s->bpt_1>20) return 0;    
+    if(event_s->alltau_mt->at(ind) > MT_CUT) return 0; 
+  }
+  if ( categoryMode & _NOBTAG_LOOSEMT && (CHAN==kMU || CHAN==kEL) ){
+    if(event_s->bpt_1>20) return 0;    
+    if(event_s->alltau_mt->at(ind) < MT_CUT) return 0;
+    if(event_s->alltau_mt->at(ind) > 70) return 0;
+  }
+  
+    
   return 1;
   
 }
 
 TString GlobalClass::getCatString_noSel(Int_t categoryMode){
 
-  if ( categoryMode & _0JET ) return categories[0];
-  if ( categoryMode & _1JET ) return categories[1];
-  if ( categoryMode & _1JETZ050 ) return categories[2];
-  if ( categoryMode & _1JETZ50100 ) return categories[3];
-  if ( categoryMode & _1JETZ100 ) return categories[4];
-  if ( categoryMode & _2JET ) return categories[5];
-  if ( categoryMode & _2JETVBF ) return categories[6];
-  if ( categoryMode & _ANYB ) return categories[7];
+  if ( categoryMode & _BTAG ) return categories[0];
+  if ( categoryMode & _NOBTAG ) return categories[1];
+  if ( categoryMode & _BTAG_TIGHT ) return categories[2];
+  if ( categoryMode & _BTAG_LOOSEMT ) return categories[3];
+  if ( categoryMode & _NOBTAG_TIGHT ) return categories[4];
+  if ( categoryMode & _NOBTAG_LOOSEMT ) return categories[5];
 
   return "";
   
 }
 
-TString GlobalClass::getFracString(Int_t categoryMode){
-
-  if ( categoryMode & _CATFRAC_MT ) return "_catfrac_mt";
-  if ( categoryMode & _CATFRAC_ET ) return "_catfrac_et";
-  if ( categoryMode & _CATFRAC_TT ) return "_catfrac_tt";
-  
-  if ( CHAN==kEL && categoryMode & _INCLFRAC_MT ) return "_mtfrac";
-  if ( CHAN==kTAU && categoryMode & _INCLFRAC_MT ) return "_mtfrac";
-
-  return "";
-  
-}
-
-TString GlobalClass::getChannelString(Int_t categoryMode){
-
-  if(CHAN==kMU){
-    if(categoryMode & _INCLFRAC_MT) return "mt/incl";
-    if(categoryMode & _CATFRAC_MT) return "mt/ZZZZZ";
-  }
-  if(CHAN==kEL){
-    if(categoryMode & _INCLFRAC_ET) return "et/incl";
-    if(categoryMode & _CATFRAC_ET) return "et/ZZZZZ";
-    if(categoryMode & _INCLFRAC_MT) return "et/incl_mtfrac";
-    if(categoryMode & _CATFRAC_MT) return"et/ZZZZZ_mtfrac";
-  }
-  if(CHAN==kTAU){
-    if(categoryMode & _INCLFRAC_TT) return "tt/incl";
-    if(categoryMode & _CATFRAC_TT) return "tt/ZZZZZ";
-    if(categoryMode & _INCLFRAC_MT) return "tt/incl_mtfrac";
-    if(categoryMode & _CATFRAC_MT) return "tt/ZZZZZ_mtfrac";
-  }
-
-  return "mt/incl";
-}

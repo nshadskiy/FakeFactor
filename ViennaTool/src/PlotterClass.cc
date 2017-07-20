@@ -11,8 +11,8 @@ void PlotterClass::plotCR(const std::vector<TString> fname, const std::vector<TS
   std::cout << "In plotCR, producing " << imagefile << " using " << fname.size() << " input samples" << std::endl;
 
   TString hname="hh_";
-  if ( iso.Contains("tight") ) hname+="t_";
-  else if ( iso.Contains("loose_tt") ) hname+="ltt_";
+  if ( iso.Contains("tight_alt") ) hname+="t_alt_";
+  else if ( iso.Contains("tight") ) hname+="t_";
   else if ( iso.Contains("all") ) hname+="a_";
   else hname+="l_";
 
@@ -30,7 +30,8 @@ void PlotterClass::plotCR(const std::vector<TString> fname, const std::vector<TS
   //sim
   //  TH1D* hsum= (TH1D*) hist.at(0)->Clone();
   TH1D* hsum=0;
-  for (unsigned ih=0; ih<fname.size(); ih++){
+  for (unsigned ih=0; ih<fname.size()-1; ih++){
+    //if(fname.at(ih).Contains("QCD.root")) continue;
     f.push_back( new TFile( fname.at(ih) ) );
     hist.push_back( (TH1D*) f.at(ih)->Get(hname) );
     hs->Add( hist.back(),"hist");
@@ -57,13 +58,17 @@ void PlotterClass::plotCR(const std::vector<TString> fname, const std::vector<TS
 
 }
 
-void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, TString ltext, TString xtitle, TLegend *leg, TString ytitle, THStack *hs){
+void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, TString ltext, TString xtitle, TLegend *leg, TString ytitle, THStack *hs, TH1D *hsignal){
 
   TString xLabel=hmc->GetXaxis()->GetTitle();
 
   hdata->SetLineWidth(3);
   hdata->SetMarkerStyle(8);
   hdata->SetMarkerSize(1.3);
+
+  /*for(int i=0; i<hdata->GetNbinsX(); i++){
+    if(imagefilename.Contains("mvis") && i>6 && i<=10) hdata->SetBinContent(i,-10);
+    }*/
 
   hmc->SetFillColor(kBlack);
   hmc->SetFillStyle(3013);
@@ -119,7 +124,7 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
   TString hd_name=hdata->GetName();
   if ( !hs ){ //non-stacked plot
     hmc->Draw("");
-    hdata->Draw("same"); //CR dots
+    hdata->Draw("COLZ same"); //CR dots
     hmc->GetYaxis()->SetTitleOffset(1.25);
     hmc->GetXaxis()->SetLabelSize(0);
     hmc->SetMinimum(0.);
@@ -132,18 +137,18 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
       hmc->GetXaxis()->SetLabelSize(0);
     }
   } else{ //other plot
+    hdata->Draw();
+    hs->Draw("same");
     hs->SetMaximum(hmax*1.3);
     hs->SetTitle("");
-    hs->Draw();
     hmc->Draw("e2 same");
-    hdata->Draw("same");
-    hs->GetXaxis()->SetTitle(xLabel);
+    hdata->GetXaxis()->SetTitle("");
 
     float bw=hdata->GetBinWidth(1);
     TString m_ytitle="Events / "; m_ytitle+=(int)bw; m_ytitle+=" GeV";
-    hs->GetYaxis()->SetTitle(m_ytitle);
-    hs->GetYaxis()->SetTitleOffset(1.25);
-    hs->GetXaxis()->SetLabelSize(0);
+    hdata->GetYaxis()->SetTitle(m_ytitle);
+    hdata->GetYaxis()->SetTitleOffset(1.25);
+    hdata->GetXaxis()->SetLabelSize(0);
   }
 
   //  hs->Draw("hist");
@@ -160,12 +165,13 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
 
   TString caption=getCaption(ltext);
   TString description=getDescription(ltext);
-  
+
+  stringstream used_lumi; used_lumi << luminosity; TString Tused_lumi = used_lumi.str();
   TLatex l;
   l.SetTextSize(0.04);
   l.SetNDC();
   //l.SetTextFont(102);
-  l.DrawLatex(0.75,0.93,luminosity+" fb^{-1} (13 TeV)");
+  l.DrawLatex(0.75,0.93,Tused_lumi+" fb^{-1} (13 TeV)");
 
   TLatex c;
   cout << "Caption: " << caption << endl;
@@ -227,6 +233,9 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
     }
   }
 
+  c1->cd(1);
+  gPad->SetLogy();
+  c1->SaveAs(imagefilename+"_log.png");
   //  c1->Print(pdfFile);                                                                                                     
   c1->Close();
 
@@ -234,7 +243,7 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
 
 }
 
-Int_t PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,const int mode,const TString plotfile, const TString n1, const TString n2, const Double_t* xbins, const Int_t xbins_size, const TString xlabel)
+Int_t PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,const int mode,const TString plotfile, const TString n1, const TString n2, const TString tight_cat, const Double_t* xbins, const Int_t xbins_size, const TString xlabel)
 {
 
   TFile f1(FF_file_CR);
@@ -248,8 +257,8 @@ Int_t PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,con
     return 0;
   }
 
-  TH1D* FF_CR = (TH1D*) f1.Get("c_t");
-  TH1D* FF_SR = (TH1D*) f2.Get("c_t");
+  TH1D* FF_CR = (TH1D*) f1.Get("c_t"+tight_cat);
+  TH1D* FF_SR = (TH1D*) f2.Get("c_t"+tight_cat);
 
   FF_CR->SetLineWidth(3);
   FF_SR->SetLineWidth(3);
@@ -275,13 +284,25 @@ Int_t PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,con
     Pt_cuts=Pt_cuts_DY; Eta_cuts=Eta_cuts_DY; Decay_cuts=Decay_cuts_DY; Njet_cuts=Njet_cuts_Wjets;
     m_color=color_DY_J;
   }
-  else if (mode & _TT ){
+  else if (mode & _TT && mode & SR){
     proc="ttbar";
-    N_p=N_p_TT; N_e=N_e_TT; N_t=N_t_TT; N_j=N_j_Wjets;
-    Pt_cuts=Pt_cuts_TT; Eta_cuts=Eta_cuts_TT; Decay_cuts=Decay_cuts_TT; Njet_cuts=Njet_cuts_Wjets;
+    N_p=N_p_TT_SR; N_e=N_e_TT; N_t=N_t_TT; N_j=N_j_TT_SR;
+    Pt_cuts=Pt_cuts_TT_SR; Eta_cuts=Eta_cuts_TT; Decay_cuts=Decay_cuts_TT; Njet_cuts=Njet_cuts_TT_SR;
     m_color=color_TT_J;
   }
-  else if (mode & _QCD){
+  else if (mode & _TT ){
+    proc="ttbar";
+    N_p=N_p_TT_CR; N_e=N_e_TT; N_t=N_t_TT; N_j=N_j_TT_CR;
+    Pt_cuts=Pt_cuts_TT_CR; Eta_cuts=Eta_cuts_TT; Decay_cuts=Decay_cuts_TT; Njet_cuts=Njet_cuts_TT_CR;
+    m_color=color_TT_J;
+  }
+  else if (mode & _QCD && mode & _AI){
+    proc="QCD AI";
+    N_p=N_p_QCD_AI; N_e=N_e_QCD; N_t=N_t_QCD; N_j=N_j_Wjets;
+    Pt_cuts=Pt_cuts_QCD_AI; Eta_cuts=Eta_cuts_QCD; Decay_cuts=Decay_cuts_QCD; Njet_cuts=Njet_cuts_Wjets;
+    m_color=color_QCD;
+  }
+  else if (mode & _QCD ){
     proc="QCD";
     N_p=N_p_QCD; N_e=N_e_QCD; N_t=N_t_QCD; N_j=N_j_Wjets;
     Pt_cuts=Pt_cuts_QCD; Eta_cuts=Eta_cuts_QCD; Decay_cuts=Decay_cuts_QCD; Njet_cuts=Njet_cuts_Wjets;
@@ -369,15 +390,15 @@ Int_t PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,con
   leg->SetLineColor(10);
 
   if (n1 != n2)
-    this->makeRatioPlot(FF_CR, FF_SR, plotfile, "", xlabel, leg, "Ratio");
+    this->makeRatioPlot(FF_CR, FF_SR, plotfile+tight_cat, "", xlabel, leg, "Ratio");
   else{
     FF_CR->Draw();
     FF_SR->Draw("same");
     leg->Draw();
-    gPad->SaveAs(plotfile+".png");
+    gPad->SaveAs(plotfile+tight_cat+".png");
     if (ALLPLOTS){
-      gPad->SaveAs(plotfile+".pdf");
-      gPad->SaveAs(plotfile+".eps");
+      gPad->SaveAs(plotfile+tight_cat+".pdf");
+      gPad->SaveAs(plotfile+tight_cat+".eps");
       //      c1->SaveAs(imagefilename+".C");                                                                                                                                                                                              
     }
   }
@@ -421,6 +442,7 @@ TString PlotterClass::FloatToString( double num, int prec ){
 
 }
 
+/*
 void PlotterClass::makeComparePlots(TString toCompare,TString toCompare_label,std::vector<TString> proc_list,std::vector<TString> proc_labels,TString imagefile,TString description,TString xLabel,Int_t col)
 {
   //  std::cout << "In " << __func__ << std::endl; //note: not portable to all compilers (and gcc versions)
@@ -493,21 +515,27 @@ void PlotterClass::makeComparePlots(TString toCompare,TString toCompare_label,st
 
 }
 
-void PlotterClass::plotBgStackedAgainstData(TString data,TString data_label,std::vector<TString> proc_list,std::vector<TString> proc_labels,TString imagefile,TString description,TString xLabel,Int_t mode,Int_t col)
+void PlotterClass::plotBgStackedAgainstData(TString data,TString data_label,std::vector<TString> proc_list,std::vector<TString> proc_labels,TString imagefile,TString description,TString xLabel,TString signalFile,Int_t mode,Int_t col)
 {
   //  std::cout << "In " << __func__ << std::endl; //note: not portable to all compilers (and gcc versions)
   std::cout << "In plotBgStackedAgainstData, producing " << imagefile << ".png" << std::endl;
   std::cout << "Input data file: " << data << " , first proc: " << proc_list.at(0) << std::endl;
 
+  
   TString hname="hh_";
   if ( description.Contains("looseSR") ) hname+="l_";
   else hname+="t_";
-  if ( data.Contains("_mt_")   || data.Contains("_mt.")   ) hname+="mt";
-  if ( data.Contains("_mvis_") || data.Contains("_mvis.") ) hname+="mvis";
-  if ( data.Contains("_pt_")   || data.Contains("_pt.")   ) hname+="pt";
-  if ( data.Contains("_svfit_")   || data.Contains("_svfit.")   ) hname+="svfit";
-  //   std::cout << "MF d " << hname << std::endl;
-
+  if ( data.Contains("_mt2_")   || data.Contains("_mt2.")   ) hname+="mt2";
+  else if ( data.Contains("_mt_")   || data.Contains("_mt.")   ) hname+="mt";
+  else if ( data.Contains("_mvis_") || data.Contains("_mvis.") ) hname+="mvis";
+  else if ( data.Contains("_pt_")   || data.Contains("_pt.")   ) hname+="pt";
+  else if ( data.Contains("_svfit_")   || data.Contains("_svfit.")   ) hname+="svfit";
+  else if ( data.Contains("_lepPt_")   || data.Contains("_lepPt.")   ) hname+="lepPt";
+  else if ( data.Contains("_mvamet_")   || data.Contains("_mvamet.")   ) hname+="mvamet";
+  else if ( data.Contains("_met_")   || data.Contains("_met.")   ) hname+="met";
+  else if ( data.Contains("_eta_")   || data.Contains("_eta.")   ) hname+="eta";
+  else if ( data.Contains("_mttot_")   || data.Contains("_mttot.")   ) hname+="mttot";
+  
   TFile f1(data);
   if ( f1.IsZombie()  ){ std::cout << "ERROR: Data file does not exist: \"" << data << "\"." << std::endl; return; }
 
@@ -552,7 +580,13 @@ void PlotterClass::plotBgStackedAgainstData(TString data,TString data_label,std:
   }
   leg->AddEntry(hsum,"stat. unc.","f");
 
-  this->makeRatioPlot(h1, hsum, imagefile, description, "", leg, "Obs/Pred",hs);
+  if(signalFile=="") this->makeRatioPlot(h1, hsum, imagefile, description, "", leg, "Obs/Pred",hs);
+  else if(signalFile!="") {
+    TFile signal(signalFile);
+    if ( signal.IsZombie()  ){ std::cout << "ERROR: Signal file does not exist: \"" << signalFile << "\"." << std::endl; return; }
+    TH1D* hsignal = (TH1D*) signal.Get(hname);
+    this->makeRatioPlot(h1, hsum, imagefile, description, "", leg, "Obs/Pred", hs, hsignal);
+  }
 
   for (unsigned i=0; i<hproc.size(); i++)
     std::cout<<proc_labels.at(i) << ": " << hproc.at(i)->Integral(-1,-1)<<"\t";
@@ -569,12 +603,17 @@ void PlotterClass::plotBgStackedAgainstData(TString data,TString data_label,std:
   TString hname="hh_";
   if ( description.Contains("looseSR") ) hname+="l_";
   else hname+="t_";
-  if ( data.Contains("_mt_")   || data.Contains("_mt.")   ) hname+="mt";
-  if ( data.Contains("_mvis_") || data.Contains("_mvis.") ) hname+="mvis";
-  if ( data.Contains("_pt_")   || data.Contains("_pt.")   ) hname+="pt";
-  if ( data.Contains("_svfit_")   || data.Contains("_svfit.")   ) hname+="svfit";
-  //   std::cout << "MF d " << hname << std::endl;
-
+  if ( data.Contains("_mt2_")   || data.Contains("_mt2.")   ) hname+="mt2";
+  else if ( data.Contains("_mt_")   || data.Contains("_mt.")   ) hname+="mt";
+  else if ( data.Contains("_mvis_") || data.Contains("_mvis.") ) hname+="mvis";
+  else if ( data.Contains("_pt_")   || data.Contains("_pt.")   ) hname+="pt";
+  else if ( data.Contains("_mt2_")   || data.Contains("_mt2.")   ) hname+="mt2";
+  else if ( data.Contains("_lepPt_")   || data.Contains("_lepPt.")   ) hname+="lepPt";
+  else if ( data.Contains("_mvamet_")   || data.Contains("_mvamet.")   ) hname+="mvamet";
+  else if ( data.Contains("_met_")   || data.Contains("_met.")   ) hname+="met";
+  else if ( data.Contains("_eta_")   || data.Contains("_eta.")   ) hname+="eta";
+  else if ( data.Contains("_mttot_")   || data.Contains("_mttot.")   ) hname+="mttot";
+  
   TFile f1(data);
   if ( f1.IsZombie()  ){ std::cout << "ERROR: Data file does not exist: \"" << data << "\"." << std::endl; return; }
 
@@ -699,6 +738,8 @@ void PlotterClass::plotCompBgStackedAgainstData(TString compareFile,TString comp
 
 }
 
+*/
+
 TString PlotterClass::getDescription(TString ltext)
 {
   stringstream returnstring;
@@ -719,184 +760,16 @@ TString PlotterClass::getCaption(TString ltext)
 
   stringstream tmpstring;
   tmpstring << ltext;
-  if(tmpstring.str().find("0jet")!=string::npos) returnstring+=" 0jet category";
-  else if(tmpstring.str().find("1jetZ050")!=string::npos) returnstring+=" 1jet category 0 #geq p_{T}^{Z}  #geq 50";
-  else if(tmpstring.str().find("1jetZ50100")!=string::npos) returnstring+=" 1jet category 50 #geq p_{T}^{Z} #geq 100";
-  else if(tmpstring.str().find("1jetZ100")!=string::npos) returnstring+=" 1jet category p_{T}^{Z} #geq 100";
-  else if(tmpstring.str().find("1jet")!=string::npos) returnstring+=" 1jet category";
-  else if(tmpstring.str().find("2jetVBF")!=string::npos) returnstring+=" 2jet VBF category";
+  if(tmpstring.str().find("0jetLow")!=string::npos) returnstring+=" 0jet_low category";
+  else if(tmpstring.str().find("0jetHigh")!=string::npos) returnstring+=" 0jet_high category";
+  else if(tmpstring.str().find("1jetLow")!=string::npos) returnstring+=" 1jet_low category";
+  else if(tmpstring.str().find("1jetHigh")!=string::npos) returnstring+=" 1jet_high category";
+  else if(tmpstring.str().find("VBFLow")!=string::npos) returnstring+=" VBF_high category";
+  else if(tmpstring.str().find("VBFHigh")!=string::npos) returnstring+=" VBF_high category";
   else if(tmpstring.str().find("2jet")!=string::npos) returnstring+=" 2jet category";
-  else if(tmpstring.str().find("anyb")!=string::npos) returnstring+=" #geq1bjet category";
+  else if(tmpstring.str().find("anyb")!=string::npos) returnstring+=" #geq1bjet";
   else returnstring+=" inclusive category";
 
   return returnstring;
 }
 
-
-
-
-void PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,const TString FF_file_1,const TString FF_file_2,const int mode,const TString plotfile, const TString n1, const TString n2, const TString n3,const TString n4,const Double_t* xbins, const Int_t xbins_size, const TString xlabel)
-{
-
-  TFile f1(FF_file_CR);
-  TFile f2(FF_file_SR);
-  TFile f3(FF_file_1);
-  TFile f4(FF_file_2);
-
-  TH1D* FF_CR = (TH1D*) f1.Get("c_t");
-  TH1D* FF_SR = (TH1D*) f2.Get("c_t");
-  TH1D* FF_1 = (TH1D*) f3.Get("c_t");
-  TH1D* FF_2 = (TH1D*) f4.Get("c_t");
-
-  FF_CR->SetLineWidth(3);
-  FF_SR->SetLineWidth(3);
-  FF_1->SetLineWidth(3);
-  FF_2->SetLineWidth(3);
-
-  FF_CR->SetLineStyle(1);
-  FF_SR->SetLineStyle(2);
-  FF_1->SetLineStyle(1);
-  FF_2->SetLineStyle(2);
-
-  TString proc="";
-
-  Int_t N_p=0, N_e=0, N_t=0;
-  const Double_t *Pt_cuts=0; const Double_t *Eta_cuts=0; const Int_t *Decay_cuts=0;
-
-  Int_t m_color=0;
-  if (mode & _W_JETS){
-    proc="W+jets";
-    N_p=N_p_Wjets; N_e=N_e_Wjets; N_t=N_t_Wjets;
-    Pt_cuts=Pt_cuts_Wjets; Eta_cuts=Eta_cuts_Wjets; Decay_cuts=Decay_cuts_Wjets;
-    m_color=color_Wjets;
-  }
-  else if (mode & _DY){
-    proc="DY+jets";
-    N_p=N_p_DY; N_e=N_e_DY; N_t=N_t_DY;
-    Pt_cuts=Pt_cuts_DY; Eta_cuts=Eta_cuts_DY; Decay_cuts=Decay_cuts_DY;
-    m_color=color_DY_J;
-  }
-  else if (mode & _TT){
-    proc="ttbar";
-    N_p=N_p_TT; N_e=N_e_TT; N_t=N_t_TT;
-    Pt_cuts=Pt_cuts_TT; Eta_cuts=Eta_cuts_TT; Decay_cuts=Decay_cuts_TT;
-    m_color=color_TT_J;
-  }
-  else if (mode & _QCD){
-    proc="QCD";
-    N_p=N_p_QCD; N_e=N_e_QCD; N_t=N_t_QCD;
-    Pt_cuts=Pt_cuts_QCD; Eta_cuts=Eta_cuts_QCD; Decay_cuts=Decay_cuts_QCD;
-    m_color=color_QCD;
-  }
-  FF_CR->SetMarkerColor(m_color);
-  FF_SR->SetMarkerColor(m_color);
-  FF_CR->SetLineColor(m_color);
-  FF_SR->SetLineColor(m_color);
-  FF_1->SetMarkerColor(color_Wjets);
-  FF_2->SetMarkerColor(color_Wjets);
-  FF_1->SetLineColor(color_Wjets);
-  FF_2->SetLineColor(color_Wjets);
-
-  if ( xbins_size==0 ){
-    for (int t=0; t<N_t; t++){
-      TString tlabel;
-      if (N_t>1){ tlabel="1p"; if (t>0) tlabel="3p";} //not automatic but prettier
-      for (int p=0; p<N_p; p++){
-	TString plabel="";
-	if (N_p>1){
-	  plabel=" pt";
-	  plabel+=Pt_cuts[p]; plabel+="-";
-	  if ( (p+1)==N_p ) plabel+="#infty"; else plabel+=Pt_cuts[p+1];
-	}
-	
-	for (int e=0; e<N_e; e++){
-	  TString elabel="";
-	  if (N_e>1){
-	    elabel=" #eta";
-	    //	    if (e==0) elabel+=Eta_cuts[e]; else{ elabel+=(int)Eta_cuts[e]; elabel+="."; elabel+=(int) ( (Eta_cuts[e]-(int)Eta_cuts[e])*1000 );}
-	    elabel=this->FloatToString( Eta_cuts[e] , 3 );
-	    elabel+="-";
-	    if ( (e+1)==N_e ) elabel+="#infty"; else{ elabel=this->FloatToString( Eta_cuts[e+1] , 3 ); ;}
-	    //	    if ( (e+1)==N_e ) elabel+="#infty"; else{ elabel+=(int)Eta_cuts[e+1]; elabel+="."; elabel+=(int) ( (Eta_cuts[e+1]-(int)Eta_cuts[e+1])*1000 );}
-	  }
-	  
-	  //	FF_CR->GetXaxis()->SetBinLabel(p+e*N_p+t*(N_p*N_e)+1,tlabel+elabel+plabel);
-	  cout << "YYY " << e+p*N_e+t*(N_p*N_e)+1 << " " << tlabel+plabel+elabel << endl;
-	  FF_CR->GetXaxis()->SetBinLabel(e+p*N_e+t*(N_p*N_e)+1,tlabel+plabel+elabel);
-	  FF_SR->GetXaxis()->SetBinLabel(e+p*N_e+t*(N_p*N_e)+1,tlabel+plabel+elabel);
-          FF_1->GetXaxis()->SetBinLabel(e+p*N_e+t*(N_p*N_e)+1,tlabel+plabel+elabel);
-	  FF_2->GetXaxis()->SetBinLabel(e+p*N_e+t*(N_p*N_e)+1,tlabel+plabel+elabel);
-	}
-	
-      }
-    }
-  } else{
-    for (Int_t i=0; i<xbins_size-1; i++){
-      TString tmp=this->FloatToString( xbins[i], 3 ); tmp+="-"; tmp+=this->FloatToString( xbins[i+1], 3 );
-      FF_CR->GetXaxis()->SetBinLabel(i+1,tmp);
-      FF_SR->GetXaxis()->SetBinLabel(i+1,tmp);
-      FF_1->GetXaxis()->SetBinLabel(i+1,tmp);
-      FF_2->GetXaxis()->SetBinLabel(i+1,tmp);
-    }
-  }
-
-  // Determine the Maximum automatically
-  Double_t maxY1=FF_CR->GetBinContent(FF_CR->GetMaximumBin());
-  Double_t maxY2=FF_SR->GetBinContent(FF_SR->GetMaximumBin());
-  Double_t maxY=max(maxY1,maxY2)*1.6;
-
-  FF_CR->SetMaximum(maxY);
-
-  TCanvas *c; c = new TCanvas("c","Fakefactors",1200,800);
-  gStyle->SetOptStat(0);
-  FF_CR->SetTitle("");
-  //  FF_CR->SetXTitle("pt x ntracks");
-  FF_CR->SetXTitle(xlabel);
-  FF_CR->SetYTitle("fake factor"); 
-  FF_CR->GetYaxis()->SetTitleSize(2.5);
-  TLegend* leg;
-  if ( xbins_size==0 ){
-    leg = new TLegend(0.55,0.68,0.89,0.88);
-    leg->AddEntry(FF_CR,"FF in "+proc+" "+n1,"l");
-    if (n1 != n2) leg->AddEntry(FF_SR,"FF in "+proc+" "+n2,"l");
-    leg->AddEntry(FF_1,"FF in "+proc+" "+n3,"l");
-    leg->AddEntry(FF_2,"FF in "+proc+" "+n4,"l");
-    gPad->SetLogy();
-    
-  } else{
-    leg = new TLegend(0.55,0.68,0.89,0.88);
-    //    leg = new TLegend(0.55,0.15,0.89,0.35);
-    leg->AddEntry(FF_CR,"FF, "+n1,"lep");
-    if (n1 != n2) leg->AddEntry(FF_SR,"FF, "+n2,"lep");
-    leg->AddEntry(FF_1,"FF,"+n3,"l");
-    leg->AddEntry(FF_2,"FF,"+n4,"l");
-    FF_CR->SetMinimum(0.);
-    FF_CR->GetYaxis()->SetTitleOffset(1.25);
-  }
-  leg->SetFillColor(10);
-  leg->SetShadowColor(10);
-  leg->SetLineColor(10);
-
-  //if (n1 != n2)
-  if(false) return;
-    //this->makeRatioPlot(FF_CR, FF_SR, plotfile, "", xlabel, leg, "Ratio");
-  else{
-    FF_CR->Draw();
-    FF_SR->Draw("same");
-    FF_1->Draw("same");
-    FF_2->Draw("same");
-    leg->Draw();
-    gPad->SaveAs(plotfile+".png");
-    if (ALLPLOTS){
-      gPad->SaveAs(plotfile+".pdf");
-      gPad->SaveAs(plotfile+".eps");
-      //      c1->SaveAs(imagefilename+".C");                                                                                                                                                                                              
-    }
-  }
-
-  f1.Close();
-  f2.Close();
-
-  c->Close();
-
-}

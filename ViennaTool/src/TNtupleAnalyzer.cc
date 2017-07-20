@@ -48,6 +48,11 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
     event->GetEntry(jentry);
     Int_t ntau=setTreeValues(preselectionFile, mode); //preselection happens in there now
     if (ntau>=1){ t_Events->Fill(); pc++; }
+    if(CHAN==kTAU && !COINFLIP){
+      ntau=0;
+      ntau=setTreeValues(preselectionFile, mode, 2);
+      if(ntau>=1){ t_Events->Fill(); pc++; }
+    }
   }// End loop over all events
   
   cout<<pc<<" events passed preselection."<< endl;
@@ -62,18 +67,87 @@ void TNtupleAnalyzer::closeFile()
   delete tchain;
 }
 
-Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t mode)
+Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t mode, Int_t whichTau)
 {
+
+
+  if(CHAN==kMU && !event->trg_singlemuon) return 0;
+  if(CHAN==kEL && !event->trg_singleelectron) return 0;
+  if(CHAN==kTAU && !(event->trg_doubletau) ) return 0;
+  if(event->Flag_badMuons) return 0;
+  if(event->Flag_duplicateMuons) return 0;
+  
   TLorentzVector vec1, vec2, vec;
   //////////////////////////////////////////////////////////////////////////
   //////////weight_sf contains top pT reweighting for TT samples and Z reweighting for DY samples
   //////////////////////////////////////////////////////////////////////////
-  weight = event->puweight*event->effweight*event->stitchedWeight*event->genweight;
+  weight=1;
+  if(!preselectionFile.Contains("preselection_data"))weight = event->puweight*event->effweight*event->stitchedWeight*luminosity*event->genweight*event->antilep_tauscaling;
+
+  if( CHAN == kTAU && !preselectionFile.Contains("preselection_data") ){
+    if(event->gen_match_1 == 5 && event->byMediumIsolationMVArun2v1DBoldDMwLT_1) weight *= 0.97;
+    else if(event->gen_match_1 == 5 && event->byVLooseIsolationMVArun2v1DBoldDMwLT_1 ) weight *= 0.99;
+    if(event->gen_match_2 == 5 && event->byMediumIsolationMVArun2v1DBoldDMwLT_2) weight *= 0.97;
+    else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2v1DBoldDMwLT_2 ) weight *= 0.99;
+  }
+  if( CHAN != kTAU && !preselectionFile.Contains("preselection_data") ){
+    if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2v1DBoldDMwLT_2) weight *= 0.95;
+    else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2v1DBoldDMwLT_2 ) weight *= 0.99;
+  }
   weight_sf= weight; //event->evtWeight; no Zpt and top pT reweighting
-  if( preselectionFile.Contains("DY") ){
-    weight = weight*0.95;
-    //weight_sf = weight_sf*0.95;
-    weight_sf = weight; //no Zpt
+
+  if( preselectionFile.Contains("preselection_TT") ) weight_sf *= event->topWeight_run1;
+  if( preselectionFile.Contains("preselection_DY") ) weight_sf *= event->ZWeight;
+
+  ////////////////////////////////////////////////////////////////////////////////////////
+
+  //obsolete as soon as e->tau/mu->tau SF are applied correctly in tautau channel postprocessing
+  if( CHAN == kTAU && !preselectionFile.Contains("preselection_data" )){
+    //run2 SF for VLoose for tau2
+    float scaleFactor_tautau = 1;
+    if( event->gen_match_2 == 1
+        || event->gen_match_2 == 3 ){
+
+      if( fabs(event->eta_2 ) < 1.46) scaleFactor_tautau = 1.21;
+      else if( fabs(event->eta_2 ) > 1.558) scaleFactor_tautau =  1.38;
+    }
+    //run2 SF with bad muon filter for cut-based Loose for tau2
+    if( event->gen_match_2 == 2
+        || event->gen_match_2 == 4 ){
+
+      if( fabs(event->gen_match_2) < 0.4 ) scaleFactor_tautau =  1.22;
+      else if( fabs(event->gen_match_2) < 0.8 ) scaleFactor_tautau =  1.12;
+      else if( fabs(event->gen_match_2) < 1.2 ) scaleFactor_tautau =  1.26;
+      else if( fabs(event->gen_match_2) < 1.7 ) scaleFactor_tautau =  1.22;
+      else if( fabs(event->gen_match_2) < 2.3 ) scaleFactor_tautau =  2.39;
+    }
+
+    if( event->gen_match_1 == 1
+        || event->gen_match_1 == 3 ){
+
+      if( fabs(event->eta_1 ) < 1.46) scaleFactor_tautau *= 1.21;
+      else if( fabs(event->eta_1 ) > 1.558) scaleFactor_tautau *=  1.38;
+    }
+    //run2 SF with bad muon filter for cut-based Loose for tau2
+    if( event->gen_match_1 == 2
+        || event->gen_match_1 == 4 ){
+
+      if( fabs(event->gen_match_1) < 0.4 ) scaleFactor_tautau *=  1.22;
+      else if( fabs(event->gen_match_1) < 0.8 ) scaleFactor_tautau *=  1.12;
+      else if( fabs(event->gen_match_1) < 1.2 ) scaleFactor_tautau *=  1.26;
+      else if( fabs(event->gen_match_1) < 1.7 ) scaleFactor_tautau *=  1.22;
+      else if( fabs(event->gen_match_1) < 2.3 ) scaleFactor_tautau *=  2.39;
+    }
+    weight = weight*scaleFactor_tautau;
+    weight_sf = weight_sf*scaleFactor_tautau;
+
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////
+    
+  if(CHAN==kTAU && !COINFLIP){
+    weight=weight*0.5;
+    weight_sf=weight_sf*0.5;
   }
   
   passes3LVeto=event->passesThirdLepVeto;
@@ -82,10 +156,14 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   if ( CHAN == kTAU ) passesDLVeto=1;
 
   bpt_1=event->bpt_1;
+  bpt_2=event->bpt_2;
   nbtag=event->nbtag;
   njets=event->njets;
   mjj=event->mjj;
+  mvamet=event->mvamet;
+  met=event->met;
   jdeta=event->jdeta;
+  njetingap20=event->njetingap20;
   mu2_iso=-999;  
   m_leplep=-999;  
   lep_dR=-999;
@@ -95,16 +173,12 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
   lep_pt=event->pt_1;
   lep_eta=event->eta_1;
-  //  lep_phi=event->phi_1; //not saved
-  //  lep_m=event->m_1;
+  lep_phi=event->phi_1;
   lep_iso=event->iso_1;
   lep_q=event->q_1;
-  //  lep_gen_match=event->gen_match_1;
 
   otherLep_pt=-999;
   otherLep_eta=-999;
-  //  otherLep_phi=-999; //not saved
-  //  otherLep_m=-999;
   otherLep_iso=-999;
   otherLep_q=-999;
 
@@ -252,9 +326,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   alltau_q->resize(0);
   alltau_decay->resize(0);
   alltau_beta->resize(0);
-  //alltau_looseBeta->resize(0);
   alltau_mediumBeta->resize(0);
-  //alltau_tightBeta->resize(0);
   alltau_vlooseMVA->resize(0);
   alltau_looseMVA->resize(0);
   alltau_mediumMVA->resize(0);
@@ -267,6 +339,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   alltau_dRToB->resize(0);
   alltau_mvis->resize(0);
   alltau_mt->resize(0);
+  alltau_mt2->resize(0);
   alltau_svfit->resize(0);
   alltau_Zpt->resize(0);
 
@@ -292,9 +365,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     alltau_q->push_back(event->addtau_q->at(i));
     alltau_decay->push_back(m);
     alltau_beta->push_back(event->addtau_byCombinedIsolationDeltaBetaCorrRaw3Hits->at(i));
-    //  alltau_looseBeta->push_back(event->addtau_byLooseCombinedIsolationDeltaBetaCorr3Hits->at(i));
     alltau_mediumBeta->push_back(event->addtau_byMediumCombinedIsolationDeltaBetaCorr3Hits->at(i));
-    //  alltau_tightBeta->push_back(event->addtau_byTightCombinedIsolationDeltaBetaCorr3Hits->at(i));
     alltau_vlooseMVA->push_back( event->addtau_byVLooseIsolationMVArun2v1DBoldDMwLT->at(i));
     alltau_looseMVA->push_back( event->addtau_byLooseIsolationMVArun2v1DBoldDMwLT->at(i));
     alltau_mediumMVA->push_back(event->addtau_byMediumIsolationMVArun2v1DBoldDMwLT->at(i));
@@ -303,17 +374,18 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     alltau_lepVeto->push_back(event->addtau_passesTauLepVetos->at(i));
     alltau_gen_match->push_back(event->addtau_gen_match->at(i));
     alltau_mvis->push_back(event->addtau_mvis->at(i));
-    alltau_mt->push_back(event->addtau_mt->at(i));
+    if(useMVAMET)alltau_mt->push_back(event->mt_1); //mt of lepton and MVAMET
+    else alltau_mt->push_back(event->pfmt_1); //mt of lepton and PFMET
+    if(useMVAMET)alltau_mt2->push_back(event->addtau_mt->at(i));
+    else alltau_mt2->push_back(event->pfmt_2);  //no addtaupfmt in addtau collection
     if(use_svfit)alltau_svfit->push_back(event->m_sv); //FIXME: no svfit in addtau collection so far
     else alltau_svfit->push_back(0.);
     TLorentzVector leg2; leg2.SetPtEtaPhiM(event->addtau_pt->at(i),event->addtau_eta->at(i),event->addtau_phi->at(i),event->addtau_m->at(i));
     TLorentzVector leg1; leg1.SetPtEtaPhiM(event->pt_1,event->eta_1,event->phi_1,event->m_1);
-    TLorentzVector Emiss; leg1.SetPtEtaPhiM(event->mvamet,0,event->mvametphi,0);
+    TLorentzVector Emiss;
+    if(useMVAMET) Emiss.SetPtEtaPhiM(event->mvamet,0,event->mvametphi,0);
+    else Emiss.SetPtEtaPhiM(event->met,0,event->metphi,0);
     alltau_Zpt->push_back( (leg1+leg2+Emiss).Pt() );
-    
-    //    dR1=calcDR(event->addtau_eta->at(i),event->addtau_phi->at(i),lep1_eta,lep1_phi);
-    //    dR2=calcDR(event->addtau_eta->at(i),event->addtau_phi->at(i),lep2_eta,lep2_phi);
-    //    alltau_dRToLep->push_back( min(dR1,dR2) );
 
     dR1=1e6;
     double m_dR1=dR1;
@@ -343,13 +415,17 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   //for tt: insert both _1 and _2, but in random order (i.e. not iso- or pt-ordered!!); other channels: simply insert _2
   Int_t TT_AS_LEP=1;
   if ( CHAN == kTAU ){
-     if ( r3.Uniform(2)>1.0 ) TT_AS_LEP=2; //if uniform random number in (0;2) is >1, then use it as 2nd tau as lep; otherwise 1st. For et/mt, TT_AS_LEP is always =1
+    if(COINFLIP) {
+      if ( r3.Uniform(2)>1.0 ) TT_AS_LEP=2; //if uniform random number in (0;2) is >1, then use it as 2nd tau as lep; otherwise 1st. For et/mt, TT_AS_LEP is always =1
+    }
+    else if(!COINFLIP){
+      if(whichTau==2) TT_AS_LEP=2;
+    }
   }
     
   float decay=event->decayMode_2;
   if ( (event->passesTauLepVetos) && ( (decay>=0&&decay<=4)||(decay>=10&&decay<=14)   ) && (dR>0.5) && (event->pt_2 > m_tau_pt_cut ) && (fabs(event->eta_2) < m_tau_eta_cut) && (TT_AS_LEP==1) ){
     Int_t tpos=0;
-    if ( (!USE_ISOTAU) && (CHAN!=kTAU) ) tpos=this->findPos(event->pt_2, alltau_pt); //for tt, always insert it as first tau
     tau_iso_ind=tpos;
     alltau_pt->insert(alltau_pt->begin()+tpos,event->pt_2);
     alltau_eta->insert(alltau_eta->begin()+tpos,event->eta_2);
@@ -357,9 +433,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     alltau_q->insert(alltau_q->begin()+tpos,event->q_2);
     alltau_decay->insert(alltau_decay->begin()+tpos,decay);
     alltau_beta->insert(alltau_beta->begin()+tpos,event->byCombinedIsolationDeltaBetaCorrRaw3Hits_2);
-    //  alltau_looseBeta->insert(alltau_looseBeta->begin()+tpos,event->byLooseCombinedIsolationDeltaBetaCorr3Hits_2);
     alltau_mediumBeta->insert(alltau_mediumBeta->begin()+tpos,event->byMediumCombinedIsolationDeltaBetaCorr3Hits_2);
-    //  alltau_tightBeta->insert(alltau_tightBeta->begin()+tpos,event->byTightCombinedIsolationDeltaBetaCorr3Hits_2);
     alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationMVArun2v1DBoldDMwLT_2 );
     alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationMVArun2v1DBoldDMwLT_2 );
     alltau_mediumMVA->insert(alltau_mediumMVA->begin()+tpos, event->byMediumIsolationMVArun2v1DBoldDMwLT_2 );
@@ -368,12 +442,17 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     alltau_lepVeto->insert(alltau_lepVeto->begin()+tpos,event->passesTauLepVetos);
     alltau_gen_match->insert(alltau_gen_match->begin()+tpos,event->gen_match_2);
     alltau_mvis->insert(alltau_mvis->begin()+tpos,event->m_vis);
-    alltau_mt->insert(alltau_mt->begin()+tpos,event->mt_1);
+    if(useMVAMET) alltau_mt->insert(alltau_mt->begin()+tpos,event->mt_1);
+    else alltau_mt->insert(alltau_mt->begin()+tpos,event->pfmt_1);
+    if(useMVAMET) alltau_mt2->insert(alltau_mt2->begin()+tpos,event->mt_2);
+    else alltau_mt2->insert(alltau_mt2->begin()+tpos,event->pfmt_2);
     if(use_svfit)alltau_svfit->insert(alltau_svfit->begin()+tpos,event->m_sv);
     else alltau_svfit->insert(alltau_svfit->begin()+tpos,0.);
     TLorentzVector leg2; leg2.SetPtEtaPhiM(event->pt_2,event->eta_2,event->phi_2,event->m_2);
     TLorentzVector leg1; leg1.SetPtEtaPhiM(event->pt_1,event->eta_1,event->phi_1,event->m_1);
-    TLorentzVector Emiss; leg1.SetPtEtaPhiM(event->mvamet,0,event->mvametphi,0);
+    TLorentzVector Emiss;
+    if(useMVAMET) Emiss.SetPtEtaPhiM(event->mvamet,0,event->mvametphi,0);
+    else Emiss.SetPtEtaPhiM(event->met,0,event->metphi,0);
     alltau_Zpt->insert( alltau_Zpt->begin()+tpos,(leg1+leg2+Emiss).Pt() );
       
     dR1=1e6;
@@ -395,7 +474,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     dR1=calcDR(event->eta_2,event->phi_2,event->beta_1,event->bphi_1);
     dR2=calcDR(event->eta_2,event->phi_2,event->beta_2,event->bphi_2);
     alltau_dRToB->insert(alltau_dRToB->begin()+tpos, min(dR1,dR2) );
-  } else if ( CHAN!=kTAU && USE_ISOTAU ){ //if most iso tau is not ok, then do not use event if this flag is set
+  } else if ( CHAN!=kTAU ){ //if most iso tau is not ok, then do not use event if this flag is set
     return 0;
   }
 
@@ -422,12 +501,17 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       alltau_lepVeto->insert(alltau_lepVeto->begin()+tpos,event->passesTauLepVetos);
       alltau_gen_match->insert(alltau_gen_match->begin()+tpos,event->gen_match_1);
       alltau_mvis->insert(alltau_mvis->begin()+tpos,event->m_vis);
-      alltau_mt->insert(alltau_mt->begin()+tpos,event->mt_1);
+      if(useMVAMET)alltau_mt->insert(alltau_mt->begin()+tpos,event->mt_2);
+      else alltau_mt->insert(alltau_mt->begin()+tpos,event->pfmt_2);
+      if(useMVAMET)alltau_mt2->insert(alltau_mt2->begin()+tpos,event->mt_1);
+      else alltau_mt2->insert(alltau_mt2->begin()+tpos,event->pfmt_1);
       if(use_svfit)alltau_svfit->insert(alltau_svfit->begin()+tpos,event->m_sv);
       else alltau_svfit->insert(alltau_svfit->begin()+tpos,0.);
       TLorentzVector leg2; leg2.SetPtEtaPhiM(event->pt_2,event->eta_2,event->phi_2,event->m_2);
       TLorentzVector leg1; leg1.SetPtEtaPhiM(event->pt_1,event->eta_1,event->phi_1,event->m_1);
-      TLorentzVector Emiss; leg1.SetPtEtaPhiM(event->mvamet,0,event->mvametphi,0);
+      TLorentzVector Emiss;
+      if(useMVAMET) Emiss.SetPtEtaPhiM(event->mvamet,0,event->mvametphi,0);
+      else Emiss.SetPtEtaPhiM(event->met,0,event->metphi,0);
       alltau_Zpt->insert( alltau_Zpt->begin()+tpos,(leg1+leg2+Emiss).Pt() );
       
       dR1=1e6;
@@ -454,21 +538,34 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     }
   }
 
+  lep_vloose = 0;
+  lep_loose = 0;
+  lep_medium = 0;
+
   if ( CHAN == kTAU ){
     //now: take "other tau" (as determined by the random number above) as "lep"
     if ( TT_AS_LEP == 2 ){
       lep_dR=-99; //needed for mZ in ee/mumu CR; not needed for tautau
       lep_pt=event->pt_2;
       lep_eta=event->eta_2;
+      lep_phi=event->phi_2;
       lep_q=event->q_2;
-      lep_iso=10*event->byVTightIsolationMVArun2v1DBoldDMwLT_2; 
-      //FIXME: should be vtight once we have calculated the FF for vtight. Now 1 for just tight; 11 for tight & vtight; 10 for just vtight (probably not possible)
+      //lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2v1DBoldDMwLT_2==1) || (calcVTightFF==0 && event->byTightIsolationMVArun2v1DBoldDMwLT_2==1) )  ? 10 : 0;
+      lep_iso = event->byMediumIsolationMVArun2v1DBoldDMwLT_2==1 ? 10 : 0;
+      lep_vloose = ( event->byVLooseIsolationMVArun2v1DBoldDMwLT_2 == 1 ) ? 1 : 0;
+      lep_loose = ( event->byLooseIsolationMVArun2v1DBoldDMwLT_2 == 1 ) ? 1 : 0;
+      lep_medium = ( event->byMediumIsolationMVArun2v1DBoldDMwLT_2 == 1 ) ? 1 : 0;
     } else{
       lep_dR=-99; //needed for mZ in ee/mumu CR; not needed for tautau
       lep_pt=event->pt_1;
       lep_eta=event->eta_1;
+      lep_phi=event->phi_1;
       lep_q=event->q_1;
-      lep_iso=10*event->byVTightIsolationMVArun2v1DBoldDMwLT_1; //FIXME: should be vtight once we have calculated the FF for vtight
+      //lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2v1DBoldDMwLT_1==1) || (calcVTightFF==0 && event->byTightIsolationMVArun2v1DBoldDMwLT_1==1) )  ? 10 : 0;
+      lep_iso = event->byMediumIsolationMVArun2v1DBoldDMwLT_1==1 ? 10 : 0;
+      lep_vloose = ( event->byVLooseIsolationMVArun2v1DBoldDMwLT_1 == 1 ) ? 1 : 0;
+      lep_loose = ( event->byLooseIsolationMVArun2v1DBoldDMwLT_1 == 1 ) ? 1 : 0;
+      lep_medium = ( event->byMediumIsolationMVArun2v1DBoldDMwLT_1 == 1 ) ? 1 : 0;
     }
   }
 
@@ -536,10 +633,14 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   tree->Branch("passes3LVeto",&passes3LVeto);
   tree->Branch("passesDLVeto",&passesDLVeto);
   tree->Branch("bpt_1",&bpt_1);
+  tree->Branch("bpt_2",&bpt_2);
   tree->Branch("njets",&njets);
   tree->Branch("nbtag",&nbtag);
   tree->Branch("mjj",&mjj);
   tree->Branch("jdeta",&jdeta);
+  tree->Branch("njetingap20", &njetingap20);
+  tree->Branch("mvamet",&mvamet);
+  tree->Branch("met",&met);
   tree->Branch("m_leplep",&m_leplep);
   tree->Branch("lep_dR",&lep_dR);
   tree->Branch("mt_leplep",&mt_leplep);
@@ -549,8 +650,12 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   tree->Branch("otherLep_iso",&otherLep_iso);
   tree->Branch("lep_pt" ,&lep_pt);
   tree->Branch("lep_eta",&lep_eta);
+  tree->Branch("lep_phi",&lep_phi);
   tree->Branch("lep_q"  ,&lep_q);
   tree->Branch("lep_iso",&lep_iso);
+  tree->Branch("lep_vloose",&lep_vloose);
+  tree->Branch("lep_loose",&lep_loose);
+  tree->Branch("lep_medium",&lep_medium);
   tree->Branch("n_iso_lep",&n_iso_lep);
   tree->Branch("n_iso_otherLep",&n_iso_otherLep);
   tree->Branch("alltau_pt",&alltau_pt);
@@ -572,6 +677,7 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   tree->Branch("alltau_dRToB",&alltau_dRToB);
   tree->Branch("alltau_mvis",&alltau_mvis);
   tree->Branch("alltau_mt",&alltau_mt);
+  tree->Branch("alltau_mt2",&alltau_mt2);
   tree->Branch("alltau_svfit",&alltau_svfit);
   tree->Branch("alltau_Zpt", &alltau_Zpt);
   tree->Branch("tau_iso_ind",&tau_iso_ind);
@@ -595,6 +701,7 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   alltau_dRToB=new vector<Double_t>;
   alltau_mvis=new vector<Double_t>;
   alltau_mt=new vector<Double_t>;
+  alltau_mt2=new vector<Double_t>;
   alltau_svfit=new vector<Double_t>;
   alltau_Zpt=new vector<Double_t>;
 

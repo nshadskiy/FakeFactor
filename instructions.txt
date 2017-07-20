@@ -1,0 +1,9 @@
+##########################
+#--ViennaTool/Settings.h
+#-line5:   analysis="FakeFactor_2016_MSSM_preapproval_dev"
+#-line6:  output_folder="$HOME/public/Htautau/FakeRate2016/20170718/" -> or similar, final FFs will be put there
+#-line7:  selCHAN=kMU/kEL/kTAU
+#-line8:  CHAN=kMU/kEL/kTAU
+
+##########################
+#Run FF tool with sh steerAll.sh in ViennaTool folder

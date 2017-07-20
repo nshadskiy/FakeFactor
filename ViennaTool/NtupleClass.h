@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Tue Sep 27 18:20:03 2016 by ROOT version 6.02/13
+// Fri Feb 17 09:33:12 2017 by ROOT version 6.02/13
 // from TTree TauCheck/TauCheck
-// found on file: /data/higgs/data_2015/ntuples_v3/mt/ntuples_SVFIT_merged/BASIS_ntuple_TT_MCFall15_mt_v3.root
+// found on file: /data/higgs/data_2016/ntuples_v8/mt/ntuples_woSVFIT_merged/BASIS_ntuple_DYXJetsToLL_lowMass_merged_MCSummer16_mt_v8.root
 //////////////////////////////////////////////////////////
 
 #ifndef NtupleClass_h
@@ -13,7 +13,6 @@
 #include <TFile.h>
 
 // Header file for the classes stored in the TTree if any.
-#include "vector"
 #include "vector"
 
 class NtupleClass {
@@ -26,28 +25,39 @@ public :
    // Declaration of leaf types
    Int_t           fileEntry;
    Int_t           run;
+   Int_t           trg_singlemuon;
+   Int_t           trg_singleelectron;
+   Int_t           trg_singletau;
+   Int_t           trg_doubletau;
+   Int_t           Flag_badMuons;
+   Int_t           Flag_duplicateMuons;
    Float_t         lumi;
-   Int_t           evt;
-   Float_t         evtWeight;
+   ULong64_t       evt;
    Float_t         weight;
    Float_t         lumiWeight;
    Float_t         puweight;
    Float_t         genweight;
    Float_t         trigweight_1;
+   Float_t         anti_trigweight_1;
    Float_t         trigweight_2;
    Float_t         idisoweight_1;
+   Float_t         anti_idisoweight_1;
    Float_t         idisoweight_2;
    Float_t         effweight;
    Float_t         stitchedWeight;
    Float_t         topWeight;
+   Float_t         topWeight_run1;
    Float_t         ZWeight;
    Float_t         gen_Mll;
    Float_t         genpX;
    Float_t         genpY;
+   Float_t         genpZ;
    Float_t         gen_top_pt_1;
    Float_t         gen_top_pt_2;
+   Float_t         gen_vis_Mll;
    Float_t         vispX;
    Float_t         vispY;
+   Float_t         vispZ;
    Int_t           npv;
    Float_t         npu;
    Float_t         rho;
@@ -56,8 +66,11 @@ public :
    Int_t           gen_match_2;
    Int_t           gen_match_jetId_1;
    Int_t           gen_match_jetId_2;
+   Int_t           genJets;
    Float_t         genPt_1;
    Float_t         genPt_2;
+   Int_t           genJet_match_1;
+   Int_t           genJet_match_2;
    Float_t         pt_1;
    Float_t         phi_1;
    Float_t         eta_1;
@@ -110,6 +123,7 @@ public :
    Float_t         id_e_cut_loose_1;
    Float_t         id_e_cut_medium_1;
    Float_t         id_e_cut_tight_1;
+   Float_t         antilep_tauscaling;
    Float_t         pt_2;
    Float_t         phi_2;
    Float_t         eta_2;
@@ -154,14 +168,8 @@ public :
    Float_t         pt_tt;
    Float_t         pfpt_tt;
    Float_t         m_vis;
-   Int_t           njets_Vienna;
-   Int_t           nbtag_Vienna;
    Float_t         pfpt_sum;
    Float_t         pt_sum;
-   Float_t         pfpt_VBF;
-   Float_t         pt_VBF;
-   Float_t         pfpt_sum_VBF;
-   Float_t         pt_sum_VBF;
    Float_t         dr_leptau;
    Float_t         jeta1eta2;
    Float_t         met_centrality;
@@ -217,6 +225,9 @@ public :
    Bool_t          passesThirdLepVeto;
    Bool_t          passesDiMuonVeto;
    Bool_t          passesDiElectronVeto;
+   Bool_t          XTrig_match;
+   Bool_t          STrig_match;
+   Bool_t          matchXTrig_obj;
    Bool_t          dilepton_veto;
    Bool_t          extraelec_veto;
    Bool_t          extramuon_veto;
@@ -244,22 +255,36 @@ public :
    Float_t         metcov01;
    Float_t         metcov10;
    Float_t         metcov11;
+   Float_t         m_sv;
+   Float_t         pt_sv;
    Float_t         mjj;
+   Float_t         mjjUp;
+   Float_t         mjjDown;
    Float_t         jdeta;
+   Float_t         jdetaUp;
+   Float_t         jdetaDown;
    Int_t           njetingap;
    Int_t           njetingap20;
    Float_t         jdphi;
    Int_t           nbtag;
    Int_t           njets;
+   Int_t           njetsUp;
+   Int_t           njetsDown;
    Int_t           njetspt20;
    Float_t         jpt_1;
+   Float_t         jptUp_1;
+   Float_t         jptDown_1;
    Float_t         jeta_1;
    Float_t         jphi_1;
+   Float_t         jm_1;
    Float_t         jrawf_1;
    Float_t         jmva_1;
    Float_t         jpt_2;
+   Float_t         jptUp_2;
+   Float_t         jptDown_2;
    Float_t         jeta_2;
    Float_t         jphi_2;
+   Float_t         jm_2;
    Float_t         jrawf_2;
    Float_t         jmva_2;
    Float_t         bpt_1;
@@ -274,38 +299,43 @@ public :
    Float_t         brawf_2;
    Float_t         bmva_2;
    Float_t         bcsv_2;
-   Float_t         m_sv;
-   Float_t         m_sv_unc;
-   Float_t         mt_sv;
-   Float_t         mt_sv_unc;
-   Float_t         pt_sv;
-   Float_t         pt_sv_unc;
 
    // List of branches
    TBranch        *b_fileEntry;   //!
    TBranch        *b_run;   //!
+   TBranch        *b_trg_singlemuon;   //!
+   TBranch        *b_trg_singleelectron;   //!
+   TBranch        *b_trg_singletau;   //!
+   TBranch        *b_trg_doubletau;   //!
+   TBranch        *b_Flag_badMuons;   //!
+   TBranch        *b_Flag_duplicateMuons;   //!
    TBranch        *b_lumi;   //!
    TBranch        *b_evt;   //!
-   TBranch        *b_evtWeight;   //!
    TBranch        *b_weight;   //!
    TBranch        *b_lumiWeight;   //!
    TBranch        *b_puweight;   //!
    TBranch        *b_genweight;   //!
    TBranch        *b_trigweight_1;   //!
+   TBranch        *b_anti_trigweight_1;   //!
    TBranch        *b_trigweight_2;   //!
    TBranch        *b_idisoweight_1;   //!
+   TBranch        *b_anti_idisoweight_1;   //!
    TBranch        *b_idisoweight_2;   //!
    TBranch        *b_effweight;   //!
    TBranch        *b_stitchedWeight;   //!
    TBranch        *b_topWeight;   //!
+   TBranch        *b_topWeight_run1;   //!
    TBranch        *b_ZWeight;   //!
    TBranch        *b_gen_Mll;   //!
    TBranch        *b_genpX;   //!
    TBranch        *b_genpY;   //!
+   TBranch        *b_genpZ;   //!
    TBranch        *b_gen_top_pt_1;   //!
    TBranch        *b_gen_top_pt_2;   //!
+   TBranch        *b_gen_vis_Mll;   //!
    TBranch        *b_vispX;   //!
    TBranch        *b_vispY;   //!
+   TBranch        *b_vispZ;   //!
    TBranch        *b_npv;   //!
    TBranch        *b_npu;   //!
    TBranch        *b_rho;   //!
@@ -314,8 +344,11 @@ public :
    TBranch        *b_gen_match_2;   //!
    TBranch        *b_gen_match_jetId_1;   //!
    TBranch        *b_gen_match_jetId_2;   //!
+   TBranch        *b_genJets;   //!
    TBranch        *b_genPt_1;   //!
    TBranch        *b_genPt_2;   //!
+   TBranch        *b_genJet_match_1;   //!
+   TBranch        *b_genJet_match_2;   //!
    TBranch        *b_pt_1;   //!
    TBranch        *b_phi_1;   //!
    TBranch        *b_eta_1;   //!
@@ -368,6 +401,7 @@ public :
    TBranch        *b_id_e_cut_loose_1;   //!
    TBranch        *b_id_e_cut_medium_1;   //!
    TBranch        *b_id_e_cut_tight_1;   //!
+   TBranch        *b_antilep_tauscaling;   //!
    TBranch        *b_pt_2;   //!
    TBranch        *b_phi_2;   //!
    TBranch        *b_eta_2;   //!
@@ -412,14 +446,8 @@ public :
    TBranch        *b_pt_tt;   //!
    TBranch        *b_pfpt_tt;   //!
    TBranch        *b_m_vis;   //!
-   TBranch        *b_njets_Vienna;   //!
-   TBranch        *b_nbtag_Vienna;   //!
    TBranch        *b_pfpt_sum;   //!
    TBranch        *b_pt_sum;   //!
-   TBranch        *b_pfpt_VBF;   //!
-   TBranch        *b_pt_VBF;   //!
-   TBranch        *b_pfpt_sum_VBF;   //!
-   TBranch        *b_pt_sum_VBF;   //!
    TBranch        *b_dr_leptau;   //!
    TBranch        *b_jeta1eta2;   //!
    TBranch        *b_met_centrality;   //!
@@ -475,6 +503,9 @@ public :
    TBranch        *b_passesThirdLepVeto;   //!
    TBranch        *b_passesDiMuonVeto;   //!
    TBranch        *b_passesDiElectronVeto;   //!
+   TBranch        *b_XTrig_match;   //!
+   TBranch        *b_STrig_match;   //!
+   TBranch        *b_matchXTrig_obj;   //!
    TBranch        *b_dilepton_veto;   //!
    TBranch        *b_extraelec_veto;   //!
    TBranch        *b_extramuon_veto;   //!
@@ -502,22 +533,36 @@ public :
    TBranch        *b_metcov01;   //!
    TBranch        *b_metcov10;   //!
    TBranch        *b_metcov11;   //!
+   TBranch        *b_m_sv;   //!
+   TBranch        *b_pt_sv;   //!
    TBranch        *b_mjj;   //!
+   TBranch        *b_mjjUp;   //!
+   TBranch        *b_mjjDown;   //!
    TBranch        *b_jdeta;   //!
+   TBranch        *b_jdetaUp;   //!
+   TBranch        *b_jdetaDown;   //!
    TBranch        *b_njetingap;   //!
    TBranch        *b_njetingap20;   //!
    TBranch        *b_jdphi;   //!
    TBranch        *b_nbtag;   //!
    TBranch        *b_njets;   //!
+   TBranch        *b_njetsUp;   //!
+   TBranch        *b_njetsDown;   //!
    TBranch        *b_njetspt20;   //!
    TBranch        *b_jpt_1;   //!
+   TBranch        *b_jptUp_1;   //!
+   TBranch        *b_jptDown_1;   //!
    TBranch        *b_jeta_1;   //!
    TBranch        *b_jphi_1;   //!
+   TBranch        *b_jm_1;   //!
    TBranch        *b_jrawf_1;   //!
    TBranch        *b_jmva_1;   //!
    TBranch        *b_jpt_2;   //!
+   TBranch        *b_jptUp_2;   //!
+   TBranch        *b_jptDown_2;   //!
    TBranch        *b_jeta_2;   //!
    TBranch        *b_jphi_2;   //!
+   TBranch        *b_jm_2;   //!
    TBranch        *b_jrawf_2;   //!
    TBranch        *b_jmva_2;   //!
    TBranch        *b_bpt_1;   //!
@@ -532,12 +577,6 @@ public :
    TBranch        *b_brawf_2;   //!
    TBranch        *b_bmva_2;   //!
    TBranch        *b_bcsv_2;   //!
-   TBranch        *b_m_sv;   //!
-   TBranch        *b_m_sv_unc;   //!
-   TBranch        *b_mt_sv;   //!
-   TBranch        *b_mt_sv_unc;   //!
-   TBranch        *b_pt_sv;   //!
-   TBranch        *b_pt_sv_unc;   //!
 
    NtupleClass(TTree *tree=0);
    virtual ~NtupleClass();
@@ -558,9 +597,9 @@ NtupleClass::NtupleClass(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/higgs/data_2015/ntuples_v3/mt/ntuples_SVFIT_merged/BASIS_ntuple_TT_MCFall15_mt_v3.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/higgs/data_2016/ntuples_v8/mt/ntuples_woSVFIT_merged/BASIS_ntuple_DYXJetsToLL_lowMass_merged_MCSummer16_mt_v8.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/data/higgs/data_2015/ntuples_v3/mt/ntuples_SVFIT_merged/BASIS_ntuple_TT_MCFall15_mt_v3.root");
+         f = new TFile("/data/higgs/data_2016/ntuples_v8/mt/ntuples_woSVFIT_merged/BASIS_ntuple_DYXJetsToLL_lowMass_merged_MCSummer16_mt_v8.root");
       }
       f->GetObject("TauCheck",tree);
 
@@ -653,28 +692,39 @@ void NtupleClass::Init(TTree *tree)
 
    fChain->SetBranchAddress("fileEntry", &fileEntry, &b_fileEntry);
    fChain->SetBranchAddress("run", &run, &b_run);
+   fChain->SetBranchAddress("trg_singlemuon", &trg_singlemuon, &b_trg_singlemuon);
+   fChain->SetBranchAddress("trg_singleelectron", &trg_singleelectron, &b_trg_singleelectron);
+   fChain->SetBranchAddress("trg_singletau", &trg_singletau, &b_trg_singletau);
+   fChain->SetBranchAddress("trg_doubletau", &trg_doubletau, &b_trg_doubletau);
+   fChain->SetBranchAddress("Flag_badMuons", &Flag_badMuons, &b_Flag_badMuons);
+   fChain->SetBranchAddress("Flag_duplicateMuons", &Flag_duplicateMuons, &b_Flag_duplicateMuons);
    fChain->SetBranchAddress("lumi", &lumi, &b_lumi);
    fChain->SetBranchAddress("evt", &evt, &b_evt);
-   fChain->SetBranchAddress("evtWeight", &evtWeight, &b_evtWeight);
    fChain->SetBranchAddress("weight", &weight, &b_weight);
    fChain->SetBranchAddress("lumiWeight", &lumiWeight, &b_lumiWeight);
    fChain->SetBranchAddress("puweight", &puweight, &b_puweight);
    fChain->SetBranchAddress("genweight", &genweight, &b_genweight);
    fChain->SetBranchAddress("trigweight_1", &trigweight_1, &b_trigweight_1);
+   fChain->SetBranchAddress("anti_trigweight_1", &anti_trigweight_1, &b_anti_trigweight_1);
    fChain->SetBranchAddress("trigweight_2", &trigweight_2, &b_trigweight_2);
    fChain->SetBranchAddress("idisoweight_1", &idisoweight_1, &b_idisoweight_1);
+   fChain->SetBranchAddress("anti_idisoweight_1", &anti_idisoweight_1, &b_anti_idisoweight_1);
    fChain->SetBranchAddress("idisoweight_2", &idisoweight_2, &b_idisoweight_2);
    fChain->SetBranchAddress("effweight", &effweight, &b_effweight);
    fChain->SetBranchAddress("stitchedWeight", &stitchedWeight, &b_stitchedWeight);
    fChain->SetBranchAddress("topWeight", &topWeight, &b_topWeight);
+   fChain->SetBranchAddress("topWeight_run1", &topWeight_run1, &b_topWeight_run1);
    fChain->SetBranchAddress("ZWeight", &ZWeight, &b_ZWeight);
    fChain->SetBranchAddress("gen_Mll", &gen_Mll, &b_gen_Mll);
    fChain->SetBranchAddress("genpX", &genpX, &b_genpX);
    fChain->SetBranchAddress("genpY", &genpY, &b_genpY);
+   fChain->SetBranchAddress("genpZ", &genpZ, &b_genpZ);
    fChain->SetBranchAddress("gen_top_pt_1", &gen_top_pt_1, &b_gen_top_pt_1);
    fChain->SetBranchAddress("gen_top_pt_2", &gen_top_pt_2, &b_gen_top_pt_2);
+   fChain->SetBranchAddress("gen_vis_Mll", &gen_vis_Mll, &b_gen_vis_Mll);
    fChain->SetBranchAddress("vispX", &vispX, &b_vispX);
    fChain->SetBranchAddress("vispY", &vispY, &b_vispY);
+   fChain->SetBranchAddress("vispZ", &vispZ, &b_vispZ);
    fChain->SetBranchAddress("npv", &npv, &b_npv);
    fChain->SetBranchAddress("npu", &npu, &b_npu);
    fChain->SetBranchAddress("rho", &rho, &b_rho);
@@ -683,8 +733,11 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("gen_match_2", &gen_match_2, &b_gen_match_2);
    fChain->SetBranchAddress("gen_match_jetId_1", &gen_match_jetId_1, &b_gen_match_jetId_1);
    fChain->SetBranchAddress("gen_match_jetId_2", &gen_match_jetId_2, &b_gen_match_jetId_2);
+   fChain->SetBranchAddress("genJets", &genJets, &b_genJets);
    fChain->SetBranchAddress("genPt_1", &genPt_1, &b_genPt_1);
    fChain->SetBranchAddress("genPt_2", &genPt_2, &b_genPt_2);
+   fChain->SetBranchAddress("genJet_match_1", &genJet_match_1, &b_genJet_match_1);
+   fChain->SetBranchAddress("genJet_match_2", &genJet_match_2, &b_genJet_match_2);
    fChain->SetBranchAddress("pt_1", &pt_1, &b_pt_1);
    fChain->SetBranchAddress("phi_1", &phi_1, &b_phi_1);
    fChain->SetBranchAddress("eta_1", &eta_1, &b_eta_1);
@@ -737,6 +790,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("id_e_cut_loose_1", &id_e_cut_loose_1, &b_id_e_cut_loose_1);
    fChain->SetBranchAddress("id_e_cut_medium_1", &id_e_cut_medium_1, &b_id_e_cut_medium_1);
    fChain->SetBranchAddress("id_e_cut_tight_1", &id_e_cut_tight_1, &b_id_e_cut_tight_1);
+   fChain->SetBranchAddress("antilep_tauscaling", &antilep_tauscaling, &b_antilep_tauscaling);
    fChain->SetBranchAddress("pt_2", &pt_2, &b_pt_2);
    fChain->SetBranchAddress("phi_2", &phi_2, &b_phi_2);
    fChain->SetBranchAddress("eta_2", &eta_2, &b_eta_2);
@@ -781,14 +835,8 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("pt_tt", &pt_tt, &b_pt_tt);
    fChain->SetBranchAddress("pfpt_tt", &pfpt_tt, &b_pfpt_tt);
    fChain->SetBranchAddress("m_vis", &m_vis, &b_m_vis);
-   fChain->SetBranchAddress("njets_Vienna", &njets_Vienna, &b_njets_Vienna);
-   fChain->SetBranchAddress("nbtag_Vienna", &nbtag_Vienna, &b_nbtag_Vienna);
    fChain->SetBranchAddress("pfpt_sum", &pfpt_sum, &b_pfpt_sum);
    fChain->SetBranchAddress("pt_sum", &pt_sum, &b_pt_sum);
-   fChain->SetBranchAddress("pfpt_VBF", &pfpt_VBF, &b_pfpt_VBF);
-   fChain->SetBranchAddress("pt_VBF", &pt_VBF, &b_pt_VBF);
-   fChain->SetBranchAddress("pfpt_sum_VBF", &pfpt_sum_VBF, &b_pfpt_sum_VBF);
-   fChain->SetBranchAddress("pt_sum_VBF", &pt_sum_VBF, &b_pt_sum_VBF);
    fChain->SetBranchAddress("dr_leptau", &dr_leptau, &b_dr_leptau);
    fChain->SetBranchAddress("jeta1eta2", &jeta1eta2, &b_jeta1eta2);
    fChain->SetBranchAddress("met_centrality", &met_centrality, &b_met_centrality);
@@ -844,6 +892,9 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("passesThirdLepVeto", &passesThirdLepVeto, &b_passesThirdLepVeto);
    fChain->SetBranchAddress("passesDiMuonVeto", &passesDiMuonVeto, &b_passesDiMuonVeto);
    fChain->SetBranchAddress("passesDiElectronVeto", &passesDiElectronVeto, &b_passesDiElectronVeto);
+   fChain->SetBranchAddress("XTrig_match", &XTrig_match, &b_XTrig_match);
+   fChain->SetBranchAddress("STrig_match", &STrig_match, &b_STrig_match);
+   fChain->SetBranchAddress("matchXTrig_obj", &matchXTrig_obj, &b_matchXTrig_obj);
    fChain->SetBranchAddress("dilepton_veto", &dilepton_veto, &b_dilepton_veto);
    fChain->SetBranchAddress("extraelec_veto", &extraelec_veto, &b_extraelec_veto);
    fChain->SetBranchAddress("extramuon_veto", &extramuon_veto, &b_extramuon_veto);
@@ -871,22 +922,36 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("metcov01", &metcov01, &b_metcov01);
    fChain->SetBranchAddress("metcov10", &metcov10, &b_metcov10);
    fChain->SetBranchAddress("metcov11", &metcov11, &b_metcov11);
+   fChain->SetBranchAddress("m_sv", &m_sv, &b_m_sv);
+   fChain->SetBranchAddress("pt_sv", &pt_sv, &b_pt_sv);
    fChain->SetBranchAddress("mjj", &mjj, &b_mjj);
+   fChain->SetBranchAddress("mjjUp", &mjjUp, &b_mjjUp);
+   fChain->SetBranchAddress("mjjDown", &mjjDown, &b_mjjDown);
    fChain->SetBranchAddress("jdeta", &jdeta, &b_jdeta);
+   fChain->SetBranchAddress("jdetaUp", &jdetaUp, &b_jdetaUp);
+   fChain->SetBranchAddress("jdetaDown", &jdetaDown, &b_jdetaDown);
    fChain->SetBranchAddress("njetingap", &njetingap, &b_njetingap);
    fChain->SetBranchAddress("njetingap20", &njetingap20, &b_njetingap20);
    fChain->SetBranchAddress("jdphi", &jdphi, &b_jdphi);
    fChain->SetBranchAddress("nbtag", &nbtag, &b_nbtag);
    fChain->SetBranchAddress("njets", &njets, &b_njets);
+   fChain->SetBranchAddress("njetsUp", &njetsUp, &b_njetsUp);
+   fChain->SetBranchAddress("njetsDown", &njetsDown, &b_njetsDown);
    fChain->SetBranchAddress("njetspt20", &njetspt20, &b_njetspt20);
    fChain->SetBranchAddress("jpt_1", &jpt_1, &b_jpt_1);
+   fChain->SetBranchAddress("jptUp_1", &jptUp_1, &b_jptUp_1);
+   fChain->SetBranchAddress("jptDown_1", &jptDown_1, &b_jptDown_1);
    fChain->SetBranchAddress("jeta_1", &jeta_1, &b_jeta_1);
    fChain->SetBranchAddress("jphi_1", &jphi_1, &b_jphi_1);
+   fChain->SetBranchAddress("jm_1", &jm_1, &b_jm_1);
    fChain->SetBranchAddress("jrawf_1", &jrawf_1, &b_jrawf_1);
    fChain->SetBranchAddress("jmva_1", &jmva_1, &b_jmva_1);
    fChain->SetBranchAddress("jpt_2", &jpt_2, &b_jpt_2);
+   fChain->SetBranchAddress("jptUp_2", &jptUp_2, &b_jptUp_2);
+   fChain->SetBranchAddress("jptDown_2", &jptDown_2, &b_jptDown_2);
    fChain->SetBranchAddress("jeta_2", &jeta_2, &b_jeta_2);
    fChain->SetBranchAddress("jphi_2", &jphi_2, &b_jphi_2);
+   fChain->SetBranchAddress("jm_2", &jm_2, &b_jm_2);
    fChain->SetBranchAddress("jrawf_2", &jrawf_2, &b_jrawf_2);
    fChain->SetBranchAddress("jmva_2", &jmva_2, &b_jmva_2);
    fChain->SetBranchAddress("bpt_1", &bpt_1, &b_bpt_1);
@@ -901,12 +966,6 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("brawf_2", &brawf_2, &b_brawf_2);
    fChain->SetBranchAddress("bmva_2", &bmva_2, &b_bmva_2);
    fChain->SetBranchAddress("bcsv_2", &bcsv_2, &b_bcsv_2);
-   fChain->SetBranchAddress("m_sv", &m_sv, &b_m_sv);
-   fChain->SetBranchAddress("m_sv_unc", &m_sv_unc, &b_m_sv_unc);
-   fChain->SetBranchAddress("mt_sv", &mt_sv, &b_mt_sv);
-   fChain->SetBranchAddress("mt_sv_unc", &mt_sv_unc, &b_mt_sv_unc);
-   fChain->SetBranchAddress("pt_sv", &pt_sv, &b_pt_sv);
-   fChain->SetBranchAddress("pt_sv_unc", &pt_sv_unc, &b_pt_sv_unc);
    Notify();
 }
 

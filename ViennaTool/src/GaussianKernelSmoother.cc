@@ -1,8 +1,11 @@
 #include "ViennaTool/interface/GaussianKernelSmoother.h"
 
+//ClassImp(GaussianKernelSmoother)
+
 GaussianKernelSmoother::GaussianKernelSmoother(){
   this->doIgnoreZeroBins=1.;
   this->doWidthInBins=0.;
+  this->widthInBins_sf=0.5;
   this->width=1.;
   this->doErrors=0;
   this->doWeights=0;
@@ -29,7 +32,7 @@ double GaussianKernelSmoother::getSmoothedValue(TH1D* m_h , const double m_x){
   double x;
   if ( doLastBinFrom && m_x > lastBinFrom ) x=lastBinFrom;
   else x=m_x;
-  
+
   double sumw = 0.;
   double sumwy = 0. ;
   Int_t nbins = m_h->GetNbinsX();
@@ -44,7 +47,8 @@ double GaussianKernelSmoother::getSmoothedValue(TH1D* m_h , const double m_x){
     //    bin_width=( m_h->GetBinLowEdge(nbins+1)-m_h->GetBinLowEdge(1) ) / nbins; //option 1: average bin width
     for (int ib=1; ib<=nbins; ib++){
       if ( bin_width<m_h->GetBinWidth(ib) ) bin_width=m_h->GetBinWidth(ib);  //option 2: max bin width
-      bin_width/=2;                                                          //option 2b: half max bin width
+      //      bin_width/=2;                                                          //option 2b: half max bin width
+      bin_width*=this->widthInBins_sf; //1.12;
     }
 
     //    int m_bin=m_h->FindBin(x);
@@ -59,6 +63,7 @@ double GaussianKernelSmoother::getSmoothedValue(TH1D* m_h , const double m_x){
     //    cout << x << " " << m_width << " " << wsum << " " << bin_width*nbins << " " <<bin_width << endl;
   }
 
+  //  std::cout << x << " :  "  << m_width << std::endl;
 
   //int firstBinWithContent=0;
   for (int ib=1; ib<=nbins; ib++){
@@ -100,14 +105,22 @@ void GaussianKernelSmoother::getSmoothHisto(){
 }
 
 double GaussianKernelSmoother::rescaling( double val ){
+
+  //  if ( doLastBinFrom && lastBinFrom > 0 ) return this->g_rescaling->Eval(val);
+
   if ( kernelDistance == "lin" ) return val;
   if ( kernelDistance == "log" ) return log(val);
+  if ( kernelDistance == "err" ) return this->g_rescaling->Eval(val);
   else return val;
 }
 
 double GaussianKernelSmoother::invertRescaling( double val ){
+
+  //  if ( doLastBinFrom && lastBinFrom > 0 ) return this->g_inv_rescaling->Eval(val);
+
   if ( kernelDistance == "lin" ) return val;
   if ( kernelDistance == "log" ) return exp(val);
+  if ( kernelDistance == "err" ) return this->g_inv_rescaling->Eval(val);
   else return val;
 }
 
@@ -189,9 +202,49 @@ TH1D* GaussianKernelSmoother::makeWeights( TH1D* h ){
   }
 
   h_w->Scale( 1/sum_weights );
-  //  std::cout << "XXX " << h_w->Integral(-1,-1) << std::endl;
 
   return h_w;
+}
+
+/*
+void GaussianKernelSmoother::createGraphMax( TH1D* m_h ){
+
+  int nbins=m_h->GetNbinsX();
+
+  double *x=new double[nbins];
+  double *y=new double[nbins];
+ 
+  for (int ib=1; ib<=nbins; ib++){
+    x[ib-1]=m_h->GetBinCenter(ib);
+    y[ib-1]=x[ib-1];
+    if ( doLastBinFrom && x[ib-1]>lastBinFrom ){ nbins=ib; break; }
+  }
+
+  std::cout << "nbins: " << nbins << std::endl;
+  for (int i=0; i<nbins; i++) std::cout << x[i] << " : " << y[i] << std::endl;
+
+  this->g_rescaling=new TGraph(nbins,x,y);
+  this->g_inv_rescaling=new TGraph(nbins,y,x);
+}
+*/
+
+void GaussianKernelSmoother::createGraphKDE( TH1D* m_h ){
+
+  int nbins=m_h->GetNbinsX();
+
+  double *x=new double[nbins];
+  double *y=new double[nbins];
+ 
+  double cumsum_y=0;
+  for (int ib=1; ib<=nbins; ib++){
+    x[ib-1]=m_h->GetBinCenter(ib);
+    if ( m_h->GetBinError(ib)>0 ) cumsum_y+=1/sqrt( m_h->GetBinError(ib) );
+    y[ib-1]=cumsum_y;
+  }
+  for (int ib=1; ib<=nbins; ib++){ y[ib-1]/=cumsum_y; }//normalize function
+
+  this->g_rescaling=new TGraph(nbins,x,y);
+  this->g_inv_rescaling=new TGraph(nbins,y,x);
 }
 
 

@@ -40,43 +40,43 @@ void TSelectionAnalyzer::closeFile()
 
 void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mode,const Int_t categoryMode,const TString output, const Int_t cuts)
 {
-  TH1D *tightSR,*looseSR,*looseSR_tt,*allSR;
+  TH1D *tightSR,*looseSR,*tightSR_alt,*allSR;
   TString suff=""; if (mode & _SS ) suff=" (SS) ";
   if (mode & MT) {
     tightSR = new TH1D("hh_t_mt","Tight events in SR"+suff,nbins_mt,hist_min_mt,hist_max_mt);
     looseSR = new TH1D("hh_l_mt","Loose events in SR"+suff,nbins_mt,hist_min_mt,hist_max_mt);
-    looseSR_tt = new TH1D("hh_ltt_mt","Loose events in tt SR"+suff,nbins_mt,hist_min_mt,hist_max_mt);
+    tightSR_alt = new TH1D("hh_t_alt_mt","Tight events in alt SR"+suff,nbins_mt,hist_min_mt,hist_max_mt);
     allSR   = new TH1D("hh_a_mt",  "All events in SR"+suff,nbins_mt,hist_min_mt,hist_max_mt);
   }
   else if (mode & MVIS && mode & _AI) {
     tightSR = new TH1D("hh_t_mvis","Tight events in SR"+suff,w_mvis_n,w_mvis_v);
     looseSR = new TH1D("hh_l_mvis","Loose events in SR"+suff,w_mvis_n,w_mvis_v);
-    looseSR_tt = new TH1D("hh_ltt_mvis","Loose events in tt SR"+suff,w_mvis_n,w_mvis_v);
+    tightSR_alt = new TH1D("hh_t_alt_mvis","Tight events in alt SR"+suff,w_mvis_n,w_mvis_v);
     allSR   = new TH1D("hh_a_mvis",  "All events in SR"+suff,w_mvis_n,w_mvis_v);
   }
-  /*else if (mode & MVIS) {
-    tightSR = new TH1D("hh_t_mvis","Tight events in SR"+suff,w_mvis_n,w_mvis_v);
-    looseSR = new TH1D("hh_l_mvis","Loose events in SR"+suff,w_mvis_n,w_mvis_v);
-    looseSR_tt = new TH1D("hh_ltt_mvis","Loose events in tt SR"+suff,w_mvis_n,w_mvis_v);
-    allSR   = new TH1D("hh_a_mvis",  "All events in SR"+suff,w_mvis_n,w_mvis_v);
-    }*/
   else if (mode & MVIS) {
     tightSR = new TH1D("hh_t_mvis","Tight events in SR"+suff,nbins_mvis,hist_min_mvis,hist_max_mvis);
     looseSR = new TH1D("hh_l_mvis","Loose events in SR"+suff,nbins_mvis,hist_min_mvis,hist_max_mvis);
-    looseSR_tt = new TH1D("hh_ltt_mvis","Loose events in tt SR"+suff,nbins_mvis,hist_min_mvis,hist_max_mvis);
+    tightSR_alt = new TH1D("hh_t_alt_mvis","Tight events in alt SR"+suff,nbins_mvis,hist_min_mvis,hist_max_mvis);
     allSR   = new TH1D("hh_a_mvis",  "All events in SR"+suff,nbins_mvis,hist_min_mvis,hist_max_mvis);
   }
   else if (mode & PT) {
     tightSR = new TH1D("hh_t_pt","Tight events in SR"+suff,nbins_pt,hist_min_pt,hist_max_pt);
     looseSR = new TH1D("hh_l_pt","Loose events in SR"+suff,nbins_pt,hist_min_pt,hist_max_pt);
-    looseSR_tt = new TH1D("hh_ltt_pt","Loose events in tt SR"+suff,nbins_pt,hist_min_pt,hist_max_pt);
+    tightSR_alt = new TH1D("hh_t_alt_pt","Tight events in alt SR"+suff,nbins_pt,hist_min_pt,hist_max_pt);
     allSR   = new TH1D("hh_a_pt",  "All events in SR"+suff,nbins_pt,hist_min_pt,hist_max_pt);
   }
   else if (mode & SVFIT) {                                      
     tightSR = new TH1D("hh_t_svfit","Tight events in SR"+suff,nbins_svfit,hist_min_svfit,hist_max_svfit);
     looseSR = new TH1D("hh_l_svfit","Loose events in SR"+suff,nbins_svfit,hist_min_svfit,hist_max_svfit);
-    looseSR_tt = new TH1D("hh_ltt_svfit","Loose events in tt SR"+suff,nbins_svfit,hist_min_svfit,hist_max_svfit);
+    tightSR_alt = new TH1D("hh_t_alt_svfit","Tight events in alt SR"+suff,nbins_svfit,hist_min_svfit,hist_max_svfit);
     allSR   = new TH1D("hh_a_svfit",  "All events in SR"+suff,nbins_svfit,hist_min_svfit,hist_max_svfit);
+  }
+  else if (mode & LEPPT) {                                      
+    tightSR = new TH1D("hh_t_lepPt","Tight events in SR"+suff,nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+    looseSR = new TH1D("hh_l_lepPt","Loose events in SR"+suff,nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+    tightSR_alt = new TH1D("hh_t_alt_lepPt","Tight events in alt SR"+suff,nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+    allSR   = new TH1D("hh_a_lepPt",  "All events in SR"+suff,nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
   }
   
   else {
@@ -92,10 +92,8 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
   Int_t tau_ind=0;
   for (Int_t jentry=0; jentry<nentries;jentry++) {
     event_s->GetEntry(jentry);
-    if (APPLY_TO_ISOTAU){
-      tau_ind=event_s->tau_iso_ind;
-      if ( tau_ind<0 ) continue;
-    }
+    tau_ind=event_s->tau_iso_ind;
+    if ( tau_ind<0 ) continue;
 
     if ( !fulfillCategory(categoryMode) ) continue;
     if ( isInSR(mode,tau_ind) && ( !cuts || this->passesCuts(cuts,tau_ind) )  ){
@@ -116,7 +114,7 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
       allSR->Fill(fillVal,event_s->weight_sf*DMscaling*XSscaling);
       if ( this->isTight(0,tau_ind) ) tightSR->Fill(fillVal,event_s->weight_sf*DMscaling*XSscaling);
       if ( this->isLoose(0,tau_ind) ) looseSR->Fill(fillVal,event_s->weight_sf*DMscaling*XSscaling);
-      if ( this->isLoose_tt(0,tau_ind) ) looseSR_tt->Fill(fillVal,event_s->weight_sf*DMscaling*XSscaling);
+      if ( this->isTight_alt(0,tau_ind) ) tightSR_alt->Fill(fillVal,event_s->weight_sf*DMscaling*XSscaling);
     }
   }
   std::cout << " in tightSR: " << tightSR->Integral(-1,-1) << std::endl;
@@ -139,11 +137,11 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
         looseSR->SetBinError( i,TMath::Sqrt(TMath::Power(err1,2)+TMath::Power(err2,2))*looseSR->GetBinContent(i) );
       }
     }
-    for(int i=1; i<looseSR_tt->GetNbinsX();i++){
-      if(looseSR_tt->GetBinContent(i) > 1){
-        Double_t err1=looseSR_tt->GetBinError(i)/looseSR_tt->GetBinContent(i);
+    for(int i=1; i<tightSR_alt->GetNbinsX();i++){
+      if(tightSR_alt->GetBinContent(i) > 1){
+        Double_t err1=tightSR_alt->GetBinError(i)/tightSR_alt->GetBinContent(i);
         Double_t err2=0.06;
-        looseSR_tt->SetBinError( i,TMath::Sqrt(TMath::Power(err1,2)+TMath::Power(err2,2))*looseSR_tt->GetBinContent(i) );
+        tightSR_alt->SetBinError( i,TMath::Sqrt(TMath::Power(err1,2)+TMath::Power(err2,2))*tightSR_alt->GetBinContent(i) );
       }
     }    
   }
@@ -164,23 +162,25 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
         looseSR->SetBinError( i,TMath::Sqrt(TMath::Power(err1,2)+TMath::Power(err2,2))*looseSR->GetBinContent(i) );
       }
     }
-    for(int i=1; i<looseSR_tt->GetNbinsX();i++){
-      if(looseSR_tt->GetBinContent(i) > 1){
-        Double_t err1=looseSR_tt->GetBinError(i)/looseSR_tt->GetBinContent(i);
+    for(int i=1; i<tightSR_alt->GetNbinsX();i++){
+      if(tightSR_alt->GetBinContent(i) > 1){
+        Double_t err1=tightSR_alt->GetBinError(i)/tightSR_alt->GetBinContent(i);
         Double_t err2=0.02;
-        looseSR_tt->SetBinError( i,TMath::Sqrt(TMath::Power(err1,2)+TMath::Power(err2,2))*looseSR_tt->GetBinContent(i) );
+        tightSR_alt->SetBinError( i,TMath::Sqrt(TMath::Power(err1,2)+TMath::Power(err2,2))*tightSR_alt->GetBinContent(i) );
       }
     }    
   }
   tightSR->Write();
   looseSR->Write();
-  looseSR_tt->Write();
+  tightSR_alt->Write();
   allSR->Write();
   f.Close();
 
-  delete tightSR;delete looseSR;delete looseSR_tt;delete allSR;
+  delete tightSR;delete looseSR;delete tightSR_alt;delete allSR;
   delete tchain;delete event_s;
 }
+
+
 
 void TSelectionAnalyzer::getCRHisto(TString preselection,Int_t mode,TString output)
 {
@@ -189,42 +189,42 @@ void TSelectionAnalyzer::getCRHisto(TString preselection,Int_t mode,TString outp
   std::cout << "In TSelectionanalyzer::getCRHisto , producing " << output << std::endl;
 
   const Int_t FI=1;
-  TH1D* tightCR,*looseCR,*looseCR_tt,*allCR;
+  TH1D* tightCR,*looseCR,*tightSR_alt,*allCR;
   if (mode & MT) {
     tightCR = new TH1D("hh_t_mt","",FI*nbins_mt,hist_min_mt,hist_max_mt);
     looseCR = new TH1D("hh_l_mt","",FI*nbins_mt,hist_min_mt,hist_max_mt);
-    looseCR_tt = new TH1D("hh_ltt_mt","",FI*nbins_mt,hist_min_mt,hist_max_mt);
+    tightSR_alt = new TH1D("hh_t_alt_mt","",FI*nbins_mt,hist_min_mt,hist_max_mt);
     allCR   = new TH1D("hh_a_mt","",FI*nbins_mt,hist_min_mt,hist_max_mt);
   }
   else if (mode & MVIS) {
     tightCR = new TH1D("hh_t_mvis","",w_mvis_n,w_mvis_v);
     looseCR = new TH1D("hh_l_mvis","",w_mvis_n,w_mvis_v);
-    looseCR_tt = new TH1D("hh_ltt_mvis","",w_mvis_n,w_mvis_v);
+    tightSR_alt = new TH1D("hh_t_alt_mvis","",w_mvis_n,w_mvis_v);
     allCR   = new TH1D("hh_a_mvis","",w_mvis_n,w_mvis_v);
   }
   else if (mode & PT) {
     tightCR = new TH1D("hh_t_pt","",FI*nbins_pt,hist_min_pt,hist_max_pt);
     looseCR = new TH1D("hh_l_pt","",FI*nbins_pt,hist_min_pt,hist_max_pt);
-    looseCR_tt = new TH1D("hh_ltt_pt","",FI*nbins_pt,hist_min_pt,hist_max_pt);
+    tightSR_alt = new TH1D("hh_t_alt_pt","",FI*nbins_pt,hist_min_pt,hist_max_pt);
     allCR   = new TH1D("hh_a_pt","",FI*nbins_pt,hist_min_pt,hist_max_pt);
   }
   else if (mode & MUISO) {
     tightCR = new TH1D("hh_t_muiso","",w_muiso_n,w_muiso_v);
     looseCR = new TH1D("hh_l_muiso","",w_muiso_n,w_muiso_v);
-    looseCR_tt = new TH1D("hh_ltt_muiso","",w_muiso_n,w_muiso_v);
+    tightSR_alt = new TH1D("hh_t_alt_muiso","",w_muiso_n,w_muiso_v);
     allCR   = new TH1D("hh_a_muiso","",w_muiso_n,w_muiso_v);
   }
-  else if (mode & ZPT) {
-    tightCR = new TH1D("hh_t_zpt","",w_zpt_n,w_zpt_v);
-    looseCR = new TH1D("hh_l_zpt","",w_zpt_n,w_zpt_v);
-    looseCR_tt = new TH1D("hh_ltt_zpt","",w_zpt_n,w_zpt_v);
-    allCR   = new TH1D("hh_a_zpt","",w_zpt_n,w_zpt_v);
+  else if (mode & LEPPT) {
+    tightCR = new TH1D("hh_t_lepPt","",FI*nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+    looseCR = new TH1D("hh_l_lepPt","",FI*nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+    tightSR_alt = new TH1D("hh_t_alt_lepPt","",FI*nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+    allCR   = new TH1D("hh_a_lepPt","",FI*nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
   }
   else {
     std::cout<<"ERROR: no valid mode given. Exiting TNtupleAnalyzer::getCRHisto..."<<std::endl;
     return;
   }
-  Int_t ct=0,cl=0,cltt=0;
+  Int_t ct=0,cl=0,ct_alt=0;
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
   if (DEBUG) std::cout<<"The input chain contains: "<<nentries<<" events."<<std::endl;
   Double_t fillVal;
@@ -242,24 +242,24 @@ void TSelectionAnalyzer::getCRHisto(TString preselection,Int_t mode,TString outp
 	cl++;
 	looseCR->Fill(fillVal,event_s->weight_sf); 
       }
-      if (this->isLoose_tt()) {
-	cltt++;
-	looseCR_tt->Fill(fillVal,event_s->weight_sf); 
+      if (this->isTight_alt()) {
+	ct_alt++;
+	tightSR_alt->Fill(fillVal,event_s->weight_sf); 
       }
     }
   }
   if (DEBUG) std::cout<<cl<<" loose"<<std::endl;
   if (DEBUG) std::cout<<ct<<" tight"<<std::endl;
-  if (DEBUG) std::cout<<cltt<<" loose tt"<<std::endl;
+  if (DEBUG) std::cout<<ct_alt<<" tight alt"<<std::endl;
 
   TFile f1(output,"recreate");
   tightCR->Write();
   looseCR->Write();
-  looseCR_tt->Write();
+  tightSR_alt->Write();
   allCR->Write();
   f1.Close();
 
-  delete tightCR;delete looseCR;delete looseCR_tt;delete allCR;
+  delete tightCR;delete looseCR;delete tightSR_alt;delete allCR;
   //  delete event_s;delete tchain;
 }
 

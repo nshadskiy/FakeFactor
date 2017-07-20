@@ -30,10 +30,14 @@ public :
    Int_t           passes3LVeto;
    Int_t           passesDLVeto;
    Double_t        bpt_1;
+   Double_t        bpt_2;
    Int_t           njets;
+   Int_t           njetingap20;
    Int_t           nbtag;
    Double_t        mjj;
    Double_t        jdeta;
+   Double_t        mvamet;
+   Double_t        met;
    Double_t        m_leplep;
    Double_t        lep_dR;
    Double_t        mt_leplep;
@@ -43,8 +47,12 @@ public :
    Double_t        otherLep_iso;
    Double_t        lep_pt;
    Double_t        lep_eta;
+   Double_t        lep_phi;
    Int_t           lep_q;
    Double_t        lep_iso;
+   Double_t        lep_vloose;
+   Double_t        lep_loose;
+   Double_t        lep_medium;
    Int_t           n_iso_lep;
    Int_t           n_iso_otherLep;
    std::vector<double>  *alltau_pt;
@@ -66,6 +74,7 @@ public :
    std::vector<double>  *alltau_dRToB;
    std::vector<double>  *alltau_mvis;
    std::vector<double>  *alltau_mt;
+   std::vector<double>  *alltau_mt2;
    std::vector<double>  *alltau_svfit;
    std::vector<double>  *alltau_Zpt;
    Int_t           tau_iso_ind;
@@ -77,9 +86,13 @@ public :
    TBranch        *b_passes3LVeto;   //!
    TBranch        *b_passesDLVeto;   //!
    TBranch        *b_bpt_1;   //!
+   TBranch        *b_bpt_2;   //!
    TBranch        *b_njets;   //!
+   TBranch        *b_njetingap20;   //!
    TBranch        *b_nbtag;   //!
    TBranch        *b_mjj;   //!
+   TBranch        *b_mvamet;   //!
+   TBranch        *b_met;   //!
    TBranch        *b_jdeta;   //!
    TBranch        *b_m_leplep;   //!
    TBranch        *b_lep_dR;   //!
@@ -90,8 +103,12 @@ public :
    TBranch        *b_otherLep_iso;   //!
    TBranch        *b_lep_pt;   //!
    TBranch        *b_lep_eta;   //!
+   TBranch        *b_lep_phi;   //!
    TBranch        *b_lep_q;   //!
    TBranch        *b_lep_iso;   //!
+   TBranch        *b_lep_vloose;   //!
+   TBranch        *b_lep_loose;   //!
+   TBranch        *b_lep_medium;   //!
    TBranch        *b_n_iso_lep;   //!
    TBranch        *b_n_iso_otherLep;   //!
    TBranch        *b_alltau_pt;   //!
@@ -113,6 +130,7 @@ public :
    TBranch        *b_alltau_dRToB;   //!
    TBranch        *b_alltau_mvis;   //!
    TBranch        *b_alltau_mt;   //!
+   TBranch        *b_alltau_mt2;   //!
    TBranch        *b_alltau_svfit;   //!
    TBranch        *b_alltau_Zpt;   //!
    TBranch        *b_tau_iso_ind;   //!
@@ -201,6 +219,7 @@ void SignalClass::Init(TTree *tree)
    alltau_dRToB = 0;
    alltau_mvis = 0;
    alltau_mt = 0;
+   alltau_mt2 = 0;
    alltau_svfit = 0;
    alltau_Zpt = 0;
    // Set branch addresses and branch pointers
@@ -215,9 +234,13 @@ void SignalClass::Init(TTree *tree)
    fChain->SetBranchAddress("passes3LVeto", &passes3LVeto, &b_passes3LVeto);
    fChain->SetBranchAddress("passesDLVeto", &passesDLVeto, &b_passesDLVeto);
    fChain->SetBranchAddress("bpt_1", &bpt_1, &b_bpt_1);
+   fChain->SetBranchAddress("bpt_2", &bpt_2, &b_bpt_2);
    fChain->SetBranchAddress("njets", &njets, &b_njets);
    fChain->SetBranchAddress("nbtag", &nbtag, &b_nbtag);
+   fChain->SetBranchAddress("njetingap20", &njetingap20, &b_njetingap20);
    fChain->SetBranchAddress("mjj", &mjj, &b_mjj);
+   fChain->SetBranchAddress("mvamet", &mvamet, &b_mvamet);
+   fChain->SetBranchAddress("met", &met, &b_met);
    fChain->SetBranchAddress("jdeta", &jdeta, &b_jdeta);
    fChain->SetBranchAddress("m_leplep", &m_leplep, &b_m_leplep);
    fChain->SetBranchAddress("lep_dR", &lep_dR, &b_lep_dR);
@@ -228,8 +251,12 @@ void SignalClass::Init(TTree *tree)
    fChain->SetBranchAddress("otherLep_iso", &otherLep_iso, &b_otherLep_iso);
    fChain->SetBranchAddress("lep_pt", &lep_pt, &b_lep_pt);
    fChain->SetBranchAddress("lep_eta", &lep_eta, &b_lep_eta);
+   fChain->SetBranchAddress("lep_phi", &lep_phi, &b_lep_phi);
    fChain->SetBranchAddress("lep_q", &lep_q, &b_lep_q);
    fChain->SetBranchAddress("lep_iso", &lep_iso, &b_lep_iso);
+   fChain->SetBranchAddress("lep_vloose", &lep_vloose, &b_lep_vloose);
+   fChain->SetBranchAddress("lep_loose", &lep_loose, &b_lep_loose);
+   fChain->SetBranchAddress("lep_medium", &lep_medium, &b_lep_medium);   
    fChain->SetBranchAddress("n_iso_lep", &n_iso_lep, &b_n_iso_lep);
    fChain->SetBranchAddress("n_iso_otherLep", &n_iso_otherLep, &b_n_iso_otherLep);
    fChain->SetBranchAddress("alltau_pt", &alltau_pt, &b_alltau_pt);
@@ -251,6 +278,7 @@ void SignalClass::Init(TTree *tree)
    fChain->SetBranchAddress("alltau_dRToB", &alltau_dRToB, &b_alltau_dRToB);
    fChain->SetBranchAddress("alltau_mvis", &alltau_mvis, &b_alltau_mvis);
    fChain->SetBranchAddress("alltau_mt", &alltau_mt, &b_alltau_mt);
+   fChain->SetBranchAddress("alltau_mt2", &alltau_mt2, &b_alltau_mt2);
    fChain->SetBranchAddress("alltau_svfit", &alltau_svfit, &b_alltau_svfit);
    fChain->SetBranchAddress("alltau_Zpt", &alltau_Zpt, &b_alltau_Zpt);
    fChain->SetBranchAddress("tau_iso_ind", &tau_iso_ind, &b_tau_iso_ind);

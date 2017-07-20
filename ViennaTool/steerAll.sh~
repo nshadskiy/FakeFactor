@@ -1,7 +1,0 @@
-#!/bin/bash
-
-echo "Compiling the framework"
-cd ../
-make -B
-cd ViennaTool
-./test
