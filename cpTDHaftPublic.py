@@ -69,7 +69,7 @@ class CMCHandler():
             for cat in self.altcats:
                 if not os.path.exists( self.dest+cat+'/pieces'):
                     os.makedirs( self.dest+cat+'/pieces')
-        elif not os.path.exists(self.dest):
+        elif not os.path.exists(self.dest,exist_ok=True):
             os.makedirs( self.dest )
             for cat in self.cats:
                 os.makedirs( self.dest+cat+'/pieces')
