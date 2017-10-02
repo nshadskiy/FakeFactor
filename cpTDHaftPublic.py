@@ -268,7 +268,5 @@ if __name__ == '__main__':
     ch.copyFFinput()
     ch.copyFFfrac()
     ch.copyFFcorrections()
-
-
-
-
+    
+    

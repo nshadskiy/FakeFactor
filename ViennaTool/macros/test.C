@@ -5,7 +5,7 @@ using namespace std;
 
 void test(){
 
-  TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170628_tight/mt/inclusive/fakeFactors_20170628_tight.root";
+  TString fname="/afs/hephy.at/user/f/fspreitzer/public/Htautau/FakeRate2016/20170718/tt/inclusive/fakeFactors_tt_inclusive.root";
   //TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170718/mt/inclusive/fakeFactors_mt_inclusive.root";
   //TString fname="/afs/hephy.at/work/j/jbrandstetter/cmssw/CMSSW_8_0_20/src/HTTutilities/Jet2TauFakes/data/mt/boosted/fakeFactors_20170228.root";
   //TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170217_MC/mt/incl/fakeFactors_20170217_MC.root";

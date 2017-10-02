@@ -1,6 +1,6 @@
 #!/bin/bash
-user=whoami
-fftype=fftype
+user=fspreitzer
+fftype=FakeFactor_2016_MSSM_preapproval_dev
 
 line=" --------------------------------------------------------------------------------------"
 echo $line

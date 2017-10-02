@@ -4,12 +4,13 @@
 #define kEL          1
 #define kTAU         2
 ///////////////////////////////////////////////////
-#define selCHAN      kTAU
-const int CHAN     = kTAU;
+#define selCHAN      kEL
+const int CHAN     = kEL;
 const TString analysis      ="FakeFactor_2016_MSSM_preapproval_dev";
-const TString output_folder ="/public/Htautau/FakeRate2016/20170718/";
+const TString output_folder ="public/Htautau/FakeRate/2016/20170718";
+const TString DC_folder     ="/afs/hephy.at/work/f/fspreitzer/DC_test/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data";
 ///////////////////////////////////////////////////
-const TString user="whoami";
+const TString user="fspreitzer";
 const Double_t luminosity=35.9; 
 const int use_svfit = 0;
 const TString ver = "v16";

@@ -9,7 +9,20 @@ parser.add_argument('--input', dest = 'indir', help='Input directory - full stri
 args = parser.parse_args()
 
 channel=args.channel
+
+isolation = ""
+
+if(channel == "mt" or channel == "et"):
+	isolation = "tight"
+elif(channel == "tt"):
+	isolation = "medium"
+
+
 indir=args.indir
+
+date = indir[-8:]
+    
+
 FFtype=""
 #FFtype="_alt"
 categories = ['inclusive', 'btag', 'nobtag']
@@ -668,9 +681,7 @@ for category in categories:
     fill(ff_comb, comb_qcd_up_stat_dm1_njet1,   sys='ff_qcd_dm1_njet1_stat_up')
     fill(ff_comb, comb_qcd_down_stat_dm1_njet1,   sys='ff_qcd_dm1_njet1_stat_down')
     
-    
-    
-    file = ROOT.TFile.Open("{INDIR}/{CHANNEL}/{CATEGORY}/fakeFactors_{CHANNEL}_{CATEGORY}.root".format(INDIR=indir,CHANNEL=channel,CATEGORY=category), "recreate")
+    file = ROOT.TFile.Open("{INDIR}/{CHANNEL}/{CATEGORY}/fakeFactors_{DATE}_{ISOLATION}.root".format(INDIR=indir,CHANNEL=channel,CATEGORY=category, DATE=date, ISOLATION=isolation), "recreate")
     # Write meta-data
     # Write fake factors
     file.WriteObject(ff_qcd_os.fakefactor  , "ff_qcd_os")
