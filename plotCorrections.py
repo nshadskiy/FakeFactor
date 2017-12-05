@@ -7,7 +7,8 @@ if __name__ == '__main__':
      parser.add_argument('--channel', dest = 'channel', help='Channel to plot: mt,et,tt', type=str, metavar = 'TAG', required = True)
      args = parser.parse_args()
     
-     preliminary = 'Supplementary'
+     preliminary = 'Preliminary'
+     supplementary = 'Supplimentary'
      
      files_mt = [#{'name': 'ViennaTool/fakefactor/data_mt/FF_corr_QCD_MCsum_noGen_nonclosure.root','data':'nonclosure_fit', 'graph':'nonclosure_QCD','CMS':preliminary,'Y':[0,2],'X':[0,305], 'Label':'m_{vis} (GeV)','file':'nonclosure_QCD','plotLabel1':'#mu^{}#tau_{h} QCD multijet','plotLabel2':'Nonclosure correction'},
               #{'name': 'ViennaTool/fakefactor/data_mt/FF_corr_QCD_MCsum_noGen_muisocorr.root','data':'muiso_corr', 'graph':'muiso_QCD','CMS':preliminary,'Y':[0.4,1.3],'X':[0,0.71], 'Label':'iso(#mu)','file':'muisocorr_QCD','plotLabel1':'#mu^{}#tau_{h} QCD multijet','plotLabel2':'Iso(#mu) correction'},
@@ -61,7 +62,9 @@ if __name__ == '__main__':
           
           datapoints = file.Get(el['data'])
           graph = file.Get(el['graph'])
+          canvas2 = R.TCanvas('new2','test2',800,800)
           canvas = R.TCanvas('new','test',800,800)
+          canvas.cd()
           R.gPad.SetBottomMargin(0.15)
           R.gPad.SetLeftMargin(0.15)
           graph.SetLineWidth(2)
@@ -105,6 +108,7 @@ if __name__ == '__main__':
           
           cms1 = R.TLatex( 0.16, 0.915, "CMS" )
           cms2 = R.TLatex( 0.298, 0.915, el['CMS'] )
+          cms2b = R.TLatex( 0.298, 0.915, el['CMS'].replace(preliminary,supplementary) )
           cms1.SetNDC();
           cms1.SetTextFont(62);
           cms1.SetTextSize(0.06);
@@ -118,6 +122,9 @@ if __name__ == '__main__':
           cms2.SetNDC();
           cms2.SetTextFont(52)
           cms2.SetTextSize(0.05);
+          cms2b.SetNDC();
+          cms2b.SetTextFont(52)
+          cms2b.SetTextSize(0.05);
 
           cms3 = R.TLatex( 0.19,0.86, el['plotLabel1'])
           cms3.SetNDC()
@@ -136,7 +143,7 @@ if __name__ == '__main__':
           cms3.Draw()
           cms4.Draw()
           leg.Draw("same")
-          if( 'Simulation' in el['CMS'] ): cms2.Draw()
+          #if( 'Simulation' in el['CMS'] ): cms2.Draw()
           R.gPad.RedrawAxis()
           R.gPad.Modified()
           l=R.TLine()
@@ -144,11 +151,24 @@ if __name__ == '__main__':
           l.DrawLine(el['X'][1], el['Y'][0], el['X'][1], el['Y'][1] );
           if(el['CMS']==preliminary): infoRight.Draw()
           name = el['name'].split('/')[-1]
-          canvas.Print( 'ViennaTool/Images/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'.png' )
-          canvas.Print( 'ViennaTool/Images/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'.pdf' )
-          cms2.Draw()
-          canvas.Print( 'ViennaTool/Images/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'_preliminary.png' )
-          canvas.Print( 'ViennaTool/Images/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'_preliminary.pdf' )
+
+          ############################################################
+          ##
+          canvas2.cd();
+          canvas.DrawClonePad();
+          canvas.cd();
+          ############################################################
+          for i in range(0,2):
+               if(i==0):
+                    cms2.Draw()
+                    canvas.Print( 'ViennaTool/Images/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'_preliminary.png' )
+                    canvas.Print( 'ViennaTool/Images/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'_preliminary.pdf' )
+               if(i==1):
+                    canvas2.cd()
+                    cms2b.Draw()
+                    canvas2.Print( 'ViennaTool/Images/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'.png' )
+                    canvas2.Print( 'ViennaTool/Images/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'.pdf' )
+          
           #canvas.Print( 'tt/' + el['file'] + '.root')
 
 

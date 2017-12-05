@@ -105,7 +105,9 @@ void PlotterClass::plotPieFractions_mutau_etau(TString channel, TString outfile,
 
   cpie->cd();
   TLatex cms1 = TLatex( 0.05, 0.955, "CMS" );
-  TLatex cms2 = TLatex( 0.183, 0.955, "Preliminary" );
+  TString caption = "Supplementary";
+  if(preliminary) caption = "Preliminary";
+  TLatex cms2 = TLatex( 0.183, 0.955, caption );
   //TLatex cms2 = TLatex( 0.183, 0.955, "Supplementary" );
   cms1.SetNDC();
   cms1.SetTextSize(0.055);

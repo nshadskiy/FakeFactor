@@ -145,6 +145,7 @@ void fitFakeFactors(){
           }
 
           TCanvas *c2=new TCanvas("new","FFfit",800,800);
+          TCanvas *c3=new TCanvas("new2","FFfit2",800,800);
           c2->cd();
           c2->SetLogx();
           gStyle->SetOptStat(0);
@@ -231,12 +232,13 @@ void fitFakeFactors(){
           //l2.DrawLatex(0.16,0.85,channel);
 
           TLatex cms1 = TLatex( 0.19, 0.838, "CMS" );
-          TString preliminary; Double_t yvalue = 0.78;
-          //if( modes.at(imode) & _TT ) {preliminary="#splitline{Simulation}{Preliminary}"; yvalue=0.765;}
-          //else preliminary="Preliminary";
-          if( modes.at(imode) & _TT ) {preliminary="#splitline{Simulation}{Supplementary}"; yvalue=0.765;}
-          else preliminary="Supplementary";
-          TLatex cms2 = TLatex( 0.19, yvalue, preliminary );
+          TString preliminary; TString paper; Double_t yvalue = 0.78;          
+          if( modes.at(imode) & _TT ) {paper="#splitline{Simulation}{Supplementary}"; yvalue=0.765;}
+          else paper="Supplementary";
+          if( modes.at(imode) & _TT ) {preliminary="#splitline{Simulation}{Preliminary}"; yvalue=0.765;}
+          else preliminary="Preliminary";
+          TLatex cms2 = TLatex( 0.19, yvalue, paper );
+          TLatex cms3 = TLatex( 0.19, yvalue, preliminary );
           cms1.SetNDC();
           cms1.SetTextSize(0.06);
           cms1.SetTextFont(62);
@@ -244,6 +246,10 @@ void fitFakeFactors(){
           cms2.SetTextFont(12);
           cms2.SetTextSize(0.05);
           cms2.SetTextFont(52);
+          cms3.SetNDC();
+          cms3.SetTextFont(12);
+          cms3.SetTextSize(0.05);
+          cms3.SetTextFont(52);
           
           TLatex infoRight = TLatex( 0.665, 0.915, "35.9 fb^{-1} (13 TeV)" );
           infoRight.SetNDC();
@@ -264,15 +270,30 @@ void fitFakeFactors(){
           if(CHAN==kMU) convertChannel<<"_mt"; if(CHAN==kEL) convertChannel<<"_et"; if(CHAN==kTAU) convertChannel<<"_tt"; 
           ending=ending+convert.str()+convertChannel.str();
           gPad->RedrawAxis();
-          c2->SaveAs(pi+"pTfit"+ending+".png");
-          if(ALLPLOTS) c2->SaveAs(pi+"pTfit"+ending+".pdf");
 
-          
-          TString preString = "_preliminary";
-          cms2.Draw();
-          c2->SaveAs(pi+"pTfit"+ending+preString+".png");
-          if(ALLPLOTS) c2->SaveAs(pi+"pTfit"+ending+preString+".pdf");
+          ////////////////////////////////////////////////////////
+          //Cloning canvas to be able to write different levels
+          c3->cd();
+          c3->SetLogx();
+          c2->DrawClonePad();
+          c2->cd();
+          ////////////////////////////////////////////////////////
+          for(int scenario=0; scenario<2; scenario++){
+            if(scenario==0){
+              cms2.Draw();
+              c2->SaveAs(pi+"pTfit"+ending+".png");
+              if(ALLPLOTS) c2->SaveAs(pi+"pTfit"+ending+".pdf");
+            }
+            if(scenario==1){
+              TString preString = "_preliminary";
+              c3->cd();
+              cms3.Draw();
+              c3->SaveAs(pi+"pTfit"+ending+preString+".png");
+              if(ALLPLOTS) c3->SaveAs(pi+"pTfit"+ending+preString+".pdf");
+            }
+          }
 
+          c2->cd();
           cf.set_fitFromBin( 1+cat*nbins );
           cf.set_fitMin( fitMin );
           cf.set_fitMax( fitMax );
@@ -298,6 +319,7 @@ void fitFakeFactors(){
           g_fit->Write();
           
           delete g_fit_input,f_fit;
+          delete c2,c3;
         
         
         }
