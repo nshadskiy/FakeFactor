@@ -133,7 +133,7 @@ void GaussianKernelSmoother::getContSmoothHisto(){
 
   if ( fabs(mini)<1e-8 ) mini = this->h_in->GetXaxis()->GetBinUpEdge(1)/10.;
 
-  const int nbins = 500;
+  const int nbins = 2000;
   double bins[nbins+1]={0};
   double xs[nbins]={0};
   double ys[nbins]={0};

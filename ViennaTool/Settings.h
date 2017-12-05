@@ -39,6 +39,7 @@ const int requireGenMatch_whenCalcFF=0; //0 as default
 const int useDYFF_forTT=0; //0 as default
 const int useWJFF_forDY=0; //1 as default
 const int doCalcWeights=1; //calc fractions
+const int makePieCharts=1;
 const int doTemplateFitForWeights=0; //template fit for fractions, default: 0
 const int doCalc=1; //calc FFs
 //////////////////////////////////////////////////

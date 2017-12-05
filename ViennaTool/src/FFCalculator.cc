@@ -134,7 +134,7 @@ FFCalculator::~FFCalculator()
 {
 }
 
-void FFCalculator::calcFFweights(const TString data_file, const std::vector<TString> weight_files, const std::vector<TString> presel_files, const TString m_path_img, const TString m_path_w, const TString tf_name, Int_t inclusive, Int_t mode)
+void FFCalculator::calcFFweights(const TString data_file, const std::vector<TString> weight_files, const std::vector<TString> presel_files, Float_t *yields, const TString m_path_img, const TString m_path_w, const TString tf_name, Int_t inclusive, Int_t mode)
 {
   std::cout << "In calcFFweights" << std::endl;
 
@@ -259,7 +259,7 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
     ft->Close();
     ft_tt->Close();
 
-    this->calcWeightFromFit(tf_name,m_path_img,m_path_w,"",inclusive,mode);
+    this->calcWeightFromFit(tf_name,m_path_img,m_path_w,"",yields,inclusive,mode);
     //if(CHAN==kTAU)this->calcWeightFromFit(tf_name_tt,m_path_img,m_path_w,"_vlooseAntiIso",mode); //might be interesting for other channels as well
 
   } else{     //do weights from MC, and QCD=data-rest MC
@@ -363,7 +363,7 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
 } //end of calcFFweights
 
 //can also be called from external
-void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_img, const TString m_path_w, const TString isolation, Int_t inclusive, Int_t mode){
+void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_img, const TString m_path_w, const TString isolation, Float_t *yields, Int_t inclusive, Int_t mode){
 
   TString m_data="h_template_data";
   if(!DOQCD) m_data="h_template_woQCDdata";
@@ -455,7 +455,23 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
     //    if (i==1) htmp->Scale(3); //test...
     h_templates.push_back(htmp);
   }
-  //add one more template: sum of all remaining processes
+
+  
+  for (int i=0; i<NW-1; i++){
+    htmp=(TH1D*) f.Get(m_used[i]);
+    if(m_used[i].Contains("qcd")){
+      htmp=(TH1D*) f.Get("h_template_QCD_rest");
+    }
+    yields[i] = htmp->Integral();
+  }
+  
+  yields[4] = h_rest->Integral();
+
+  
+  
+
+  ///////////////////////////////////////////////////////////////
+  
   int NBINS=0;
   for (int i=0; i<NSUM; i++){
     htmp=(TH1D*) f.Get(m_sum[i]);
@@ -1365,7 +1381,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
       else{
         if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
           if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
-          else if( raw_ff.Contains("_fitted") ){
+          else if( raw_ff.Contains("_fitted") ){            
             FF_value = this->getFittedBinContent( mode, fittedFFs );
           }
           closure_h->Fill(event_s->alltau_mvis->at(tau_ind),FF_value*event_s->weight_sf );
@@ -1452,10 +1468,10 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   TGraphAsymmErrors *g=   gsk.returnSmoothedGraph();
 
   Double_t x185; Double_t y185;
-  g->GetPoint(185,x185,y185);
+  g->GetPoint(185*4,x185,y185);
   for(int i=0; i<g->GetN(); i++){
     Double_t x; Double_t y;
-    if(i>185){
+    if(i>185*4){
       g->GetPoint(i,x,y);
       g->SetPoint(i,x,y185);
     }
@@ -1653,10 +1669,10 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   TGraphAsymmErrors *g=   gsk.returnSmoothedGraph();
 
   Double_t xV; Double_t yV;
-  g->GetPoint(375,xV,yV);
+  g->GetPoint(375*4,xV,yV);
   for(int i=0; i<g->GetN(); i++){
     Double_t x; Double_t y;
-    if(i>375){
+    if(i>375*4){
       g->GetPoint(i,x,y);
       g->SetPoint(i,x,yV);
     }
@@ -1968,15 +1984,15 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
   TGraphAsymmErrors *g=   gsk.returnSmoothedGraph();
 
   Double_t x200; Double_t y200;
-  if(CHAN==kMU)g->GetPoint(180,x200,y200);
-  if(CHAN==kEL)g->GetPoint(110,x200,y200);
+  if(CHAN==kMU)g->GetPoint(180*4,x200,y200);
+  if(CHAN==kEL)g->GetPoint(110*4,x200,y200);
   for(int i=0; i<g->GetN(); i++){
     Double_t x; Double_t y;
-    if(CHAN==kMU && i>180){
+    if(CHAN==kMU && i>180*4){
       g->GetPoint(i,x,y);
       g->SetPoint(i,x,y200);
     }
-    else if(CHAN==kEL && i>110){
+    else if(CHAN==kEL && i>110*4){
       g->GetPoint(i,x,y);
       g->SetPoint(i,x,y200);
     }

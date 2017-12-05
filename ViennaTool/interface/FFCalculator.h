@@ -38,7 +38,7 @@ class FFCalculator : public GlobalClass, public PlotterClass{
                   );
   ~FFCalculator();
 
-  void calcWeightFromFit(const TString fname, const TString m_path_img, const TString m_path_w, const TString isolation, Int_t inclusive=1, Int_t mode=0);
+  void calcWeightFromFit(const TString fname, const TString m_path_img, const TString m_path_w, const TString isolation, Float_t *yields, Int_t inclusive=1, Int_t mode=0);
   Int_t doTemplateFit(const TH1D *data, const std::vector<TH1D*> templates, const TString output_path, std::vector<TH1D*> &res, TH1D* &res_data, const Int_t mode);
   void calcFFCorr(const Int_t mode, const TString pre_main, const std::vector<TString> pre_sub, const TString FF_file, const TString weight_file="", const Int_t cuts=0);
   TH1D* setCorrValue(const TString fname, const TString hname);
@@ -50,7 +50,7 @@ class FFCalculator : public GlobalClass, public PlotterClass{
   void initCorrFit(const TString filename[NB_MTCORR], const TString plotfilename[NB_MTCORR], const TString formfilename="");
   void doCorrFit(const TString filename, const TString plotfilename, Double_t &m_corr_d, Double_t &m_corr_k, Double_t &m_corr_d_err, Double_t &m_corr_k_err, Double_t &m_corr_SSxxOverN, Double_t &m_corr_avg_x);
   
-  void calcFFweights(const TString data_file, const std::vector<TString> weight_files, const std::vector<TString> presel_files, const TString m_path_img, const TString m_path_w="", const TString template_file="", Int_t inclusive=1, Int_t mode=0);
+  void calcFFweights(const TString data_file, const std::vector<TString> weight_files, const std::vector<TString> presel_files, Float_t *yields, const TString m_path_img, const TString m_path_w="", const TString template_file="", Int_t inclusive=1, Int_t mode=0);
 
   //void applyFF(TString outfile, const std::vector<Int_t> mode, const Int_t categoryMode, TString fname=FF_inputFile, const Int_t cuts=0 );
   void getInputs(std::vector<double>&inputs, Int_t ind);

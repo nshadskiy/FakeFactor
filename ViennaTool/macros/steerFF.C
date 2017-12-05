@@ -61,9 +61,11 @@ void CalcFF() {
   std::vector<TString> pre_sub_qcd;
   pre_sub_qcd.push_back(preselection_DY); pre_sub_qcd.push_back(preselection_Wjets); pre_sub_qcd.push_back(preselection_TT); if(useVV) {pre_sub_qcd.push_back(preselection_VV);}
 
+  Float_t yields[5];
+  Float_t combinedYields[20];
   if(doCalcWeights && !CALC_SS_SR){
     cout << endl << "################### Calculating FF weights  ###############" << endl << endl;
-    if(inclusive_selection) Analyzer->calcFFweights(m_preselection_data,wf, ps, pi, p, p+template_file_name);
+    if(inclusive_selection) Analyzer->calcFFweights(m_preselection_data,wf, ps, yields, pi, p, p+template_file_name);
     if(exclusive_selection){
       for(Int_t icat=0;icat<nCAT;icat++){
         if(CHAN==kTAU && icat>2) continue;
@@ -76,15 +78,52 @@ void CalcFF() {
         ps.push_back(preselection_DY_TT); ps.push_back(preselection_DY_L); ps.push_back(preselection_TT_T); ps.push_back(preselection_TT_L);
         if(useVV) {ps.push_back(preselection_VV_T); ps.push_back(preselection_VV_L);}
         //for(Int_t ips=0; ips<ps.size();ips++) ps.at(ips).ReplaceAll( ".root",categories[icat]+".root" );
-        Analyzer->calcFFweights(m_preselection_data_tmp,wf, ps, pi, p, template_file_name_tmp, 0, catMode[icat]);
+        Analyzer->calcFFweights(m_preselection_data_tmp,wf, ps, yields, pi, p, template_file_name_tmp, 0, catMode[icat]);
+        if(CHAN!=kTAU){
+          if( catMode[icat] & _BTAG_TIGHT ){
+            for(int i=0;i<5;i++) combinedYields[i] = yields[i];
+          }
+          if( catMode[icat] & _BTAG_LOOSEMT ){
+            for(int i=0;i<5;i++) combinedYields[i+5] = yields[i];
+          }
+          if( catMode[icat] & _NOBTAG_TIGHT ){
+            for(int i=0;i<5;i++) combinedYields[i+10] = yields[i];
+          }
+          if( catMode[icat] & _NOBTAG_LOOSEMT ){
+            for(int i=0;i<5;i++) combinedYields[i+15] = yields[i];
+          }
+        }
+        else if(CHAN==kTAU){
+          if( catMode[icat] & _BTAG ){
+            for(int i=0;i<5;i++) combinedYields[i] = yields[i];
+          }
+          if( catMode[icat] & _NOBTAG ){
+            for(int i=0;i<5;i++) combinedYields[i+10] = yields[i];
+          }
+        }
       }
     }
   }
 
+  if( doCalcWeights && makePieCharts ){
+    if(CHAN==kMU){
+      Analyzer->plotPieFractions_mutau_etau( "mt", "ViennaTool/Images/data_mt/fractions_mt", 1, combinedYields);
+      Analyzer->plotPieFractions_mutau_etau( "mt", "ViennaTool/Images/data_mt/fractions_mt", 0, combinedYields);
+    }
+    if(CHAN==kEL){
+      Analyzer->plotPieFractions_mutau_etau( "et", "ViennaTool/Images/data_et/fractions_et", 1, combinedYields);
+      Analyzer->plotPieFractions_mutau_etau( "et", "ViennaTool/Images/data_et/fractions_et", 0, combinedYields);
+    }
+    if(CHAN==kTAU){
+      Analyzer->plotPieFractions_tautau( "tt", "ViennaTool/Images/data_tt/fractions_tt", 1, combinedYields);
+      Analyzer->plotPieFractions_tautau( "tt", "ViennaTool/Images/data_tt/fractions_tt", 0, combinedYields);
+    }
+  }
+  
   if(doCalcWeights && CALC_SS_SR){
     cout << endl << "################### Calculating SS FF weights  ###############" << endl << endl;
     TString template_file_name_tmp=template_file_name; template_file_name_tmp.ReplaceAll( ".root","_SS_SR.root" );
-    Analyzer->calcFFweights(m_preselection_data,wf,ps,pi,p,p+template_file_name_tmp);
+    Analyzer->calcFFweights(m_preselection_data,wf,ps,yields,pi,p,p+template_file_name_tmp);
     
   }
   

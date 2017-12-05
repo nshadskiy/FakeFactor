@@ -5,6 +5,232 @@
 
 using namespace std;
 
+void PlotterClass::plotPieFractions_mutau_etau(TString channel, TString outfile, Int_t preliminary, Float_t *yields){
+
+  Int_t nvals = 5;
+  
+  Float_t yields_btag_tight[nvals];
+  Float_t yields_btag_loosemt[nvals];
+  Float_t yields_nobtag_tight[nvals];
+  Float_t yields_nobtag_loosemt[nvals];
+  for(int i=0; i<5; i++) yields_btag_tight[i] = yields[i];
+  for(int i=0; i<5; i++) yields_btag_loosemt[i] = yields[i+5];
+  for(int i=0; i<5; i++) yields_nobtag_tight[i] = yields[i+10];
+  for(int i=0; i<5; i++) yields_nobtag_loosemt[i] = yields[i+15];
+  
+  Int_t colors[] = {TColor::GetColor(222,90,106),TColor::GetColor(250,202,253),TColor::GetColor(100,192,232),TColor::GetColor(155,152,204),TColor::GetColor(248,206,104)};
+  //Int_t colors[] = {TColor::GetColor(222,90,106),TColor::GetColor(222,90,106),TColor::GetColor(155,152,204),TColor::GetColor(100,192,232),TColor::GetColor(248,206,104)};
+  
+  cout << "Color Wjets: " << TColor::GetColor(222,90,106) << endl;
+  cout << "Color QCD: " << TColor::GetColor(250,202,253) << endl;
+  cout << "Color ZJ: " << TColor::GetColor(100,192,232) << endl;
+  cout << "Color ttbar: " << TColor::GetColor(155,152,204) << endl;
+  
+  const char *labels[5]={"W+jets","#splitline{QCD}{multijet}","Z+jets","t_{}#bar{t}","l,#tau_{h}#rightarrow #tau_{h}"};
+  const char *labels_nosplit[5]={"W+jets","QCD multijet","Z+jets","t_{}#bar{t}","l,#tau_{h}#rightarrow #tau_{h}"};
+  //const char *labels[5]={"W+jets","Multi-jet","Z+jets","t_{}#bar{t}","#splitline{#tau_{h}#rightarrow #tau_{h}}{ l#rightarrow #tau_{h}}"};
+
+  TCanvas *cpie = new TCanvas("cpie","TPie test",800,800);
+  //cpie->Divide(2,2)
+
+  TString channelstring;
+  if(channel=="mt") channelstring = "#mu^{}#tau_{h}";
+  if(channel=="et") channelstring = "e#tau_{h}";
+  TPad* gpie = new TPad("Graphs","Graphs",0.01,0.01,1.,1.);
+  gpie->Draw();
+  gpie->cd();
+  gpie->Divide(2,2);
+  TPie *pie1 = new TPie("pie1",
+                       "",nvals,yields_nobtag_tight,colors);
+  TPie *pie2 = new TPie("pie2",
+                       "",nvals,yields_btag_tight,colors);
+  TPie *pie3 = new TPie("pie3",
+                       "",nvals,yields_nobtag_loosemt,colors);
+  TPie *pie4 = new TPie("pie4",
+                       "",nvals,yields_btag_loosemt,colors);
+  gpie->cd(1);
+  pie1->SetTitle("");
+  //pie1->SetTitleBorderSize(0);
+  pie1->SetLabels(labels);
+  pie1->SetTextFont(42);
+  pie1->SetTextSize(0.04);
+  pie1->SetLabelsOffset(.015);
+  pie1->SetCircle(.47,.37,.3);
+  for(int i=0; i<5; i++) pie1->SetEntryLineWidth(i,1);  
+  pie1->Draw("s >");
+  TLatex title1 = TLatex( 0.05, 0.78, channelstring+" No B-tag Tight-^{}m_{T}" );
+  title1.SetNDC();
+  //title1.SetTextFont(42);
+  title1.SetTextSize(0.045);
+  title1.Draw();
+  gpie->cd(2);
+  //pie2->SetTitle("#mu#tau B-tag Low-m_{T}");
+  pie2->SetLabels(labels_nosplit);
+  pie2->SetTextFont(42);
+  pie2->SetTextSize(0.04);
+  pie2->SetLabelsOffset(.015);
+  pie2->SetCircle(.47,.37,.3);
+  for(int i=0; i<5; i++) pie2->SetEntryLineWidth(i,1);  
+  pie2->Draw("s >");
+  TLatex title2 = TLatex( 0.05, 0.78, channelstring+" B-tag Tight-^{}m_{T}" );
+  title2.SetNDC();
+  title2.SetTextSize(0.045);
+  title2.Draw();
+  gpie->cd(3);
+  //pie3->SetTitle("#mu#tau No B-tag High-m_{T}");
+  pie3->SetLabels(labels_nosplit);
+  pie3->SetTextFont(42);
+  pie3->SetTextSize(0.04);
+  pie3->SetLabelsOffset(.015);
+  pie3->SetCircle(.47,.37,.3);
+  for(int i=0; i<5; i++) pie3->SetEntryLineWidth(i,1);  
+  pie3->Draw("s >");
+  TLatex title3 = TLatex( 0.05, 0.78, channelstring+" No B-tag Loose-^{}m_{T}" );
+  title3.SetNDC();
+  title3.SetTextSize(0.045);
+  title3.Draw();
+  gpie->cd(4);
+  //pie4->SetTitle("#mu#tau B-tag High-m_{T}");
+  pie4->SetLabels(labels_nosplit);
+  pie4->SetTextFont(42);
+  pie4->SetTextSize(0.04);
+  pie4->SetLabelsOffset(.015);
+  pie4->SetCircle(.47,.37,.3);
+  for(int i=0; i<5; i++) pie4->SetEntryLineWidth(i,1);  
+  pie4->Draw("s >");
+  TLatex title4 = TLatex( 0.05, 0.78, channelstring+" B-tag Loose-^{}m_{T}" );
+  title4.SetNDC();
+  title4.SetTextSize(0.045);
+  title4.Draw();
+
+  cpie->cd();
+  TLatex cms1 = TLatex( 0.05, 0.955, "CMS" );
+  TLatex cms2 = TLatex( 0.183, 0.955, "Preliminary" );
+  //TLatex cms2 = TLatex( 0.183, 0.955, "Supplementary" );
+  cms1.SetNDC();
+  cms1.SetTextSize(0.055);
+  cms2.SetNDC();
+  cms2.SetTextFont(52);
+  cms2.SetTextSize(0.047);
+  cms1.Draw();
+  if(preliminary) cms2.Draw();
+
+  TLatex infoRight = TLatex( 0.675, 0.955, "35.9 fb^{-1} (13 TeV)" );
+  infoRight.SetNDC();
+  infoRight.SetTextSize(0.035);
+  infoRight.SetTextFont(42);
+  infoRight.Draw();
+  
+  cpie->Draw();
+  TString preliminaryString="";
+  if(preliminary) preliminaryString= "_preliminary";
+  TString namestring=outfile+preliminaryString+".png";
+  cpie->SaveAs(namestring);
+  if (ALLPLOTS){
+    namestring.ReplaceAll( ".png", ".pdf");
+    cpie->SaveAs(namestring);
+  }
+  delete pie1; delete pie2; delete pie3; delete pie4;
+  delete cpie;
+  
+}
+
+void PlotterClass::plotPieFractions_tautau(TString channel, TString outfile, Int_t preliminary, Float_t *yields){
+
+  Int_t nvals = 5;
+  
+  Float_t yields_btag[nvals];
+  Float_t yields_nobtag[nvals];
+  for(int i=0; i<5; i++) yields_btag[i] = yields[i];
+  for(int i=0; i<5; i++) yields_nobtag[i] = yields[i+10];
+  
+  Int_t colors[] = {TColor::GetColor(222,90,106),TColor::GetColor(250,202,253),TColor::GetColor(155,152,204),TColor::GetColor(100,192,232),TColor::GetColor(248,206,104)};
+  //Int_t colors[] = {TColor::GetColor(222,90,106),TColor::GetColor(222,90,106),TColor::GetColor(155,152,204),TColor::GetColor(100,192,232),TColor::GetColor(248,206,104)};
+  
+  cout << "Color Wjets: " << TColor::GetColor(222,90,106) << endl;
+  cout << "Color QCD: " << TColor::GetColor(250,202,253) << endl;
+  cout << "Color ZJ: " << TColor::GetColor(155,152,204) << endl;
+  cout << "Color ttbar: " << TColor::GetColor(100,192,232) << endl;
+  
+  const char *labels_btag[5]={"W+jets","#splitline{QCD}{multijet}","#splitline{}{Z+jets}","t_{}#bar{t}","l,#tau_{h}#rightarrow #tau_{h}"};
+  const char *labels_nobtag[5]={"W+jets","#splitline{QCD}{multijet}","#splitline{}{Z+jets}","","l,#tau_{h}#rightarrow #tau_{h}"};
+  //const char *labels[5]={"W+jets","Multi-jet","Z+jets","t_{}#bar{t}","#splitline{#tau_{h}#rightarrow #tau_{h}}{ l#rightarrow #tau_{h}}"};
+
+  TCanvas *cpie = new TCanvas("cpie","TPie test",800,400);
+  //cpie->Divide(2,2)
+
+  TString channelstring = "#tau_{h}#tau_{h}";
+  TPad* gpie = new TPad("Graphs","Graphs",0.01,0.01,1.,1.);
+  gpie->Draw();
+  gpie->cd();
+  gpie->Divide(2,1);
+  TPie *pie1 = new TPie("pie1",
+                       "",nvals,yields_nobtag,colors);
+  TPie *pie2 = new TPie("pie2",
+                       "",nvals,yields_btag,colors);
+  
+  gpie->cd(1);
+  pie1->SetTitle("");
+  //pie1->SetTitleBorderSize(0);
+  pie1->SetLabels(labels_nobtag);
+  pie1->SetTextFont(42);
+  pie1->SetTextSize(0.04);
+  pie1->SetLabelsOffset(.015);
+  pie1->SetCircle(.47,.37,.3);
+  for(int i=0; i<5; i++) pie1->SetEntryLineWidth(i,1);  
+  pie1->Draw("s >");
+  TLatex title1 = TLatex( 0.05, 0.78, channelstring+" No B-tag" );
+  title1.SetNDC();
+  //title1.SetTextFont(42);
+  title1.SetTextSize(0.045);
+  title1.Draw();
+  gpie->cd(2);
+  //pie2->SetTitle("#mu#tau B-tag Low-m_{T}");
+  pie2->SetLabels(labels_btag);
+  pie2->SetTextFont(42);
+  pie2->SetTextSize(0.04);
+  pie2->SetLabelsOffset(.015);
+  pie2->SetCircle(.47,.37,.3);
+  for(int i=0; i<5; i++) pie1->SetEntryLineWidth(i,1);  
+  pie2->Draw("s >");
+  TLatex title2 = TLatex( 0.05, 0.78, channelstring+" B-tag" );
+  title2.SetNDC();
+  title2.SetTextSize(0.045);
+  title2.Draw();
+
+  cpie->cd();
+  TLatex cms1 = TLatex( 0.05, 0.91, "CMS" );
+  //TLatex cms2 = TLatex( 0.173, 0.91, "Preliminary" );
+  TLatex cms2 = TLatex( 0.173, 0.91, "Supplementary" );
+  cms1.SetNDC();
+  cms1.SetTextSize(0.11);
+  cms1.SetTextFont(62);
+  cms2.SetNDC();
+  cms2.SetTextFont(52);
+  cms2.SetTextSize(0.094);
+  cms1.Draw();
+  if(preliminary) cms2.Draw();
+
+  TLatex infoRight = TLatex( 0.675, 0.915, "35.9 fb^{-1} (13 TeV)" );
+  infoRight.SetNDC();
+  infoRight.SetTextSize(0.07);
+  infoRight.SetTextFont(42);
+  infoRight.Draw();
+  
+  cpie->Draw();
+  TString preliminaryString="";
+  if(preliminary) preliminaryString= "_preliminary";
+  TString namestring=outfile+preliminaryString+".png";
+  cpie->SaveAs(namestring);
+  if (ALLPLOTS){
+    namestring.ReplaceAll( ".png", ".pdf");
+    cpie->SaveAs(namestring);
+  }
+  delete pie1; delete pie2; 
+  delete cpie;
+  
+}
+
 void PlotterClass::plotCR(const std::vector<TString> fname, const std::vector<TString> type, const TString fname_data, const TString iso, const TString cr, const TString imagefile, const TString xtitle)
 {
 
