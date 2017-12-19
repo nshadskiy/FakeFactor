@@ -9,7 +9,19 @@ parser.add_argument('--input', dest = 'indir', help='Input directory - full stri
 args = parser.parse_args()
 
 channel=args.channel
+
+isolation = ""
+
+if(channel == "mt" or channel == "et"):
+	isolation = "tight"
+elif(channel == "tt"):
+	isolation = "medium"
+
+
 indir=args.indir
+
+date = indir[-8:]
+
 tag='v0.2.1'
 FFtype=""
 #FFtype="_alt"
@@ -26,7 +38,7 @@ for x in range(0,len(categories)):
     ff_w      = FakeFactor(vars=['tau_pt', 'tau_decay', 'njets', 'mvis', 'mt'])
     ff_tt     = FakeFactor(vars=['tau_pt', 'tau_decay', 'njets', 'mvis', 'mt'])
     # Combined fake factor
-    ff_comb   = FakeFactor(vars=['tau_pt', 'tau_decay', 'njets', 'mvis', 'mt', 'mu_iso'])
+    ff_comb   = FakeFactor(vars=['tau_pt', 'tau_decay', 'njets', 'mvis', 'mt', 'mu_iso', 'frac_qcd', 'frac_w', 'frac_tt'])
     
     
     home = os.getenv('HOME')
@@ -419,7 +431,7 @@ for x in range(0,len(categories)):
     ### Combined fake factors
     comb = Node(
         name='ff_comb',
-        formula='{frac_tt}*{ff_tt} + ({frac_w}+{frac_dy})*{ff_w} + {frac_qcd}*{ff_qcd_os}',
+        formula='{frac_tt}*{ff_tt} + ({frac_w}+(1-{frac_qcd}-{frac_w}-{frac_tt}))*{ff_w} + {frac_qcd}*{ff_qcd_os}',
         leaves=[
             # Individual fake factors
             qcd_os,
@@ -428,27 +440,21 @@ for x in range(0,len(categories)):
             # Fractions
             Leaf(
                 name='frac_qcd',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_qcd.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
-                object='h_w_2d',
-                vars=['tau_pt','tau_decay']
+                file='{INDIR}/constant.root'.format(INDIR=indir),
+                object='constant',
+                vars=['frac_qcd']
             ),
             Leaf(
                 name='frac_w',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_wjets.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
-                object='h_w_2d',
-                vars=['tau_pt','tau_decay']
-            ),
-            Leaf(
-                name='frac_dy',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_dy.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
-                object='h_w_2d',
-                vars=['tau_pt','tau_decay']
+                file='{INDIR}/constant.root'.format(INDIR=indir),
+                object='constant',
+                vars=['frac_w']
             ),
             Leaf(
                 name='frac_tt',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_tt.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
-                object='h_w_2d',
-                vars=['tau_pt','tau_decay']
+                file='{INDIR}/constant.root'.format(INDIR=indir),
+                object='constant',
+                vars=['frac_tt']
             ),
         ]
     )
@@ -1163,9 +1169,7 @@ for x in range(0,len(categories)):
     fill(ff_comb, comb_tt_up_stat_dm1_njet1,   sys='ff_tt_dm1_njet1_stat_up')
     fill(ff_comb, comb_tt_down_stat_dm1_njet1, sys='ff_tt_dm1_njet1_stat_down')
     
-    
-    
-    file = ROOT.TFile.Open("{INDIR}/{CHANNEL}/{CATEGORY}/fakeFactors_{CHANNEL}_{CATEGORY}.root".format(INDIR=indir,CHANNEL=channel,CATEGORY=category), "recreate")
+    file = ROOT.TFile.Open("{INDIR}/{CHANNEL}/{CATEGORY}/fakeFactors_{DATE}_{ISOLATION}.root".format(INDIR=indir,CHANNEL=channel,CATEGORY=category, DATE=date, ISOLATION=isolation), "recreate")
     # Write meta-data
     tag_ts     = ROOT.TString(tag)
     file.WriteObject(tag_ts     , "tag")
