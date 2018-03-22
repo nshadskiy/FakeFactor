@@ -49,12 +49,7 @@
 
 //be very careful to not overlap with other marks -> use category mark extra
 #define _INCL              1
-#define _BTAG              2
-#define _NOBTAG            4
-#define _BTAG_TIGHT        8
-#define _BTAG_LOOSEMT     16
-#define _NOBTAG_TIGHT     32
-#define _NOBTAG_LOOSEMT   64
+#define _DUMMYCAT          2
 
 const Int_t promptE   =1;
 const Int_t promptMu  =2;
@@ -123,7 +118,7 @@ const TString indir = "/data/higgs/data_2016/ntuples_"+ver+"/"+s_chan[CHAN]+"/nt
 const TString datafiles[3] = { indir+"BASIS_ntuple_SingleMuon_mt_"+ver+".root", indir+"BASIS_ntuple_SingleElectron_et_"+ver+".root" , indir + "BASIS_ntuple_Tau_tt_"+ver+".root" };
 const TString datafile   = datafiles[CHAN];
 
-const TString DY_NJfile  = indir + "BASIS_ntuple_DYXJetsToLL_lowMass_EWK_merged_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
+const TString DY_NJfile  = indir + "BASIS_ntuple_DYXJetsToLL_lowMass_merged_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
 const TString DYfile     = DY_NJfile;
 const TString Wjetsfile  = indir + "BASIS_ntuple_WXJets_merged_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
 const TString QCDfile    = indir + "BASIS_ntuple_QCD_Pt_20toInf_MuEnrichedPt15_pythia8_MCSummer_"+s_chan[CHAN]+"_"+ver+".root";
@@ -507,7 +502,7 @@ const Double_t w_mttot_v[]={0,70,100,120,140,170,200,270,1000};
 const Int_t    w_pt_n=(sizeof(w_pt_v)/sizeof(Double_t)) -1;
 const Int_t    w_mttot_n=(sizeof(w_mttot_v)/sizeof(Double_t)) -1;
 
-const Double_t w_mvis_v[]={0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450};
+const Double_t w_mvis_v[]={0,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450};
 const Int_t w_mvis_n=(sizeof(w_mvis_v)/sizeof(Double_t)) -1;
 
 const Double_t w_lepPt_v[]={20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120};
@@ -597,7 +592,7 @@ const Int_t c_cuts[NC]={NP1,NP3,PT1,PT2,PT3,ETA1,ETA2,ETA3,JET0,JET1};
 
 static const std::vector<TString> empty_vec_tstring;
 
-const Int_t nCAT=6;
-const TString categories[nCAT] = { "_btag", "_nobtag", "_btag_tight", "_btag_loosemt", "_nobtag_tight", "_nobtag_loosemt" };
-const Int_t catMode[nCAT] = {_BTAG, _NOBTAG, _BTAG_TIGHT, _BTAG_LOOSEMT, _NOBTAG_TIGHT, _NOBTAG_LOOSEMT};
+const Int_t nCAT=1;
+const TString categories[nCAT] = { "_dummycat"};
+const Int_t catMode[nCAT] = {_DUMMYCAT};
 

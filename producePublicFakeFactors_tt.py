@@ -12,7 +12,7 @@ channel=args.channel
 indir=args.indir
 FFtype=""
 #FFtype="_alt"
-categories = ['inclusive', 'btag', 'nobtag']
+categories = ['inclusive', 'dummycat']
 #categories = ['btag_looseiso', 'nobtag_looseiso']
 
 for category in categories:

@@ -4,16 +4,16 @@
 #define kEL          1
 #define kTAU         2
 ///////////////////////////////////////////////////
-#define selCHAN      kMU
-const int CHAN     = kMU;
-const TString analysis      ="FakeFactor_2016_MSSM_preapproval_dev";
-const TString output_folder ="public/Htautau/FakeRate/2016/20170718";
-const TString DC_folder     ="/afs/hephy.at/work/f/fspreitzer/DC_test2/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data";
+#define selCHAN      kEL
+const int CHAN     = kEL;
+const TString analysis      ="FakeFactor_SM_ML";
+const TString output_folder ="public/Htautau/FakeRate/SM_ML/20180322";
+const TString DC_folder     ="/afs/hephy.at/work/j/jbrandstetter/DC/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; //Please put your DC folder path here
 ///////////////////////////////////////////////////
-const TString user="fspreitzer";
+const TString user="jbrandstetter";
 const Double_t luminosity=35.9; 
-const int use_svfit = 0;
-const TString ver = "v16";
+const int use_svfit = 1;
+const TString ver = "v2";
 ///////////////////////////////////////////////////
 const int inclusive_selection=1; 
 const int exclusive_selection=1; 
@@ -40,6 +40,7 @@ const int requireGenMatch_whenCalcFF=0; //0 as default
 const int useDYFF_forTT=0; //0 as default
 const int useWJFF_forDY=0; //1 as default
 const int doCalcWeights=1; //calc fractions
+const int makePieCharts=0; //used for MSSM pie chart plots
 const int doTemplateFitForWeights=0; //template fit for fractions, default: 0
 const int doCalc=1; //calc FFs
 //////////////////////////////////////////////////
@@ -63,12 +64,12 @@ const Double_t Pt_cuts_QCD_AI[]   = {30,35,40,50,75,120,500};
 const double fitMin =  30;
 const int fitBins  =  470;
 const int COINFLIP=1;
-const Double_t Pt_cuts_Wjets[]    = {30.,35,40,50,60,75,95,120,170,500};
+const Double_t Pt_cuts_Wjets[]    = {30.,34,39,50,60,75,90,110,140,180,500};
 const Double_t Pt_cuts_DY[]       = {30.,40.};
 const Double_t Pt_cuts_TT_SR[]    = {30.,32.,34,37.,40,45,50,70,110,160,500};
 const Double_t Pt_cuts_TT_CR[]    = {30.};
-const Double_t Pt_cuts_QCD[]      = {30,32.5,35,40,50,60,70,80,110,500};
-const Double_t Pt_cuts_QCD_AI[]   = {30,35,45,55,80,500};
+const Double_t Pt_cuts_QCD[]      = {30,32.5,35,40,50,70,90,150,500};
+const Double_t Pt_cuts_QCD_AI[]   = {30,35,40,50,75,120,500};
 #endif
 //////////////////////////////////////////////////
 //TAUTAU Settings
@@ -113,7 +114,7 @@ const Double_t TAU_ETA_CUT=2.3;
 const Double_t TAU_PT_CUT=20.;
 const Double_t TAU_ETA_CUT_TT=2.1;
 const Double_t TAU_PT_CUT_TT=40.;
-const Double_t MT_CUT=40;
+const Double_t MT_CUT=50;
 
 const Double_t MZ=91.2;
 const Double_t QCD_SS_TO_OS=1.06;

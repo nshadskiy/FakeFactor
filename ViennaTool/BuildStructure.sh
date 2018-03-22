@@ -1,6 +1,6 @@
 #!/bin/bash
-user=whoami
-fftype=fftype
+user=jbrandstetter
+fftype=FakeFactor_SM_ML
 
 line=" --------------------------------------------------------------------------------------"
 echo $line
@@ -129,102 +129,45 @@ if [ ! -d "ff_2d" ]; then
         if [ ! -d "ff_2d/mt/incl" ]; then
             mkdir -p ff_2d/mt/incl;
         fi
-        if [ ! -d "ff_2d/mt/_btag" ]; then
-            mkdir -p ff_2d/mt/_btag;
-        fi
-        if [ ! -d "ff_2d/mt/_nobtag" ]; then
-            mkdir -p ff_2d/mt/_nobtag;
-        fi
-        if [ ! -d "ff_2d/mt/_btag_loosemt" ]; then
-            mkdir -p ff_2d/mt/_btag_loosemt;
-        fi
-        if [ ! -d "ff_2d/mt/_btag_tight" ]; then
-            mkdir -p ff_2d/mt/_btag_tight;
-        fi
-        if [ ! -d "ff_2d/mt/_nobtag_loosemt" ]; then
-            mkdir -p ff_2d/mt/_nobtag_loosemt;
-        fi
-        if [ ! -d "ff_2d/mt/_nobtag_tight" ]; then
-            mkdir -p ff_2d/mt/_nobtag_tight;
+        if [ ! -d "ff_2d/mt/_dummycat" ]; then
+            mkdir -p ff_2d/mt/_dummycat;
         fi
         
     else
         mkdir -p ff_2d/mt/incl;
-        mkdir -p ff_2d/mt/_btag;
-        mkdir -p ff_2d/mt/_nobtag;
-        mkdir -p ff_2d/mt/_btag_loosemt;
-        mkdir -p ff_2d/mt/_btag_tight;
-        mkdir -p ff_2d/mt/_nobtag_loosemt;
-        mkdir -p ff_2d/mt/_nobtag_tight;
+        mkdir -p ff_2d/mt/_dummycat;
     fi
-    if [ ! -d "ff_2d/mt" ]; then
+    if [ ! -d "ff_2d/et" ]; then
         if [ ! -d "ff_2d/et/incl" ]; then
             mkdir -p ff_2d/et/incl;
         fi
-        if [ ! -d "ff_2d/et/_btag" ]; then
-            mkdir -p ff_2d/et/_btag;
-        fi
-        if [ ! -d "ff_2d/et/_nobtag" ]; then
-            mkdir -p ff_2d/et/_nobtag;
-        fi
-        if [ ! -d "ff_2d/et/_btag_loosemt" ]; then
-            mkdir -p ff_2d/et/_btag_loosemt;
-        fi
-        if [ ! -d "ff_2d/et/_btag_tight" ]; then
-            mkdir -p ff_2d/et/_btag_tight;
-        fi
-        if [ ! -d "ff_2d/et/_nobtag_loosemt" ]; then
-            mkdir -p ff_2d/et/_nobtag_loosemt;
-        fi
-        if [ ! -d "ff_2d/et/_nobtag_tight" ]; then
-            mkdir -p ff_2d/et/_nobtag_tight;
-        fi
-        
+        if [ ! -d "ff_2d/et/_dummycat" ]; then
+            mkdir -p ff_2d/et/_dummycat;
+        fi        
     else
         mkdir -p ff_2d/et/incl;
-        mkdir -p ff_2d/et/_btag;
-        mkdir -p ff_2d/et/_nobtag;
-        mkdir -p ff_2d/et/_btag_loosemt;
-        mkdir -p ff_2d/et/_btag_tight;
-        mkdir -p ff_2d/et/_nobtag_loosemt;
-        mkdir -p ff_2d/et/_nobtag_tight;
+        mkdir -p ff_2d/et/_dummycat;
     fi
     if [ ! -d "ff_2d/tt" ]; then
         if [ ! -d "ff_2d/tt/incl" ]; then
             mkdir -p ff_2d/tt/incl;
         fi
-        if [ ! -d "ff_2d/tt/_btag" ]; then
-            mkdir -p ff_2d/tt/_btag;
-        fi
-        if [ ! -d "ff_2d/tt/_nobtag" ]; then
-            mkdir -p ff_2d/tt/_nobtag;
-        fi
-        
+        if [ ! -d "ff_2d/tt/_dummycat" ]; then
+            mkdir -p ff_2d/tt/_dummycat;
+        fi        
     else
         mkdir -p ff_2d/tt/incl;
-        mkdir -p ff_2d/tt/_btag;
-        mkdir -p ff_2d/tt/_nobtag;
+        mkdir -p ff_2d/tt/_dummycat;
     fi
     
     
 else
     mkdir -p ff_2d/mt/incl;
-    mkdir -p ff_2d/mt/_btag;
-    mkdir -p ff_2d/mt/_nobtag;
-    mkdir -p ff_2d/mt/_btag_loosemt;
-    mkdir -p ff_2d/mt/_btag_tight;
-    mkdir -p ff_2d/mt/_nobtag_loosemt;
-    mkdir -p ff_2d/mt/_nobtag_tight;
+    mkdir -p ff_2d/mt/_dummycat;
     mkdir -p ff_2d/et/incl;
-    mkdir -p ff_2d/et/_btag;
-    mkdir -p ff_2d/et/_nobtag;
-    mkdir -p ff_2d/et/_btag_loosemt;
-    mkdir -p ff_2d/et/_btag_tight;
-    mkdir -p ff_2d/et/_nobtag_loosemt;
-    mkdir -p ff_2d/et/_nobtag_tight;
+    mkdir -p ff_2d/et/_dummycat;
     mkdir -p ff_2d/tt/incl;
-    mkdir -p ff_2d/tt/_btag;
-    mkdir -p ff_2d/tt/_nobtag;
+    mkdir -p ff_2d/tt/_dummycat;
 fi
 
 

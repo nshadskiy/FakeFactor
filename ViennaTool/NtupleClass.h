@@ -1,8 +1,8 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Fri Feb 17 09:33:12 2017 by ROOT version 6.02/13
+// Wed Mar 21 19:40:12 2018 by ROOT version 6.06/01
 // from TTree TauCheck/TauCheck
-// found on file: /data/higgs/data_2016/ntuples_v8/mt/ntuples_woSVFIT_merged/BASIS_ntuple_DYXJetsToLL_lowMass_merged_MCSummer16_mt_v8.root
+// found on file: /data/higgs/data_2016/ntuples_v2/et/ntuples_SVFIT_merged/BASIS_ntuple_DYXJetsToLL_lowMass_merged_MCSummer16_et_v2.root
 //////////////////////////////////////////////////////////
 
 #ifndef NtupleClass_h
@@ -24,13 +24,8 @@ public :
 
    // Declaration of leaf types
    Int_t           fileEntry;
+   Int_t           entry;
    Int_t           run;
-   Int_t           trg_singlemuon;
-   Int_t           trg_singleelectron;
-   Int_t           trg_singletau;
-   Int_t           trg_doubletau;
-   Int_t           Flag_badMuons;
-   Int_t           Flag_duplicateMuons;
    Float_t         lumi;
    ULong64_t       evt;
    Float_t         weight;
@@ -43,11 +38,29 @@ public :
    Float_t         idisoweight_1;
    Float_t         anti_idisoweight_1;
    Float_t         idisoweight_2;
+   Float_t         trk_sf;
    Float_t         effweight;
    Float_t         stitchedWeight;
    Float_t         topWeight;
    Float_t         topWeight_run1;
-   Float_t         ZWeight;
+   Float_t         zPtReweightWeight;
+   Float_t         zpt_weight_nom;
+   Float_t         zpt_weight_esup;
+   Float_t         zpt_weight_esdown;
+   Float_t         zpt_weight_ttup;
+   Float_t         zpt_weight_ttdown;
+   Float_t         zpt_weight_statpt0up;
+   Float_t         zpt_weight_statpt0down;
+   Float_t         zpt_weight_statpt40up;
+   Float_t         zpt_weight_statpt40down;
+   Float_t         zpt_weight_statpt80up;
+   Float_t         zpt_weight_statpt80down;
+   Int_t           trg_singlemuon;
+   Int_t           trg_mutaucross;
+   Int_t           trg_singleelectron;
+   Int_t           trg_singletau;
+   Int_t           trg_doubletau;
+   Int_t           trg_muonelectron;
    Float_t         gen_Mll;
    Float_t         genpX;
    Float_t         genpY;
@@ -62,6 +75,20 @@ public :
    Float_t         npu;
    Float_t         rho;
    Int_t           NUP;
+   Int_t           passBadMuonFilter;
+   Int_t           passBadChargedHadronFilter;
+   Int_t           flagHBHENoiseFilter;
+   Int_t           flagHBHENoiseIsoFilter;
+   Int_t           flagEcalDeadCellTriggerPrimitiveFilter;
+   Int_t           flagGoodVertices;
+   Int_t           flagEeBadScFilter;
+   Int_t           flagGlobalTightHalo2016Filter;
+   Int_t           Flag_badMuons;
+   Int_t           Flag_duplicateMuons;
+   Float_t         matchedJetPt03_1;
+   Float_t         matchedJetPt05_1;
+   Float_t         matchedJetPt03_2;
+   Float_t         matchedJetPt05_2;
    Int_t           gen_match_1;
    Int_t           gen_match_2;
    Int_t           gen_match_jetId_1;
@@ -107,6 +134,12 @@ public :
    Int_t           byMediumIsolationMVArun2v1DBnewDMwLT_1;
    Int_t           byTightIsolationMVArun2v1DBnewDMwLT_1;
    Int_t           byVTightIsolationMVArun2v1DBnewDMwLT_1;
+   Int_t           byRerunMVAIdVLoose_1;
+   Int_t           byRerunMVAIdLoose_1;
+   Int_t           byRerunMVAIdMedium_1;
+   Int_t           byRerunMVAIdTight_1;
+   Int_t           byRerunMVAIdVTight_1;
+   Int_t           byRerunMVAIdVVTight_1;
    Float_t         idMVANewDM_1;
    Float_t         chargedIsoPtSum_1;
    Float_t         neutralIsoPtSum_1;
@@ -159,15 +192,29 @@ public :
    Int_t           byMediumIsolationMVArun2v1DBnewDMwLT_2;
    Int_t           byTightIsolationMVArun2v1DBnewDMwLT_2;
    Int_t           byVTightIsolationMVArun2v1DBnewDMwLT_2;
+   Int_t           byRerunMVAIdVLoose_2;
+   Int_t           byRerunMVAIdLoose_2;
+   Int_t           byRerunMVAIdMedium_2;
+   Int_t           byRerunMVAIdTight_2;
+   Int_t           byRerunMVAIdVTight_2;
+   Int_t           byRerunMVAIdVVTight_2;
    Float_t         idMVANewDM_2;
    Float_t         chargedIsoPtSum_2;
    Float_t         neutralIsoPtSum_2;
    Float_t         puCorrPtSum_2;
    Int_t           decayModeFindingOldDMs_2;
    Int_t           decayMode_2;
+   Float_t         pzetavis;
+   Float_t         pzetamiss;
+   Float_t         dzeta;
    Float_t         pt_tt;
+   Float_t         pt_vis;
+   Float_t         dphi;
+   Float_t         mt_3;
+   Float_t         mt_tot;
    Float_t         pfpt_tt;
    Float_t         m_vis;
+   Float_t         m_coll;
    Float_t         pfpt_sum;
    Float_t         pt_sum;
    Float_t         dr_leptau;
@@ -212,6 +259,12 @@ public :
    std::vector<int>     *addtau_byMediumIsolationMVArun2v1DBnewDMwLT;
    std::vector<int>     *addtau_byTightIsolationMVArun2v1DBnewDMwLT;
    std::vector<int>     *addtau_byVTightIsolationMVArun2v1DBnewDMwLT;
+   std::vector<int>     *addtau_NewMVAIDVLoose;
+   std::vector<int>     *addtau_NewMVAIDLoose;
+   std::vector<int>     *addtau_NewMVAIDMedium;
+   std::vector<int>     *addtau_NewMVAIDTight;
+   std::vector<int>     *addtau_NewMVAIDVTight;
+   std::vector<int>     *addtau_NewMVAIDVVTight;
    std::vector<int>     *addtau_passesTauLepVetos;
    std::vector<int>     *addtau_decayMode;
    std::vector<double>  *addtau_d0;
@@ -225,12 +278,11 @@ public :
    Bool_t          passesThirdLepVeto;
    Bool_t          passesDiMuonVeto;
    Bool_t          passesDiElectronVeto;
-   Bool_t          XTrig_match;
-   Bool_t          STrig_match;
    Bool_t          matchXTrig_obj;
    Bool_t          dilepton_veto;
    Bool_t          extraelec_veto;
    Bool_t          extramuon_veto;
+   Float_t         uncorrmet;
    Float_t         met;
    Float_t         metphi;
    Float_t         met_ex;
@@ -255,8 +307,6 @@ public :
    Float_t         metcov01;
    Float_t         metcov10;
    Float_t         metcov11;
-   Float_t         m_sv;
-   Float_t         pt_sv;
    Float_t         mjj;
    Float_t         mjjUp;
    Float_t         mjjDown;
@@ -265,6 +315,8 @@ public :
    Float_t         jdetaDown;
    Int_t           njetingap;
    Int_t           njetingap20;
+   Float_t         dijetpt;
+   Float_t         dijetphi;
    Float_t         jdphi;
    Int_t           nbtag;
    Int_t           njets;
@@ -279,6 +331,7 @@ public :
    Float_t         jm_1;
    Float_t         jrawf_1;
    Float_t         jmva_1;
+   Float_t         jcsv_1;
    Float_t         jpt_2;
    Float_t         jptUp_2;
    Float_t         jptDown_2;
@@ -287,6 +340,7 @@ public :
    Float_t         jm_2;
    Float_t         jrawf_2;
    Float_t         jmva_2;
+   Float_t         jcsv_2;
    Float_t         bpt_1;
    Float_t         beta_1;
    Float_t         bphi_1;
@@ -299,16 +353,17 @@ public :
    Float_t         brawf_2;
    Float_t         bmva_2;
    Float_t         bcsv_2;
+   Float_t         m_sv;
+   Float_t         m_sv_unc;
+   Float_t         mt_sv;
+   Float_t         mt_sv_unc;
+   Float_t         pt_sv;
+   Float_t         pt_sv_unc;
 
    // List of branches
    TBranch        *b_fileEntry;   //!
+   TBranch        *b_entry;   //!
    TBranch        *b_run;   //!
-   TBranch        *b_trg_singlemuon;   //!
-   TBranch        *b_trg_singleelectron;   //!
-   TBranch        *b_trg_singletau;   //!
-   TBranch        *b_trg_doubletau;   //!
-   TBranch        *b_Flag_badMuons;   //!
-   TBranch        *b_Flag_duplicateMuons;   //!
    TBranch        *b_lumi;   //!
    TBranch        *b_evt;   //!
    TBranch        *b_weight;   //!
@@ -321,11 +376,29 @@ public :
    TBranch        *b_idisoweight_1;   //!
    TBranch        *b_anti_idisoweight_1;   //!
    TBranch        *b_idisoweight_2;   //!
+   TBranch        *b_trk_sf;   //!
    TBranch        *b_effweight;   //!
    TBranch        *b_stitchedWeight;   //!
    TBranch        *b_topWeight;   //!
    TBranch        *b_topWeight_run1;   //!
-   TBranch        *b_ZWeight;   //!
+   TBranch        *b_zPtReweightWeight;   //!
+   TBranch        *b_zpt_weight_nom;   //!
+   TBranch        *b_zpt_weight_esup;   //!
+   TBranch        *b_zpt_weight_esdown;   //!
+   TBranch        *b_zpt_weight_ttup;   //!
+   TBranch        *b_zpt_weight_ttdown;   //!
+   TBranch        *b_zpt_weight_statpt0up;   //!
+   TBranch        *b_zpt_weight_statpt0down;   //!
+   TBranch        *b_zpt_weight_statpt40up;   //!
+   TBranch        *b_zpt_weight_statpt40down;   //!
+   TBranch        *b_zpt_weight_statpt80up;   //!
+   TBranch        *b_zpt_weight_statpt80down;   //!
+   TBranch        *b_trg_singlemuon;   //!
+   TBranch        *b_trg_mutaucross;   //!
+   TBranch        *b_trg_singleelectron;   //!
+   TBranch        *b_trg_singletau;   //!
+   TBranch        *b_trg_doubletau;   //!
+   TBranch        *b_trg_muonelectron;   //!
    TBranch        *b_gen_Mll;   //!
    TBranch        *b_genpX;   //!
    TBranch        *b_genpY;   //!
@@ -340,6 +413,20 @@ public :
    TBranch        *b_npu;   //!
    TBranch        *b_rho;   //!
    TBranch        *b_NUP;   //!
+   TBranch        *b_passBadMuonFilter;   //!
+   TBranch        *b_passBadChargedHadronFilter;   //!
+   TBranch        *b_flagHBHENoiseFilter;   //!
+   TBranch        *b_flagHBHENoiseIsoFilter;   //!
+   TBranch        *b_flagEcalDeadCellTriggerPrimitiveFilter;   //!
+   TBranch        *b_flagGoodVertices;   //!
+   TBranch        *b_flagEeBadScFilter;   //!
+   TBranch        *b_flagGlobalTightHalo2016Filter;   //!
+   TBranch        *b_Flag_badMuons;   //!
+   TBranch        *b_Flag_duplicateMuons;   //!
+   TBranch        *b_matchedJetPt03_1;   //!
+   TBranch        *b_matchedJetPt05_1;   //!
+   TBranch        *b_matchedJetPt03_2;   //!
+   TBranch        *b_matchedJetPt05_2;   //!
    TBranch        *b_gen_match_1;   //!
    TBranch        *b_gen_match_2;   //!
    TBranch        *b_gen_match_jetId_1;   //!
@@ -385,6 +472,12 @@ public :
    TBranch        *b_byMediumIsolationMVArun2v1DBnewDMwLT_1;   //!
    TBranch        *b_byTightIsolationMVArun2v1DBnewDMwLT_1;   //!
    TBranch        *b_byVTightIsolationMVArun2v1DBnewDMwLT_1;   //!
+   TBranch        *b_byRerunMVAIdVLoose_1;   //!
+   TBranch        *b_byRerunMVAIdLoose_1;   //!
+   TBranch        *b_byRerunMVAIdMedium_1;   //!
+   TBranch        *b_byRerunMVAIdTight_1;   //!
+   TBranch        *b_byRerunMVAIdVTight_1;   //!
+   TBranch        *b_byRerunMVAIdVVTight_1;   //!
    TBranch        *b_idMVANewDM_1;   //!
    TBranch        *b_chargedIsoPtSum_1;   //!
    TBranch        *b_neutralIsoPtSum_1;   //!
@@ -437,15 +530,29 @@ public :
    TBranch        *b_byMediumIsolationMVArun2v1DBnewDMwLT_2;   //!
    TBranch        *b_byTightIsolationMVArun2v1DBnewDMwLT_2;   //!
    TBranch        *b_byVTightIsolationMVArun2v1DBnewDMwLT_2;   //!
+   TBranch        *b_byRerunMVAIdVLoose_2;   //!
+   TBranch        *b_byRerunMVAIdLoose_2;   //!
+   TBranch        *b_byRerunMVAIdMedium_2;   //!
+   TBranch        *b_byRerunMVAIdTight_2;   //!
+   TBranch        *b_byRerunMVAIdVTight_2;   //!
+   TBranch        *b_byRerunMVAIdVVTight_2;   //!
    TBranch        *b_idMVANewDM_2;   //!
    TBranch        *b_chargedIsoPtSum_2;   //!
    TBranch        *b_neutralIsoPtSum_2;   //!
    TBranch        *b_puCorrPtSum_2;   //!
    TBranch        *b_decayModeFindingOldDMs_2;   //!
    TBranch        *b_decayMode_2;   //!
+   TBranch        *b_pzetavis;   //!
+   TBranch        *b_pzetamiss;   //!
+   TBranch        *b_dzeta;   //!
    TBranch        *b_pt_tt;   //!
+   TBranch        *b_pt_vis;   //!
+   TBranch        *b_dphi;   //!
+   TBranch        *b_mt_3;   //!
+   TBranch        *b_mt_tot;   //!
    TBranch        *b_pfpt_tt;   //!
    TBranch        *b_m_vis;   //!
+   TBranch        *b_m_coll;   //!
    TBranch        *b_pfpt_sum;   //!
    TBranch        *b_pt_sum;   //!
    TBranch        *b_dr_leptau;   //!
@@ -490,6 +597,12 @@ public :
    TBranch        *b_addtau_byMediumIsolationMVArun2v1DBnewDMwLT;   //!
    TBranch        *b_addtau_byTightIsolationMVArun2v1DBnewDMwLT;   //!
    TBranch        *b_addtau_byVTightIsolationMVArun2v1DBnewDMwLT;   //!
+   TBranch        *b_addtau_NewMVAIDVLoose;   //!
+   TBranch        *b_addtau_NewMVAIDLoose;   //!
+   TBranch        *b_addtau_NewMVAIDMedium;   //!
+   TBranch        *b_addtau_NewMVAIDTight;   //!
+   TBranch        *b_addtau_NewMVAIDVTight;   //!
+   TBranch        *b_addtau_NewMVAIDVVTight;   //!
    TBranch        *b_addtau_passesTauLepVetos;   //!
    TBranch        *b_addtau_decayMode;   //!
    TBranch        *b_addtau_d0;   //!
@@ -503,12 +616,11 @@ public :
    TBranch        *b_passesThirdLepVeto;   //!
    TBranch        *b_passesDiMuonVeto;   //!
    TBranch        *b_passesDiElectronVeto;   //!
-   TBranch        *b_XTrig_match;   //!
-   TBranch        *b_STrig_match;   //!
    TBranch        *b_matchXTrig_obj;   //!
    TBranch        *b_dilepton_veto;   //!
    TBranch        *b_extraelec_veto;   //!
    TBranch        *b_extramuon_veto;   //!
+   TBranch        *b_uncorrmet;   //!
    TBranch        *b_met;   //!
    TBranch        *b_metphi;   //!
    TBranch        *b_met_ex;   //!
@@ -533,8 +645,6 @@ public :
    TBranch        *b_metcov01;   //!
    TBranch        *b_metcov10;   //!
    TBranch        *b_metcov11;   //!
-   TBranch        *b_m_sv;   //!
-   TBranch        *b_pt_sv;   //!
    TBranch        *b_mjj;   //!
    TBranch        *b_mjjUp;   //!
    TBranch        *b_mjjDown;   //!
@@ -543,6 +653,8 @@ public :
    TBranch        *b_jdetaDown;   //!
    TBranch        *b_njetingap;   //!
    TBranch        *b_njetingap20;   //!
+   TBranch        *b_dijetpt;   //!
+   TBranch        *b_dijetphi;   //!
    TBranch        *b_jdphi;   //!
    TBranch        *b_nbtag;   //!
    TBranch        *b_njets;   //!
@@ -557,6 +669,7 @@ public :
    TBranch        *b_jm_1;   //!
    TBranch        *b_jrawf_1;   //!
    TBranch        *b_jmva_1;   //!
+   TBranch        *b_jcsv_1;   //!
    TBranch        *b_jpt_2;   //!
    TBranch        *b_jptUp_2;   //!
    TBranch        *b_jptDown_2;   //!
@@ -565,6 +678,7 @@ public :
    TBranch        *b_jm_2;   //!
    TBranch        *b_jrawf_2;   //!
    TBranch        *b_jmva_2;   //!
+   TBranch        *b_jcsv_2;   //!
    TBranch        *b_bpt_1;   //!
    TBranch        *b_beta_1;   //!
    TBranch        *b_bphi_1;   //!
@@ -577,6 +691,12 @@ public :
    TBranch        *b_brawf_2;   //!
    TBranch        *b_bmva_2;   //!
    TBranch        *b_bcsv_2;   //!
+   TBranch        *b_m_sv;   //!
+   TBranch        *b_m_sv_unc;   //!
+   TBranch        *b_mt_sv;   //!
+   TBranch        *b_mt_sv_unc;   //!
+   TBranch        *b_pt_sv;   //!
+   TBranch        *b_pt_sv_unc;   //!
 
    NtupleClass(TTree *tree=0);
    virtual ~NtupleClass();
@@ -597,9 +717,9 @@ NtupleClass::NtupleClass(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/higgs/data_2016/ntuples_v8/mt/ntuples_woSVFIT_merged/BASIS_ntuple_DYXJetsToLL_lowMass_merged_MCSummer16_mt_v8.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/data/higgs/data_2016/ntuples_v2/et/ntuples_SVFIT_merged/BASIS_ntuple_DYXJetsToLL_lowMass_merged_MCSummer16_et_v2.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/data/higgs/data_2016/ntuples_v8/mt/ntuples_woSVFIT_merged/BASIS_ntuple_DYXJetsToLL_lowMass_merged_MCSummer16_mt_v8.root");
+         f = new TFile("/data/higgs/data_2016/ntuples_v2/et/ntuples_SVFIT_merged/BASIS_ntuple_DYXJetsToLL_lowMass_merged_MCSummer16_et_v2.root");
       }
       f->GetObject("TauCheck",tree);
 
@@ -677,6 +797,12 @@ void NtupleClass::Init(TTree *tree)
    addtau_byMediumIsolationMVArun2v1DBnewDMwLT = 0;
    addtau_byTightIsolationMVArun2v1DBnewDMwLT = 0;
    addtau_byVTightIsolationMVArun2v1DBnewDMwLT = 0;
+   addtau_NewMVAIDVLoose = 0;
+   addtau_NewMVAIDLoose = 0;
+   addtau_NewMVAIDMedium = 0;
+   addtau_NewMVAIDTight = 0;
+   addtau_NewMVAIDVTight = 0;
+   addtau_NewMVAIDVVTight = 0;
    addtau_passesTauLepVetos = 0;
    addtau_decayMode = 0;
    addtau_d0 = 0;
@@ -691,13 +817,8 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetMakeClass(1);
 
    fChain->SetBranchAddress("fileEntry", &fileEntry, &b_fileEntry);
+   fChain->SetBranchAddress("entry", &entry, &b_entry);
    fChain->SetBranchAddress("run", &run, &b_run);
-   fChain->SetBranchAddress("trg_singlemuon", &trg_singlemuon, &b_trg_singlemuon);
-   fChain->SetBranchAddress("trg_singleelectron", &trg_singleelectron, &b_trg_singleelectron);
-   fChain->SetBranchAddress("trg_singletau", &trg_singletau, &b_trg_singletau);
-   fChain->SetBranchAddress("trg_doubletau", &trg_doubletau, &b_trg_doubletau);
-   fChain->SetBranchAddress("Flag_badMuons", &Flag_badMuons, &b_Flag_badMuons);
-   fChain->SetBranchAddress("Flag_duplicateMuons", &Flag_duplicateMuons, &b_Flag_duplicateMuons);
    fChain->SetBranchAddress("lumi", &lumi, &b_lumi);
    fChain->SetBranchAddress("evt", &evt, &b_evt);
    fChain->SetBranchAddress("weight", &weight, &b_weight);
@@ -710,11 +831,29 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("idisoweight_1", &idisoweight_1, &b_idisoweight_1);
    fChain->SetBranchAddress("anti_idisoweight_1", &anti_idisoweight_1, &b_anti_idisoweight_1);
    fChain->SetBranchAddress("idisoweight_2", &idisoweight_2, &b_idisoweight_2);
+   fChain->SetBranchAddress("trk_sf", &trk_sf, &b_trk_sf);
    fChain->SetBranchAddress("effweight", &effweight, &b_effweight);
    fChain->SetBranchAddress("stitchedWeight", &stitchedWeight, &b_stitchedWeight);
    fChain->SetBranchAddress("topWeight", &topWeight, &b_topWeight);
    fChain->SetBranchAddress("topWeight_run1", &topWeight_run1, &b_topWeight_run1);
-   fChain->SetBranchAddress("ZWeight", &ZWeight, &b_ZWeight);
+   fChain->SetBranchAddress("zPtReweightWeight", &zPtReweightWeight, &b_zPtReweightWeight);
+   fChain->SetBranchAddress("zpt_weight_nom", &zpt_weight_nom, &b_zpt_weight_nom);
+   fChain->SetBranchAddress("zpt_weight_esup", &zpt_weight_esup, &b_zpt_weight_esup);
+   fChain->SetBranchAddress("zpt_weight_esdown", &zpt_weight_esdown, &b_zpt_weight_esdown);
+   fChain->SetBranchAddress("zpt_weight_ttup", &zpt_weight_ttup, &b_zpt_weight_ttup);
+   fChain->SetBranchAddress("zpt_weight_ttdown", &zpt_weight_ttdown, &b_zpt_weight_ttdown);
+   fChain->SetBranchAddress("zpt_weight_statpt0up", &zpt_weight_statpt0up, &b_zpt_weight_statpt0up);
+   fChain->SetBranchAddress("zpt_weight_statpt0down", &zpt_weight_statpt0down, &b_zpt_weight_statpt0down);
+   fChain->SetBranchAddress("zpt_weight_statpt40up", &zpt_weight_statpt40up, &b_zpt_weight_statpt40up);
+   fChain->SetBranchAddress("zpt_weight_statpt40down", &zpt_weight_statpt40down, &b_zpt_weight_statpt40down);
+   fChain->SetBranchAddress("zpt_weight_statpt80up", &zpt_weight_statpt80up, &b_zpt_weight_statpt80up);
+   fChain->SetBranchAddress("zpt_weight_statpt80down", &zpt_weight_statpt80down, &b_zpt_weight_statpt80down);
+   fChain->SetBranchAddress("trg_singlemuon", &trg_singlemuon, &b_trg_singlemuon);
+   fChain->SetBranchAddress("trg_mutaucross", &trg_mutaucross, &b_trg_mutaucross);
+   fChain->SetBranchAddress("trg_singleelectron", &trg_singleelectron, &b_trg_singleelectron);
+   fChain->SetBranchAddress("trg_singletau", &trg_singletau, &b_trg_singletau);
+   fChain->SetBranchAddress("trg_doubletau", &trg_doubletau, &b_trg_doubletau);
+   fChain->SetBranchAddress("trg_muonelectron", &trg_muonelectron, &b_trg_muonelectron);
    fChain->SetBranchAddress("gen_Mll", &gen_Mll, &b_gen_Mll);
    fChain->SetBranchAddress("genpX", &genpX, &b_genpX);
    fChain->SetBranchAddress("genpY", &genpY, &b_genpY);
@@ -729,6 +868,20 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("npu", &npu, &b_npu);
    fChain->SetBranchAddress("rho", &rho, &b_rho);
    fChain->SetBranchAddress("NUP", &NUP, &b_NUP);
+   fChain->SetBranchAddress("passBadMuonFilter", &passBadMuonFilter, &b_passBadMuonFilter);
+   fChain->SetBranchAddress("passBadChargedHadronFilter", &passBadChargedHadronFilter, &b_passBadChargedHadronFilter);
+   fChain->SetBranchAddress("flagHBHENoiseFilter", &flagHBHENoiseFilter, &b_flagHBHENoiseFilter);
+   fChain->SetBranchAddress("flagHBHENoiseIsoFilter", &flagHBHENoiseIsoFilter, &b_flagHBHENoiseIsoFilter);
+   fChain->SetBranchAddress("flagEcalDeadCellTriggerPrimitiveFilter", &flagEcalDeadCellTriggerPrimitiveFilter, &b_flagEcalDeadCellTriggerPrimitiveFilter);
+   fChain->SetBranchAddress("flagGoodVertices", &flagGoodVertices, &b_flagGoodVertices);
+   fChain->SetBranchAddress("flagEeBadScFilter", &flagEeBadScFilter, &b_flagEeBadScFilter);
+   fChain->SetBranchAddress("flagGlobalTightHalo2016Filter", &flagGlobalTightHalo2016Filter, &b_flagGlobalTightHalo2016Filter);
+   fChain->SetBranchAddress("Flag_badMuons", &Flag_badMuons, &b_Flag_badMuons);
+   fChain->SetBranchAddress("Flag_duplicateMuons", &Flag_duplicateMuons, &b_Flag_duplicateMuons);
+   fChain->SetBranchAddress("matchedJetPt03_1", &matchedJetPt03_1, &b_matchedJetPt03_1);
+   fChain->SetBranchAddress("matchedJetPt05_1", &matchedJetPt05_1, &b_matchedJetPt05_1);
+   fChain->SetBranchAddress("matchedJetPt03_2", &matchedJetPt03_2, &b_matchedJetPt03_2);
+   fChain->SetBranchAddress("matchedJetPt05_2", &matchedJetPt05_2, &b_matchedJetPt05_2);
    fChain->SetBranchAddress("gen_match_1", &gen_match_1, &b_gen_match_1);
    fChain->SetBranchAddress("gen_match_2", &gen_match_2, &b_gen_match_2);
    fChain->SetBranchAddress("gen_match_jetId_1", &gen_match_jetId_1, &b_gen_match_jetId_1);
@@ -774,6 +927,12 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("byMediumIsolationMVArun2v1DBnewDMwLT_1", &byMediumIsolationMVArun2v1DBnewDMwLT_1, &b_byMediumIsolationMVArun2v1DBnewDMwLT_1);
    fChain->SetBranchAddress("byTightIsolationMVArun2v1DBnewDMwLT_1", &byTightIsolationMVArun2v1DBnewDMwLT_1, &b_byTightIsolationMVArun2v1DBnewDMwLT_1);
    fChain->SetBranchAddress("byVTightIsolationMVArun2v1DBnewDMwLT_1", &byVTightIsolationMVArun2v1DBnewDMwLT_1, &b_byVTightIsolationMVArun2v1DBnewDMwLT_1);
+   fChain->SetBranchAddress("byRerunMVAIdVLoose_1", &byRerunMVAIdVLoose_1, &b_byRerunMVAIdVLoose_1);
+   fChain->SetBranchAddress("byRerunMVAIdLoose_1", &byRerunMVAIdLoose_1, &b_byRerunMVAIdLoose_1);
+   fChain->SetBranchAddress("byRerunMVAIdMedium_1", &byRerunMVAIdMedium_1, &b_byRerunMVAIdMedium_1);
+   fChain->SetBranchAddress("byRerunMVAIdTight_1", &byRerunMVAIdTight_1, &b_byRerunMVAIdTight_1);
+   fChain->SetBranchAddress("byRerunMVAIdVTight_1", &byRerunMVAIdVTight_1, &b_byRerunMVAIdVTight_1);
+   fChain->SetBranchAddress("byRerunMVAIdVVTight_1", &byRerunMVAIdVVTight_1, &b_byRerunMVAIdVVTight_1);
    fChain->SetBranchAddress("idMVANewDM_1", &idMVANewDM_1, &b_idMVANewDM_1);
    fChain->SetBranchAddress("chargedIsoPtSum_1", &chargedIsoPtSum_1, &b_chargedIsoPtSum_1);
    fChain->SetBranchAddress("neutralIsoPtSum_1", &neutralIsoPtSum_1, &b_neutralIsoPtSum_1);
@@ -826,15 +985,29 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("byMediumIsolationMVArun2v1DBnewDMwLT_2", &byMediumIsolationMVArun2v1DBnewDMwLT_2, &b_byMediumIsolationMVArun2v1DBnewDMwLT_2);
    fChain->SetBranchAddress("byTightIsolationMVArun2v1DBnewDMwLT_2", &byTightIsolationMVArun2v1DBnewDMwLT_2, &b_byTightIsolationMVArun2v1DBnewDMwLT_2);
    fChain->SetBranchAddress("byVTightIsolationMVArun2v1DBnewDMwLT_2", &byVTightIsolationMVArun2v1DBnewDMwLT_2, &b_byVTightIsolationMVArun2v1DBnewDMwLT_2);
+   fChain->SetBranchAddress("byRerunMVAIdVLoose_2", &byRerunMVAIdVLoose_2, &b_byRerunMVAIdVLoose_2);
+   fChain->SetBranchAddress("byRerunMVAIdLoose_2", &byRerunMVAIdLoose_2, &b_byRerunMVAIdLoose_2);
+   fChain->SetBranchAddress("byRerunMVAIdMedium_2", &byRerunMVAIdMedium_2, &b_byRerunMVAIdMedium_2);
+   fChain->SetBranchAddress("byRerunMVAIdTight_2", &byRerunMVAIdTight_2, &b_byRerunMVAIdTight_2);
+   fChain->SetBranchAddress("byRerunMVAIdVTight_2", &byRerunMVAIdVTight_2, &b_byRerunMVAIdVTight_2);
+   fChain->SetBranchAddress("byRerunMVAIdVVTight_2", &byRerunMVAIdVVTight_2, &b_byRerunMVAIdVVTight_2);
    fChain->SetBranchAddress("idMVANewDM_2", &idMVANewDM_2, &b_idMVANewDM_2);
    fChain->SetBranchAddress("chargedIsoPtSum_2", &chargedIsoPtSum_2, &b_chargedIsoPtSum_2);
    fChain->SetBranchAddress("neutralIsoPtSum_2", &neutralIsoPtSum_2, &b_neutralIsoPtSum_2);
    fChain->SetBranchAddress("puCorrPtSum_2", &puCorrPtSum_2, &b_puCorrPtSum_2);
    fChain->SetBranchAddress("decayModeFindingOldDMs_2", &decayModeFindingOldDMs_2, &b_decayModeFindingOldDMs_2);
    fChain->SetBranchAddress("decayMode_2", &decayMode_2, &b_decayMode_2);
+   fChain->SetBranchAddress("pzetavis", &pzetavis, &b_pzetavis);
+   fChain->SetBranchAddress("pzetamiss", &pzetamiss, &b_pzetamiss);
+   fChain->SetBranchAddress("dzeta", &dzeta, &b_dzeta);
    fChain->SetBranchAddress("pt_tt", &pt_tt, &b_pt_tt);
+   fChain->SetBranchAddress("pt_vis", &pt_vis, &b_pt_vis);
+   fChain->SetBranchAddress("dphi", &dphi, &b_dphi);
+   fChain->SetBranchAddress("mt_3", &mt_3, &b_mt_3);
+   fChain->SetBranchAddress("mt_tot", &mt_tot, &b_mt_tot);
    fChain->SetBranchAddress("pfpt_tt", &pfpt_tt, &b_pfpt_tt);
    fChain->SetBranchAddress("m_vis", &m_vis, &b_m_vis);
+   fChain->SetBranchAddress("m_coll", &m_coll, &b_m_coll);
    fChain->SetBranchAddress("pfpt_sum", &pfpt_sum, &b_pfpt_sum);
    fChain->SetBranchAddress("pt_sum", &pt_sum, &b_pt_sum);
    fChain->SetBranchAddress("dr_leptau", &dr_leptau, &b_dr_leptau);
@@ -879,6 +1052,12 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("addtau_byMediumIsolationMVArun2v1DBnewDMwLT", &addtau_byMediumIsolationMVArun2v1DBnewDMwLT, &b_addtau_byMediumIsolationMVArun2v1DBnewDMwLT);
    fChain->SetBranchAddress("addtau_byTightIsolationMVArun2v1DBnewDMwLT", &addtau_byTightIsolationMVArun2v1DBnewDMwLT, &b_addtau_byTightIsolationMVArun2v1DBnewDMwLT);
    fChain->SetBranchAddress("addtau_byVTightIsolationMVArun2v1DBnewDMwLT", &addtau_byVTightIsolationMVArun2v1DBnewDMwLT, &b_addtau_byVTightIsolationMVArun2v1DBnewDMwLT);
+   fChain->SetBranchAddress("addtau_NewMVAIDVLoose", &addtau_NewMVAIDVLoose, &b_addtau_NewMVAIDVLoose);
+   fChain->SetBranchAddress("addtau_NewMVAIDLoose", &addtau_NewMVAIDLoose, &b_addtau_NewMVAIDLoose);
+   fChain->SetBranchAddress("addtau_NewMVAIDMedium", &addtau_NewMVAIDMedium, &b_addtau_NewMVAIDMedium);
+   fChain->SetBranchAddress("addtau_NewMVAIDTight", &addtau_NewMVAIDTight, &b_addtau_NewMVAIDTight);
+   fChain->SetBranchAddress("addtau_NewMVAIDVTight", &addtau_NewMVAIDVTight, &b_addtau_NewMVAIDVTight);
+   fChain->SetBranchAddress("addtau_NewMVAIDVVTight", &addtau_NewMVAIDVVTight, &b_addtau_NewMVAIDVVTight);
    fChain->SetBranchAddress("addtau_passesTauLepVetos", &addtau_passesTauLepVetos, &b_addtau_passesTauLepVetos);
    fChain->SetBranchAddress("addtau_decayMode", &addtau_decayMode, &b_addtau_decayMode);
    fChain->SetBranchAddress("addtau_d0", &addtau_d0, &b_addtau_d0);
@@ -892,12 +1071,11 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("passesThirdLepVeto", &passesThirdLepVeto, &b_passesThirdLepVeto);
    fChain->SetBranchAddress("passesDiMuonVeto", &passesDiMuonVeto, &b_passesDiMuonVeto);
    fChain->SetBranchAddress("passesDiElectronVeto", &passesDiElectronVeto, &b_passesDiElectronVeto);
-   fChain->SetBranchAddress("XTrig_match", &XTrig_match, &b_XTrig_match);
-   fChain->SetBranchAddress("STrig_match", &STrig_match, &b_STrig_match);
    fChain->SetBranchAddress("matchXTrig_obj", &matchXTrig_obj, &b_matchXTrig_obj);
    fChain->SetBranchAddress("dilepton_veto", &dilepton_veto, &b_dilepton_veto);
    fChain->SetBranchAddress("extraelec_veto", &extraelec_veto, &b_extraelec_veto);
    fChain->SetBranchAddress("extramuon_veto", &extramuon_veto, &b_extramuon_veto);
+   fChain->SetBranchAddress("uncorrmet", &uncorrmet, &b_uncorrmet);
    fChain->SetBranchAddress("met", &met, &b_met);
    fChain->SetBranchAddress("metphi", &metphi, &b_metphi);
    fChain->SetBranchAddress("met_ex", &met_ex, &b_met_ex);
@@ -922,8 +1100,6 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("metcov01", &metcov01, &b_metcov01);
    fChain->SetBranchAddress("metcov10", &metcov10, &b_metcov10);
    fChain->SetBranchAddress("metcov11", &metcov11, &b_metcov11);
-   fChain->SetBranchAddress("m_sv", &m_sv, &b_m_sv);
-   fChain->SetBranchAddress("pt_sv", &pt_sv, &b_pt_sv);
    fChain->SetBranchAddress("mjj", &mjj, &b_mjj);
    fChain->SetBranchAddress("mjjUp", &mjjUp, &b_mjjUp);
    fChain->SetBranchAddress("mjjDown", &mjjDown, &b_mjjDown);
@@ -932,6 +1108,8 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("jdetaDown", &jdetaDown, &b_jdetaDown);
    fChain->SetBranchAddress("njetingap", &njetingap, &b_njetingap);
    fChain->SetBranchAddress("njetingap20", &njetingap20, &b_njetingap20);
+   fChain->SetBranchAddress("dijetpt", &dijetpt, &b_dijetpt);
+   fChain->SetBranchAddress("dijetphi", &dijetphi, &b_dijetphi);
    fChain->SetBranchAddress("jdphi", &jdphi, &b_jdphi);
    fChain->SetBranchAddress("nbtag", &nbtag, &b_nbtag);
    fChain->SetBranchAddress("njets", &njets, &b_njets);
@@ -946,6 +1124,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("jm_1", &jm_1, &b_jm_1);
    fChain->SetBranchAddress("jrawf_1", &jrawf_1, &b_jrawf_1);
    fChain->SetBranchAddress("jmva_1", &jmva_1, &b_jmva_1);
+   fChain->SetBranchAddress("jcsv_1", &jcsv_1, &b_jcsv_1);
    fChain->SetBranchAddress("jpt_2", &jpt_2, &b_jpt_2);
    fChain->SetBranchAddress("jptUp_2", &jptUp_2, &b_jptUp_2);
    fChain->SetBranchAddress("jptDown_2", &jptDown_2, &b_jptDown_2);
@@ -954,6 +1133,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("jm_2", &jm_2, &b_jm_2);
    fChain->SetBranchAddress("jrawf_2", &jrawf_2, &b_jrawf_2);
    fChain->SetBranchAddress("jmva_2", &jmva_2, &b_jmva_2);
+   fChain->SetBranchAddress("jcsv_2", &jcsv_2, &b_jcsv_2);
    fChain->SetBranchAddress("bpt_1", &bpt_1, &b_bpt_1);
    fChain->SetBranchAddress("beta_1", &beta_1, &b_beta_1);
    fChain->SetBranchAddress("bphi_1", &bphi_1, &b_bphi_1);
@@ -966,6 +1146,12 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("brawf_2", &brawf_2, &b_brawf_2);
    fChain->SetBranchAddress("bmva_2", &bmva_2, &b_bmva_2);
    fChain->SetBranchAddress("bcsv_2", &bcsv_2, &b_bcsv_2);
+   fChain->SetBranchAddress("m_sv", &m_sv, &b_m_sv);
+   fChain->SetBranchAddress("m_sv_unc", &m_sv_unc, &b_m_sv_unc);
+   fChain->SetBranchAddress("mt_sv", &mt_sv, &b_mt_sv);
+   fChain->SetBranchAddress("mt_sv_unc", &mt_sv_unc, &b_mt_sv_unc);
+   fChain->SetBranchAddress("pt_sv", &pt_sv, &b_pt_sv);
+   fChain->SetBranchAddress("pt_sv_unc", &pt_sv_unc, &b_pt_sv_unc);
    Notify();
 }
 

@@ -15,7 +15,7 @@ isolation = ""
 if(channel == "mt" or channel == "et"):
 	isolation = "tight"
 elif(channel == "tt"):
-	isolation = "medium"
+	isolation = "tight"
 
 
 indir=args.indir
@@ -25,7 +25,7 @@ date = indir[-8:]
 tag='v0.2.1'
 FFtype=""
 #FFtype="_alt"
-categories = ['inclusive','btag_tight', 'btag_loosemt', 'nobtag_tight', 'nobtag_loosemt']
+categories = ['inclusive','dummycat']
 #categories = ['btag_looseiso', 'nobtag_looseiso']
 
 for x in range(0,len(categories)):

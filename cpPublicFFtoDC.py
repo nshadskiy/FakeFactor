@@ -133,8 +133,8 @@ if __name__ == '__main__':
         channel = "et"
     elif(args.channel=="kTAU"):
         channel = "tt"
-    categories	=['inclusive','btag','nobtag','btag_tight','btag_loosemt','nobtag_tight','nobtag_loosemt']
-    ttcategories=['inclusive','btag','nobtag']
+    categories	=['inclusive','dummycat']
+    ttcategories=['inclusive','dummycat']
     
     ch = CMCHandler(source, dest, channel, categories, ttcategories)
     

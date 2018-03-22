@@ -55,7 +55,7 @@ Int_t GlobalClass::isLoose(const Int_t mode, const Int_t ind) //default: 0,0
   if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != 6 ) return 0; }
 
   if( CHAN == kTAU ){
-    if ( !event_s->alltau_mediumMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
+    if ( !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
   }
   else if ( !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
   
@@ -76,7 +76,7 @@ Int_t GlobalClass::isTight(const Int_t mode, const Int_t ind) //default: 0,0
   if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != 6 ) return 0; }
 
   if(CHAN == kTAU){
-    if ( event_s->alltau_mediumMVA->at(ind)) return 1;
+    if ( event_s->alltau_tightMVA->at(ind)) return 1;
   }
   else{
     if ( event_s->alltau_tightMVA->at(ind)) return 1;
@@ -126,16 +126,7 @@ Int_t GlobalClass::isInSR(const Int_t mode, const Int_t ind)
     
 
   return 0;
-
-  /*
-  if ((event_s->alltau_mt->at(ind)<MT_CUT || (mode & NO_SR)) &&
-      //       event_s->lep_q*event_s->alltau_q->at(ind)<0.        &&
-       event_s->passesDLVeto                             &&
-      ( event_s->lep_iso<LEP_ISO_CUT || ( mode & MUISO ) ) &&
-       event_s->passes3LVeto              )
-    return 1;
-  else return 0;
-  */
+ 
 }
 
 Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
@@ -210,7 +201,7 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
     returnVal=1;
   else if ((mode & _QCD)                  &&
 	   (  ( !CALC_SS_SR && !(mode & _AI) && event_s->alltau_mt->at(ind)<40 && event_s->lep_q*event_s->alltau_q->at(ind)>0.  && ( ( event_s->lep_iso > 0.05 && event_s->lep_iso<0.15 ) || ( mode & MUISO ) ) ) || //TRY
-	      (  (CALC_SS_SR) && event_s->alltau_mt->at(ind)<40   && event_s->lep_q*event_s->alltau_q->at(ind)<0. && ( ( event_s->lep_iso > 0.15 && event_s->lep_iso<0.25 ) || ( mode & MUISO) )                    ) || //TRY
+	      (  (CALC_SS_SR) && event_s->alltau_mt->at(ind)<40   && event_s->lep_q*event_s->alltau_q->at(ind)<0. && ( ( event_s->lep_iso > antiIso_min && event_s->lep_iso<antiIso_max ) || ( mode & MUISO) )                    ) || //TRY
               (  mode & _AI && event_s->alltau_mt->at(ind)<40   &&   ( event_s->lep_iso > antiIso_min && event_s->lep_iso<antiIso_max )                     ) ) && //TRY
 	   //	   (  ( !CALC_SS_SR && event_s->alltau_mt->at(ind)<MT_CUT   && ( event_s->lep_iso<LEP_ISO_CUT || ( mode & MUISO ) ) ) || //DEFAULT
 	   //	      (  CALC_SS_SR                                     && event_s->lep_iso>LEP_ISO_CUT )   ) && //DEFAULT
@@ -627,40 +618,12 @@ Int_t GlobalClass::getPInd( Int_t dm ){
 Int_t GlobalClass::fulfillCategory(Int_t categoryMode, Int_t ind){
 
   if( inclusive_selection && (CHAN==kMU || CHAN==kEL) ){
-    if(event_s->alltau_mt->at(ind) > 70) return 0; 
-  }
-  
-  if ( categoryMode & _BTAG ){
-    if( (CHAN==kMU || CHAN==kEL) && event_s->alltau_mt->at(ind) > MT_CUT ) return 0;
-    if(event_s->bpt_1<20) return 0;
-    //if(event_s->bpt_2>20) return 0;
-    //if(event_s->njets > 1) return 0;
-  }
-  if ( categoryMode & _NOBTAG ){
-    if( (CHAN==kMU || CHAN==kEL) && event_s->alltau_mt->at(ind) > MT_CUT ) return 0;
-    if(event_s->bpt_1>20) return 0;    
-  }
-  if ( categoryMode & _BTAG_TIGHT && (CHAN==kMU || CHAN==kEL) ){
-    if(event_s->bpt_1<20) return 0;    
-    //if(event_s->njets > 1) return 0;
     if(event_s->alltau_mt->at(ind) > MT_CUT) return 0; 
   }
-  if ( categoryMode & _BTAG_LOOSEMT && (CHAN==kMU || CHAN==kEL) ){
-    if(event_s->bpt_1<20) return 0;    
-    //if(event_s->njets > 1) return 0;
-    if(event_s->alltau_mt->at(ind) < MT_CUT) return 0;
-    if(event_s->alltau_mt->at(ind) > 70) return 0;
-  }
-  if ( categoryMode & _NOBTAG_TIGHT && (CHAN==kMU || CHAN==kEL) ){
-    if(event_s->bpt_1>20) return 0;    
-    if(event_s->alltau_mt->at(ind) > MT_CUT) return 0; 
-  }
-  if ( categoryMode & _NOBTAG_LOOSEMT && (CHAN==kMU || CHAN==kEL) ){
-    if(event_s->bpt_1>20) return 0;    
-    if(event_s->alltau_mt->at(ind) < MT_CUT) return 0;
-    if(event_s->alltau_mt->at(ind) > 70) return 0;
-  }
   
+  if ( categoryMode & _DUMMYCAT ){
+    if(event_s->alltau_mt->at(ind) > MT_CUT) return 0; 
+  }  
     
   return 1;
   
@@ -668,12 +631,7 @@ Int_t GlobalClass::fulfillCategory(Int_t categoryMode, Int_t ind){
 
 TString GlobalClass::getCatString_noSel(Int_t categoryMode){
 
-  if ( categoryMode & _BTAG ) return categories[0];
-  if ( categoryMode & _NOBTAG ) return categories[1];
-  if ( categoryMode & _BTAG_TIGHT ) return categories[2];
-  if ( categoryMode & _BTAG_LOOSEMT ) return categories[3];
-  if ( categoryMode & _NOBTAG_TIGHT ) return categories[4];
-  if ( categoryMode & _NOBTAG_LOOSEMT ) return categories[5];
+  if ( categoryMode & _DUMMYCAT ) return categories[0];
 
   return "";
   

@@ -74,77 +74,28 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   if(CHAN==kMU && !event->trg_singlemuon) return 0;
   if(CHAN==kEL && !event->trg_singleelectron) return 0;
   if(CHAN==kTAU && !(event->trg_doubletau) ) return 0;
-  if(event->Flag_badMuons) return 0;
-  if(event->Flag_duplicateMuons) return 0;
+  if(CHAN==kMU && event->Flag_badMuons) return 0;
+  if(CHAN==kMU && event->Flag_duplicateMuons) return 0;
   
   TLorentzVector vec1, vec2, vec;
   //////////////////////////////////////////////////////////////////////////
-  //////////weight_sf contains top pT reweighting for TT samples and Z reweighting for DY samples
-  //////////////////////////////////////////////////////////////////////////
-  weight=1;
-  if(!preselectionFile.Contains("preselection_data"))weight = event->puweight*event->effweight*event->stitchedWeight*luminosity*event->genweight*event->antilep_tauscaling;
+
+  weight=1.;
+  if(!preselectionFile.Contains("preselection_data"))weight = event->puweight*event->effweight*event->stitchedWeight*luminosity*event->genweight*event->antilep_tauscaling*event->topWeight_run1*event->zPtReweightWeight;
 
   if( CHAN == kTAU && !preselectionFile.Contains("preselection_data") ){
-    if(event->gen_match_1 == 5 && event->byMediumIsolationMVArun2v1DBoldDMwLT_1) weight *= 0.97;
+    if(event->gen_match_1 == 5 && event->byTightIsolationMVArun2v1DBoldDMwLT_1) weight *= 0.95;
     else if(event->gen_match_1 == 5 && event->byVLooseIsolationMVArun2v1DBoldDMwLT_1 ) weight *= 0.99;
-    if(event->gen_match_2 == 5 && event->byMediumIsolationMVArun2v1DBoldDMwLT_2) weight *= 0.97;
+    if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2v1DBoldDMwLT_2) weight *= 0.95;
     else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2v1DBoldDMwLT_2 ) weight *= 0.99;
   }
   if( CHAN != kTAU && !preselectionFile.Contains("preselection_data") ){
     if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2v1DBoldDMwLT_2) weight *= 0.95;
     else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2v1DBoldDMwLT_2 ) weight *= 0.99;
   }
-  weight_sf= weight; //event->evtWeight; no Zpt and top pT reweighting
-
-  if( preselectionFile.Contains("preselection_TT") ) weight_sf *= event->topWeight_run1;
-  if( preselectionFile.Contains("preselection_DY") ) weight_sf *= event->ZWeight;
-
-  ////////////////////////////////////////////////////////////////////////////////////////
-
-  //obsolete as soon as e->tau/mu->tau SF are applied correctly in tautau channel postprocessing
-  if( CHAN == kTAU && !preselectionFile.Contains("preselection_data" )){
-    //run2 SF for VLoose for tau2
-    float scaleFactor_tautau = 1;
-    if( event->gen_match_2 == 1
-        || event->gen_match_2 == 3 ){
-
-      if( fabs(event->eta_2 ) < 1.46) scaleFactor_tautau = 1.21;
-      else if( fabs(event->eta_2 ) > 1.558) scaleFactor_tautau =  1.38;
-    }
-    //run2 SF with bad muon filter for cut-based Loose for tau2
-    if( event->gen_match_2 == 2
-        || event->gen_match_2 == 4 ){
-
-      if( fabs(event->gen_match_2) < 0.4 ) scaleFactor_tautau =  1.22;
-      else if( fabs(event->gen_match_2) < 0.8 ) scaleFactor_tautau =  1.12;
-      else if( fabs(event->gen_match_2) < 1.2 ) scaleFactor_tautau =  1.26;
-      else if( fabs(event->gen_match_2) < 1.7 ) scaleFactor_tautau =  1.22;
-      else if( fabs(event->gen_match_2) < 2.3 ) scaleFactor_tautau =  2.39;
-    }
-
-    if( event->gen_match_1 == 1
-        || event->gen_match_1 == 3 ){
-
-      if( fabs(event->eta_1 ) < 1.46) scaleFactor_tautau *= 1.21;
-      else if( fabs(event->eta_1 ) > 1.558) scaleFactor_tautau *=  1.38;
-    }
-    //run2 SF with bad muon filter for cut-based Loose for tau2
-    if( event->gen_match_1 == 2
-        || event->gen_match_1 == 4 ){
-
-      if( fabs(event->gen_match_1) < 0.4 ) scaleFactor_tautau *=  1.22;
-      else if( fabs(event->gen_match_1) < 0.8 ) scaleFactor_tautau *=  1.12;
-      else if( fabs(event->gen_match_1) < 1.2 ) scaleFactor_tautau *=  1.26;
-      else if( fabs(event->gen_match_1) < 1.7 ) scaleFactor_tautau *=  1.22;
-      else if( fabs(event->gen_match_1) < 2.3 ) scaleFactor_tautau *=  2.39;
-    }
-    weight = weight*scaleFactor_tautau;
-    weight_sf = weight_sf*scaleFactor_tautau;
-
-  }
-
-  ////////////////////////////////////////////////////////////////////////////////////////
-    
+  
+  weight_sf=weight;
+  
   if(CHAN==kTAU && !COINFLIP){
     weight=weight*0.5;
     weight_sf=weight_sf*0.5;

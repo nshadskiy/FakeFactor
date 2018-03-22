@@ -79,6 +79,8 @@ void CalcFF() {
         if(useVV) {ps.push_back(preselection_VV_T); ps.push_back(preselection_VV_L);}
         //for(Int_t ips=0; ips<ps.size();ips++) ps.at(ips).ReplaceAll( ".root",categories[icat]+".root" );
         Analyzer->calcFFweights(m_preselection_data_tmp,wf, ps, yields, pi, p, template_file_name_tmp, 0, catMode[icat]);
+        /*
+        //This was used for MSSM frac plots
         if(CHAN!=kTAU){
           if( catMode[icat] & _BTAG_TIGHT ){
             for(int i=0;i<5;i++) combinedYields[i] = yields[i];
@@ -101,6 +103,7 @@ void CalcFF() {
             for(int i=0;i<5;i++) combinedYields[i+10] = yields[i];
           }
         }
+        */
       }
     }
   }

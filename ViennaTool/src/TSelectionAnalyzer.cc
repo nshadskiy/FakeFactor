@@ -13,31 +13,6 @@ TSelectionAnalyzer::~TSelectionAnalyzer()
 {
 }
 
-/*void TSelectionAnalyzer::loadFile(TString filename, TString chain)
-{
-  tchain = new TChain(chain);
-  tchain->Add(filename);
-
-  if       (filename==datafile) this->curr_sample="data";
-  else if  (filename==DYfile || filename==DY_NJfile) this->curr_sample="DY";
-  else if  (filename==TTfile) this->curr_sample="TT";
-  else if  (filename==Wjetsfile) this->curr_sample="Wjets";
-  else if  (filename==QCDfile) this->curr_sample="QCD";
-  else if  (filename==VVfile) this->curr_sample="VV";
-  else this->curr_sample="unknown";
-  
-  int nev=0;
-  if (chain=="Events"){  event_s = new SignalClass(tchain); if (DEBUG) nev=event_s->fChain->GetEntries(); }
-  else std::cout << "unknown chain!" << std::endl;
-  if (DEBUG) std::cout<<"File: "<<filename<<" loaded" << ", #events: "<< nev << std::endl;
-}
-
-void TSelectionAnalyzer::closeFile()
-{
-  delete event_s;
-  delete tchain;
-  }*/
-
 void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mode,const Int_t categoryMode,const TString output, const Int_t cuts)
 {
   TH1D *tightSR,*looseSR,*tightSR_alt,*allSR;
@@ -98,6 +73,7 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
     if ( !fulfillCategory(categoryMode) ) continue;
     if ( isInSR(mode,tau_ind) && ( !cuts || this->passesCuts(cuts,tau_ind) )  ){
       fillVal=this->selVal(mode,tau_ind);
+
       Double_t DMscaling=1;
       Double_t XSscaling=1;
       ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -110,6 +86,7 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
       //tau XS scaling
       /*if( preselection.Contains("DY_TT") || preselection.Contains("DY_L") || preselection.Contains("DY_J") ){
         XSscaling=0.95;
+        
         }*/ // this is now already done in the preprocessing
       allSR->Fill(fillVal,event_s->weight_sf*DMscaling*XSscaling);
       if ( this->isTight(0,tau_ind) ) tightSR->Fill(fillVal,event_s->weight_sf*DMscaling*XSscaling);
@@ -120,56 +97,7 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
   std::cout << " in tightSR: " << tightSR->Integral(-1,-1) << std::endl;
 
   TFile f(output,"recreate");
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //tau id scaling errors
-  if( preselection.Contains("DY_TT") || preselection.Contains("TT_T") || preselection.Contains("VV_T") ){
-    for(int i=1; i<tightSR->GetNbinsX();i++){
-      if(tightSR->GetBinContent(i) > 1){
-        Double_t err1=tightSR->GetBinError(i)/tightSR->GetBinContent(i);
-        Double_t err2=0.06;
-        tightSR->SetBinError( i,TMath::Sqrt(TMath::Power(err1,2)+TMath::Power(err2,2))*tightSR->GetBinContent(i) );
-      }
-    }
-    for(int i=1; i<looseSR->GetNbinsX();i++){
-      if(looseSR->GetBinContent(i) > 1){
-        Double_t err1=looseSR->GetBinError(i)/looseSR->GetBinContent(i);
-        Double_t err2=0.06;
-        looseSR->SetBinError( i,TMath::Sqrt(TMath::Power(err1,2)+TMath::Power(err2,2))*looseSR->GetBinContent(i) );
-      }
-    }
-    for(int i=1; i<tightSR_alt->GetNbinsX();i++){
-      if(tightSR_alt->GetBinContent(i) > 1){
-        Double_t err1=tightSR_alt->GetBinError(i)/tightSR_alt->GetBinContent(i);
-        Double_t err2=0.06;
-        tightSR_alt->SetBinError( i,TMath::Sqrt(TMath::Power(err1,2)+TMath::Power(err2,2))*tightSR_alt->GetBinContent(i) );
-      }
-    }    
-  }
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //DY XS error
-  if( preselection.Contains("DY_TT") || preselection.Contains("DY_L") || preselection.Contains("DY_J") ){
-    for(int i=1; i<tightSR->GetNbinsX();i++){
-      if(tightSR->GetBinContent(i) > 1){
-        Double_t err1=tightSR->GetBinError(i)/tightSR->GetBinContent(i);
-        Double_t err2=0.02;
-        tightSR->SetBinError( i,TMath::Sqrt(TMath::Power(err1,2)+TMath::Power(err2,2))*tightSR->GetBinContent(i) );
-      }
-    }
-    for(int i=1; i<looseSR->GetNbinsX();i++){
-      if(looseSR->GetBinContent(i) > 1){
-        Double_t err1=looseSR->GetBinError(i)/looseSR->GetBinContent(i);
-        Double_t err2=0.02;
-        looseSR->SetBinError( i,TMath::Sqrt(TMath::Power(err1,2)+TMath::Power(err2,2))*looseSR->GetBinContent(i) );
-      }
-    }
-    for(int i=1; i<tightSR_alt->GetNbinsX();i++){
-      if(tightSR_alt->GetBinContent(i) > 1){
-        Double_t err1=tightSR_alt->GetBinError(i)/tightSR_alt->GetBinContent(i);
-        Double_t err2=0.02;
-        tightSR_alt->SetBinError( i,TMath::Sqrt(TMath::Power(err1,2)+TMath::Power(err2,2))*tightSR_alt->GetBinContent(i) );
-      }
-    }    
-  }
+
   tightSR->Write();
   looseSR->Write();
   tightSR_alt->Write();

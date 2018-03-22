@@ -77,7 +77,7 @@ void fitFakeFactors(){
               cf.set_smoothMode("spline3");              
             }
           }
-          else if( CHAN==kEL && (  (modes.at(imode) & _QCD) && (modes.at(imode) & _AI) && ijet == 1 && idm == 0 ) ){
+          /*else if( CHAN==kEL && (  (modes.at(imode) & _QCD) && (modes.at(imode) & _AI) && ijet == 1 && idm == 0 ) ){
             cf.set_fitFunc( "landau(0)+pol1(2)" );
             cf.set_histMaxFrac( 0.2 );
             cf.set_smoothFrac(0.1);
@@ -85,10 +85,7 @@ void fitFakeFactors(){
           }
           else if( CHAN==kEL && (  (modes.at(imode) & _QCD) && ijet == 1 && idm == 0 ) ){
             cf.set_fitFunc( "landau(0)+pol1(2)" );
-            /*cf.set_histMaxFrac( 0.6 );
-            cf.set_smoothFrac(0.4);
-            cf.set_smoothMode("spline3");*/              
-          }
+          }*/
           else if( CHAN==kTAU && idm==0 ){
             cf.set_fitFunc( "landau(0)+pol0(2)" );
             cf.set_err_scale( 3.0 );
@@ -257,7 +254,7 @@ void fitFakeFactors(){
           infoRight.SetTextSize(0.03);
 
           cms1.Draw();
-          if( modes.at(imode) & _TT ) cms2.Draw();
+          //if( modes.at(imode) & _TT ) cms2.Draw();
           if( !(modes.at(imode) & _TT) ) infoRight.Draw();
           
           TString ending=""; stringstream convert;
