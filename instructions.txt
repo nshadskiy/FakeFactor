@@ -7,3 +7,24 @@
 
 ##########################
 #Run FF tool with sh steerAll.sh in ViennaTool folder
+
+src/GlobalClass.cc contains most of the important functions:
+isLoose(), isTight(), isInSR(), isInCR()
+
+macros/Preselection.C <-> src/TNtupleAnalyzer.cc
+This needs to be adjusted: lep_iso -> put the isolation working point if you run the tautau channel. This refers to the isolation of the non-fake tautau
+For mutau everything is set up
+
+macros/CRHisto.C, macros/SRHisto.C <-> this can be drastically reduced, but produces lots of histos for now: No need to change
+
+macros/steerFF.C <-> src/FFCalculator.cc runs calculation of fractions and FFs: the binning of the FFs has to be changed in Settings.h if neccessary
+
+macros/fitFakeFactors.C <-> sensitive to binnings: please check output of:
+Images/data_CHAN/pTfitQCD_dmX_njetX_CHAN_preliminary.png
+Images/data_CHAN/pTfitQCD_AI_dmX_njetX_CHAN_preliminary.png needed for OS/SS corrections
+Images/data_CHAN/pTfitWjets_dmX_njetX_CHAN_preliminary.png
+Images/data_CHAN/pTfitWjets_MC_dmX_njetX_CHAN_preliminary.png needed for mT corrections
+Images/data_CHAN/pTfitTT_dmX_njet0_CHAN_preliminary.png
+
+macros/calcCorrections <-> src/FFCalculator.cc
+
