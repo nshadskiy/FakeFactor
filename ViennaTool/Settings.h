@@ -15,11 +15,13 @@ const Double_t luminosity=35.9;
 const int use_svfit = 1;
 const TString ver = "v2";
 ///////////////////////////////////////////////////
+//Out of date
 const int inclusive_selection=1; 
 const int exclusive_selection=1; 
 const int useVV=1;
 const int useMVAMET=0;
 ///////////////////////////////////////////////////
+//Out of date - no need to change
 const int DEBUG=1; //set to 1 for additional output
 const int ALLPLOTS=1; //set to 1 for PDFs etc
 const int DOQCD=1; //set to 1 to include QCD estimate, 0 for w/o; only works for MC
@@ -31,6 +33,10 @@ const int doSRHisto = 1;
 const int doCRHisto = 1;
 ///////////////////////////////////////////////////
 //steerFF
+const int doCalcWeights=1; //calc fractions
+const int doCalc=1; //calc FFs
+///////////////////////////////////////////////////
+//No need to change
 const int doDebugPlots=1;    //1 to also calculate FF in SR; and do bkg estimate with unweighted FF per sample ->for control plots
 const int doCutPlots=1;      //1 to also calculate cut-dependent plots (prong, eta, pt)
 const int doSRPlots=0;      //1 to also calculate SR and all-region plots for FF vs default binning and mT (mtll and muiso is always done)
@@ -39,10 +45,8 @@ const int applyFF_fromCR=1; //1 for default; 0 for debugging
 const int requireGenMatch_whenCalcFF=0; //0 as default
 const int useDYFF_forTT=0; //0 as default
 const int useWJFF_forDY=0; //1 as default
-const int doCalcWeights=1; //calc fractions
 const int makePieCharts=0; //used for MSSM pie chart plots
 const int doTemplateFitForWeights=0; //template fit for fractions, default: 0
-const int doCalc=1; //calc FFs
 //////////////////////////////////////////////////
 const int fit_pT_bins = 1; //use fitted pT bins as input for ff
 //////////////////////////////////////////////////
