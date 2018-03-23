@@ -20,4 +20,8 @@ git init
 
 git remote add origin git@github.com:jbrands/FakeFactor.git
 
-git pull origin FF2016MSSM_dev
+git fetch
+
+git pull origin FF2016ML
+
+git checkout FF2016ML
