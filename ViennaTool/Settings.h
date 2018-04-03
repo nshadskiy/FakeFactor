@@ -7,10 +7,10 @@
 #define selCHAN      kEL
 const int CHAN     = kEL;
 const TString analysis      ="FakeFactor_SM_ML";
-const TString output_folder ="public/Htautau/FakeRate/SM_ML/20180322";
-//const TString DC_folder     ="/afs/hephy.at/work/j/jbrandstetter/DC/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; 
+const TString output_folder ="/afs/hephy.at/user/m/mflechl/public/Htautau/FakeRate/SM_ML/20180323";
+const TString DC_folder     ="/afs/hephy.at/work/m/mflechl/cmssw/ff_test/CMSSW_8_0_25/src/ViennaTool/HTTutilities/Jet2TauFakes/data";
 ///////////////////////////////////////////////////
-const TString user="whoami";
+const TString user="mflechl";
 const Double_t luminosity=35.9; 
 const int use_svfit = 1;
 const TString ver = "v2";

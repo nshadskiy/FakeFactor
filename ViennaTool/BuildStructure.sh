@@ -1,6 +1,6 @@
 #!/bin/bash
-user=whoami
-fftype=fftype
+user=mflechl
+fftype=FakeFactor_SM_ML
 
 line=" --------------------------------------------------------------------------------------"
 echo $line
