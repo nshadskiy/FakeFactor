@@ -431,7 +431,8 @@ for x in range(0,len(categories)):
     ### Combined fake factors
     comb = Node(
         name='ff_comb',
-        formula='{frac_tt}*{ff_tt} + ({frac_w}+(1-{frac_qcd}-{frac_w}-{frac_tt}))*{ff_w} + {frac_qcd}*{ff_qcd_os}',
+        #formula='{frac_tt}*{ff_tt} + ({frac_w}+(1-{frac_qcd}-{frac_w}-{frac_tt}))*{ff_w} + {frac_qcd}*{ff_qcd_os}',
+        formula='{frac_tt}*{ff_tt} + {frac_w}*{ff_w} + {frac_qcd}*{ff_qcd_os}',
         leaves=[
             # Individual fake factors
             qcd_os,
