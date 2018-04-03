@@ -19,8 +19,12 @@ em Settings.h
 #const TString output_folder ="/afs/hephy.at/user/m/mflechl/public/Htautau/FakeRate/SM_ML/20180323";
 #const TString DC_folder     ="/afs/hephy.at/work/m/mflechl/cmssw/ff_test/CMSSW_8_0_25/src/ViennaTool/HTTutilities/Jet2TauFakes/data";
 #const TString user="mflechl";
-
 em steerAll.sh 
 em BuildStructure.sh
 #user=mflechl
 #fftype=FakeFactor_SM_ML
+
+
+
+git commit -a
+git push origin
