@@ -7,12 +7,15 @@ cd ../../
 scram b -j8
 git init
 
-git clone https://github.com/mflechl/FakeFactor.git
-cd FakeFactor
+#git clone https://github.com/mflechl/FakeFactor.git
+#cd FakeFactor
+git remote add origin https://github.com/mflechl/FakeFactor.git
 git remote add jb https://github.com/jbrands/FakeFactor.git
-git fetch jb
-git checkout -b FF2016ML jb/FF2016ML
-git merge jb/FF2016ML
+git checkout -b FF2016ML origin/FF2016ML
+git remote add jb https://github.com/jbrands/FakeFactor.git
+git fetch origin
+git checkout -b FF2016ML origin/FF2016ML
+git merge origin/FF2016ML
 
 cd ViennaTool/
 em Settings.h 

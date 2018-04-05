@@ -4,15 +4,15 @@
 #define kEL          1
 #define kTAU         2
 ///////////////////////////////////////////////////
-#define selCHAN      kEL
-const int CHAN     = kEL;
+#define selCHAN      kMU
+const int CHAN     = kMU;
 const TString analysis      ="FakeFactor_SM_ML";
-const TString output_folder ="/afs/hephy.at/user/m/mflechl/public/Htautau/FakeRate/SM_ML/20180323";
+const TString output_folder ="/afs/hephy.at/user/m/mflechl/public/Htautau/FakeRate/SM_ML/20180403";
 const TString DC_folder     ="/afs/hephy.at/work/m/mflechl/cmssw/ff_test/CMSSW_8_0_25/src/ViennaTool/HTTutilities/Jet2TauFakes/data";
 ///////////////////////////////////////////////////
 const TString user="mflechl";
 const Double_t luminosity=35.9; 
-const int use_svfit = 1;
+const int use_svfit = 0; //set to 1 to change input directory name accordingly
 const TString ver = "v2";
 ///////////////////////////////////////////////////
 //Out of date
@@ -22,8 +22,8 @@ const int useVV=1;
 const int useMVAMET=0;
 ///////////////////////////////////////////////////
 //Out of date - no need to change
-const int DEBUG=1; //set to 1 for additional output
-const int ALLPLOTS=1; //set to 1 for PDFs etc
+const int DEBUG=0; //set to 1 for additional output
+const int ALLPLOTS=0; //set to 1 for PDFs etc
 const int DOQCD=1; //set to 1 to include QCD estimate, 0 for w/o; only works for MC
 const int DOMC=0; //set to 1 for MC, 0 for data
 const int doCuts=0;
@@ -55,12 +55,12 @@ const int fit_pT_bins = 1; //use fitted pT bins as input for ff
 const double fitMin =  30;
 const int fitBins  =  470;
 const int COINFLIP=1;
-const Double_t Pt_cuts_Wjets[]    = {30.,34,39,50,60,75,90,110,140,180,500};
+const Double_t Pt_cuts_Wjets[]    = {30.,33,38,50,60,75,90,110,140,170,500};
 const Double_t Pt_cuts_DY[]       = {30.,40.};
-const Double_t Pt_cuts_TT_SR[]    = {30.,32.5,35.,40.,45,50,70,90,115,175,500};
+const Double_t Pt_cuts_TT_SR[]    = {30.,32.,34.,37.,40.,45,52,70,90,115,175,500};
 const Double_t Pt_cuts_TT_CR[]    = {30.};
-const Double_t Pt_cuts_QCD[]      = {30,35,40,50,70,120,500};
-const Double_t Pt_cuts_QCD_AI[]   = {30,35,40,50,75,120,500};
+const Double_t Pt_cuts_QCD[]      = {30,32,35,40,50,70,120,500}; //30,33,36
+const Double_t Pt_cuts_QCD_AI[]   = {30,32,35,40,50,75,120,500};
 #endif
 //////////////////////////////////////////////////
 //ETAU Settings

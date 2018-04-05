@@ -278,15 +278,15 @@ void fitFakeFactors(){
           for(int scenario=0; scenario<2; scenario++){
             if(scenario==0){
               cms2.Draw();
-              c2->SaveAs(pi+"pTfit"+ending+".png");
-              if(ALLPLOTS) c2->SaveAs(pi+"pTfit"+ending+".pdf");
+              if(ALLPLOTS) c2->SaveAs(pi+"pTfit"+ending+".png");
+              c2->SaveAs(pi+"pTfit"+ending+".pdf");
             }
             if(scenario==1){
               TString preString = "_preliminary";
               c3->cd();
               cms3.Draw();
-              c3->SaveAs(pi+"pTfit"+ending+preString+".png");
-              if(ALLPLOTS) c3->SaveAs(pi+"pTfit"+ending+preString+".pdf");
+              if(ALLPLOTS) c3->SaveAs(pi+"pTfit"+ending+preString+".png");
+              //if(ALLPLOTS) c3->SaveAs(pi+"pTfit"+ending+preString+".pdf");
             }
           }
 

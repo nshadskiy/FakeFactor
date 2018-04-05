@@ -3,8 +3,10 @@ import argparse
 
 if __name__ == '__main__':
 
+     R.gROOT.SetBatch(True)
+
      parser = argparse.ArgumentParser()
-     parser.add_argument('--channel', dest = 'channel', help='Channel to plot: mt,et,tt', type=str, metavar = 'TAG', required = True)
+     parser.add_argument('--channel', dest = 'channel', help='Channel to plot: kMU,kEL,kTAU', type=str, metavar = 'TAG', required = True)
      args = parser.parse_args()
     
      preliminary = 'Preliminary'

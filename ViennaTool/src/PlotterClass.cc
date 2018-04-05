@@ -569,7 +569,7 @@ Int_t PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,con
             }
             
             //	FF_CR->GetXaxis()->SetBinLabel(p+e*N_p+t*(N_p*N_e)+1,tlabel+elabel+plabel);
-            cout << "YYY " << p+t*(N_p*N_e)+ijet*(N_t*N_p)+1 << " " << jlabel+tlabel+plabel+elabel << endl;
+	    //            cout << "YYY " << p+t*(N_p*N_e)+ijet*(N_t*N_p)+1 << " " << jlabel+tlabel+plabel+elabel << endl;
             if(p==0)FF_CR->GetXaxis()->SetBinLabel(p+t*(N_p*N_e)+ijet*(N_t*N_p)+1,jlabel+tlabel+", p_{T} binned");
             if(p==0)FF_SR->GetXaxis()->SetBinLabel(p+t*(N_p*N_e)+ijet*(N_t*N_p)+1,jlabel+tlabel+",p_{T} binned");
           }
@@ -627,7 +627,7 @@ Int_t PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,con
     if (ALLPLOTS){
       gPad->SaveAs(plotfile+tight_cat+".pdf");
       gPad->SaveAs(plotfile+tight_cat+".eps");
-      //      c1->SaveAs(imagefilename+".C");                                                                                                                                                                                              
+      //      c1->SaveAs(imagefilename+".C");
     }
   }
 
