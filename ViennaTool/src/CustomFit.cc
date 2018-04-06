@@ -49,6 +49,7 @@ void CustomFit::fitHisto(){
     for (int i=1; i<=nbins; i++){
       double xv=h_fit->GetBinCenter(i);
       if ( f_fit->Eval( xv ) <= 0 ){
+	std::cout << "Auto-correcting negative value at " << xv << std::endl;
 	this->histMaxFrac=xv/this->fitMax*0.8;
 	this->smoothFrac=this->histMaxFrac*0.8;
 	this->smoothMode="spline3";

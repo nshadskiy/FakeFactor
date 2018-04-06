@@ -57,63 +57,28 @@ void fitFakeFactors(){
           if(modes.at(imode) & _TT) for(int ibin=0; ibin<nbins; ibin++){a_bins[ibin]=Pt_cuts_TT_SR[ibin];}
           
           
-          if( CHAN==kMU && ( ( modes.at(imode) & _QCD ) )
-              || ( modes.at(imode) & _W_JETS && idm == 1 )
-              || ( modes.at(imode) & _W_JETS && idm == 0 && ijet == 0 )
-              || ( modes.at(imode) & _TT )
-              ) 
+          /* if( CHAN==kMU && ( modes.at(imode) & _W_JETS && idm == 0 && ijet == 1 ) )
             {
-              cf.set_fitFunc( "landau(0)+pol0(2)" );
-              cf.set_err_scale( 3.0 ); //opt 1
-              cf.set_err_cl( 0 );
+	      cf.set_fitFunc( "landau(0)+pol1(2)" );
+	      cf.set_err_scale( 1.2 );
             }
-          else if( CHAN==kEL ){
-            cf.set_fitFunc( "landau(0)+pol0(2)" );
-            cf.set_err_scale( 3.0 ); //opt 1
-            cf.set_err_cl( 0 );
+	    else */ if( CHAN==kEL ){
             if( modes.at(imode) & _QCD && ijet == 0 && idm == 1 ){
               cf.set_histMaxFrac( 0.4 );
               cf.set_smoothFrac(0.15);
               cf.set_smoothMode("spline3");              
             }
           }
-          /*else if( CHAN==kEL && (  (modes.at(imode) & _QCD) && (modes.at(imode) & _AI) && ijet == 1 && idm == 0 ) ){
-            cf.set_fitFunc( "landau(0)+pol1(2)" );
-            cf.set_histMaxFrac( 0.2 );
-            cf.set_smoothFrac(0.1);
-            cf.set_smoothMode("spline3");              
-          }
-          else if( CHAN==kEL && (  (modes.at(imode) & _QCD) && ijet == 1 && idm == 0 ) ){
-            cf.set_fitFunc( "landau(0)+pol1(2)" );
-          }*/
-          else if( CHAN==kTAU && idm==0 ){
-            cf.set_fitFunc( "landau(0)+pol0(2)" );
-            cf.set_err_scale( 3.0 );
-            cf.set_err_cl( 0 );
-          }
           else{
-            cf.set_fitFunc( "landau(0)+pol1(2)" );
-            cf.set_err_scale( 1.2 );
-            if( CHAN==kTAU && modes.at(imode) & _AI && ijet == 0 ){
-              cf.set_histMaxFrac( 0.4 );
-              cf.set_smoothFrac(0.2);
-              cf.set_smoothMode("spline3");              
-            }
-            else if( CHAN==kTAU && ijet == 0 ){
-              cf.set_histMaxFrac( 0.25 );
-              cf.set_smoothFrac(0.10);
-              //cf.set_histMaxFrac( 0.55 );
-              //cf.set_smoothFrac(0.3);
-              cf.set_smoothMode("spline3");
-            }
-            else if( CHAN==kTAU && ijet == 1 ){
-              cf.set_histMaxFrac( 0.4 );
-              cf.set_smoothFrac(0.2);
-              cf.set_smoothMode("spline3");
-            //if(CHAN==kMU && modes.at(imode) & _QCD && idm==0 && ijet==1) cf.set_histMaxFrac( 0.75 );
-            //if(CHAN==kEL && modes.at(imode) & _W_JETS && idm==1) cf.set_histMaxFrac( 0.65 );
-            }
+	    //current default
+	    cf.set_fitFunc( "landau(0)+pol0(2)" );
+	    cf.set_err_scale( 3.0 ); //opt 1
+	    cf.set_err_cl( 0 );
+	    //alternative default
+	    //	    cf.set_fitFunc( "landau(0)+pol1(2)" );
+	    //	    cf.set_err_scale( 1.2 );
           }
+
           Int_t cat=idm+dm_bins.at(imode)*ijet;
           cf.set_fitFromBin( 1+cat*nbins );
           cf.set_fitMin( fitMin );
@@ -142,7 +107,6 @@ void fitFakeFactors(){
           }
 
           TCanvas *c2=new TCanvas("new","FFfit",800,800);
-          TCanvas *c3=new TCanvas("new2","FFfit2",800,800);
           c2->cd();
           c2->SetLogx();
           gStyle->SetOptStat(0);
@@ -268,27 +232,10 @@ void fitFakeFactors(){
           ending=ending+convert.str()+convertChannel.str();
           gPad->RedrawAxis();
 
-          ////////////////////////////////////////////////////////
-          //Cloning canvas to be able to write different levels
-          c3->cd();
-          c3->SetLogx();
-          c2->DrawClonePad();
-          c2->cd();
-          ////////////////////////////////////////////////////////
-          for(int scenario=0; scenario<2; scenario++){
-            if(scenario==0){
-              cms2.Draw();
-              if(ALLPLOTS) c2->SaveAs(pi+"pTfit"+ending+".png");
-              c2->SaveAs(pi+"pTfit"+ending+".pdf");
-            }
-            if(scenario==1){
-              TString preString = "_preliminary";
-              c3->cd();
-              cms3.Draw();
-              if(ALLPLOTS) c3->SaveAs(pi+"pTfit"+ending+preString+".png");
-              //if(ALLPLOTS) c3->SaveAs(pi+"pTfit"+ending+preString+".pdf");
-            }
-          }
+	  cms2.Draw();
+	  //              cms3.Draw();
+	  if(ALLPLOTS) c2->SaveAs(pi+"ff_"+ending+".png");
+	  c2->SaveAs(pi+"ff_"+ending+".pdf");
 
           c2->cd();
           cf.set_fitFromBin( 1+cat*nbins );
@@ -316,7 +263,7 @@ void fitFakeFactors(){
           g_fit->Write();
           
           delete g_fit_input,f_fit;
-          delete c2,c3;
+          delete c2;
         
         
         }

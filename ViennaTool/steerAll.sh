@@ -34,7 +34,7 @@ fi
 ./steerFF
 ./fitFakeFactors
 cd ViennaTool/Images/data_$chan
-gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf pTfitQCD_dm?_njet?_??_preliminary.pdf pTfitQCD_AI_dm?_njet?_??_preliminary.pdf pTfitWjets_dm?_njet?_??_preliminary.pdf pTfitWjets_MC_dm?_njet?_??_preliminary.pdf pTfitTT_dm?_njet?_??_preliminary.pdf
+gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf
 cd -
 
 ./calcCorrections

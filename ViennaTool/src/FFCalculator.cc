@@ -136,7 +136,7 @@ FFCalculator::~FFCalculator()
 
 void FFCalculator::calcFFweights(const TString data_file, const std::vector<TString> weight_files, const std::vector<TString> presel_files, Float_t *yields, const TString m_path_img, const TString m_path_w, const TString tf_name, Int_t inclusive, Int_t mode)
 {
-  std::cout << "In calcFFweights" << std::endl;
+  if (DEBUG) std::cout << "In calcFFweights" << std::endl;
 
   TString s_ctr[]={"1","2","3","4","5","6","7","8","9","10","11","12"};
 
@@ -188,8 +188,8 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
       else if( CHAN!=kTAU && this->isInSR( NO_SR ) && this->isLoose() ) 
         h_qcd_rest->Fill(this->getWeightBin(),fracWeight *(-2*(i<PS_SIZE)+1)    ); //-1 for MC, +1 for data
     }
-    cout << "Name: " << fnames.at(i) << " " << h_ss->Integral() << endl;
-    cout << "Name: " << fnames.at(i) << " " << h_qcd_rest->Integral() << endl;
+    if (DEBUG) cout << "Name: " << fnames.at(i) << " " << h_ss->Integral() << endl;
+    if (DEBUG) cout << "Name: " << fnames.at(i) << " " << h_qcd_rest->Integral() << endl;
   }
 
   if (tf_name!=""){            //do weights from template fit
@@ -200,7 +200,7 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
     TString CF = COINFLIP==1 ? "" : "_DC";
     TFile *ft=new TFile(tf_name,"RECREATE");
     for (int i=(int)fnames.size()-1; i>=0; i--){
-      TString stmp=fnames.at(i); cout << stmp << endl; stmp.ReplaceAll(CF+".root",""); stmp.ReplaceAll(path_presel+"preselection_",""); stmp.ReplaceAll("_woQCD",""); stmp.ReplaceAll("MCsum","data"); cout << stmp << endl;
+      TString stmp=fnames.at(i); if (DEBUG) cout << stmp << endl; stmp.ReplaceAll(CF+".root",""); stmp.ReplaceAll(path_presel+"preselection_",""); stmp.ReplaceAll("_woQCD",""); stmp.ReplaceAll("MCsum","data"); if (DEBUG) cout << stmp << endl;
       if(!inclusive){
         for(Int_t icat=0; icat<nCAT; icat++){
           if(catMode[icat] & mode) {stmp = stmp + categories[icat];}
@@ -212,7 +212,7 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
     TString tf_name_tt = tf_name; tf_name_tt.ReplaceAll(".root","_vlooseAntiIso.root");
     TFile *ft_tt=new TFile(tf_name_tt,"RECREATE");
     for (int i=(int)fnames.size()-1; i>=0; i--){
-      TString stmp=fnames.at(i); cout << stmp << endl; stmp.ReplaceAll(".root",""); stmp.ReplaceAll(path_presel+"preselection_",""); stmp.ReplaceAll("_woQCD",""); stmp.ReplaceAll("MCsum","data"); cout << stmp << endl;
+      TString stmp=fnames.at(i); if (DEBUG) cout << stmp << endl; stmp.ReplaceAll(".root",""); stmp.ReplaceAll(path_presel+"preselection_",""); stmp.ReplaceAll("_woQCD",""); stmp.ReplaceAll("MCsum","data"); if (DEBUG) cout << stmp << endl;
       if(!inclusive){
         for(Int_t icat=0; icat<nCAT; icat++){
           if(catMode[icat] & mode) {stmp = stmp + categories[icat];}
@@ -319,9 +319,9 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
     h_w.insert(h_w.begin()+weight_files.size()-1,htmp);
     h_w_tight.insert(h_w_tight.begin()+weight_files.size(),htmp_tight);
     
-    std::cout << "weight in looseSR, 1st bin:\t";
+    if (DEBUG) std::cout << "weight in looseSR, 1st bin:\t";
     for (unsigned i=0; i<PS_SIZE; i++) std::cout << presel_files.at(i)(13+path_presel.Length(),presel_files.at(i).Length()-5-13-path_presel.Length()) << "=" << h_w.at(i)->GetBinContent(1) << " ";
-    std::cout << "QCD=" << h_w.back() << std::endl;
+    if (DEBUG) std::cout << "QCD=" << h_w.back() << std::endl;
   
     for (unsigned i=0; i<weight_files.size(); i++){
       TFile f(weight_files.at(i),"recreate");
@@ -851,7 +851,7 @@ Int_t FFCalculator::doTemplateFit(const TH1D *data, const std::vector<TH1D*> tem
 void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const std::vector<TString> pre_sub, const TString FF_file, const TString weight_file, const Int_t cuts)
 {
 
-  std::cout << "In calcFFCorr: \t Writing " << FF_file << "\t" << flush;
+  if (DEBUG) std::cout << "In calcFFCorr: \t Writing " << FF_file << "\t" << flush;
 
   int doCR=0;
   if     ( ! (mode & SR) )  {doCR=1;} //otherwise, calculate FF in SR (for debugging)
@@ -911,7 +911,7 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
     }
   }//end loop over entries
 
-  std::cout<<"in "<<pre_main<<": "<<counter_histo_loose_CR->Integral(-1,-1) <<" loose, "<<counter_histo_tight_CR->Integral(-1,-1)<<" tight, " <<counter_histo_tight_alt_CR->Integral(-1,-1)<<" loose tt."<<std::endl;
+  if (DEBUG) std::cout<<"in "<<pre_main<<": "<<counter_histo_loose_CR->Integral(-1,-1) <<" loose, "<<counter_histo_tight_CR->Integral(-1,-1)<<" tight, " <<counter_histo_tight_alt_CR->Integral(-1,-1)<<" loose tt."<<std::endl;
 
   for (unsigned is=0; is<pre_sub.size(); is++){
     loadFile(pre_sub.at(is),"Events");
@@ -971,9 +971,11 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
   for(Int_t ijets=0;ijets<this->getNjets(mode);ijets++){
     for(Int_t idm=0;idm<this->getNtracks(mode);idm++){
       for(Int_t ipt=0;ipt<this->getNpts(mode);ipt++){
-        cout << "Weighted: " << bin_values[idm+ijets*this->getNtracks(mode)][ipt] << endl;
-        cout << "Counted: " << bin_counters[idm+ijets*this->getNtracks(mode)][ipt] << endl;
-        cout << "Ratio: " << bin_values[idm+ijets*this->getNtracks(mode)][ipt]/bin_counters[idm+ijets*this->getNtracks(mode)][ipt] << endl;
+	if (DEBUG){
+	  cout << "Weighted: " << bin_values[idm+ijets*this->getNtracks(mode)][ipt] << endl;
+	  cout << "Counted: " << bin_counters[idm+ijets*this->getNtracks(mode)][ipt] << endl;
+	  cout << "Ratio: " << bin_values[idm+ijets*this->getNtracks(mode)][ipt]/bin_counters[idm+ijets*this->getNtracks(mode)][ipt] << endl;
+	}
         weighted_bin_center_loose->SetBinContent(ipt+this->getNpts(mode)*idm + (this->getNpts(mode)*this->getNtracks(mode))*ijets + 1,bin_values[idm+ijets*this->getNtracks(mode)][ipt]/bin_counters[idm+ijets*this->getNtracks(mode)][ipt] ); 
       }      
     }
@@ -1368,7 +1370,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
-      if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
+      if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;}
       if (mode & SR){
         if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) {
           if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
@@ -1404,7 +1406,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
-      if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
+      if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl; }
       if (mode & SR){
         if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
           if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
@@ -1569,7 +1571,7 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
-      if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
+      if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl; }
       if (mode & SR){
         if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
           if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
@@ -1606,7 +1608,7 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
-      if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
+      if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl; }
       if (mode & SR){
         if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
           if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
@@ -1758,7 +1760,7 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
     TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t"+tight_cat+"_muiso_MCsubtracted");
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
-      if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
+      if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl; }
       if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
         if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
         else if( raw_ff.Contains("_fitted") ){
@@ -1780,7 +1782,7 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
     TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_muiso");
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
-      if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
+      if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl; }
       if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
         if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
         else if( raw_ff.Contains("_fitted") ){
@@ -1908,7 +1910,7 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
     
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
-      if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
+      if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl; }
       if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
         if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
         else if( raw_ff.Contains("_fitted") ){
@@ -1936,7 +1938,7 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
     TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis");
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
-      if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
+      if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl; }
       if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
         if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
         else if( raw_ff.Contains("_fitted") ){
@@ -2061,7 +2063,7 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   TH1D* nonclosure_h = (TH1D*) nonclosure.Get("nonclosure_fit_smoothed");
   for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
-      if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;
+      if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl; }
         if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
         if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
         else if( raw_ff.Contains("_fitted") ){
