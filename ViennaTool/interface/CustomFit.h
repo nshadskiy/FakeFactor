@@ -70,6 +70,9 @@ class CustomFit
   float get_histMaxFrac( ){
     return this->histMaxFrac;
   }
+  void set_maxFracErrorFactor( float m_maxFracErrorFactor ){
+    this->maxFracErrorFactor = m_maxFracErrorFactor;
+  }
   void set_smoothFrac( float m_smoothFrac ){ //smooth transition starting from this fraction of bins to histMaxFrac
     this->smoothFrac = m_smoothFrac;
   }
@@ -147,6 +150,7 @@ class CustomFit
   int fitFromBin;
   //  int fitToBin;
   float histMaxFrac;
+  float maxFracErrorFactor;
   float smoothFrac;
   TString smoothMode;
   float smoothParam;

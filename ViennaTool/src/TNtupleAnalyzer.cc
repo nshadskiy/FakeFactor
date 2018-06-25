@@ -71,12 +71,13 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 {
 
 
-  if(CHAN==kMU && !event->trg_singlemuon) return 0;
+  //  if(CHAN==kMU && !event->trg_singlemuon) return 0; //only single-mu-triggewr
+  if(CHAN==kMU && !( (event->trg_singlemuon && event->pt_1 > 23 && event->pt_2 > 30) || (event->trg_mutaucross && event->pt_1 <= 23 && event->pt_2 > 30) )     ) return 0;
   if(CHAN==kEL && !event->trg_singleelectron) return 0;
   if(CHAN==kTAU && !(event->trg_doubletau) ) return 0;
   if(CHAN==kMU && event->Flag_badMuons) return 0;
   if(CHAN==kMU && event->Flag_duplicateMuons) return 0;
-  
+
   TLorentzVector vec1, vec2, vec;
   //////////////////////////////////////////////////////////////////////////
 
@@ -502,7 +503,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       lep_phi=event->phi_2;
       lep_q=event->q_2;
       //lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2v1DBoldDMwLT_2==1) || (calcVTightFF==0 && event->byTightIsolationMVArun2v1DBoldDMwLT_2==1) )  ? 10 : 0;
-      lep_iso = event->byMediumIsolationMVArun2v1DBoldDMwLT_2==1 ? 10 : 0;
+      //      lep_iso = event->byVTightIsolationMVArun2v1DBoldDMwLT_2==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! vtight
+      lep_iso = event->byTightIsolationMVArun2v1DBoldDMwLT_2==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! tight
       lep_vloose = ( event->byVLooseIsolationMVArun2v1DBoldDMwLT_2 == 1 ) ? 1 : 0;
       lep_loose = ( event->byLooseIsolationMVArun2v1DBoldDMwLT_2 == 1 ) ? 1 : 0;
       lep_medium = ( event->byMediumIsolationMVArun2v1DBoldDMwLT_2 == 1 ) ? 1 : 0;
@@ -513,7 +515,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       lep_phi=event->phi_1;
       lep_q=event->q_1;
       //lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2v1DBoldDMwLT_1==1) || (calcVTightFF==0 && event->byTightIsolationMVArun2v1DBoldDMwLT_1==1) )  ? 10 : 0;
-      lep_iso = event->byMediumIsolationMVArun2v1DBoldDMwLT_1==1 ? 10 : 0;
+      //      lep_iso = event->byVTightIsolationMVArun2v1DBoldDMwLT_1==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! vtight
+      lep_iso = event->byTightIsolationMVArun2v1DBoldDMwLT_1==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! tight
       lep_vloose = ( event->byVLooseIsolationMVArun2v1DBoldDMwLT_1 == 1 ) ? 1 : 0;
       lep_loose = ( event->byLooseIsolationMVArun2v1DBoldDMwLT_1 == 1 ) ? 1 : 0;
       lep_medium = ( event->byMediumIsolationMVArun2v1DBoldDMwLT_1 == 1 ) ? 1 : 0;

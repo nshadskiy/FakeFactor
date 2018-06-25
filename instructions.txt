@@ -4,22 +4,29 @@
 #-line6:  output_folder="$HOME/public/Htautau/FakeRate2016/20170718/" -> or similar, final FFs will be put there
 #-line7:  selCHAN=kMU/kEL/kTAU
 #-line8:  CHAN=kMU/kEL/kTAU
-
 ##########################
-#Run FF tool with sh steerAll.sh in ViennaTool folder
+#--ViennaTool/Globals.h
+#-variable "indir": input directory
+##########################
+#src/GlobalClass.cc contains most of the important functions:
+#isLoose(), isTight(), isInSR(), isInCR()
+#=> the FF WP is set in isTight() (for tautau: change is also in src/TNtupleAnalyzer.cc ! See below)
+##########################
 
-src/GlobalClass.cc contains most of the important functions:
-isLoose(), isTight(), isInSR(), isInCR()
+
+#Run FF tool with sh steerAll.sh in ViennaTool folder
 
 macros/Preselection.C <-> src/TNtupleAnalyzer.cc
 This needs to be adjusted: lep_iso -> put the isolation working point if you run the tautau channel. This refers to the isolation of the non-fake tautau
-For mutau everything is set up
+For mutau everything is set up. Search for "CHANGE IF TAU WP CHANGES!"
+https://github.com/jbrands/FakeFactor/blob/FF2016ML/ViennaTool/src/TNtupleAnalyzer.cc#L505
+https://github.com/jbrands/FakeFactor/blob/FF2016ML/ViennaTool/src/TNtupleAnalyzer.cc#L516
 
 macros/CRHisto.C, macros/SRHisto.C <-> this can be drastically reduced, but produces lots of histos for now: No need to change
 
 macros/steerFF.C <-> src/FFCalculator.cc runs calculation of fractions and FFs: the binning of the FFs has to be changed in Settings.h if neccessary
 
-macros/fitFakeFactors.C <-> sensitive to binnings: please check output of:
+macros/fitFakeFactors.C <-> change which fit function is used where! sensitive to binnings: please check output of:
 Images/data_CHAN/pTfitQCD_dmX_njetX_CHAN_preliminary.png
 Images/data_CHAN/pTfitQCD_AI_dmX_njetX_CHAN_preliminary.png needed for OS/SS corrections
 Images/data_CHAN/pTfitWjets_dmX_njetX_CHAN_preliminary.png

@@ -14,6 +14,7 @@ CustomFit::CustomFit(){
   this->err_scale=2;
   this->err_cl=1;
   this->histMaxFrac=99;
+  this->maxFracErrorFactor=4;
   this->smoothFrac=-1;
   this->smoothMode="spline3"; //spline3 or simple
   this->smoothParam=2;
@@ -84,20 +85,31 @@ void CustomFit::fitHisto(){
 
   //  for (int i=1; i<=this->histo_bins; i++){
   float smooth_term=0;
+  int flatten_from=-1;
+  double nflattened_bins=-1; //(1-this->histMaxFrac)*nbins;
   for (int i=1; i<=nbins; i++){
     double xv=h_fit->GetBinCenter(i);
     double spline_val=-1;
     //to just continue after a certain value:
     if ( xv > this->fitMax*this->histMaxFrac ){
+      if (flatten_from<0){
+	flatten_from=i; //bin after which flattening starts
+	nflattened_bins=nbins-i+1;
+      }
       double val=this->h_fit->GetBinContent(i-1);
       this->h_fit->SetBinContent( i , val );
-      x[i-1]=xv;               y[i-1]=y[i-2];
-      ey_lo[i-1]=ey_lo[i-2];   ey_hi[i-1]=ey_hi[i-2];
+      if (nflattened_bins <= 0) std::cout << "Warning: nflattend_bins in CustomFit.cc is zero or negative!" << std::endl;
+      double infl=( (i-flatten_from)/nflattened_bins ) * (this->maxFracErrorFactor-1); //total err at end will be (factor) times the value at beginning of flattening
+      x[i-1]=xv;
+      //      y[i-1]=y[i-2];
+      //      ey_lo[i-1]=ey_lo[i-2];   ey_hi[i-1]=ey_hi[i-2];
+      y[i-1]=y[flatten_from-2];
+      //ey_lo[i-1]=ey_lo[flatten_from-2];   ey_hi[i-1]=ey_hi[flatten_from-2];
+      ey_lo[i-1]=ey_lo[flatten_from-2]*(1+infl);   ey_hi[i-1]=ey_hi[flatten_from-2]*(1+infl);
       this->h_fit->SetBinError( i , this->h_fit->GetBinError(i-1) );
       this->h_fit_lo->SetBinContent( i , val-ey_lo[i-1] );
       this->h_fit_hi->SetBinContent( i , val+ey_hi[i-1] );
       continue;
-      //    } else if( this->smoothMode=="simple" && this->smoothFrac>0 && xv>this->fitMax*this->smoothFrac ){
     } else if( this->smoothFrac>0 && xv>this->fitMax*this->smoothFrac ){
       if( this->smoothMode=="simple" ){
 	float a=this->fitMax*this->smoothFrac;

@@ -62,19 +62,37 @@ void fitFakeFactors(){
 	      cf.set_fitFunc( "landau(0)+pol1(2)" );
 	      cf.set_err_scale( 1.2 );
             }
-	    else */ if( CHAN==kEL ){
-            if( modes.at(imode) & _QCD && ijet == 0 && idm == 1 ){
+	 else */ if( CHAN==kEL && modes.at(imode) & _QCD && ijet == 0 && idm == 1 ){
+	      cf.set_fitFunc( "landau(0)+pol0(2)" );
+	      cf.set_err_scale( 3.0 );
+	      cf.set_err_cl( 0 );
               cf.set_histMaxFrac( 0.4 );
               cf.set_smoothFrac(0.15);
               cf.set_smoothMode("spline3");              
-            }
+          }
+	  else if( CHAN==kTAU && !(ijet == 0 && idm == 0) ){ //use default p0 for 1p0j, only //THIS IS USED FOR "TIGHT WP"
+	    //	  else if( CHAN==kTAU && ijet == 1 ){ //use default p0 for 1p1j/3p1j //THIS IS USED FOR "VERY TIGHT WP"
+	    cf.set_fitFunc( "landau(0)+pol1(2)" );
+	    cf.set_err_scale( 1.2 );
+	    //change "cut-off" for alternative (otherwise take default)
+	    if      (ijet == 0 && idm == 1) cf.set_histMaxFrac( 0.25 );
+	    else if (ijet == 1 && idm == 1) cf.set_histMaxFrac( 0.35 );
+	    else                       cf.set_histMaxFrac( 0.40 );
+	    cf.set_smoothFrac(0.20);
+	    cf.set_smoothMode("spline3");              
+          }
+	  else if( false ){ //use default p0 for 3p0j, but inflate errors! //THIS IS USED FOR "TIGHT WP"
+	    //	  else if( CHAN==kTAU && ijet == 0 && idm==1){ //use default p0 for 3p0j, but inflate errors! //THIS IS USED FOR "VERY TIGHT WP"
+	    cf.set_fitFunc( "landau(0)+pol0(2)" );
+	    cf.set_err_scale( 9.0 );
+	    cf.set_err_cl( 0 );
           }
           else{
 	    //current default
 	    cf.set_fitFunc( "landau(0)+pol0(2)" );
-	    cf.set_err_scale( 3.0 ); //opt 1
+	    cf.set_err_scale( 3.0 );
 	    cf.set_err_cl( 0 );
-	    //alternative default
+	    //alternative
 	    //	    cf.set_fitFunc( "landau(0)+pol1(2)" );
 	    //	    cf.set_err_scale( 1.2 );
           }
@@ -83,7 +101,7 @@ void fitFakeFactors(){
           cf.set_fitFromBin( 1+cat*nbins );
           cf.set_fitMin( fitMin );
           cf.set_fitMax( fitMax );
-          cf.set_histo_bins( fitBins*10 ); //this is only done to get nicer plots -> reverted before saver the FFs
+          cf.set_histo_bins( fitBins*10 ); //this is only done to get nicer plots -> reverted before saving the FFs
           
           std::vector<double> bins;
           cf.set_bin_centers( fake_histos.at(imode) , "bins_weighted", nbins ); //fitFromBin  needs to be set BEFORE
@@ -96,7 +114,7 @@ void fitFakeFactors(){
           TGraphAsymmErrors *g_fit2=new TGraphAsymmErrors( *g_fit );
 
           double ymax = 0.7; double ymin = 0.001;
-          if(CHAN==kTAU){ymax = 1.0; ymin = 0.301;}
+	  //          if(CHAN==kTAU){ymax = 1.0; ymin = 0.301;}
           for(int i=0; i<g_fit->GetN(); i++){
             Double_t x; Double_t y;
             g_fit->GetPoint(i,x,y);

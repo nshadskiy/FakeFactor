@@ -19,11 +19,11 @@ for category in categories:
 
     print 'Fake factor input file for channel {0} and category {1}'.format(channel,category)
 
-    ff_qcd_os = FakeFactor(vars=['tau_pt', 'tau2_pt', 'tau_decay', 'njets', 'mvis',  'mttot', 'MCcount'])
-    ff_w =      FakeFactor(vars=['tau_pt', 'tau2_pt', 'tau_decay', 'njets', 'mvis',  'mttot', 'MCcount'])
-    ff_tt =     FakeFactor(vars=['tau_pt', 'tau2_pt', 'tau_decay', 'njets', 'mvis',  'mttot', 'MCcount'])
+    ff_qcd_os = FakeFactor(vars=['tau_pt', 'tau2_pt', 'tau_decay', 'njets', 'mvis'])
+    ff_w =      FakeFactor(vars=['tau_pt', 'tau2_pt', 'tau_decay', 'njets', 'mvis'])
+    ff_tt =     FakeFactor(vars=['tau_pt', 'tau2_pt', 'tau_decay', 'njets', 'mvis'])
     # Combined fake factor
-    ff_comb   = FakeFactor(vars=['tau_pt', 'tau2_pt', 'tau_decay', 'njets', 'mvis',  'mttot', 'MCcount'])
+    ff_comb   = FakeFactor(vars=['tau_pt', 'tau2_pt', 'tau_decay', 'njets', 'mvis',  'frac_qcd', 'frac_w', 'frac_tt'])
     
     
     home = os.getenv('HOME')
@@ -201,7 +201,7 @@ for category in categories:
         name='ff_comb',
         #formula='({frac_qcd}+{frac_tt}+{frac_w}+{frac_dy})*{ff_qcd_os}',
         #formula='{frac_qcd}*{ff_qcd_os}+{mcfrac}*{frac_tt}*{ff_tt}+{mcfrac}*({frac_w}+{frac_dy})*{ff_w}',
-        formula='{frac_qcd}*{ff_qcd_os}+2*{frac_tt}*{ff_tt}+2*({frac_w}+{frac_dy})*{ff_w}',
+        formula='{frac_qcd}*{ff_qcd_os}+2*{frac_tt}*{ff_tt}+2*{frac_w}*{ff_w}',
         leaves=[
             # Individual fake factors
             qcd_os,
@@ -210,27 +210,21 @@ for category in categories:
             # Fractions
             Leaf(
                 name='frac_qcd',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_qcd.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
-                object='h_w_2d',
-                vars=['mttot','tau_decay']
+                file='{INDIR}/constant.root'.format(INDIR=indir),
+                object='constant',
+                vars=['frac_qcd']
             ),
             Leaf(
                 name='frac_w',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_wjets.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
-                object='h_w_2d',
-                vars=['mttot','tau_decay']
-            ),
-            Leaf(
-                name='frac_dy',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_dy.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
-                object='h_w_2d',
-                vars=['mttot','tau_decay']
+                file='{INDIR}/constant.root'.format(INDIR=indir),
+                object='constant',
+                vars=['frac_w']
             ),
             Leaf(
                 name='frac_tt',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_tt.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
-                object='h_w_2d',
-                vars=['mttot','tau_decay'] 
+                file='{INDIR}/constant.root'.format(INDIR=indir),
+                object='constant',
+                vars=['frac_tt'] 
             ),
             #Leaf(
             #    name='mcfrac',
@@ -285,9 +279,9 @@ for category in categories:
              leaves=[
                  Leaf(
                      name='frac_w_up',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_wjets.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
-                     object='h_w_high_2d',
-                     vars=['mttot','tau_decay']
+                     file='{INDIR}/constant.root'.format(INDIR=indir),
+                     object='constant',
+                     vars=['frac_w']
                  ),
                  w.find('ff_w')
              ]
@@ -303,45 +297,9 @@ for category in categories:
              leaves=[
                  Leaf(
                      name='frac_w_down',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_wjets.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
-                     object='h_w_low_2d',
-                     vars=['mttot','tau_decay']
-                 ),
-                 w.find('ff_w')
-             ]
-         )
-        }
-    )
-    comb_dy_frac_up = replace_nodes(
-        comb,
-        {'ff_w':
-         Node(
-             name='ff_dy_frac_up',
-             formula='{frac_dy_up}*{ff_w}',
-             leaves=[
-                 Leaf(
-                     name='frac_dy_up',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_dy.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
-                     object='h_w_high_2d',
-                     vars=['mttot','tau_decay']
-                 ),
-                 w.find('ff_w')
-             ]
-         )
-        }
-    )
-    comb_dy_frac_down = replace_nodes(
-        comb,
-        {'ff_w':
-         Node(
-             name='ff_dy_frac_down',
-             formula='{frac_dy_down}*{ff_w}',
-             leaves=[
-                 Leaf(
-                     name='frac_dy_down',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_dy.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
-                     object='h_w_low_2d',
-                     vars=['mttot','tau_decay']
+                     file='{INDIR}/constant.root'.format(INDIR=indir),
+                     object='constant',
+                     vars=['frac_w']
                  ),
                  w.find('ff_w')
              ]
@@ -357,9 +315,9 @@ for category in categories:
              leaves=[
                  Leaf(
                      name='sys_qcd_up',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
-                     object='uncertainties_QCD_MVis_Iso_SS2OS_up',
-                     vars=['mvis','tau2_pt']
+                     file='{INDIR}/constant.root'.format(INDIR=indir),
+                     object='constant',
+                     vars=['frac_tt']
                  ),
                  tt.find('ff_tt')
              ]
@@ -375,9 +333,9 @@ for category in categories:
              leaves=[
                  Leaf(
                      name='sys_qcd_up',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
-                     object='uncertainties_QCD_MVis_Iso_SS2OS_up',
-                     vars=['mvis','tau2_pt']
+                     file='{INDIR}/constant.root'.format(INDIR=indir),
+                     object='constant',
+                     vars=['frac_tt']
                  ),
                  tt.find('ff_tt')
              ]
@@ -393,9 +351,9 @@ for category in categories:
              leaves=[
                  Leaf(
                      name='frac_tt_up',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_tt.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
-                     object='h_w_high_2d',
-                     vars=['mttot','tau_decay']
+                     file='{INDIR}/constant.root'.format(INDIR=indir),
+                     object='constant',
+                     vars=['frac_tt']
                  ),
                  tt.find('ff_tt')
              ]
@@ -411,9 +369,9 @@ for category in categories:
              leaves=[
                  Leaf(
                      name='frac_tt_down',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_tt.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
-                     object='h_w_low_2d',
-                     vars=['mttot','tau_decay']
+                     file='{INDIR}/constant.root'.format(INDIR=indir),
+                     object='constant',
+                     vars=['frac_tt']
                  ),
                  tt.find('ff_tt')
              ]
@@ -649,8 +607,6 @@ for category in categories:
     fill(ff_comb, comb_w_down,   sys='ff_w_syst_down')
     fill(ff_comb, comb_w_frac_up,   sys='ff_w_frac_syst_up')
     fill(ff_comb, comb_w_frac_down,   sys='ff_w_frac_syst_down')
-    fill(ff_comb, comb_dy_frac_up,   sys='ff_dy_frac_syst_up')
-    fill(ff_comb, comb_dy_frac_down,   sys='ff_dy_frac_syst_down')
     fill(ff_comb, comb_tt_up,   sys='ff_tt_syst_up')
     fill(ff_comb, comb_tt_down,   sys='ff_tt_syst_down')
     fill(ff_comb, comb_tt_frac_up,   sys='ff_tt_frac_syst_up')

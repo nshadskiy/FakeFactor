@@ -20,6 +20,9 @@ yes | mv /tmp/BuildStructure$USER.sh BuildStructure.sh
 sed s/fftype=fftype/fftype=$analysis/g BuildStructure.sh >/tmp/BuildStructure$USER.sh
 yes | mv /tmp/BuildStructure$USER.sh BuildStructure.sh
 
+ff_tocheck='ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf'
+if [ "$channel" != " kTAU" ]; then ff_tocheck+=' ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf'; fi
+
 echo "Compiling the framework"
 sh BuildStructure.sh
 cd ../
@@ -34,14 +37,15 @@ fi
 ./steerFF
 ./fitFakeFactors
 cd ViennaTool/Images/data_$chan
-gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf
+#gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf
+gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
 cd -
 
 ./calcCorrections
 python plotCorrections.py --channel $channel
 ./convert_inputs
-python cpTDHaftPublic.py --destination $HOME/$output --channel $channel
-python producePublicFakeFactors.py --input $HOME/$output --channel $channel
-#python cpPublicFFtoDC.py --source $HOME/$output --destination $dc_path --channel $channel
+python cpTDHaftPublic.py --destination $output --channel $channel
+python producePublicFakeFactors.py --input $output --channel $channel
+#python cpPublicFFtoDC.py --source $output --destination $dc_path --channel $channel
 
-rm $HOME/$output/constant.root
+rm $output/constant.root

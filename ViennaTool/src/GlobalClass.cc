@@ -55,7 +55,10 @@ Int_t GlobalClass::isLoose(const Int_t mode, const Int_t ind) //default: 0,0
   if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != 6 ) return 0; }
 
   if( CHAN == kTAU ){
-    if ( !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
+    if ( !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1; //for vloose ! tight
+    //    if ( !event_s->alltau_vtightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1; //for vloose ! vtight
+    //    if ( !event_s->alltau_tightMVA->at(ind)  && event_s->alltau_looseMVA->at(ind) ) return 1; // for loose ! tight
+    //    if ( !event_s->alltau_vtightMVA->at(ind) && event_s->alltau_looseMVA->at(ind) ) return 1; // for loose ! vtight
   }
   else if ( !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
   
@@ -76,7 +79,8 @@ Int_t GlobalClass::isTight(const Int_t mode, const Int_t ind) //default: 0,0
   if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != 6 ) return 0; }
 
   if(CHAN == kTAU){
-    if ( event_s->alltau_tightMVA->at(ind)) return 1;
+    //if ( event_s->alltau_vtightMVA->at(ind)) return 1; //for vtight - ADAPT ALSO IN src/TNtupleAnalyzer.cc ("CHANGE IF TAU WP CHANGES!")
+    if ( event_s->alltau_tightMVA->at(ind)) return 1; //for tight
   }
   else{
     if ( event_s->alltau_tightMVA->at(ind)) return 1;
