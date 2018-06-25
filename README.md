@@ -9,12 +9,8 @@ cd ../../
 scram b -j8  
 git init  
 
-git clone https://github.com/mflechl/FakeFactor.git  
+git clone https://github.com/mflechl/FakeFactor.git -b FF2016ML  
 cd FakeFactor  
-git remote add jb https://github.com/jbrands/FakeFactor.git  
-git fetch jb  
-git checkout -b FF2016ML jb/FF2016ML  
-git merge jb/FF2016ML  
 
 
 cd ViennaTool/  
@@ -28,5 +24,3 @@ em BuildStructure.sh
 #fftype=FakeFactor_SM_ML  
 
 
-git commit -a  
-git push origin  
