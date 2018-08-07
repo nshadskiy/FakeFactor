@@ -11,6 +11,7 @@
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
+#include <TLorentzVector.h>
 
 // Header file for the classes stored in the TTree if any.
 #include "vector"
@@ -223,26 +224,40 @@ public :
    Float_t         lep_etacentrality;
    Float_t         sphericity;
    Int_t           nadditionalMu;
-   std::vector<double>  *addmuon_pt;
-   std::vector<double>  *addmuon_eta;
-   std::vector<double>  *addmuon_phi;
-   std::vector<double>  *addmuon_m;
+     
+   std::vector<TLorentzVector> *addlepton_p4; //added
+   std::vector<double>  *addlepton_iso; 	  //added
+   std::vector<int> 	*addlepton_pdgId;	  // added
+   std::vector<int> 	*addlepton_tauID;	  // added
+   std::vector<int> 	*addlepton_tauDM;	  // added
+   std::vector<int> 	*addlepton_tauAntiEle;	  // added
+   std::vector<int> 	*addlepton_tauAntiMu;	  // added
+   std::vector<double> 	*addlepton_tauCombIso;	  // added
+   std::vector<int> 	*addlepton_mc_match;	  // added
+   std::vector<double> 	*addlepton_mvis;	  // added
+   std::vector<int>		*addlepton_tauAntiEle;
+   std::vector<int>		*addlepton_tauAntiMu
+   
+   std::vector<double>  *addmuon_pt;	//
+   std::vector<double>  *addmuon_eta;	//
+   std::vector<double>  *addmuon_phi;	//
+   std::vector<double>  *addmuon_m;		//
    std::vector<int>     *addmuon_q;
    std::vector<double>  *addmuon_iso;
    std::vector<int>     *addmuon_gen_match;
    Int_t           nadditionalEle;
-   std::vector<double>  *addele_pt;
-   std::vector<double>  *addele_eta;
-   std::vector<double>  *addele_phi;
-   std::vector<double>  *addele_m;
+   std::vector<double>  *addele_pt;		//
+   std::vector<double>  *addele_eta;	//
+   std::vector<double>  *addele_phi;	//
+   std::vector<double>  *addele_m;		//
    std::vector<int>     *addele_q;
    std::vector<double>  *addele_iso;
    std::vector<int>     *addele_gen_match;
    Int_t           nadditionalTau;
-   std::vector<double>  *addtau_pt;
-   std::vector<double>  *addtau_eta;
-   std::vector<double>  *addtau_phi;
-   std::vector<double>  *addtau_m;
+   std::vector<double>  *addtau_pt;		//
+   std::vector<double>  *addtau_eta;	//
+   std::vector<double>  *addtau_phi;	//
+   std::vector<double>  *addtau_m;		//
    std::vector<double>  *addtau_q;
    std::vector<double>  *addtau_byIsolationMVArun2v1DBnewDMwLTraw;
    std::vector<double>  *addtau_byCombinedIsolationDeltaBetaCorrRaw3Hits;
@@ -560,6 +575,20 @@ public :
    TBranch        *b_met_centrality;   //!
    TBranch        *b_lep_etacentrality;   //!
    TBranch        *b_sphericity;   //!
+   
+   TBranch		  *b_addlepton_p4; 	//added
+   TBranch		  *b_addlepton_iso;	//added 
+   TBranch		  *b_addlepton_pdgId;//added
+   TBranch		  *b_addlepton_tauID;//added
+   TBranch		  *b_addlepton_tauDM;//added
+   TBranch		  *b_addlepton_tauAntiEle;//added
+   TBranch		  *b_addlepton_tauAntiMu;//added
+   TBranch		  *b_addlepton_tauCombIso;//added
+   TBranch		  *b_addlepton_mc_match;//added
+   TBranch		  *b_addlepton_mvis;//added
+   TBranch		  *b_addlepton_tauAntiEle;//added
+   TBranch		  *b_addlepton_tauAntiMu;//added
+   
    TBranch        *b_nadditionalMu;   //!
    TBranch        *b_addmuon_pt;   //!
    TBranch        *b_addmuon_eta;   //!
@@ -753,7 +782,7 @@ Long64_t NtupleClass::LoadTree(Long64_t entry)
 }
 
 void NtupleClass::Init(TTree *tree)
-{
+{ 
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
    // pointers of the tree will be set.
@@ -763,6 +792,19 @@ void NtupleClass::Init(TTree *tree)
    // (once per file to be processed).
 
    // Set object pointer
+   addlepton_p4 = 0;	//added
+   addlepton_iso = 0;	//added
+   addlepton_pdgId = 0;	//added
+   addlepton_tauID = 0;	//added
+   addlepton_tauDM = 0;	//added
+   addlepton_tauAntiEle = 0;	//added
+   addlepton_tauAntiMu = 0;	//added
+   addlepton_tauCombIso = 0;	//added
+   addlepton_mc_match = 0;	//added
+   addlepton_mvis = 0;	//added
+   addlepton_tauAntiEle = 0;	//added
+   addlepton_tauAntiMu = 0;	//added
+   
    addmuon_pt = 0;
    addmuon_eta = 0;
    addmuon_phi = 0;
@@ -1015,6 +1057,20 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("met_centrality", &met_centrality, &b_met_centrality);
    fChain->SetBranchAddress("lep_etacentrality", &lep_etacentrality, &b_lep_etacentrality);
    fChain->SetBranchAddress("sphericity", &sphericity, &b_sphericity);
+   
+   fChain->SetBranchAddress("addlepton_p4", &addlepton_p4, &b_addlepton_p4);			//added
+   fChain->SetBranchAddress("addlepton_iso", &addlepton_iso, &b_addlepton_iso);			//added
+   fChain->SetBranchAddress("addlepton_pdgId", &addlepton_pdgId, &b_addlepton_pdgId);	//added
+   fChain->SetBranchAddress("addlepton_tauID", &addlepton_tauID, &b_addlepton_tauID);	//added
+   fChain->SetBranchAddress("addlepton_tauDM", &addlepton_tauDM, &b_addlepton_tauDM);	//added
+   fChain->SetBranchAddress("addlepton_tauAntiEle", &addlepton_tauAntiEle, &b_addlepton_tauAntiEle);	//added
+   fChain->SetBranchAddress("addlepton_tauAntiMu", &addlepton_tauAntiMu, &b_addlepton_tauAntiMu);	//added
+   fChain->SetBranchAddress("addlepton_tauCombIso", &addlepton_tauCombIso, &b_addlepton_tauCombIso);	//added
+   fChain->SetBranchAddress("addlepton_mc_match", &addlepton_mc_match, &b_addlepton_mc_match);	//added
+   fChain->SetBranchAddress("addlepton_mvis", &addlepton_mvis, &b_addlepton_mvis);	//added
+   fChain->SetBranchAddress("addlepton_tauAntiEle", &addlepton_tauAntiEle, &b_addlepton_tauAntiEle);	//added
+   fChain->SetBranchAddress("addlepton_tauAntiMu", &addlepton_tauAntiMu, &b_addlepton_tauAntiMu);	//added
+   
    fChain->SetBranchAddress("nadditionalMu", &nadditionalMu, &b_nadditionalMu);
    fChain->SetBranchAddress("addmuon_pt", &addmuon_pt, &b_addmuon_pt);
    fChain->SetBranchAddress("addmuon_eta", &addmuon_eta, &b_addmuon_eta);

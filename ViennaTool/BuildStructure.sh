@@ -1,5 +1,5 @@
 #!/bin/bash
-user=mflechl
+user=fspreitzer
 fftype=FakeFactor_SM_ML
 
 line=" --------------------------------------------------------------------------------------"

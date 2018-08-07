@@ -64,20 +64,20 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
 void TNtupleAnalyzer::closeFile()
 {
   delete event;
-  delete tchain;
+  delete tchain; 
 }
 
 Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t mode, Int_t whichTau)
 {
 
-
-  //  if(CHAN==kMU && !event->trg_singlemuon) return 0; //only single-mu-triggewr
+  
+  //  if(CHAN==kMU && !event->trg_singlemuon) return 0; //only single-mu-trigger
   if(CHAN==kMU && !( (event->trg_singlemuon && event->pt_1 > 23 && event->pt_2 > 30) || (event->trg_mutaucross && event->pt_1 <= 23 && event->pt_2 > 30) )     ) return 0;
   if(CHAN==kEL && !event->trg_singleelectron) return 0;
   if(CHAN==kTAU && !(event->trg_doubletau) ) return 0;
   if(CHAN==kMU && event->Flag_badMuons) return 0;
   if(CHAN==kMU && event->Flag_duplicateMuons) return 0;
-
+  
   TLorentzVector vec1, vec2, vec;
   //////////////////////////////////////////////////////////////////////////
 
@@ -85,7 +85,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   if(!preselectionFile.Contains("preselection_data"))weight = event->puweight*event->effweight*event->stitchedWeight*luminosity*event->genweight*event->antilep_tauscaling*event->topWeight_run1*event->zPtReweightWeight;
 
   if( CHAN == kTAU && !preselectionFile.Contains("preselection_data") ){
-    if(event->gen_match_1 == 5 && event->byTightIsolationMVArun2v1DBoldDMwLT_1) weight *= 0.95;
+    if(event->gen_match_1 == 5 && event->byTightIsolationMVArun2v1DBoldDMwLT_1) weight *= 0.95; // TODO rename
     else if(event->gen_match_1 == 5 && event->byVLooseIsolationMVArun2v1DBoldDMwLT_1 ) weight *= 0.99;
     if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2v1DBoldDMwLT_2) weight *= 0.95;
     else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2v1DBoldDMwLT_2 ) weight *= 0.99;
@@ -134,75 +134,133 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   otherLep_iso=-999;
   otherLep_q=-999;
 
+  std::vector<TLorentzVector> *m_otherLep = new vector<TLorentzVector>();
   std::vector<double> *m_otherLep_pt;
   std::vector<double> *m_otherLep_eta;
   std::vector<double> *m_otherLep_phi;
   std::vector<double> *m_otherLep_m;
-  std::vector<double> *m_otherLep_iso;
-  std::vector<int>    *m_otherLep_q;
+  std::vector<double> *m_otherLep_iso = new vector<double>();
+  std::vector<int>    *m_otherLep_q = new vector<int>();
   int nOtherLep;
 
+  std::vector<TLorentzVector> *m_lep = new vector<TLorentzVector>();
   std::vector<double> *m_lep_pt;
   std::vector<double> *m_lep_eta;
   std::vector<double> *m_lep_phi;
   std::vector<double> *m_lep_m;
-  std::vector<double> *m_lep_iso;
-  std::vector<int>    *m_lep_q;
+  std::vector<double> *m_lep_iso = new vector<double>();
+  std::vector<int>    *m_lep_q = new vector<int>();
   int nLep;
 
   if ( CHAN == kMU || CHAN == kTAU ){  //for now: in kTAU, fill lep with muons and otherLep with electrons
-    m_lep_pt=event->addmuon_pt;
-    m_lep_eta=event->addmuon_eta;
-    m_lep_phi=event->addmuon_phi;
-    m_lep_m=event->addmuon_m;
-    m_lep_iso=event->addmuon_iso;
-    m_lep_q=event->addmuon_q;
-    nLep=event->nadditionalMu;
-    m_otherLep_pt=event->addele_pt;
-    m_otherLep_eta=event->addele_eta;
-    m_otherLep_phi=event->addele_phi;
-    m_otherLep_m=event->addele_m;
-    m_otherLep_iso=event->addele_iso;
-    m_otherLep_q=event->addele_q;
-    nOtherLep=event->nadditionalEle;
+	if(event->addlepton_p4){ // from new NanoAOD
+		for(int i = 0; i < event->addlepton_p4->size(); i++){
+			
+			if ( abs(event->addlepton_pdgId->at(i)) == 13) {	// 13 == muon
+				m_lep  ->push_back( TLorentzVector(event->addlepton_p4->at(i)) );	
+				m_lep_q->push_back( TMath::Sign(1,event->addlepton_pdgId->at(i)) );
+				m_lep_iso->push_back( event->addlepton_iso->at(i) );
+				
+			}
+			if ( abs(event->addlepton_pdgId->at(i)) == 11) {	// 11 == electron	
+				m_otherLep  ->push_back( TLorentzVector(event->addlepton_p4->at(i)) ); 	
+				m_otherLep_q->push_back( TMath::Sign(1,event->addlepton_pdgId->at(i)) );
+				m_otherLep_iso->push_back( event->addlepton_iso->at(i) );
+			}
+		}
+		
+		nLep 	  = m_lep->size();
+		nOtherLep = m_otherLep->size();
+		
+	}else{
+		m_lep_iso=event->addmuon_iso;
+		m_lep_q=event->addmuon_q;
+		nLep=event->nadditionalMu;
+		
+		m_lep = new std::vector<TLorentzVector>(nLep);
+		for(int i = 0; i<nLep; i++){
+			m_lep->at(i).SetPtEtaPhiM( 	event->addmuon_pt->at(i),
+										event->addmuon_eta->at(i),
+										event->addmuon_phi->at(i),
+										event->addmuon_m->at(i));
+		}
+		
+		m_otherLep_iso=event->addele_iso;  
+		m_otherLep_q=event->addele_q;
+		nOtherLep=event->nadditionalEle;
+		
+		m_otherLep = new std::vector<TLorentzVector>(nOtherLep);
+		for(int i = 0; i<nOtherLep; i++){
+			m_otherLep->at(i).SetPtEtaPhiM( event->addele_pt->at(i),
+											event->addele_eta->at(i),
+											event->addele_phi->at(i),
+											event->addele_m->at(i));
+		}
+	}
   } else if ( CHAN == kEL ){
-    m_lep_pt=event->addele_pt;
-    m_lep_eta=event->addele_eta;
-    m_lep_phi=event->addele_phi;
-    m_lep_m=event->addele_m;
-    m_lep_iso=event->addele_iso;
-    m_lep_q=event->addele_q;
-    nLep=event->nadditionalEle;
-    m_otherLep_pt=event->addmuon_pt;
-    m_otherLep_eta=event->addmuon_eta;
-    m_otherLep_phi=event->addmuon_phi;
-    m_otherLep_m=event->addmuon_m;
-    m_otherLep_iso=event->addmuon_iso;
-    m_otherLep_q=event->addmuon_q;
-    nOtherLep=event->nadditionalMu;
+	if(event->addlepton_p4){ // from new NanoAOD 
+		for(int i = 0; i < event->addlepton_p4->size(); i++){
+			if ( abs(event->addlepton_pdgId->at(i)) == 11) {	//electron
+				m_lep  ->push_back( TLorentzVector(event->addlepton_p4->at(i)) );	
+				m_lep_q->push_back( TMath::Sign(1,event->addlepton_pdgId->at(i)) );
+				m_lep_iso->push_back( event->addlepton_iso->at(i) );
+			}
+			if ( abs(event->addlepton_pdgId->at(i)) == 13) {	//muon
+				m_otherLep  ->push_back( TLorentzVector(event->addlepton_p4->at(i)) ); 	
+				m_otherLep_q->push_back( TMath::Sign(1,event->addlepton_pdgId->at(i)) );
+				m_otherLep_iso->push_back( event->addlepton_iso->at(i) );
+			}
+		}
+		
+		
+	}else{
+		m_lep_iso=event->addele_iso;
+		m_lep_q=event->addele_q;
+		nLep=event->nadditionalEle;
+		
+		m_lep = new std::vector<TLorentzVector>(nLep);
+		for(int i = 0; i<nLep; i++){
+			m_lep->at(i).SetPtEtaPhiM(	event->addele_pt->at(i),
+										event->addele_eta->at(i),
+										event->addele_phi->at(i),
+										event->addele_m->at(i));
+		}
+		
+		m_otherLep_iso=event->addmuon_iso;
+		m_otherLep_q=event->addmuon_q;
+		nOtherLep=event->nadditionalMu;
+		
+		m_otherLep = new std::vector<TLorentzVector>(nOtherLep);
+		for(int i = 0; i<nOtherLep; i++){
+			m_otherLep->at(i).SetPtEtaPhiM( event->addmuon_pt->at(i),
+											event->addmuon_eta->at(i),
+											event->addmuon_phi->at(i),
+											event->addmuon_m->at(i));
+		}
+	}
   }
-
-  std::vector<double> v_otherLep_eta; std::vector<double> v_otherLep_phi;
-  std::vector<double> v_lep_pt;       std::vector<double> v_lep_eta;      std::vector<double> v_lep_phi;  std::vector<double> v_lep_m; std::vector<double> v_lep_q;
-  std::vector<double> v_lep_eta_iso;  std::vector<double> v_lep_phi_iso;
+  std::vector<TLorentzVector> v_otherLep; 
+  std::vector<TLorentzVector> v_lep;
+  std::vector<double> v_lep_q;  
+  //std::vector<double> v_lep_pt;       std::vector<double> v_lep_eta;      std::vector<double> v_lep_phi;  std::vector<double> v_lep_m; 
+  std::vector<double> v_lep_eta_iso;  std::vector<double> v_lep_phi_iso;  // TODO: TLorentzVector lep_iso??
 
   double m_iso=1e6;
   for (int i=0; i<nOtherLep; i++){
 
-    if (   m_otherLep_iso->at(i)<LEP_ISO_CUT  &&  m_otherLep_pt->at(i)>LEP_PT_CUT  &&  fabs(m_otherLep_eta->at(i)) < (TAU_ETA_CUT+0.1)    ){  //TAU eta+0.1 since we want to check overlap with taus!
-      v_otherLep_eta.push_back( m_otherLep_eta->at(i) );
-      v_otherLep_phi.push_back( m_otherLep_phi->at(i) );
+    if (   m_otherLep_iso->at(i)<LEP_ISO_CUT  &&  m_otherLep->at(i).Pt() >LEP_PT_CUT  &&  fabs(m_otherLep->at(i).Eta()) < (TAU_ETA_CUT+0.1)    ){  //TAU eta+0.1 since we want to check overlap with taus!
+      v_otherLep.push_back( TLorentzVector(m_otherLep->at(i) ));
     }
 
-    if ( ! ( m_otherLep_pt->at(i) > LEP_PT_CUT && fabs(m_otherLep_eta->at(i)) < LEP_ETA_CUT ) ) continue;
+    if ( ! ( m_otherLep->at(i).Pt() > LEP_PT_CUT && fabs(m_otherLep->at(i).Eta()) < LEP_ETA_CUT ) ) continue;
     if (   m_otherLep_iso->at(i)<LEP_ISO_CUT  )  n_iso_otherLep++;
 
     if ( m_otherLep_iso->at(i) < m_iso ){
-      otherLep_pt=m_otherLep_pt->at(i);
-      otherLep_eta=m_otherLep_eta->at(i);
-      otherLep_phi=m_otherLep_phi->at(i);
-      otherLep_iso=m_otherLep_iso->at(i);
-      otherLep_q=m_otherLep_q->at(i);
+      otherLep_pt  = m_otherLep->at(i).Pt(); //TODO TLorentzVector -> gets written in TBranch at the end
+      otherLep_eta = m_otherLep->at(i).Eta();
+      otherLep_phi = m_otherLep->at(i).Phi();
+      otherLep_iso = m_otherLep_iso->at(i);
+      otherLep_q   = m_otherLep_q->at(i);
       m_iso=otherLep_iso;
     }
   }
@@ -217,28 +275,23 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
   //to select m(ll)~m(Z) events
   if ( event->pt_1 > LEP_PT_CUT  && fabs( event->eta_1 ) < LEP_ETA_CUT && CHAN != kTAU ){
-    v_lep_pt.push_back(  event->pt_1 );
-    v_lep_eta.push_back( event->eta_1 );
-    v_lep_phi.push_back( event->phi_1 );
-    v_lep_m.push_back(  event->pt_1 );
-    v_lep_q.push_back(  event->pt_1 );
+	v_lep.push_back  ( 	 TLorentzVector(event->pt_1, event->eta_1, event->phi_1, event->m_1) );
+    v_lep_q.push_back(   event->q_1 );		
+	
     if ( event->iso_1 < LEP_ISO_CUT ) n_iso_lep++;
   }
 
   for (int i=0; i<nLep; i++){
 
     //for dR calculations
-    if (   m_lep_iso->at(i)<LEP_ISO_CUT  &&  m_lep_pt->at(i)>LEP_PT_CUT  &&  fabs(m_lep_eta->at(i)) < (TAU_ETA_CUT+0.1)    ){  //TAU eta+0.1 since we want to check overlap with taus!
-      v_lep_eta_iso.push_back( m_lep_eta->at(i) );
-      v_lep_phi_iso.push_back( m_lep_phi->at(i) );
+    if (   m_lep_iso->at(i)<LEP_ISO_CUT  &&  m_lep->at(i).Pt() > LEP_PT_CUT  &&  fabs(m_lep->at(i).Eta()) < (TAU_ETA_CUT+0.1)    ){  //TAU eta+0.1 since we want to check overlap with taus!
+      v_lep_eta_iso.push_back( m_lep->at(i).Eta() );
+      v_lep_phi_iso.push_back( m_lep->at(i).Phi() );
     }
 
     //to select m(ll)~m(Z) events
-    if (   m_lep_pt->at(i)>LEP_PT_CUT  &&  fabs(m_lep_eta->at(i)) < LEP_ETA_CUT  ){  //TAU eta+0.1 since we want to check overlap with taus!
-      v_lep_pt.push_back(  m_lep_pt->at(i) );
-      v_lep_eta.push_back( m_lep_eta->at(i) );
-      v_lep_phi.push_back( m_lep_phi->at(i) );
-      v_lep_m.push_back(   m_lep_m->at(i) );
+    if (   m_lep->at(i).Pt()>LEP_PT_CUT  &&  fabs(m_lep->at(i).Eta()) < LEP_ETA_CUT  ){  //TAU eta+0.1 since we want to check overlap with taus!
+	  v_lep.push_back( TLorentzVector(m_lep->at(i)) );
       v_lep_q.push_back(   m_lep_q->at(i) );
       if ( m_lep_iso->at(i) < LEP_ISO_CUT ) n_iso_lep++;
     }
@@ -246,27 +299,28 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   }
 
   //select mZ candidate
-  for (unsigned i=0; i<v_lep_eta.size(); i++){
-    for (unsigned j=i+1; j<v_lep_eta.size(); j++){
+  for (unsigned i=0; i<v_lep.size(); i++){
+    for (unsigned j=i+1; j<v_lep.size(); j++){
       if ( ( v_lep_q.at(i) * v_lep_q.at(j) ) >= 0 ) continue;
 
-      double m_dR=calcDR( v_lep_eta.at(i) , v_lep_phi.at(i) , v_lep_eta.at(j) , v_lep_phi.at(j) );
+      double m_dR=calcDR( v_lep.at(i).Eta() , v_lep.at(i).Phi() , v_lep.at(j).Eta() , v_lep.at(j).Phi() );
       if ( m_dR < DR_LEP_CUT ) continue;
 
-      vec1.SetPtEtaPhiM( v_lep_pt.at(i) , v_lep_eta.at(i) , v_lep_phi.at(i) , v_lep_m.at(i) );
-      vec2.SetPtEtaPhiM( v_lep_pt.at(j) , v_lep_eta.at(j) , v_lep_phi.at(j) , v_lep_m.at(j) );
+	  vec1 = TLorentzVector( v_lep.at(i) ); 
+	  vec2 = TLorentzVector( v_lep.at(j) );
+
       vec=vec1+vec2;
 
       if ( fabs(vec.M()-MZ) < fabs(m_leplep-MZ) ){
         m_leplep=vec.M();
         lep_dR=m_dR;
-        lep1_eta=v_lep_eta.at(i);
-        lep2_eta=v_lep_eta.at(j);
-        lep1_phi=v_lep_phi.at(i);
-        lep2_phi=v_lep_phi.at(j);
+        lep1_eta=v_lep.at(i).Eta();		//TODO: is never used -> DELETE
+        lep2_eta=v_lep.at(j).Eta();		//TODO: is never used -> DELETE
+        lep1_phi=v_lep.at(i).Phi();
+        lep2_phi=v_lep.at(j).Phi();
 
         Double_t deltaPhi=TVector2::Phi_mpi_pi( lep1_phi - lep2_phi );
-        mt_leplep=sqrt(2*v_lep_pt.at(i)*v_lep_pt.at(j)*(1-TMath::Cos(deltaPhi)));
+        mt_leplep=sqrt(2*v_lep.at(i).Pt() *v_lep.at(j).Pt() *(1-TMath::Cos(deltaPhi)));
       }
 
     }
@@ -301,39 +355,84 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
   double dR; int m;
   Double_t dR1, dR2;
-  for (int i=0; i<event->nadditionalTau; i++){
+  
+  int loop_end;
+  int pdgID;
+  
+  
+  int bitmask;
+  bool antiEle, antiMu;
+  
+  if ( event->addlepton_p4 ) loop_end = event->addlepton_p4->size();
+  else loop_end = event->nadditionalTau;
+  
+  for (int i=0; i<loop_end; i++){ 
+	
+    if ( event->addlepton_p4 ) pdgID = event->addlepton_pdgId->at(i);	//to get only taus in nanoAOD file
+	else pdgID = 15;	// to allow every entry in addtau-list
+	
+	if (abs(pdgID) != 15) continue; //discard non-taus
+
     if ( ! (event->addtau_pt->at(i) > m_tau_pt_cut ) ) continue;
     if ( ! ( fabs(event->addtau_eta->at(i)) < m_tau_eta_cut ) ) continue;
 
     if (event->addtau_passesTauLepVetos->at(i) == 0) continue;
-    m=event->addtau_decayMode->at(i);
+	
+	if( event->addlepton_p4 ) m=event->addlepton_tauDM->at(i);
+	else 					  m=event->addtau_decayMode->at(i);
+	
     if ( !( (m>=0&&m<=4)||(m>=10&&m<=14) ) ) continue;
     dR=this->calcDR( event->eta_1, event->phi_1, event->addtau_eta->at(i), event->addtau_phi->at(i) );
     if ( CHAN!=kTAU && dR<0.5 ) continue;
 
-    alltau_pt->push_back(event->addtau_pt->at(i));
-    alltau_eta->push_back(event->addtau_eta->at(i));
-    alltau_phi->push_back(event->addtau_phi->at(i));
-    alltau_q->push_back(event->addtau_q->at(i));
-    alltau_decay->push_back(m);
-    alltau_beta->push_back(event->addtau_byCombinedIsolationDeltaBetaCorrRaw3Hits->at(i));
-    alltau_mediumBeta->push_back(event->addtau_byMediumCombinedIsolationDeltaBetaCorr3Hits->at(i));
-    alltau_vlooseMVA->push_back( event->addtau_byVLooseIsolationMVArun2v1DBoldDMwLT->at(i));
-    alltau_looseMVA->push_back( event->addtau_byLooseIsolationMVArun2v1DBoldDMwLT->at(i));
-    alltau_mediumMVA->push_back(event->addtau_byMediumIsolationMVArun2v1DBoldDMwLT->at(i));
-    alltau_tightMVA->push_back( event->addtau_byTightIsolationMVArun2v1DBoldDMwLT->at(i));
-    alltau_vtightMVA->push_back( event->addtau_byVTightIsolationMVArun2v1DBoldDMwLT->at(i));
-    alltau_lepVeto->push_back(event->addtau_passesTauLepVetos->at(i));
-    alltau_gen_match->push_back(event->addtau_gen_match->at(i));
-    alltau_mvis->push_back(event->addtau_mvis->at(i));
+	if ( event->addlepton_p4 ){ //nanoAOD
+		alltau_pt ->push_back(event->addlepton_p4->at(i).Pt());  
+		alltau_eta->push_back(event->addlepton_p4->at(i).Eta());
+		alltau_phi->push_back(event->addlepton_p4->at(i).Phi());
+		alltau_q  ->push_back(TMath::Sign(1, event->addlepton_pdgId->at(i)));	
+		alltau_vlooseMVA->push_back( (event->addlepton_tauID->at(i) & 0x1) > 0 );
+		alltau_looseMVA ->push_back( (event->addlepton_tauID->at(i) & 0x2) > 0 );
+		alltau_mediumMVA->push_back( (event->addlepton_tauID->at(i) & 0x4) > 0 );
+		alltau_tightMVA ->push_back( (event->addlepton_tauID->at(i) & 0x8) > 0 );
+		alltau_vtightMVA->push_back( (event->addlepton_tauID->at(i) & 0x10) > 0 );
+		
+		bitmask=event->addlepton_tauAntiEle->at(i); //add in .h
+		antiEle = ( bitmask & 0x8) > 0;
+		bitmask=event->addlepton_tauAntiMu->at(i); //add in .h
+		antiMu  = (bitmask & 0x1 ) > 0;
+		alltau_lepVeto->push_back( antiEle & antiMu  );
+		
+		alltau_beta->push_back(event->addlepton_tauCombIso->at(i)); 
+		alltau_gen_match->push_back(event->addlepton_mc_match->at(i));	
+		alltau_mvis->push_back(event->addlepton_mvis->at(i));
+		
+	}else{ // non nanoAOD
+		alltau_pt ->push_back(event->addtau_pt->at(i));
+		alltau_eta->push_back(event->addtau_eta->at(i));
+		alltau_phi->push_back(event->addtau_phi->at(i));
+		alltau_q  ->push_back(event->addtau_q->at(i));
+		alltau_vlooseMVA->push_back( event->addtau_byVLooseIsolationMVArun2v1DBoldDMwLT->at(i));
+		alltau_looseMVA ->push_back( event->addtau_byLooseIsolationMVArun2v1DBoldDMwLT->at(i));
+		alltau_mediumMVA->push_back( event->addtau_byMediumIsolationMVArun2v1DBoldDMwLT->at(i));
+		alltau_tightMVA ->push_back( event->addtau_byTightIsolationMVArun2v1DBoldDMwLT->at(i));
+		alltau_vtightMVA->push_back( event->addtau_byVTightIsolationMVArun2v1DBoldDMwLT->at(i));
+		alltau_lepVeto->push_back(event->addtau_passesTauLepVetos->at(i));
+		alltau_beta->push_back(event->addtau_byCombinedIsolationDeltaBetaCorrRaw3Hits->at(i));
+		alltau_gen_match->push_back(event->addtau_gen_match->at(i));
+		alltau_mvis->push_back(event->addtau_mvis->at(i));
+	}
+    alltau_decay->push_back(m); //distinction between nanoAod/other already made earlier
+	
+    alltau_mediumBeta->push_back(event->addtau_byMediumCombinedIsolationDeltaBetaCorr3Hits->at(i)); //TODO -> still used??
+    
     if(useMVAMET)alltau_mt->push_back(event->mt_1); //mt of lepton and MVAMET
     else alltau_mt->push_back(event->pfmt_1); //mt of lepton and PFMET
     if(useMVAMET)alltau_mt2->push_back(event->addtau_mt->at(i));
     else alltau_mt2->push_back(event->pfmt_2);  //no addtaupfmt in addtau collection
     if(use_svfit)alltau_svfit->push_back(event->m_sv); //FIXME: no svfit in addtau collection so far
     else alltau_svfit->push_back(0.);
-    TLorentzVector leg2; leg2.SetPtEtaPhiM(event->addtau_pt->at(i),event->addtau_eta->at(i),event->addtau_phi->at(i),event->addtau_m->at(i));
-    TLorentzVector leg1; leg1.SetPtEtaPhiM(event->pt_1,event->eta_1,event->phi_1,event->m_1);
+    TLorentzVector leg2; leg2.SetPtEtaPhiM(event->addtau_pt->at(i),event->addtau_eta->at(i),event->addtau_phi->at(i),event->addtau_m->at(i)); //TODO replace with TLorentzVector
+    TLorentzVector leg1; leg1.SetPtEtaPhiM(event->pt_1,event->eta_1,event->phi_1,event->m_1); //TODO replace with TLorentzVector
     TLorentzVector Emiss;
     if(useMVAMET) Emiss.SetPtEtaPhiM(event->mvamet,0,event->mvametphi,0);
     else Emiss.SetPtEtaPhiM(event->met,0,event->metphi,0);
@@ -349,8 +448,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
     dR1=1e6;
     m_dR1=dR1;
-    for (unsigned iL=0; iL<v_otherLep_eta.size(); iL++){
-      m_dR1=calcDR( event->addtau_eta->at(i),event->addtau_phi->at(i),v_otherLep_eta.at(iL),v_otherLep_phi.at(iL) );
+    for (unsigned iL=0; iL<v_otherLep.size(); iL++){
+      m_dR1=calcDR( event->addtau_eta->at(i),event->addtau_phi->at(i),v_otherLep.at(iL).Eta(),v_otherLep.at(iL).Phi() );  
       if ( dR1>m_dR1 ) dR1=m_dR1;
     }
     alltau_dRToOtherLep->push_back( dR1 );
@@ -417,8 +516,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
     dR1=1e6;
     m_dR1=dR1;
-    for (unsigned iL=0; iL<v_otherLep_eta.size(); iL++){
-      m_dR1=calcDR( event->eta_2,event->phi_2,v_otherLep_eta.at(iL),v_otherLep_phi.at(iL) );
+    for (unsigned iL=0; iL<v_otherLep.size(); iL++){
+      m_dR1=calcDR( event->eta_2,event->phi_2,v_otherLep.at(iL).Eta(),v_otherLep.at(iL).Phi() );
       if ( dR1>m_dR1 ) dR1=m_dR1;
     }
     alltau_dRToOtherLep->insert(alltau_dRToOtherLep->begin()+tpos, dR1 );
@@ -429,7 +528,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   } else if ( CHAN!=kTAU ){ //if most iso tau is not ok, then do not use event if this flag is set
     return 0;
   }
-
+ 
   //now, for _1, the same as above for the tt chan. FIXME very ugly to duplicate code, should be moved to a dedicated method
   if ( TT_AS_LEP == 2 ){ //only possible for kTAU
     float decay=event->decayMode_1;
@@ -476,8 +575,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       
       dR1=1e6;
       m_dR1=dR1;
-      for (unsigned iL=0; iL<v_otherLep_eta.size(); iL++){
-	m_dR1=calcDR( event->eta_1,event->phi_1,v_otherLep_eta.at(iL),v_otherLep_phi.at(iL) );
+      for (unsigned iL=0; iL<v_otherLep.size(); iL++){
+	m_dR1=calcDR( event->eta_1,event->phi_1,v_otherLep.at(iL).Eta(),v_otherLep.at(iL).Phi() );
 	if ( dR1>m_dR1 ) dR1=m_dR1;
       }
       alltau_dRToOtherLep->insert(alltau_dRToOtherLep->begin()+tpos, dR1 );
@@ -602,7 +701,7 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   tree->Branch("otherLep_eta",&otherLep_eta);  
   tree->Branch("otherLep_q"  ,&otherLep_q);
   tree->Branch("otherLep_iso",&otherLep_iso);
-  tree->Branch("lep_pt" ,&lep_pt);
+  tree->Branch("lep_pt" ,&lep_pt);	//TODO: TLorentzVector
   tree->Branch("lep_eta",&lep_eta);
   tree->Branch("lep_phi",&lep_phi);
   tree->Branch("lep_q"  ,&lep_q);

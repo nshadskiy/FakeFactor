@@ -4,13 +4,13 @@
 #define kEL          1
 #define kTAU         2
 ///////////////////////////////////////////////////
-#define selCHAN      kTAU
-const int CHAN     = kTAU;
+#define selCHAN      kMU
+const int CHAN     = kMU;
 const TString analysis      ="FakeFactor_SM_ML_vloose_not_tight_nody";
-const TString output_folder ="/afs/hephy.at/user/m/mflechl/public/Htautau/FakeRate/SM_ML/20180518c";
-const TString DC_folder     ="/afs/hephy.at/work/m/mflechl/cmssw/ff_test/CMSSW_8_0_25/src/ViennaTool/HTTutilities/Jet2TauFakes/data";
+const TString output_folder ="/afs/hephy.at/user/f/fspreitzer/public/Htautau/FakeRate/SM_ML/20180518c";
+const TString DC_folder     ="/afs/hephy.at/work/f/fspreitzer/cmssw/ff_test/CMSSW_8_0_25/src/ViennaTool/HTTutilities/Jet2TauFakes/data";
 ///////////////////////////////////////////////////
-const TString user="mflechl";
+const TString user="fspreitzer";
 const Double_t luminosity=35.9; 
 const int use_svfit = 0; //set to 1 to change input directory name accordingly
 const TString ver = "v2";
