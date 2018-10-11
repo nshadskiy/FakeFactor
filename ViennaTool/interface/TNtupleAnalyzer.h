@@ -47,6 +47,23 @@ class TNtupleAnalyzer{
   int n_iso_lep, n_iso_otherLep;
   int tau_iso_ind;
 
+
+  std::vector<TLorentzVector> *m_otherLep;
+  std::vector<Double_t> *m_otherLep_pt;
+  std::vector<Double_t> *m_otherLep_eta;
+  std::vector<Double_t> *m_otherLep_phi;
+  std::vector<Double_t> *m_otherLep_m;
+  std::vector<Double_t> *m_otherLep_iso;
+  std::vector<Int_t>    *m_otherLep_q;
+
+  std::vector<TLorentzVector> *m_lep;
+  std::vector<Double_t> *m_lep_pt;
+  std::vector<Double_t> *m_lep_eta;
+  std::vector<Double_t> *m_lep_phi;
+  std::vector<Double_t> *m_lep_m;
+  std::vector<Double_t> *m_lep_iso;
+  std::vector<Int_t>    *m_lep_q;
+
   std::vector<Double_t> *alltau_pt;
   std::vector<Double_t> *alltau_eta;
   std::vector<Double_t> *alltau_phi;

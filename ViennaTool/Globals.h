@@ -114,18 +114,21 @@ const TString path_img_mc        = path_img+"mc_"+s_chan[CHAN]+"/";
 const TString path_img_mc_woQCD  = path_img+"mc_woQCD_"+s_chan[CHAN]+"/";
 
 //Input directories
-const TString indir = "/data/higgs/data_2016/ntuples_"+ver+"/"+s_chan[CHAN]+"/ntuples_"+curr_svfit[use_svfit]+"_merged/";
-const TString datafiles[3] = { indir+"BASIS_ntuple_SingleMuon_mt_"+ver+".root", indir+"BASIS_ntuple_SingleElectron_et_"+ver+".root" , indir + "BASIS_ntuple_Tau_tt_"+ver+".root" };
-const TString datafile   = datafiles[CHAN];
+const TString indir = "/data/higgs/data_2017/"+ver+"/";
+// const TString datafiles[3] = { indir+"BASIS_ntuple_SingleMuon_mt_"+ver+".root", indir+"BASIS_ntuple_SingleElectron_et_"+ver+".root" , indir + "BASIS_ntuple_Tau_tt_"+ver+".root" };
+// const TString datafile   = datafiles[CHAN];
+const TString datafile   = indir + s_chan[CHAN] + "-NOMINAL_ntuple_Data.root";
 
-const TString DY_NJfile  = indir + "BASIS_ntuple_DYXJetsToLL_lowMass_merged_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
+const TString DY_NJfile  = indir + s_chan[CHAN] + "-NOMINAL_ntuple_DY.root";
 const TString DYfile     = DY_NJfile;
-const TString Wjetsfile  = indir + "BASIS_ntuple_WXJets_merged_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
-const TString QCDfile    = indir + "BASIS_ntuple_QCD_Pt_20toInf_MuEnrichedPt15_pythia8_MCSummer_"+s_chan[CHAN]+"_"+ver+".root";
-const TString VVfile     = indir + "BASIS_ntuple_VV_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
-const TString TTfile     = indir + "BASIS_ntuple_TT_merged_MCSummer16_"+s_chan[CHAN]+"_"+ver+".root";
-const TString SIGNALfile = indir + "BASIS_ntuple_SIGNAL_M125_powheg_MCSummer_"+s_chan[CHAN]+"_"+ver+".root";
+const TString Wjetsfile  = indir + s_chan[CHAN] + "-NOMINAL_ntuple_WJets.root";
+const TString VVfile     = indir + s_chan[CHAN] + "-NOMINAL_ntuple_VV.root";
+const TString TTfile     = indir + s_chan[CHAN] + "-NOMINAL_ntuple_TT.root";
 
+//not used:
+const TString QCDfile    = indir + s_chan[CHAN] + "-NOMINAL_ntuple_QCD.root";
+const TString SIGNALfile = indir + s_chan[CHAN] + "-NOMINAL_ntuple_SIGNAL.root";
+//
 
 // Preselection files
 const TString preselection_data          = path_presel+"preselection_data"+s_doubleCount[COINFLIP]+".root";
@@ -152,8 +155,8 @@ const TString fit_formula                = "fit_formula.root";
 
 // Fakefactor weight files
 const TString weight_Wjets = "weight_Wjets.root";
-const TString weight_DY_J = "weight_DY_J.root";
-const TString weight_TT_J = "weight_TT_J.root";
+const TString weight_DY_J  = "weight_DY_J.root";
+const TString weight_TT_J  = "weight_TT_J.root";
 const TString weight_QCD   = "weight_QCD.root";
 const TString weight_sum   = "weight_sum.root";
 const TString a_weight[4]={weight_Wjets, weight_DY_J, weight_TT_J, weight_QCD};

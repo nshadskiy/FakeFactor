@@ -56,8 +56,8 @@ Int_t GlobalClass::isLoose(const Int_t mode, const Int_t ind) //default: 0,0
 
   if( CHAN == kTAU ){
     if ( !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1; //for vloose ! tight
-    //    if ( !event_s->alltau_vtightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1; //for vloose ! vtight
-    //    if ( !event_s->alltau_tightMVA->at(ind)  && event_s->alltau_looseMVA->at(ind) ) return 1; // for loose ! tight
+    // if ( !event_s->alltau_vtightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1; //for vloose ! vtight
+      //  if ( !event_s->alltau_tightMVA->at(ind)  && event_s->alltau_looseMVA->at(ind) ) return 1; // for loose ! tight
     //    if ( !event_s->alltau_vtightMVA->at(ind) && event_s->alltau_looseMVA->at(ind) ) return 1; // for loose ! vtight
   }
   else if ( !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
@@ -79,8 +79,9 @@ Int_t GlobalClass::isTight(const Int_t mode, const Int_t ind) //default: 0,0
   if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != 6 ) return 0; }
 
   if(CHAN == kTAU){
-    //if ( event_s->alltau_vtightMVA->at(ind)) return 1; //for vtight - ADAPT ALSO IN src/TNtupleAnalyzer.cc ("CHANGE IF TAU WP CHANGES!")
+    // if ( event_s->alltau_vtightMVA->at(ind)) return 1; //for vtight - ADAPT ALSO IN src/TNtupleAnalyzer.cc ("CHANGE IF TAU WP CHANGES!")
     if ( event_s->alltau_tightMVA->at(ind)) return 1; //for tight
+    // if ( event_s->alltau_tightMVA->at(ind) && !event_s->alltau_vtightMVA->at(ind)) return 1; //for (tight & !vtight)
   }
   else{
     if ( event_s->alltau_tightMVA->at(ind)) return 1;
@@ -139,10 +140,17 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
   if (mode & GEN_MATCH) {
     if ( event_s->alltau_gen_match->at(ind)!=realJet ) return 0;
   }
-
+  Double_t lep_iso_min; Double_t lep_iso_max;
   Double_t isolation=0; Double_t antiIso_min; Double_t antiIso_max;
   if(CHAN==kMU) isolation=LEP_ISO_CUT;
-  if(CHAN==kEL) isolation=LEP_ISO_CUT_ET;
+  if(CHAN==kEL){
+    isolation=LEP_ISO_CUT_ET;
+    lep_iso_min = 0.02;
+    lep_iso_max = 0.1;
+  }else{
+    lep_iso_min = 0.05;
+    lep_iso_max = 0.15;
+  }
   antiIso_min=isolation; antiIso_max=isolation+0.1;
   //antiIso_min=isolation+0.15; antiIso_max=isolation+0.35;
   
@@ -204,7 +212,7 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
            )
     returnVal=1;
   else if ((mode & _QCD)                  &&
-	   (  ( !CALC_SS_SR && !(mode & _AI) && event_s->alltau_mt->at(ind)<40 && event_s->lep_q*event_s->alltau_q->at(ind)>0.  && ( ( event_s->lep_iso > 0.05 && event_s->lep_iso<0.15 ) || ( mode & MUISO ) ) ) || //TRY
+	   (  ( !CALC_SS_SR && !(mode & _AI) && event_s->alltau_mt->at(ind)<40 && event_s->lep_q*event_s->alltau_q->at(ind)>0.  && ( ( event_s->lep_iso > lep_iso_min && event_s->lep_iso<lep_iso_max) || ( mode & MUISO ) ) ) || //TRY
 	      (  (CALC_SS_SR) && event_s->alltau_mt->at(ind)<40   && event_s->lep_q*event_s->alltau_q->at(ind)<0. && ( ( event_s->lep_iso > antiIso_min && event_s->lep_iso<antiIso_max ) || ( mode & MUISO) )                    ) || //TRY
               (  mode & _AI && event_s->alltau_mt->at(ind)<40   &&   ( event_s->lep_iso > antiIso_min && event_s->lep_iso<antiIso_max )                     ) ) && //TRY
 	   //	   (  ( !CALC_SS_SR && event_s->alltau_mt->at(ind)<MT_CUT   && ( event_s->lep_iso<LEP_ISO_CUT || ( mode & MUISO ) ) ) || //DEFAULT

@@ -117,7 +117,7 @@ void PlotterClass::plotPieFractions_mutau_etau(TString channel, TString outfile,
   cms1.Draw();
   if(preliminary) cms2.Draw();
 
-  TLatex infoRight = TLatex( 0.675, 0.955, "35.9 fb^{-1} (13 TeV)" );
+  TLatex infoRight = TLatex( 0.675, 0.955, "41.86 fb^{-1} (13 TeV)" );
   infoRight.SetNDC();
   infoRight.SetTextSize(0.035);
   infoRight.SetTextFont(42);
@@ -213,7 +213,7 @@ void PlotterClass::plotPieFractions_tautau(TString channel, TString outfile, Int
   cms1.Draw();
   if(preliminary) cms2.Draw();
 
-  TLatex infoRight = TLatex( 0.675, 0.915, "35.9 fb^{-1} (13 TeV)" );
+  TLatex infoRight = TLatex( 0.675, 0.915, "41.86 fb^{-1} (13 TeV)" );
   infoRight.SetNDC();
   infoRight.SetTextSize(0.07);
   infoRight.SetTextFont(42);
@@ -247,6 +247,7 @@ void PlotterClass::plotCR(const std::vector<TString> fname, const std::vector<TS
   if ( fname.at(0).Contains("_mt") )   hname+="mt";
   if ( fname.at(0).Contains("_mvis") ) hname+="mvis";
   if ( fname.at(0).Contains("_pt") )   hname+="pt";
+  if ( fname.at(0).Contains("_muiso") )   hname+="muiso";
 
   //XX  TCanvas* c=new TCanvas("c","Plot for control region "+cr,1200,800);
   TLegend* leg = new TLegend(0.70,0.30,0.88,0.88);

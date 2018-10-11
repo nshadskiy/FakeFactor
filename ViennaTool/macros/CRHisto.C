@@ -251,7 +251,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   std::vector<TString> ty; for (int it=0; it<nSA; it++) ty.push_back(vsuff[it]);
 
   for (int ic=0; ic<nCR; ic++){ //loop over CRs
-    for (int iv=0; iv<nVARused-1; iv++){ //loop over mt, mvis, pt
+    for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt, muiso
       for (int iq=0; iq<nQU; iq++){ //loop over loose/tight
 	std::vector<TString> cr; 
 	for (int is=0; is<nSA; is++){ cr.push_back(path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root"); }
