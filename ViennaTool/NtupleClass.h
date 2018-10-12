@@ -69,6 +69,10 @@ public :
 //    Int_t           trg_mutaucross;
    Int_t           trg_singleelectron;
    Int_t           trg_singleelectron_lowpt;
+   Int_t           trg_singleelectron_27;
+   Int_t           trg_singleelectron_32;
+   Int_t           trg_singleelectron_35;
+   Int_t           trg_crossele_ele24tau30;
 //    Int_t           trg_singletau;
    Int_t           trg_doubletau;
    Int_t           trg_doubletau_lowpt;
@@ -431,6 +435,10 @@ public :
 //    TBranch        *b_trg_mutaucross;   //!
    TBranch        *b_trg_singleelectron;   //!
    TBranch        *b_trg_singleelectron_lowpt;   //!
+   TBranch        *b_trg_singleelectron_27;   //!
+   TBranch        *b_trg_singleelectron_32;   //!
+   TBranch        *b_trg_singleelectron_35;   //!
+   TBranch        *b_trg_crossele_ele24tau30;   //!
 //    TBranch        *b_trg_singletau;   //!
    TBranch        *b_trg_doubletau;   //!
    TBranch        *b_trg_doubletau_lowpt;   //!
@@ -920,6 +928,10 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("trg_singlemuon_lowpt", &trg_singlemuon_lowpt, &b_trg_singlemuon_lowpt);
 //    fChain->SetBranchAddress("trg_mutaucross", &trg_mutaucross, &b_trg_mutaucross);
    fChain->SetBranchAddress("trg_singleelectron_lowpt", &trg_singleelectron_lowpt, &b_trg_singleelectron_lowpt);
+   fChain->SetBranchAddress("trg_singleelectron_27", &trg_singleelectron_27, &b_trg_singleelectron_27);
+   fChain->SetBranchAddress("trg_singleelectron_32", &trg_singleelectron_32, &b_trg_singleelectron_32);
+   fChain->SetBranchAddress("trg_singleelectron_35", &trg_singleelectron_35, &b_trg_singleelectron_35);
+   fChain->SetBranchAddress("trg_crossele_ele24tau30", &trg_crossele_ele24tau30, &b_trg_crossele_ele24tau30);
 //    fChain->SetBranchAddress("trg_singletau", &trg_singletau, &b_trg_singletau);
    fChain->SetBranchAddress("trg_doubletau", &trg_doubletau, &b_trg_doubletau);
    fChain->SetBranchAddress("trg_doubletau_lowpt", &trg_doubletau_lowpt, &b_trg_doubletau_lowpt);

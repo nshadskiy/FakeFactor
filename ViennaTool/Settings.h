@@ -4,10 +4,10 @@
 #define kEL          1
 #define kTAU         2
 ///////////////////////////////////////////////////
-#define selCHAN      kTAU
-const int CHAN     = kTAU;
-const TString analysis      ="FakeFactor_2017_FF_Production";
-const TString output_folder ="/afs/hephy.at/user/f/fspreitzer/public/Htautau/FakeRate/SM_ML/20181009_FF2017_Production_2";
+#define selCHAN      kEL
+const int CHAN     = kEL;
+const TString analysis      ="FakeFactor_SM_ML_FF2017_NoDM";
+const TString output_folder ="/afs/hephy.at/user/f/fspreitzer/public/Htautau/FakeRate/SM_ML/FF2017_NoDM/";
 const TString DC_folder     ="/afs/hephy.at/work/f/fspreitzer/cmssw/ff_test/CMSSW_8_0_25/src/ViennaTool/HTTutilities/Jet2TauFakes/data";
 ///////////////////////////////////////////////////
 const TString user="fspreitzer";
@@ -69,14 +69,20 @@ const Double_t Pt_cuts_QCD_AI[]   = {30,32,35,40,50,120,500};
 const double fitMin =  30;
 const int fitBins  =  470;
 const int COINFLIP=1;
-// const Double_t Pt_cuts_Wjets[]    = {30.,34,39,50,60,75,90,110,140,180,500}; //original
-const Double_t Pt_cuts_Wjets[]    = {30.,34,39,50,60,75,90,110,500};
+const Double_t Pt_cuts_Wjets[]    = {30.,34,39,50,60,75,90,110,140,180,500};
 const Double_t Pt_cuts_DY[]       = {30.,40.};
 const Double_t Pt_cuts_TT_SR[]    = {30.,32.,34,37.,40,45,50,70,110,160,500};
 const Double_t Pt_cuts_TT_CR[]    = {30.};
+const Double_t Pt_cuts_QCD[]      = {30,32.5,35,40,50,70,90,150,500};
+const Double_t Pt_cuts_QCD_AI[]   = {30,35,40,50,75,120,500};
+// const Double_t Pt_cuts_Wjets[]    = {30.,34,39,50,60,75,90,110,140,180,500}; //original
+// const Double_t Pt_cuts_Wjets[]    = {30.,34,39,50,60,75,90,110,500};
+// const Double_t Pt_cuts_DY[]       = {30.,40.};
+// const Double_t Pt_cuts_TT_SR[]    = {30.,32.,34,37.,40,45,50,70,110,160,500};
+// const Double_t Pt_cuts_TT_CR[]    = {30.};
 // const Double_t Pt_cuts_QCD[]      = {30,32.5,35,40,50,70,90,150,500}; //original
-const Double_t Pt_cuts_QCD[]      = {30,35,40,50,90,150,500};
-const Double_t Pt_cuts_QCD_AI[]   = {30,35,40,50,120,500};
+// // const Double_t Pt_cuts_QCD[]      = {30,35,40,50,90,150,500};
+// const Double_t Pt_cuts_QCD_AI[]   = {30,32,35,40,50,120,500};
 #endif
 //////////////////////////////////////////////////
 //TAUTAU Settings
@@ -114,7 +120,7 @@ const Double_t DR_LEP_CUT=0.5;
 const Double_t LEP_ETA_CUT=2.1;
 const Double_t LEP_PT_CUT=10;
 const Double_t LEP_ISO_CUT=0.15;
-const Double_t LEP_ISO_CUT_ET=0.1; //this is only important for signal electron, for all other selections LEP_ISO_CUT is taken
+const Double_t LEP_ISO_CUT_ET=0.15; //changed from 0.1 //this is only important for signal electron, for all other selections LEP_ISO_CUT is taken
 const Double_t TAU1_ISO_CUT=9; //>9(vtight/tight)
 const Double_t DR_TAU_LEP_CUT=0.4;
 const Double_t TAU_ETA_CUT=2.3;

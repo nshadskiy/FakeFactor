@@ -73,7 +73,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   
   //  if(CHAN==kMU && !event->trg_singlemuon) return 0; //only single-mu-trigger
   if(CHAN==kMU && !( (event->trg_singlemuon && event->pt_1 > 28) || event->trg_singlemuon_lowpt && event->pt_1 > 25)     ) return 0; // || (event->trg_mutaucross && event->pt_1 <= 25 && event->pt_2 > 30)
-  if(CHAN==kEL && !( (event->trg_singleelectron || event->trg_singleelectron_lowpt ) && event->pt_1 > 36)) return 0;
+  // if(CHAN==kEL && !( (event->trg_singleelectron || event->trg_singleelectron_lowpt ) && event->pt_1 > 36)) return 0;  // original
+  if(CHAN==kEL && !(  event->trg_crossele_ele24tau30 || event->trg_singleelectron_27 || event->trg_singleelectron_32 || event->trg_singleelectron_35 )) return 0;
   if(CHAN==kTAU && !(event->trg_doubletau || event->trg_doubletau_lowpt || event->trg_doubletau_mediso ) ) return 0;
   // if(CHAN==kMU && event->Flag_badMuons) return 0;
   // if(CHAN==kMU && event->Flag_duplicateMuons) return 0;
@@ -82,49 +83,55 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   //////////////////////////////////////////////////////////////////////////
 
   weight=1.;
-  if(!preselectionFile.Contains("preselection_data"))weight = 1000*luminosity*event->puweight*event->trk_sf*event->reco_sf*event->genweight*event->antilep_tauscaling*event->idisoweight_1;
-
-  if( CHAN == kTAU && !preselectionFile.Contains("preselection_data") ){ // CHANGE IF TAU WP CHANGES!
-    if(event->gen_match_1 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1) weight *= 0.89; //vtight = 0.86, tight = 0.89
-    else if(event->gen_match_1 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 ) weight *= 0.88;
+  //weight calculation - temporary if for etau:
+  if( CHAN == kEL && !preselectionFile.Contains("preselection_data") ){
+    weight = luminosity*event->weight*event->singleTriggerSFLeg1*event->xTriggerSFLeg1*event->xTriggerSFLeg2;
     if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.89;
     else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.88;
-  }
-  if( CHAN != kTAU && !preselectionFile.Contains("preselection_data") ){
-    if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.89;
-    else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.88;
-  }
+  }else{
+    if(!preselectionFile.Contains("preselection_data"))weight = 1000*luminosity*event->puweight*event->trk_sf*event->reco_sf*event->genweight*event->antilep_tauscaling*event->idisoweight_1;
 
-  if (CHAN == kMU  && !preselectionFile.Contains("preselection_data") ) weight *= event->singleTriggerSFLeg1;
-  if (CHAN == kEL  && !preselectionFile.Contains("preselection_data") ) weight *= event->singleTriggerSFLeg1;
-  if (CHAN == kTAU && !preselectionFile.Contains("preselection_data") ) weight *= event->xTriggerSFLeg1 * event->xTriggerSFLeg2;
+    if( CHAN == kTAU && !preselectionFile.Contains("preselection_data") ){ // CHANGE IF TAU WP CHANGES!
+      if(event->gen_match_1 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1) weight *= 0.89; //vtight = 0.86, tight = 0.89
+      else if(event->gen_match_1 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 ) weight *= 0.88;
+      if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.89;
+      else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.88;
+    }
+    if( CHAN != kTAU && !preselectionFile.Contains("preselection_data") ){
+      if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.89;
+      else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.88;
+    }
 
-  if(preselectionFile.Contains("preselection_TT")){
-    weight *= event->topWeight_run1;
-  }
-  if(preselectionFile.Contains("preselection_TT") || preselectionFile.Contains("preselection_VV")){
-    weight *= event->xsec*event->genNEventsWeight;
-  }
-  if(preselectionFile.Contains("preselection_DY")){
-    weight *= event->zPtReweightWeight;
-    switch (event->NUP){
-      case 0: weight *= 5.91296350328e-05; break;
-      case 1: weight *= 1.01562362959e-05; break;
-      case 2: weight *= 2.15030982864e-05; break;
-      case 3: weight *= 1.35063197418e-05; break;
-      case 4: weight *= 9.22459522375e-06; break;
+    if (CHAN == kMU  && !preselectionFile.Contains("preselection_data") ) weight *= event->singleTriggerSFLeg1;
+    if (CHAN == kEL  && !preselectionFile.Contains("preselection_data") ) weight *= event->singleTriggerSFLeg1;
+    if (CHAN == kTAU && !preselectionFile.Contains("preselection_data") ) weight *= event->xTriggerSFLeg1 * event->xTriggerSFLeg2;
+  
+    if(preselectionFile.Contains("preselection_TT")){
+      weight *= event->topWeight_run1;
+    }
+    if(preselectionFile.Contains("preselection_TT") || preselectionFile.Contains("preselection_VV")){
+      weight *= event->xsec*event->genNEventsWeight;
+    }
+    if(preselectionFile.Contains("preselection_DY")){
+      weight *= event->zPtReweightWeight;
+      switch (event->NUP){
+        case 0: weight *= 5.91296350328e-05; break;
+        case 1: weight *= 1.01562362959e-05; break;
+        case 2: weight *= 2.15030982864e-05; break;
+        case 3: weight *= 1.35063197418e-05; break;
+        case 4: weight *= 9.22459522375e-06; break;
+      }
+    }
+    if(preselectionFile.Contains("preselection_Wjets")){
+      switch (event->NUP){
+        case 0: weight *= 0.000790555230048; break;
+        case 1: weight *= 0.000150361226486; break;
+        case 2: weight *= 0.000307137166339; break;
+        case 3: weight *= 5.55843884964e-05; break;
+        case 4: weight *= 5.2271728229e-05; break;
+      }
     }
   }
-  if(preselectionFile.Contains("preselection_Wjets")){
-    switch (event->NUP){
-      case 0: weight *= 0.000790555230048; break;
-      case 1: weight *= 0.000150361226486; break;
-      case 2: weight *= 0.000307137166339; break;
-      case 3: weight *= 5.55843884964e-05; break;
-      case 4: weight *= 5.2271728229e-05; break;
-    }
-  }
-
   weight_sf=weight;
   
   if(CHAN==kTAU && !COINFLIP){

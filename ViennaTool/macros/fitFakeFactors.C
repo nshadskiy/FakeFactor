@@ -74,15 +74,15 @@ void fitFakeFactors(){
 	      cf.set_fitFunc( "pol0(2)" );
 	      cf.set_err_scale( 3.0 );
 	      cf.set_err_cl( 0 );
-              cf.set_histMaxFrac( 0.1 );
+              cf.set_histMaxFrac( 0.17 );
               cf.set_smoothFrac(0.15);
               cf.set_smoothMode("spline3");              
           }
   else if( CHAN==kEL && modes.at(imode) & _QCD ){
-	      cf.set_fitFunc( "pol1(2)" );
+	      cf.set_fitFunc( "landau(0)+pol0(2)" );
 	      cf.set_err_scale( 3.0 );
 	      cf.set_err_cl( 0 );
-              cf.set_histMaxFrac( 0.1 );
+              cf.set_histMaxFrac( 0.45 );
               cf.set_smoothFrac(0.15);
               cf.set_smoothMode("spline3");              
           }
@@ -95,7 +95,7 @@ void fitFakeFactors(){
               cf.set_smoothMode("spline3");              
           }
     else if( CHAN==kEL && modes.at(imode) & _W_JETS ){
-	      cf.set_fitFunc( "pol1(2)" );
+	      cf.set_fitFunc( "landau(0)+pol0(2)" );
 	      cf.set_err_scale( 3.0 );
 	      cf.set_err_cl( 0 );
               cf.set_histMaxFrac( 0.33 );
@@ -262,7 +262,7 @@ void fitFakeFactors(){
           cms3.SetTextSize(0.05);
           cms3.SetTextFont(52);
           
-          TLatex infoRight = TLatex( 0.665, 0.915, "35.9 fb^{-1} (13 TeV)" );
+          TLatex infoRight = TLatex( 0.665, 0.915, "41.86 fb^{-1} (13 TeV)" );
           infoRight.SetNDC();
           infoRight.SetTextFont(42);
           infoRight.SetTextSize(0.03);

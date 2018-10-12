@@ -146,7 +146,7 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
   if(CHAN==kEL){
     isolation=LEP_ISO_CUT_ET;
     lep_iso_min = 0.02;
-    lep_iso_max = 0.1;
+    lep_iso_max = 0.15;
   }else{
     lep_iso_min = 0.05;
     lep_iso_max = 0.15;

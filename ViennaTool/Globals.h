@@ -114,7 +114,8 @@ const TString path_img_mc        = path_img+"mc_"+s_chan[CHAN]+"/";
 const TString path_img_mc_woQCD  = path_img+"mc_woQCD_"+s_chan[CHAN]+"/";
 
 //Input directories
-const TString indir = "/data/higgs/data_2017/"+ver+"/";
+// const TString indir = "/data/higgs/data_2017/"+ver+"/"; //original
+const TString indir = "/afs/hephy.at/data/higgs01/et_danny/";
 // const TString datafiles[3] = { indir+"BASIS_ntuple_SingleMuon_mt_"+ver+".root", indir+"BASIS_ntuple_SingleElectron_et_"+ver+".root" , indir + "BASIS_ntuple_Tau_tt_"+ver+".root" };
 // const TString datafile   = datafiles[CHAN];
 const TString datafile   = indir + s_chan[CHAN] + "-NOMINAL_ntuple_Data.root";
@@ -460,10 +461,10 @@ const Int_t N_e_DY = sizeof(Eta_cuts_DY)/sizeof(Double_t);
 const Int_t N_e_TT = sizeof(Eta_cuts_TT)/sizeof(Double_t);
 const Int_t N_e_QCD = sizeof(Eta_cuts_QCD)/sizeof(Double_t);
 
-const Int_t Decay_cuts_Wjets[] = {0,5};//normally 0,5
-const Int_t Decay_cuts_DY[]    = {0,5};
-const Int_t Decay_cuts_TT[] = {0,5};
-const Int_t Decay_cuts_QCD[]   = {0,5};
+const Int_t Decay_cuts_Wjets[] = {0};//normally 0,5
+const Int_t Decay_cuts_DY[]    = {0};
+const Int_t Decay_cuts_TT[] = {0};
+const Int_t Decay_cuts_QCD[]   = {0};
 
 const Int_t N_t_Wjets = sizeof(Decay_cuts_Wjets)/sizeof(Int_t);
 const Int_t N_t_DY = sizeof(Decay_cuts_DY)/sizeof(Int_t);
