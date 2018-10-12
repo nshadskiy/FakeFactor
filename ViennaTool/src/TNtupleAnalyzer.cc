@@ -72,7 +72,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
   
   //  if(CHAN==kMU && !event->trg_singlemuon) return 0; //only single-mu-trigger
-  if(CHAN==kMU && !( (event->trg_singlemuon && event->pt_1 > 28) || event->trg_singlemuon_lowpt && event->pt_1 > 25)     ) return 0; // || (event->trg_mutaucross && event->pt_1 <= 25 && event->pt_2 > 30)
+  if(CHAN==kMU && !( (event->trg_singlemuon && event->pt_1 > 28) || (event->trg_singlemuon_lowpt && event->pt_1 > 25) ) return 0; // || (event->trg_mutaucross && event->pt_1 <= 25 && event->pt_2 > 30)
   // if(CHAN==kEL && !( (event->trg_singleelectron || event->trg_singleelectron_lowpt ) && event->pt_1 > 36)) return 0;  // original
   if(CHAN==kEL && !(  event->trg_crossele_ele24tau30 || event->trg_singleelectron_27 || event->trg_singleelectron_32 || event->trg_singleelectron_35 )) return 0;
   if(CHAN==kTAU && !(event->trg_doubletau || event->trg_doubletau_lowpt || event->trg_doubletau_mediso ) ) return 0;
