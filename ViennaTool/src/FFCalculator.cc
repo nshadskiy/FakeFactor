@@ -200,7 +200,7 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
     TString CF = COINFLIP==1 ? "" : "_DC";
     TFile *ft=new TFile(tf_name,"RECREATE");
     for (int i=(int)fnames.size()-1; i>=0; i--){
-      TString stmp=fnames.at(i); if (DEBUG) cout << stmp << endl; stmp.ReplaceAll(CF+".root",""); stmp.ReplaceAll(path_presel+"preselection_",""); stmp.ReplaceAll("_woQCD",""); stmp.ReplaceAll("MCsum","data"); if (DEBUG) cout << stmp << endl;
+      TString stmp=fnames.at(i); if (DEBUG) cout << stmp << endl; stmp.ReplaceAll(CF+".root",""); stmp.ReplaceAll(path_presel+"preselection_",""); stmp.ReplaceAll("_woQCD",""); stmp.ReplaceAll("MCsum","data"); stmp.ReplaceAll("_Embedded","");if (DEBUG) cout << stmp << endl;
       if(!inclusive){
         for(Int_t icat=0; icat<nCAT; icat++){
           if(catMode[icat] & mode) {stmp = stmp + categories[icat];}
@@ -212,7 +212,7 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
     TString tf_name_tt = tf_name; tf_name_tt.ReplaceAll(".root","_vlooseAntiIso.root");
     TFile *ft_tt=new TFile(tf_name_tt,"RECREATE");
     for (int i=(int)fnames.size()-1; i>=0; i--){
-      TString stmp=fnames.at(i); if (DEBUG) cout << stmp << endl; stmp.ReplaceAll(".root",""); stmp.ReplaceAll(path_presel+"preselection_",""); stmp.ReplaceAll("_woQCD",""); stmp.ReplaceAll("MCsum","data"); if (DEBUG) cout << stmp << endl;
+      TString stmp=fnames.at(i); if (DEBUG) cout << stmp << endl; stmp.ReplaceAll(".root",""); stmp.ReplaceAll(path_presel+"preselection_",""); stmp.ReplaceAll("_woQCD",""); stmp.ReplaceAll("MCsum","data"); stmp.ReplaceAll("_Embedded",""); if (DEBUG) cout << stmp << endl;
       if(!inclusive){
         for(Int_t icat=0; icat<nCAT; icat++){
           if(catMode[icat] & mode) {stmp = stmp + categories[icat];}
@@ -408,7 +408,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
     else m_color[j]=kBlack;
   }
   //  const int fractions[NFIT+(NSUM>0)]={ _W_JETS , _QCD , _DY_J | _TT_J };
-
+  
   /*
   const int NFIX=5;
   const TString m_fix[NFIX]={ "h_template_TT_L", "h_template_TT_T", "h_template_DY_L", "h_template_TT_J", "h_template_DY_J" };
@@ -428,8 +428,8 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
   TFile f(fname);
 
   TH1D *htmp;
-
   TString m_data_tmp = m_data;
+  
   if(!inclusive){
     for(Int_t icat=0; icat<nCAT; icat++){
       if(catMode[icat] & mode) {m_data_tmp = m_data_tmp + categories[icat];}
@@ -442,11 +442,13 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
   TH1D *h_sum=new TH1D();
 
   //sum up the fixed components, and subtract from data
+  cout << fname << endl;
   for (int i=0; i<NFIX; i++){
     htmp=(TH1D*) f.Get(m_fix.at(i));
     if (i==0) h_rest=(TH1D*) htmp->Clone();
     else h_rest->Add(htmp);
   }
+  
   h_data->Add(h_rest,-1);
   //collect the templates for the fit
   for (int i=0; i<NFIT; i++){
@@ -455,8 +457,6 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
     //    if (i==1) htmp->Scale(3); //test...
     h_templates.push_back(htmp);
   }
-
-  
   for (int i=0; i<NW-1; i++){
     htmp=(TH1D*) f.Get(m_used[i]);
     if(m_used[i].Contains("qcd")){
@@ -464,12 +464,9 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
     }
     yields[i] = htmp->Integral();
   }
-  
   yields[4] = h_rest->Integral();
 
   
-  
-
   ///////////////////////////////////////////////////////////////
   
   int NBINS=0;

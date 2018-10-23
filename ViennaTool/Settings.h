@@ -6,14 +6,16 @@
 ///////////////////////////////////////////////////
 #define selCHAN      kMU
 const int CHAN     = kMU;
-const TString analysis      ="FakeFactor_SM_ML_vloose_not_tight_nody";
-const TString output_folder ="/afs/hephy.at/user/f/fspreitzer/public/Htautau/FakeRate/SM_ML/20180518c";
+const TString analysis      ="FakeFactor_SM_ML_Embedding_2";
+const TString output_folder ="/afs/hephy.at/user/f/fspreitzer/public/Htautau/FakeRate/SM_ML/FakeFactor_SM_ML_Embedding_2";
 const TString DC_folder     ="/afs/hephy.at/work/f/fspreitzer/cmssw/ff_test/CMSSW_8_0_25/src/ViennaTool/HTTutilities/Jet2TauFakes/data";
 ///////////////////////////////////////////////////
 const TString user="fspreitzer";
-const Double_t luminosity=35.9; 
+const Double_t luminosity=41.86; 
 const int use_svfit = 0; //set to 1 to change input directory name accordingly
-const TString ver = "v2";
+const TString ver = "v4";
+///////////////////////////////////////////////////
+const int use_embedding = 1; 
 ///////////////////////////////////////////////////
 //Out of date
 const int inclusive_selection=1; 
@@ -28,7 +30,7 @@ const int DOQCD=1; //set to 1 to include QCD estimate, 0 for w/o; only works for
 const int DOMC=0; //set to 1 for MC, 0 for data
 const int doCuts=0;
 const int CALC_SS_SR=0; //default: 0   //0.15<QCD_iso<0.25 for QCD FFs
-const int num = 0;
+const int num = 2;
 const int doSRHisto = 1;
 const int doCRHisto = 1;
 ///////////////////////////////////////////////////
@@ -55,12 +57,13 @@ const int fit_pT_bins = 1; //use fitted pT bins as input for ff
 const double fitMin =  30;
 const int fitBins  =  470;
 const int COINFLIP=1;
-const Double_t Pt_cuts_Wjets[]    = {30.,33,38,50,60,75,90,110,140,170,500};
+// const Double_t Pt_cuts_Wjets[]    = {30.,33,38,50,60,75,90,110,140,170,500}; // original
+const Double_t Pt_cuts_Wjets[]    = {30.,33,38,50,60,75,90,110,170,500};
 const Double_t Pt_cuts_DY[]       = {30.,40.};
 const Double_t Pt_cuts_TT_SR[]    = {30.,32.,34.,37.,40.,45,52,70,90,115,175,500};
 const Double_t Pt_cuts_TT_CR[]    = {30.};
-const Double_t Pt_cuts_QCD[]      = {30,32,35,40,50,70,120,500}; //30,33,36
-const Double_t Pt_cuts_QCD_AI[]   = {30,32,35,40,50,75,120,500};
+const Double_t Pt_cuts_QCD[]      = {30,32,35,40,50,120,500};
+const Double_t Pt_cuts_QCD_AI[]   = {30,32,35,40,50,120,500};
 #endif
 //////////////////////////////////////////////////
 //ETAU Settings
@@ -68,12 +71,14 @@ const Double_t Pt_cuts_QCD_AI[]   = {30,32,35,40,50,75,120,500};
 const double fitMin =  30;
 const int fitBins  =  470;
 const int COINFLIP=1;
-const Double_t Pt_cuts_Wjets[]    = {30.,34,39,50,60,75,90,110,140,180,500};
+// const Double_t Pt_cuts_Wjets[]    = {30.,34,39,50,60,75,90,110,140,180,500}; //original
+const Double_t Pt_cuts_Wjets[]    = {30.,34,39,50,60,75,90,110,500};
 const Double_t Pt_cuts_DY[]       = {30.,40.};
 const Double_t Pt_cuts_TT_SR[]    = {30.,32.,34,37.,40,45,50,70,110,160,500};
 const Double_t Pt_cuts_TT_CR[]    = {30.};
-const Double_t Pt_cuts_QCD[]      = {30,32.5,35,40,50,70,90,150,500};
-const Double_t Pt_cuts_QCD_AI[]   = {30,35,40,50,75,120,500};
+// const Double_t Pt_cuts_QCD[]      = {30,32.5,35,40,50,70,90,150,500}; //original
+const Double_t Pt_cuts_QCD[]      = {30,35,40,50,90,150,500};
+const Double_t Pt_cuts_QCD_AI[]   = {30,35,40,50,120,500};
 #endif
 //////////////////////////////////////////////////
 //TAUTAU Settings

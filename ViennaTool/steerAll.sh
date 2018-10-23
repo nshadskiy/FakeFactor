@@ -29,7 +29,7 @@ cd ../
 make -B
 
 if [ "${1}" == "" ]; then
-    ./Preselection
+    # ./Preselection
     ./SRHisto
     ./CRHisto
 fi

@@ -188,7 +188,7 @@ void TSelectionAnalyzer::getCRHisto(TString preselection,Int_t mode,TString outp
   f1.Close();
 
   delete tightCR;delete looseCR;delete tightSR_alt;delete allCR;
-  //  delete event_s;delete tchain;
+  delete event_s;delete tchain;
 }
 
 

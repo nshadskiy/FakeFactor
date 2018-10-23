@@ -36,7 +36,7 @@ class TNtupleAnalyzer{
   // fields variables of SignalClass
   //    double mtll,mMuMu, dRMu, bpt_1, weight, sf, weight_sf, mu2_iso;//,mu1_eta, mu1_phi, mu2_eta, mu2_phi;
   double mt_leplep,m_leplep, lep_dR, bpt_1, bpt_2, weight, sf, weight_sf, mu2_iso;//,mu1_eta, mu1_phi, mu2_eta, mu2_phi;
-  int passes3LVeto, passesDLVeto,njets,nbtag;
+  int passes3LVeto, passesDLVeto, passesTauLepVetos, njets, nbtag;
   double mjj,jdeta,njetingap20;
   double mvamet; double met;
   double otherLep_pt,otherLep_eta,otherLep_phi,otherLep_m,otherLep_iso;
@@ -46,6 +46,23 @@ class TNtupleAnalyzer{
   int    lep_q, lep_gen_match;
   int n_iso_lep, n_iso_otherLep;
   int tau_iso_ind;
+
+
+  std::vector<TLorentzVector> *m_otherLep;
+  std::vector<Double_t> *m_otherLep_pt;
+  std::vector<Double_t> *m_otherLep_eta;
+  std::vector<Double_t> *m_otherLep_phi;
+  std::vector<Double_t> *m_otherLep_m;
+  std::vector<Double_t> *m_otherLep_iso;
+  std::vector<Int_t>    *m_otherLep_q;
+
+  std::vector<TLorentzVector> *m_lep;
+  std::vector<Double_t> *m_lep_pt;
+  std::vector<Double_t> *m_lep_eta;
+  std::vector<Double_t> *m_lep_phi;
+  std::vector<Double_t> *m_lep_m;
+  std::vector<Double_t> *m_lep_iso;
+  std::vector<Int_t>    *m_lep_q;
 
   std::vector<Double_t> *alltau_pt;
   std::vector<Double_t> *alltau_eta;
