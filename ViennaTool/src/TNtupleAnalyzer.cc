@@ -72,7 +72,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
   
   //  if(CHAN==kMU && !event->trg_singlemuon) return 0; //only single-mu-trigger
-  if(CHAN==kMU && !( (event->trg_singlemuon && event->pt_1 > 28) || (event->trg_singlemuon_lowpt && event->pt_1 > 25) ) return 0; // || (event->trg_mutaucross && event->pt_1 <= 25 && event->pt_2 > 30)
+  if(CHAN==kMU && !( event->trg_crossmuon_mu20tau27 || event->trg_singlemuon_27  )) return 0; // || (event->trg_mutaucross && event->pt_1 <= 25 && event->pt_2 > 30)
   // if(CHAN==kEL && !( (event->trg_singleelectron || event->trg_singleelectron_lowpt ) && event->pt_1 > 36)) return 0;  // original
   if(CHAN==kEL && !(  event->trg_crossele_ele24tau30 || event->trg_singleelectron_27 || event->trg_singleelectron_32 || event->trg_singleelectron_35 )) return 0;
   if(CHAN==kTAU && !(event->trg_doubletau || event->trg_doubletau_lowpt || event->trg_doubletau_mediso ) ) return 0;
@@ -83,12 +83,17 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   //////////////////////////////////////////////////////////////////////////
 
   weight=1.;
-  //weight calculation - temporary if for etau:
+  //weight calculation - temporary if for etau,mutau:
   if( CHAN == kEL && !preselectionFile.Contains("preselection_data") ){
     weight = luminosity*event->weight*event->singleTriggerSFLeg1*event->xTriggerSFLeg1*event->xTriggerSFLeg2;
     if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.89;
     else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.88;
-  }else{
+  }else if( CHAN == kMU && !preselectionFile.Contains("preselection_data")){
+    weight = luminosity*event->weight*event->sf_SingleOrCrossTrigger;
+    if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.89;
+    else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.88;
+  }
+  else{
     if(!preselectionFile.Contains("preselection_data"))weight = 1000*luminosity*event->puweight*event->trk_sf*event->reco_sf*event->genweight*event->antilep_tauscaling*event->idisoweight_1;
 
     if( CHAN == kTAU && !preselectionFile.Contains("preselection_data") ){ // CHANGE IF TAU WP CHANGES!

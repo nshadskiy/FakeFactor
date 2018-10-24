@@ -28,11 +28,11 @@ sh BuildStructure.sh
 cd ../
 make -B
 
-if [ "${1}" == "" ]; then
-    ./Preselection
-    ./SRHisto
-    ./CRHisto
-fi
+# if [ "${1}" == "" ]; then
+#     ./Preselection
+#     ./SRHisto
+#     ./CRHisto
+# fi
 
 ./steerFF
 ./fitFakeFactors

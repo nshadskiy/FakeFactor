@@ -37,6 +37,7 @@ public :
    Float_t         idWeight_1;
    Float_t         isoWeight_1;
    Float_t         reco_sf;
+   Float_t         sf_SingleOrCrossTrigger;
    Float_t         singleTriggerSFLeg1;
    Float_t         xTriggerSFLeg1;
    Float_t         xTriggerSFLeg2;
@@ -66,6 +67,8 @@ public :
    Float_t         zpt_weight_statpt80down;
    Int_t           trg_singlemuon;
    Int_t           trg_singlemuon_lowpt;
+   Int_t           trg_crossmuon_mu20tau27;
+   Int_t           trg_singlemuon_27;
 //    Int_t           trg_mutaucross;
    Int_t           trg_singleelectron;
    Int_t           trg_singleelectron_lowpt;
@@ -403,6 +406,7 @@ public :
    TBranch        *b_idWeight_1;
    TBranch        *b_isoWeight_1;
    TBranch        *b_reco_sf;
+   TBranch        *b_sf_SingleOrCrossTrigger;
    TBranch        *b_singleTriggerSFLeg1;
    TBranch        *b_xTriggerSFLeg1;
    TBranch        *b_xTriggerSFLeg2;
@@ -432,6 +436,8 @@ public :
    TBranch        *b_zpt_weight_statpt80down;   //!
    TBranch        *b_trg_singlemuon;   //!
    TBranch        *b_trg_singlemuon_lowpt;   //!
+   TBranch        *b_trg_crossmuon_mu20tau27;   //!
+   TBranch        *b_trg_singlemuon_27;   //!
 //    TBranch        *b_trg_mutaucross;   //!
    TBranch        *b_trg_singleelectron;   //!
    TBranch        *b_trg_singleelectron_lowpt;   //!
@@ -897,6 +903,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("idWeight_1", &idWeight_1, &b_idWeight_1);
    fChain->SetBranchAddress("isoWeight_1", &isoWeight_1, &b_isoWeight_1);
    fChain->SetBranchAddress("reco_sf", &reco_sf, &b_reco_sf);
+   fChain->SetBranchAddress("sf_SingleOrCrossTrigger", &sf_SingleOrCrossTrigger, &b_sf_SingleOrCrossTrigger);
    fChain->SetBranchAddress("singleTriggerSFLeg1", &singleTriggerSFLeg1, &b_singleTriggerSFLeg1);
    fChain->SetBranchAddress("xTriggerSFLeg1", &xTriggerSFLeg1, &b_xTriggerSFLeg1);
    fChain->SetBranchAddress("xTriggerSFLeg2", &xTriggerSFLeg2, &b_xTriggerSFLeg2);
@@ -926,6 +933,8 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("zpt_weight_statpt80down", &zpt_weight_statpt80down, &b_zpt_weight_statpt80down);
    fChain->SetBranchAddress("trg_singlemuon", &trg_singlemuon, &b_trg_singlemuon);
    fChain->SetBranchAddress("trg_singlemuon_lowpt", &trg_singlemuon_lowpt, &b_trg_singlemuon_lowpt);
+   fChain->SetBranchAddress("trg_crossmuon_mu20tau27", &trg_crossmuon_mu20tau27, &b_trg_crossmuon_mu20tau27);
+   fChain->SetBranchAddress("trg_singlemuon_27", &trg_singlemuon_27, &b_trg_singlemuon_27);
 //    fChain->SetBranchAddress("trg_mutaucross", &trg_mutaucross, &b_trg_mutaucross);
    fChain->SetBranchAddress("trg_singleelectron_lowpt", &trg_singleelectron_lowpt, &b_trg_singleelectron_lowpt);
    fChain->SetBranchAddress("trg_singleelectron_27", &trg_singleelectron_27, &b_trg_singleelectron_27);

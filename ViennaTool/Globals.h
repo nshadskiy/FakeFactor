@@ -115,7 +115,7 @@ const TString path_img_mc_woQCD  = path_img+"mc_woQCD_"+s_chan[CHAN]+"/";
 
 //Input directories
 // const TString indir = "/data/higgs/data_2017/"+ver+"/"; //original
-const TString indir = "/afs/hephy.at/data/higgs01/et_danny/";
+const TString indir = "/afs/hephy.at/data/higgs01/v6/";
 // const TString datafiles[3] = { indir+"BASIS_ntuple_SingleMuon_mt_"+ver+".root", indir+"BASIS_ntuple_SingleElectron_et_"+ver+".root" , indir + "BASIS_ntuple_Tau_tt_"+ver+".root" };
 // const TString datafile   = datafiles[CHAN];
 const TString datafile   = indir + s_chan[CHAN] + "-NOMINAL_ntuple_Data.root";
