@@ -4,8 +4,8 @@
 #define kEL          1
 #define kTAU         2
 ///////////////////////////////////////////////////
-#define selCHAN      kMU
-const int CHAN     = kMU;
+#define selCHAN      kEL
+const int CHAN     = kEL;
 const TString analysis      ="FakeFactor_SM_ML_Embedding_2";
 const TString output_folder ="/afs/hephy.at/user/f/fspreitzer/public/Htautau/FakeRate/SM_ML/FakeFactor_SM_ML_Embedding_2";
 const TString DC_folder     ="/afs/hephy.at/work/f/fspreitzer/cmssw/ff_test/CMSSW_8_0_25/src/ViennaTool/HTTutilities/Jet2TauFakes/data";
@@ -13,9 +13,7 @@ const TString DC_folder     ="/afs/hephy.at/work/f/fspreitzer/cmssw/ff_test/CMSS
 const TString user="fspreitzer";
 const Double_t luminosity=41.86; 
 const int use_svfit = 0; //set to 1 to change input directory name accordingly
-const TString ver = "v4";
-///////////////////////////////////////////////////
-const int use_embedding = 1; 
+const TString ver = "v4"; 
 ///////////////////////////////////////////////////
 //Out of date
 const int inclusive_selection=1; 
@@ -30,7 +28,7 @@ const int DOQCD=1; //set to 1 to include QCD estimate, 0 for w/o; only works for
 const int DOMC=0; //set to 1 for MC, 0 for data
 const int doCuts=0;
 const int CALC_SS_SR=0; //default: 0   //0.15<QCD_iso<0.25 for QCD FFs
-const int num = 2;
+const int num = 0;
 const int doSRHisto = 1;
 const int doCRHisto = 1;
 ///////////////////////////////////////////////////

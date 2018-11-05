@@ -36,9 +36,7 @@ void TNtupleAnalyzer::loadFile(TString filename, TString chain)
 void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
 {
   TString preselFile = preselectionFile;
-  if(use_embedding && (preselFile.Contains("preselection_DY") || preselFile.Contains("preselection_TT"))){
-    preselFile.ReplaceAll(".root", "_Embedded.root");
-  }
+
   TFile *fout_file = new TFile(preselFile,"RECREATE");
   TTree* t_Events=new TTree("Events","Events");
   this->initOutfileTree(t_Events);
@@ -69,33 +67,32 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
 void TNtupleAnalyzer::closeFile()
 {
   delete event;
-  delete tchain; 
+  delete tchain;  
 }
 
 Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t mode, Int_t whichTau)
 {
-  // cout << event->trg_singlemuon << " " << event->pt_1 << " " << event->trg_singlemuon_lowpt << " " << endl;
-  //  if(CHAN==kMU && !event->trg_singlemuon) return 0; //only single-mu-trigger
 
-  if(!use_embedding || (use_embedding && !preselectionFile.Contains("preselection_DY"))){
+  if(!preselectionFile.Contains("preselection_EMB")){
+    
     if(CHAN==kMU && !( (event->trg_singlemuon && event->pt_1 > 28) || event->trg_singlemuon_lowpt && event->pt_1 > 25)     ) return 0; // || (event->trg_mutaucross && event->pt_1 <= 25 && event->pt_2 > 30)
     if(CHAN==kEL && !( (event->trg_singleelectron || event->trg_singleelectron_lowpt ) && event->pt_1 > 36)) return 0;
     if(CHAN==kTAU && !(event->trg_doubletau || event->trg_doubletau_lowpt || event->trg_doubletau_mediso ) ) return 0;
-  }else{ //TODO: "event->" adden
-    if(CHAN==kMU && !((event->mt_1 <50)*(event->flagMETFilter >0.5)*(event->trg_singlemuon_27 > 0.5))){
-        return 0;
-    }
+
+  }else{ 
+    //Embedded Samples: 
+    if(CHAN==kMU && !((event->flagMETFilter >0.5)*(event->trg_singlemuon_27 > 0.5))) return 0;
+    //previously: only flagMET and trg_35
+    if(CHAN==kEL && !((event->flagMETFilter >0.5)*(event->trg_singleelectron_35 > 0.5)) )  return 0;
+    // if(CHAN==kEL && !((event->flagMETFilter >0.5)*(event->trg_crossele_ele24tau30 > 0.5)*(event->trg_singleelectron_27 > 0.5)*(event->trg_singleelectron_32 > 0.5)*(event->trg_singleelectron_35 > 0.5)) )  return 0;
+    if(CHAN==kTAU && !(event->flagMETFilter >0.5)*((event->isEmbedded && event->pt_1>40 && event->pt_2 > 40) || (!event->isEmbedded && ((event->trg_doubletau_35_tightiso_tightid >0.5) || (event->trg_doubletau_40_mediso_tightid >0.5) || (event->trg_doubletau_40_tightiso >0.5))))) return 0;
   }
-  // if(CHAN==kMU && event->Flag_badMuons) return 0;
-  // if(CHAN==kMU && event->Flag_duplicateMuons) return 0;
-  if(use_embedding && preselectionFile.Contains("preselection_TT") && !(((event->gen_match_1>2 && event->gen_match_1<6) &&  (event->gen_match_2>2 && event->gen_match_2<6))) ){
-    return 0;
-  }
+
   TLorentzVector vec1, vec2, vec;
   //////////////////////////////////////////////////////////////////////////
 
   weight=1.;
-  if(!use_embedding || (use_embedding && !preselectionFile.Contains("preselection_DY"))){
+  if(!preselectionFile.Contains("preselection_EMB")){
     if(!preselectionFile.Contains("preselection_data"))weight = 1000*luminosity*event->puweight*event->trk_sf*event->reco_sf*event->genweight*event->antilep_tauscaling*event->idisoweight_1;
 
     if( CHAN == kTAU && !preselectionFile.Contains("preselection_data") ){ // CHANGE IF TAU WP CHANGES!
@@ -120,7 +117,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       weight *= event->xsec*event->genNEventsWeight;
     }
 
-    if(!use_embedding && preselectionFile.Contains("preselection_DY")){
+    if(preselectionFile.Contains("preselection_DY")){
       weight *= event->zPtReweightWeight;
       switch (event->NUP){
         case 0: weight *= 5.91296350328e-05; break;
@@ -140,7 +137,11 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       }
     }
   }else{
-    weight = luminosity * (event->generatorWeight)*(event->muonEffTrgWeight)*(event->idWeight_1*(event->triggerWeight_1*(event->triggerWeight_1<1.8)+(event->triggerWeight_1>=1.8))*event->isoWeight_1)*(event->embeddedDecayModeWeight)*(((event->gen_match_2 == 5)*0.97 + (event->gen_match_2 != 5)));
+    if(CHAN != kTAU){
+      weight = luminosity * (event->generatorWeight)*(event->muonEffTrgWeight)*(event->idWeight_1*(event->triggerWeight_1*(event->triggerWeight_1<1.8)+(event->triggerWeight_1>=1.8))*event->isoWeight_1)*(event->embeddedDecayModeWeight)*(((event->gen_match_2 == 5)*0.97 + (event->gen_match_2 != 5)));
+    }else{
+      weight = luminosity * ((event->generatorWeight)*(event->muonEffTrgWeight)*(event->crossTriggerDataEfficiencyWeight_tight_MVA_1*event->crossTriggerDataEfficiencyWeight_tight_MVA_2 / event->crossTriggerMCEfficiencyWeight_tight_MVA_1 / event->crossTriggerMCEfficiencyWeight_tight_MVA_2)*(event->embeddedDecayModeWeight)*(((event->gen_match_1 == 5)*0.97 + (event->gen_match_1 != 5))*((event->gen_match_2 == 5)*0.97 + (event->gen_match_2 != 5))));
+    }
   }
   
   weight_sf=weight;
@@ -156,8 +157,9 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   
 
 
-  if(use_embedding && preselectionFile.Contains("preselection_DY")){
-    passesTauLepVetos = !((event->againstMuonTight3_2>0.5) && (event->againstElectronVLooseMVA6_2>0.5));
+  if(preselectionFile.Contains("preselection_EMB")){
+    if(CHAN==kMU)passesTauLepVetos = !((event->againstMuonTight3_2>0.5) && (event->againstElectronVLooseMVA6_2>0.5));
+    if(CHAN==kEL)passesTauLepVetos = !((event->againstMuonLoose3_2>0.5) && (event->againstElectronTightMVA6_2>0.5));
     passes3LVeto= ((event->extramuon_veto < 0.5) && (event->extraelec_veto < 0.5));
     if ( CHAN == kMU  ) passesDLVeto= !(event->dilepton_veto);
     if ( CHAN == kEL  ) passesDLVeto= !(event->dilepton_veto);
@@ -215,7 +217,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   m_lep_q->resize(0);
   int nLep;
   
-  if( use_embedding ==0 || (use_embedding && !preselectionFile.Contains("preselection_DY"))){ // Embedded Samples have no addlepton vector
+  if( !preselectionFile.Contains("preselection_EMB")){ // Embedded Samples have no addlepton vector
     if ( CHAN == kMU || CHAN == kTAU ){  //for now: in kTAU, fill lep with muons and otherLep with electrons
       if(event->addlepton_p4){ // from new NanoAOD
         for(int i = 0; i < event->addlepton_p4->size(); i++){
@@ -428,7 +430,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   
   int bitmask;
   bool antiEle, antiMu;
-  if( use_embedding == 0 || (use_embedding && !preselectionFile.Contains("preselection_DY"))){
+  if( !preselectionFile.Contains("preselection_EMB")){
     if ( event->addlepton_p4 ) loop_end = event->addlepton_p4->size();
     else loop_end = event->nadditionalTau;
 
@@ -554,7 +556,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     alltau_q->insert(alltau_q->begin()+tpos,event->q_2/abs(event->q_2));
     alltau_decay->insert(alltau_decay->begin()+tpos,decay);
     alltau_beta->insert(alltau_beta->begin()+tpos,event->byCombinedIsolationDeltaBetaCorrRaw3Hits_2);
-    if(use_embedding && preselectionFile.Contains("preselection_DY")){
+    if(preselectionFile.Contains("preselection_EMB")){
       alltau_mediumBeta->insert(alltau_mediumBeta->begin()+tpos,event->byMediumCombinedIsolationDeltaBetaCorr3Hits_2 > 0);
       alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 > 0 );
       alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_2 > 0 );
@@ -622,7 +624,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       alltau_beta->insert(alltau_beta->begin()+tpos,event->byCombinedIsolationDeltaBetaCorrRaw3Hits_1);
       //  alltau_looseBeta->insert(alltau_looseBeta->begin()+tpos,event->byLooseCombinedIsolationDeltaBetaCorr3Hits_1);
       //  alltau_tightBeta->insert(alltau_tightBeta->begin()+tpos,event->byTightCombinedIsolationDeltaBetaCorr3Hits_1);
-      if(use_embedding && preselectionFile.Contains("preselection_DY")){
+      if(preselectionFile.Contains("preselection_EMB")){
         alltau_mediumBeta->insert(alltau_mediumBeta->begin()+tpos,event->byMediumCombinedIsolationDeltaBetaCorr3Hits_1> 0);
         alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 > 0 );
         alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_1 > 0);
@@ -731,25 +733,32 @@ Int_t TNtupleAnalyzer::fitsGenCategory(const Int_t mode)
 
   if ( ! alltau_gen_match->size() ) return 0;
   Int_t gm=alltau_gen_match->at(0);
- 
-  if        (mode & _DY && mode & _TTAU) {
-    if (gm==tauH) return 1;
-  } else if (mode & _DY && mode & _JTAU) {
+
+//  promptE   =1;
+//  promptMu  =2;
+//  tauE      =3;
+//  tauMu     =4;
+//  tauH      =5;
+//  realJet   =6;
+
+  if        (mode & _DY && mode & _TTAU) { // DY_T
+    if ( gm > 2 && gm < 6) return 1;
+  } else if (mode & _DY && mode & _JTAU) { // DY_J
     if (gm==realJet) return 1;
-  } else if (mode & _DY && mode & _LTAU) {
-    if ( (gm!=tauH)     && (gm!=realJet)  ) return 1;
-  } else if (mode & _TT && mode & _TTAU) {
-    if (gm==tauH) return 1;
-  } else if (mode & _TT && mode & _JTAU) {
+  } else if (mode & _DY && mode & _LTAU) { // DY_L
+    if ( !(gm > 2 && gm < 6)   && (gm!=realJet)  ) return 1;
+  } else if (mode & _TT && mode & _TTAU) { // TT_T 
+    if ( gm > 2 && gm < 6) return 1;
+  } else if (mode & _TT && mode & _JTAU) { // TT_J
     if (gm==realJet) return 1;
-  } else if (mode & _TT && mode & _LTAU) {
-    if ( (gm!=tauH)     && (gm!=realJet)  ) return 1;
-  } else if (mode & _VV && mode &_TTAU) {
-    if (gm==tauH) return 1;
-  } else if (mode & _VV && mode & _JTAU) {
+  } else if (mode & _TT && mode & _LTAU) { // TT_L
+    if ( !(gm > 2 && gm < 6)   && (gm!=realJet)  ) return 1;
+  } else if (mode & _VV && mode &_TTAU) {  // VV_T
+    if ( gm > 2 && gm < 6 ) return 1;
+  } else if (mode & _VV && mode & _JTAU) { // VV_J
     if (gm==realJet) return 1;
-  } else if (mode & _VV && mode & _LTAU) {
-    if ( (gm!=tauH)     && (gm!=realJet)  ) return 1;
+  } else if (mode & _VV && mode & _LTAU) { // VV_L
+    if ( !(gm > 2 && gm < 6)   && (gm!=realJet)  ) return 1;
   } else if (mode & _QCD) {
     return 1;
   } else {

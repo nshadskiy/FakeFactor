@@ -319,7 +319,7 @@ for x in range(0,len(categories)):
         leaves=[
             Leaf(
             name='ff_raw_tt',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode',
                 vars=['tau_pt','tau_decay','njets']
             ),
@@ -341,7 +341,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='frac_tt',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_tt.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/frac_tt.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
                      object='h_w_2d',
                      vars=['mt','tau_decay']
                  ),
@@ -360,7 +360,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_tt_up',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_TT_MVis_up',
                      vars=['tau_decay','mvis']
                  ),
@@ -378,7 +378,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_tt_down',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_TT_MVis_down',
                      vars=['tau_decay','mvis']
                  ),
@@ -396,7 +396,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_up',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -414,7 +414,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_down',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -901,7 +901,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_tt_up',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_TT_MVis_up',
                      vars=['tau_decay','mvis']
                  ),
@@ -919,7 +919,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_tt_down',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_TT_MVis_down',
                      vars=['tau_decay','mvis']
                  ),
@@ -937,7 +937,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_up_dm0_njet0',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet0_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -955,7 +955,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_down_dm0_njet0',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet0_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -973,7 +973,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_up_dm0_njet1',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet1_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -991,7 +991,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_down_dm0_njet1',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet1_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -1009,7 +1009,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_up_dm1_njet0',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet0_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -1027,7 +1027,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_down_dm1_njet0',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet0_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -1045,7 +1045,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_up_dm1_njet1',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet1_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -1063,7 +1063,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_down_dm1_njet1',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet1_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -1081,7 +1081,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_up',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -1099,7 +1099,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_down',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),

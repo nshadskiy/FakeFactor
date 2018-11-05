@@ -13,16 +13,20 @@ void Preselection() {
 
   std::cout << "Number: " << num << std::endl;
   TNtupleAnalyzer *Analyzer = new TNtupleAnalyzer();
-  std::cout << use_embedding << std::endl;
   TString tmp;
-  if(!use_embedding){
-    if (num==1||num==0) {
-      Analyzer->loadFile(datafile,"TauCheck");
-      Analyzer->select(preselection_data,0);
-      Analyzer->closeFile();
-      tmp=preselection_data;
-      compressFile(preselection_data);
-    }
+  if (num==1||num==0) {
+    Analyzer->loadFile(datafile,"TauCheck");
+    Analyzer->select(preselection_data,0);
+    Analyzer->closeFile();
+    tmp=preselection_data;
+    compressFile(preselection_data);
+  }
+  if(num==1||num==0){
+    Analyzer->loadFile(EMBfile,"TauCheck"); 
+    Analyzer->select(preselection_EMB,_DY|_TTAU); //_DY only as placeholder so it gets checked in TNtupleAnalyzer::fitsGenCategory() 
+    Analyzer->closeFile();
+    tmp=preselection_EMB;
+    compressFile(preselection_EMB);
   }
   if (num==2||num==0) {
     Analyzer->loadFile(TTfile,"TauCheck");
@@ -38,26 +42,17 @@ void Preselection() {
     tmp=preselection_TT_J;
     compressFile(preselection_TT_J);
   }
-  if (num==2 || num==4||num==0) {
-    Analyzer->loadFile(TTfile,"TauCheck");
-    Analyzer->select(preselection_TT_T,_TT|_TTAU);
-    Analyzer->closeFile();
-    tmp=preselection_TT_T;
-    compressFile(preselection_TT_T);
-  }
   if (num==2 || num==5||num==0) {
     Analyzer->loadFile(TTfile,"TauCheck");
     Analyzer->select(preselection_TT_L,_TT|_LTAU);
     Analyzer->closeFile();
     compressFile(preselection_TT_L);
   }
-  if(!use_embedding){
-    if (num==6||num==0) {
-      Analyzer->loadFile(Wjetsfile,"TauCheck");
-      Analyzer->select(preselection_Wjets,0);
-      Analyzer->closeFile();
-      compressFile(preselection_Wjets);
-    }
+  if (num==6||num==0) {
+    Analyzer->loadFile(Wjetsfile,"TauCheck");
+    Analyzer->select(preselection_Wjets,0);
+    Analyzer->closeFile();
+    compressFile(preselection_Wjets);
   }
   if (num==7 ||num==0||num==99) {
     Analyzer->loadFile(DY_NJfile,"TauCheck");
@@ -71,56 +66,43 @@ void Preselection() {
     Analyzer->closeFile();
     compressFile(preselection_DY_J);
   }
-  if (num==9 || num==7 ||num==0||num==99) {
-    Analyzer->loadFile(DY_NJfile,"TauCheck");
-    Analyzer->select(preselection_DY_TT,_DY|_TTAU);
-    Analyzer->closeFile();
-    compressFile(preselection_DY_TT);
-  }
   if (num==10 || num==7 ||num==0||num==99) {
     Analyzer->loadFile(DY_NJfile,"TauCheck");
     Analyzer->select(preselection_DY_L,_DY|_LTAU);
     Analyzer->closeFile();
     compressFile(preselection_DY_L);
   }
-  if(!use_embedding){
-    if ( (num==11||num==0||num==99) && useVV) {
-      Analyzer->loadFile(VVfile,"TauCheck");
-      Analyzer->select(preselection_VV,0);
-      Analyzer->closeFile();
-      compressFile(preselection_VV);
-    }
-    if ( (num==11 || num==12||num==0||num==99) && useVV) {
-      Analyzer->loadFile(VVfile,"TauCheck");
-      Analyzer->select(preselection_VV_T,_VV|_TTAU);
-      Analyzer->closeFile();
-      compressFile(preselection_VV_T);
-    }
-    if ( (num==11 || num==13||num==0||num==99) && useVV) {
-      Analyzer->loadFile(VVfile,"TauCheck");
-      Analyzer->select(preselection_VV_J,_VV|_JTAU);
-      Analyzer->closeFile();
-      compressFile(preselection_VV_J);
-    }
-    if ( (num==11 || num==14||num==0||num==99) && useVV) {
-      Analyzer->loadFile(VVfile,"TauCheck");
-      Analyzer->select(preselection_VV_L,_VV|_LTAU);
-      Analyzer->closeFile();
-      compressFile(preselection_VV_L);
-    }
-    if( (num==19 || num==0) && CHAN==kMU ){
-      Analyzer->loadFile(QCDfile, "TauCheck");
-      Analyzer->select(preselection_QCD,_QCD);
-      Analyzer->closeFile();
-      compressFile(preselection_QCD);
-    }
-    if( num==20 || num==0 ){
-      Analyzer->loadFile(SIGNALfile,"TauCheck");
-      Analyzer->select(preselection_signal,0);
-      Analyzer->closeFile();
-      compressFile(preselection_signal);
-    }
+  if ( (num==11||num==0||num==99) && useVV) {
+    Analyzer->loadFile(VVfile,"TauCheck");
+    Analyzer->select(preselection_VV,0);
+    Analyzer->closeFile();
+    compressFile(preselection_VV);
   }
+  if ( (num==11 || num==13||num==0||num==99) && useVV) {
+    Analyzer->loadFile(VVfile,"TauCheck");
+    Analyzer->select(preselection_VV_J,_VV|_JTAU);
+    Analyzer->closeFile();
+    compressFile(preselection_VV_J);
+  }
+  if ( (num==11 || num==14||num==0||num==99) && useVV) {
+    Analyzer->loadFile(VVfile,"TauCheck");
+    Analyzer->select(preselection_VV_L,_VV|_LTAU);
+    Analyzer->closeFile();
+    compressFile(preselection_VV_L);
+  }
+  if( (num==19 || num==0) && CHAN==kMU ){
+    Analyzer->loadFile(QCDfile, "TauCheck");
+    Analyzer->select(preselection_QCD,_QCD);
+    Analyzer->closeFile();
+    compressFile(preselection_QCD);
+  }
+  if( num==20 || num==0 ){
+    Analyzer->loadFile(SIGNALfile,"TauCheck");
+    Analyzer->select(preselection_signal,0);
+    Analyzer->closeFile();
+    compressFile(preselection_signal);
+  }
+  
   //////////////////////////////////////////////////////////////////////////////
   
   if (num==0) {
@@ -149,9 +131,6 @@ void Preselection() {
 }
 
 void compressFile(TString fname){
-  if(use_embedding && (fname.Contains("preselection_DY") || fname.Contains("preselection_TT"))){
-    fname.ReplaceAll(".root", "_Embedded.root");
-  }
   TChain* MCch=new TChain("Events");
 
   TString fname2=fname; fname2.ReplaceAll(".root",".old.root");
