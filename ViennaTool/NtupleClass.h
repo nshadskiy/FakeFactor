@@ -44,6 +44,12 @@ public :
    Float_t         singleTriggerSFLeg1;
    Float_t         xTriggerSFLeg1;
    Float_t         xTriggerSFLeg2;
+   Float_t         sf_DoubleTauTight;
+   Float_t         sf_SingleOrCrossTrigger;
+   Float_t         crossTriggerDataEfficiencyWeight_tight_MVA_1;
+   Float_t         crossTriggerDataEfficiencyWeight_tight_MVA_2;
+   Float_t         crossTriggerMCEfficiencyWeight_tight_MVA_1;
+   Float_t         crossTriggerMCEfficiencyWeight_tight_MVA_2;
    Float_t         genweight;
    Float_t         trigweight_1;
    Float_t         anti_trigweight_1;
@@ -83,10 +89,6 @@ public :
    Int_t           trg_doubletau_lowpt;
    Int_t           trg_doubletau_mediso;
    Int_t           trg_muonelectron;
-   Int_t           crossTriggerDataEfficiencyWeight_tight_MVA_1;
-   Int_t           crossTriggerDataEfficiencyWeight_tight_MVA_2;
-   Int_t           crossTriggerMCEfficiencyWeight_tight_MVA_1;
-   Int_t           crossTriggerMCEfficiencyWeight_tight_MVA_2;
    Int_t           trg_doubletau_35_tightiso_tightid;
    Int_t           trg_doubletau_40_mediso_tightid;
    Int_t           trg_doubletau_40_tightiso;
@@ -434,6 +436,8 @@ public :
    TBranch        *b_singleTriggerSFLeg1;
    TBranch        *b_xTriggerSFLeg1;
    TBranch        *b_xTriggerSFLeg2;
+   TBranch        *b_sf_DoubleTauTight;
+   TBranch        *b_sf_SingleOrCrossTrigger;
    TBranch        *b_genweight;   //!
    TBranch        *b_trigweight_1;   //!
    TBranch        *b_anti_trigweight_1;   //!
@@ -952,6 +956,8 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("singleTriggerSFLeg1", &singleTriggerSFLeg1, &b_singleTriggerSFLeg1);
    fChain->SetBranchAddress("xTriggerSFLeg1", &xTriggerSFLeg1, &b_xTriggerSFLeg1);
    fChain->SetBranchAddress("xTriggerSFLeg2", &xTriggerSFLeg2, &b_xTriggerSFLeg2);
+   fChain->SetBranchAddress("sf_DoubleTauTight", &sf_DoubleTauTight, &b_sf_DoubleTauTight);
+   fChain->SetBranchAddress("sf_SingleOrCrossTrigger", &sf_SingleOrCrossTrigger, &b_sf_SingleOrCrossTrigger);
    fChain->SetBranchAddress("genweight", &genweight, &b_genweight);
    fChain->SetBranchAddress("trigweight_1", &trigweight_1, &b_trigweight_1);
    fChain->SetBranchAddress("anti_trigweight_1", &anti_trigweight_1, &b_anti_trigweight_1);

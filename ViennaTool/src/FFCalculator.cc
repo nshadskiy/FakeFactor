@@ -200,7 +200,7 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
     TString CF = COINFLIP==1 ? "" : "_DC";
     TFile *ft=new TFile(tf_name,"RECREATE");
     for (int i=(int)fnames.size()-1; i>=0; i--){
-      TString stmp=fnames.at(i); if (DEBUG) cout << stmp << endl; stmp.ReplaceAll(CF+".root",""); stmp.ReplaceAll(path_presel+"preselection_",""); stmp.ReplaceAll("_woQCD",""); stmp.ReplaceAll("MCsum","data"); stmp.ReplaceAll("_Embedded","");if (DEBUG) cout << stmp << endl;
+      TString stmp=fnames.at(i); if (DEBUG) cout << stmp << endl; stmp.ReplaceAll(CF+".root",""); stmp.ReplaceAll(path_presel+"preselection_",""); stmp.ReplaceAll("_woQCD",""); stmp.ReplaceAll("MCsum","data"); if (DEBUG) cout << stmp << endl;
       if(!inclusive){
         for(Int_t icat=0; icat<nCAT; icat++){
           if(catMode[icat] & mode) {stmp = stmp + categories[icat];}
@@ -212,7 +212,7 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
     TString tf_name_tt = tf_name; tf_name_tt.ReplaceAll(".root","_vlooseAntiIso.root");
     TFile *ft_tt=new TFile(tf_name_tt,"RECREATE");
     for (int i=(int)fnames.size()-1; i>=0; i--){
-      TString stmp=fnames.at(i); if (DEBUG) cout << stmp << endl; stmp.ReplaceAll(".root",""); stmp.ReplaceAll(path_presel+"preselection_",""); stmp.ReplaceAll("_woQCD",""); stmp.ReplaceAll("MCsum","data"); stmp.ReplaceAll("_Embedded",""); if (DEBUG) cout << stmp << endl;
+      TString stmp=fnames.at(i); if (DEBUG) cout << stmp << endl; stmp.ReplaceAll(".root",""); stmp.ReplaceAll(path_presel+"preselection_",""); stmp.ReplaceAll("_woQCD",""); stmp.ReplaceAll("MCsum","data"); if (DEBUG) cout << stmp << endl;
       if(!inclusive){
         for(Int_t icat=0; icat<nCAT; icat++){
           if(catMode[icat] & mode) {stmp = stmp + categories[icat];}

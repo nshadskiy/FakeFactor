@@ -4,16 +4,17 @@
 #define kEL          1
 #define kTAU         2
 ///////////////////////////////////////////////////
-#define selCHAN      kEL
-const int CHAN     = kEL;
-const TString analysis      ="FakeFactor_SM_ML_Embedding_2";
-const TString output_folder ="/afs/hephy.at/user/f/fspreitzer/public/Htautau/FakeRate/SM_ML/FakeFactor_SM_ML_Embedding_2";
+#define EMB          1
+#define selCHAN      kMU
+const int CHAN     = kMU;
+const TString analysis      ="FakeFactor_SM_ML_Embedding_v6";
+const TString output_folder ="/afs/hephy.at/user/f/fspreitzer/public/Htautau/FakeRate/SM_ML/FakeFactor_SM_ML_Embedding_v6";
 const TString DC_folder     ="/afs/hephy.at/work/f/fspreitzer/cmssw/ff_test/CMSSW_8_0_25/src/ViennaTool/HTTutilities/Jet2TauFakes/data";
 ///////////////////////////////////////////////////
 const TString user="fspreitzer";
-const Double_t luminosity=41.86; 
+const Double_t luminosity=41.529; 
 const int use_svfit = 0; //set to 1 to change input directory name accordingly
-const TString ver = "v4"; 
+const TString ver = "v6"; 
 ///////////////////////////////////////////////////
 //Out of date
 const int inclusive_selection=1; 

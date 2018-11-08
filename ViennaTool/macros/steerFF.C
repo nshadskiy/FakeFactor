@@ -49,17 +49,51 @@ void CalcFF() {
   ps.push_back(preselection_DY_TT); ps.push_back(preselection_DY_L); ps.push_back(preselection_TT_T); ps.push_back(preselection_TT_L);
   if(useVV) {ps.push_back(preselection_VV_T); ps.push_back(preselection_VV_L);}
 
-  std::vector<TString> pre_sub_wj; pre_sub_wj.push_back(preselection_DY); pre_sub_wj.push_back(preselection_TT); if(useVV) {pre_sub_wj.push_back(preselection_VV);}
-  //if (DOQCD) pre_sub_wj.push_back(preselection_QCD); no MC QCD for 2016!!!
-
-  std::vector<TString> pre_sub_dy; pre_sub_dy.push_back(preselection_Wjets); pre_sub_dy.push_back(preselection_TT); pre_sub_dy.push_back(preselection_DY_TT); pre_sub_dy.push_back(preselection_DY_L); if(useVV) {pre_sub_dy.push_back(preselection_VV);}
-  //if (DOQCD) pre_sub_dy.push_back(preselection_QCD);
-
-  std::vector<TString> pre_sub_tt; pre_sub_tt.push_back(preselection_DY); pre_sub_tt.push_back(preselection_Wjets); pre_sub_tt.push_back(preselection_TT_T); pre_sub_tt.push_back(preselection_TT_L); if(useVV) {pre_sub_tt.push_back(preselection_VV);}
-  //if (DOQCD) pre_sub_tt.push_back(preselection_QCD);
-
+  std::vector<TString> pre_sub_wj;
+  std::vector<TString> pre_sub_dy; 
+  std::vector<TString> pre_sub_tt; 
   std::vector<TString> pre_sub_qcd;
-  pre_sub_qcd.push_back(preselection_DY); pre_sub_qcd.push_back(preselection_Wjets); pre_sub_qcd.push_back(preselection_TT); if(useVV) {pre_sub_qcd.push_back(preselection_VV);}
+  //definition of backgrounds to be subtracted:
+  if( EMB == 0 ) {
+    pre_sub_wj.push_back(preselection_DY); pre_sub_wj.push_back(preselection_TT); pre_sub_wj.push_back(preselection_VV);
+    pre_sub_dy.push_back(preselection_Wjets); pre_sub_dy.push_back(preselection_TT); pre_sub_dy.push_back(preselection_DY_TT); pre_sub_dy.push_back(preselection_DY_L); pre_sub_dy.push_back(preselection_VV);
+    pre_sub_tt.push_back(preselection_DY); pre_sub_tt.push_back(preselection_Wjets); pre_sub_tt.push_back(preselection_TT_T); pre_sub_tt.push_back(preselection_TT_L); pre_sub_tt.push_back(preselection_VV);
+    pre_sub_qcd.push_back(preselection_DY); pre_sub_qcd.push_back(preselection_Wjets); pre_sub_qcd.push_back(preselection_TT); pre_sub_qcd.push_back(preselection_VV);
+  }else{
+    //EMBEDDING
+    pre_sub_wj.push_back(preselection_EMB); 
+    pre_sub_wj.push_back(preselection_DY_J); 
+    pre_sub_wj.push_back(preselection_DY_L); 
+    pre_sub_wj.push_back(preselection_TT_J); 
+    pre_sub_wj.push_back(preselection_TT_L); 
+    pre_sub_wj.push_back(preselection_VV_J);
+    pre_sub_wj.push_back(preselection_VV_L);
+
+    pre_sub_dy.push_back(preselection_EMB); 
+    pre_sub_dy.push_back(preselection_Wjets); 
+    pre_sub_dy.push_back(preselection_TT_J); 
+    pre_sub_dy.push_back(preselection_TT_L); 
+    pre_sub_dy.push_back(preselection_DY_L); 
+    pre_sub_dy.push_back(preselection_VV_J);
+    pre_sub_dy.push_back(preselection_VV_L);
+
+    pre_sub_tt.push_back(preselection_EMB); 
+    pre_sub_tt.push_back(preselection_Wjets); 
+    pre_sub_tt.push_back(preselection_DY_J); 
+    pre_sub_tt.push_back(preselection_DY_L); 
+    pre_sub_tt.push_back(preselection_TT_L); 
+    pre_sub_tt.push_back(preselection_VV_J);
+    pre_sub_tt.push_back(preselection_VV_L);
+    
+    pre_sub_qcd.push_back(preselection_EMB); 
+    pre_sub_qcd.push_back(preselection_Wjets); 
+    pre_sub_qcd.push_back(preselection_DY_J); 
+    pre_sub_qcd.push_back(preselection_DY_L); 
+    pre_sub_qcd.push_back(preselection_TT_J); 
+    pre_sub_qcd.push_back(preselection_TT_L); 
+    pre_sub_qcd.push_back(preselection_VV_J);
+    pre_sub_qcd.push_back(preselection_VV_L);
+  }
 
   Float_t yields[5];
   Float_t combinedYields[20];
@@ -138,24 +172,23 @@ void CalcFF() {
       /////////////2. Calc FF
       ///////////////////////////////////////////////////////////////////////////////////////
       cout << endl << "################### Calculating FFs         ###############" << endl << endl;
-      Analyzer->calcFFCorr(_W_JETS|m_gen_match,                    m_preselection_data,   pre_sub_wj,    p+FF_corr_Wjets_MCsum_noGen,  p+weight_Wjets);
-      Analyzer->calcFFCorr(_W_JETS|m_gen_match,                    preselection_Wjets,   empty_vec_tstring,    p+FF_corr_Wjets_MC_noGen,  p+weight_Wjets);
+      Analyzer->calcFFCorr(_W_JETS|m_gen_match,                    m_preselection_data,   pre_sub_wj,          p+FF_corr_Wjets_MCsum_noGen,  p+weight_Wjets);
+      Analyzer->calcFFCorr(_W_JETS|m_gen_match,                    preselection_Wjets,    empty_vec_tstring,   p+FF_corr_Wjets_MC_noGen,     p+weight_Wjets);
       
       cout << "Calculating TT FFs" << endl;
-      if (useDYFF_forTT) Analyzer->calcFFCorr(_DY|m_gen_match,     m_preselection_data,   pre_sub_dy,    p+FF_corr_TT_MCsum_noGen,  p+weight_TT_J);
-      else               Analyzer->calcFFCorr(_TT|m_gen_match,    m_preselection_data,   pre_sub_tt,    p+FF_corr_TT_MCsum_noGen,  p+weight_TT_J);
-      Analyzer->calcFFCorr(_TT|m_gen_match,    preselection_TT_J,   empty_vec_tstring,    p+FF_TT_J_only,  p+weight_TT_J);
-      Analyzer->calcFFCorr(_TT|m_gen_match|SR,                    preselection_TT_J,   empty_vec_tstring,    p+FF_TT_J_only_SR,  p+weight_TT_J);
+      if (useDYFF_forTT) Analyzer->calcFFCorr(_DY|m_gen_match,     m_preselection_data,   pre_sub_dy,          p+FF_corr_TT_MCsum_noGen,     p+weight_TT_J);
+      else               Analyzer->calcFFCorr(_TT|m_gen_match,     m_preselection_data,   pre_sub_tt,          p+FF_corr_TT_MCsum_noGen,     p+weight_TT_J);
+      Analyzer->calcFFCorr(_TT|m_gen_match,                        preselection_TT_J,     empty_vec_tstring,   p+FF_TT_J_only,               p+weight_TT_J);
+      Analyzer->calcFFCorr(_TT|m_gen_match|SR,                     preselection_TT_J,     empty_vec_tstring,   p+FF_TT_J_only_SR,            p+weight_TT_J);
 
       cout << "Calculating QCD FFs" << endl;
-      Analyzer->calcFFCorr(_QCD|m_gen_match,                     m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCD_MCsum_noGen,    p+weight_QCD);
-      Analyzer->calcFFCorr(_QCD|m_gen_match|_AI,                     m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCD_MCsum_noGen_AI,    p+weight_QCD);
+      Analyzer->calcFFCorr(_QCD|m_gen_match,                       m_preselection_data,   pre_sub_qcd,         p+FF_corr_QCD_MCsum_noGen,    p+weight_QCD);
+      Analyzer->calcFFCorr(_QCD|m_gen_match|_AI,                   m_preselection_data,   pre_sub_qcd,         p+FF_corr_QCD_MCsum_noGen_AI, p+weight_QCD);
     }
 
     if(doCalc && CHAN==kTAU){
-      Analyzer->calcFFCorr(_QCD|m_gen_match,   m_preselection_data,   pre_sub_qcd,   p+FF_corr_QCD_MCsum_noGen, p+weight_QCD);
-      
-      Analyzer->calcFFCorr(_QCD|m_gen_match|_AI,   m_preselection_data,   pre_sub_qcd,   p+"FF_corr_QCD_MCsum_noGen_AI.root", p+weight_QCD);
+      Analyzer->calcFFCorr(_QCD|m_gen_match,                       m_preselection_data,   pre_sub_qcd,         p+FF_corr_QCD_MCsum_noGen,    p+weight_QCD);
+      Analyzer->calcFFCorr(_QCD|m_gen_match|_AI,                   m_preselection_data,   pre_sub_qcd,         p+"FF_corr_QCD_MCsum_noGen_AI.root", p+weight_QCD);
     }
     
   }  

@@ -101,11 +101,14 @@ Int_t GlobalClass::isInSR(const Int_t mode, const Int_t ind)
 
   //MSSM definition of SR
   //if( !( event_s->nbtag == 0 || (event_s->nbtag>0 && event_s->njets<=1) ) ) return 0;
+  // cout << "====================" << endl;
+  // cout << event_s->alltau_gen_match->at(ind) << endl;
   if ( mode & GEN_MATCH ) {
     if ( event_s->alltau_gen_match->at(ind)!=realJet ) return 0; //FIX ME
   }
 
   //OS
+  // cout << event_s->lep_q << " "  << event_s->alltau_q->at(ind) << endl;
   if ( mode & _SS || CALC_SS_SR ){
     if ( event_s->lep_q*event_s->alltau_q->at(ind)<=0. ) return 0;
   } else{
@@ -113,6 +116,7 @@ Int_t GlobalClass::isInSR(const Int_t mode, const Int_t ind)
   }
 
   //lep vetoes
+  // cout << event_s->passesDLVeto << " " << event_s->passes3LVeto << endl;
   if ( !( event_s->passesDLVeto && event_s->passes3LVeto ) ) return 0;
 
   //mt
@@ -121,6 +125,7 @@ Int_t GlobalClass::isInSR(const Int_t mode, const Int_t ind)
   }
 
   //lep iso
+  // cout << event_s->lep_iso << endl;
   if ( CHAN == kTAU ){
     if ( mode & _AI && event_s->lep_iso<TAU1_ISO_CUT ) return 1;
     else if ( !(mode & _AI) && event_s->lep_iso>TAU1_ISO_CUT ) return 1; //0.5 for tight, >9 for vtight

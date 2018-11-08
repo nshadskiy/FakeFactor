@@ -72,28 +72,27 @@ void TNtupleAnalyzer::closeFile()
 
 Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t mode, Int_t whichTau)
 {
-
-  if(!preselectionFile.Contains("preselection_EMB")){
-    
-    if(CHAN==kMU && !( (event->trg_singlemuon && event->pt_1 > 28) || event->trg_singlemuon_lowpt && event->pt_1 > 25)     ) return 0; // || (event->trg_mutaucross && event->pt_1 <= 25 && event->pt_2 > 30)
-    if(CHAN==kEL && !( (event->trg_singleelectron || event->trg_singleelectron_lowpt ) && event->pt_1 > 36)) return 0;
-    if(CHAN==kTAU && !(event->trg_doubletau || event->trg_doubletau_lowpt || event->trg_doubletau_mediso ) ) return 0;
-
-  }else{ 
-    //Embedded Samples: 
-    if(CHAN==kMU && !((event->flagMETFilter >0.5)*(event->trg_singlemuon_27 > 0.5))) return 0;
-    //previously: only flagMET and trg_35
-    if(CHAN==kEL && !((event->flagMETFilter >0.5)*(event->trg_singleelectron_35 > 0.5)) )  return 0;
-    // if(CHAN==kEL && !((event->flagMETFilter >0.5)*(event->trg_crossele_ele24tau30 > 0.5)*(event->trg_singleelectron_27 > 0.5)*(event->trg_singleelectron_32 > 0.5)*(event->trg_singleelectron_35 > 0.5)) )  return 0;
-    if(CHAN==kTAU && !(event->flagMETFilter >0.5)*((event->isEmbedded && event->pt_1>40 && event->pt_2 > 40) || (!event->isEmbedded && ((event->trg_doubletau_35_tightiso_tightid >0.5) || (event->trg_doubletau_40_mediso_tightid >0.5) || (event->trg_doubletau_40_tightiso >0.5))))) return 0;
+  if(CHAN==kMU && !((event->flagMETFilter >0.5)*(event->trg_singlemuon_27 > 0.5))) return 0; // + crosstrigger
+  if(CHAN==kEL && !((event->flagMETFilter >0.5)*(event->trg_singleelectron_35 > 0.5)) )  return 0;
+  if( !preselectionFile.Contains("preselection_EMB")){
+    if(CHAN==kTAU && !((event->flagMETFilter >0.5)* (event->trg_doubletau_40_tightiso>0.5) * (event->trg_doubletau_40_mediso_tightid>0.5) * (event->trg_doubletau_35_tightiso_tightid>0.5))) return 0;
+  }else{
+    //Embedding: 
+    // cout << event->flagMETFilter << " " << event->pt_1 << " " << event->pt_2 << endl;
+    if(CHAN==kTAU && ((event->flagMETFilter < 0.5) || (event->pt_1 < 40) || (event->pt_2 < 40) )) return 0;
   }
-
   TLorentzVector vec1, vec2, vec;
   //////////////////////////////////////////////////////////////////////////
-
   weight=1.;
   if(!preselectionFile.Contains("preselection_EMB")){
-    if(!preselectionFile.Contains("preselection_data"))weight = 1000*luminosity*event->puweight*event->trk_sf*event->reco_sf*event->genweight*event->antilep_tauscaling*event->idisoweight_1;
+    
+    if(!preselectionFile.Contains("preselection_data")){
+      weight = luminosity*event->weight;
+      if (CHAN == kTAU) weight *= event->sf_DoubleTauTight;
+      else              weight *= event->sf_SingleOrCrossTrigger;
+    }
+
+    // if(!preselectionFile.Contains("preselection_data"))weight = 1000*luminosity*event->puweight*event->trk_sf*event->reco_sf*event->genweight*event->antilep_tauscaling*event->idisoweight_1;
 
     if( CHAN == kTAU && !preselectionFile.Contains("preselection_data") ){ // CHANGE IF TAU WP CHANGES!
       if(event->gen_match_1 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1) weight *= 0.89; //vtight = 0.86, tight = 0.89
@@ -106,44 +105,43 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.88;
     }
 
-    if (CHAN == kMU  && !preselectionFile.Contains("preselection_data") ) weight *= event->singleTriggerSFLeg1;
-    if (CHAN == kEL  && !preselectionFile.Contains("preselection_data") ) weight *= event->singleTriggerSFLeg1;
-    if (CHAN == kTAU && !preselectionFile.Contains("preselection_data") ) weight *= event->xTriggerSFLeg1 * event->xTriggerSFLeg2;
+    // if (CHAN == kMU  && !preselectionFile.Contains("preselection_data") ) weight *= event->singleTriggerSFLeg1;
+    // if (CHAN == kEL  && !preselectionFile.Contains("preselection_data") ) weight *= event->singleTriggerSFLeg1;
+    // if (CHAN == kTAU && !preselectionFile.Contains("preselection_data") ) weight *= event->xTriggerSFLeg1 * event->xTriggerSFLeg2;
 
-    if(preselectionFile.Contains("preselection_TT")){
-      weight *= event->topWeight_run1;
-    }
-    if(preselectionFile.Contains("preselection_TT") || preselectionFile.Contains("preselection_VV")){
-      weight *= event->xsec*event->genNEventsWeight;
-    }
+    // if(preselectionFile.Contains("preselection_TT")){
+    //   weight *= event->topWeight_run1;
+    // }
+    // if(preselectionFile.Contains("preselection_TT") || preselectionFile.Contains("preselection_VV")){
+    //   weight *= event->xsec*event->genNEventsWeight;
+    // }
 
-    if(preselectionFile.Contains("preselection_DY")){
-      weight *= event->zPtReweightWeight;
-      switch (event->NUP){
-        case 0: weight *= 5.91296350328e-05; break;
-        case 1: weight *= 1.01562362959e-05; break;
-        case 2: weight *= 2.15030982864e-05; break;
-        case 3: weight *= 1.35063197418e-05; break;
-        case 4: weight *= 9.22459522375e-06; break;
-      }
-    }
-    if(preselectionFile.Contains("preselection_Wjets")){
-      switch (event->NUP){
-        case 0: weight *= 0.000790555230048; break;
-        case 1: weight *= 0.000150361226486; break;
-        case 2: weight *= 0.000307137166339; break;
-        case 3: weight *= 5.55843884964e-05; break;
-        case 4: weight *= 5.2271728229e-05; break;
-      }
-    }
+    // if(preselectionFile.Contains("preselection_DY")){
+    //   weight *= event->zPtReweightWeight;
+    //   switch (event->NUP){
+    //     case 0: weight *= 5.91296350328e-05; break;
+    //     case 1: weight *= 1.01562362959e-05; break;
+    //     case 2: weight *= 2.15030982864e-05; break;
+    //     case 3: weight *= 1.35063197418e-05; break;
+    //     case 4: weight *= 9.22459522375e-06; break;
+    //   }
+    // }
+    // if(preselectionFile.Contains("preselection_Wjets")){
+    //   switch (event->NUP){
+    //     case 0: weight *= 0.000790555230048; break;
+    //     case 1: weight *= 0.000150361226486; break;
+    //     case 2: weight *= 0.000307137166339; break;
+    //     case 3: weight *= 5.55843884964e-05; break;
+    //     case 4: weight *= 5.2271728229e-05; break;
+    //   }
+    // }
   }else{
     if(CHAN != kTAU){
-      weight = luminosity * (event->generatorWeight)*(event->muonEffTrgWeight)*(event->idWeight_1*(event->triggerWeight_1*(event->triggerWeight_1<1.8)+(event->triggerWeight_1>=1.8))*event->isoWeight_1)*(event->embeddedDecayModeWeight)*(((event->gen_match_2 == 5)*0.97 + (event->gen_match_2 != 5)));
+      weight = (event->generatorWeight)*(event->muonEffTrgWeight)*(event->idWeight_1*(event->triggerWeight_1*(event->triggerWeight_1<1.8)+(event->triggerWeight_1>=1.8))*event->isoWeight_1)*(event->embeddedDecayModeWeight)*(((event->gen_match_2 == 5)*0.97 + (event->gen_match_2 != 5)));
     }else{
-      weight = luminosity * ((event->generatorWeight)*(event->muonEffTrgWeight)*(event->crossTriggerDataEfficiencyWeight_tight_MVA_1*event->crossTriggerDataEfficiencyWeight_tight_MVA_2 / event->crossTriggerMCEfficiencyWeight_tight_MVA_1 / event->crossTriggerMCEfficiencyWeight_tight_MVA_2)*(event->embeddedDecayModeWeight)*(((event->gen_match_1 == 5)*0.97 + (event->gen_match_1 != 5))*((event->gen_match_2 == 5)*0.97 + (event->gen_match_2 != 5))));
+      weight = ((event->generatorWeight)*(event->muonEffTrgWeight)*(event->crossTriggerDataEfficiencyWeight_tight_MVA_1*event->crossTriggerDataEfficiencyWeight_tight_MVA_2 )*(event->embeddedDecayModeWeight)*(((event->gen_match_1 == 5)*0.97 + (event->gen_match_1 != 5))*((event->gen_match_2 == 5)*0.97 + (event->gen_match_2 != 5))));
     }
   }
-  
   weight_sf=weight;
   
   if(CHAN==kTAU && !COINFLIP){
@@ -156,22 +154,15 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   
   
 
-
-  if(preselectionFile.Contains("preselection_EMB")){
-    if(CHAN==kMU)passesTauLepVetos = !((event->againstMuonTight3_2>0.5) && (event->againstElectronVLooseMVA6_2>0.5));
-    if(CHAN==kEL)passesTauLepVetos = !((event->againstMuonLoose3_2>0.5) && (event->againstElectronTightMVA6_2>0.5));
-    passes3LVeto= ((event->extramuon_veto < 0.5) && (event->extraelec_veto < 0.5));
-    if ( CHAN == kMU  ) passesDLVeto= !(event->dilepton_veto);
-    if ( CHAN == kEL  ) passesDLVeto= !(event->dilepton_veto);
-    if ( CHAN == kTAU ) passesDLVeto= passesTauLepVetos;
-  }else{
-    passesTauLepVetos = event->passesTauLepVetos;
-    passes3LVeto=event->passesThirdLepVeto;
-    if ( CHAN == kMU  ) passesDLVeto=event->passesDiMuonVeto;
-    if ( CHAN == kEL  ) passesDLVeto=event->passesDiElectronVeto;
-    if ( CHAN == kTAU ) passesDLVeto=event->passesTauLepVetos;
-  }
-
+  // cout << event->againstElectronVLooseMVA6_1 << " " << event->againstElectronVLooseMVA6_2 << " " << event->againstMuonLoose3_1 << " " << event->againstMuonLoose3_2 << endl;
+  if(CHAN==kMU) passesTauLepVetos = ((event->againstMuonTight3_2>0.5) && (event->againstElectronVLooseMVA6_2>0.5));
+  if(CHAN==kEL) passesTauLepVetos = ((event->againstMuonLoose3_2>0.5) && (event->againstElectronTightMVA6_2>0.5));
+  if(CHAN==kTAU)passesTauLepVetos = ((event->againstElectronVLooseMVA6_1>0.5)&&(event->againstElectronVLooseMVA6_2>0.5)&&(event->againstMuonLoose3_1>0.5)&&(event->againstMuonLoose3_2>0.5));
+  passes3LVeto= ((event->extramuon_veto < 0.5) && (event->extraelec_veto < 0.5) && (event->dilepton_veto<0.5));
+  if ( CHAN == kMU  ) passesDLVeto= !(event->dilepton_veto);
+  if ( CHAN == kEL  ) passesDLVeto= !(event->dilepton_veto);
+  if ( CHAN == kTAU ) passesDLVeto= passesTauLepVetos;
+  
   bpt_1=event->bpt_1;
   bpt_2=event->bpt_2;
   nbtag=event->nbtag;
@@ -192,7 +183,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   lep_eta=event->eta_1;
   lep_phi=event->phi_1;
   lep_iso=event->iso_1;
-  lep_q=event->q_1/abs(event->q_1);
+  lep_q=event->q_1;
 
   otherLep_pt=-999;
   otherLep_eta=-999;
@@ -730,10 +721,9 @@ Int_t TNtupleAnalyzer::findPos(const Double_t val, const vector<Double_t> *v_val
 //checks preselection and (for DY) gen matches
 Int_t TNtupleAnalyzer::fitsGenCategory(const Int_t mode)
 {
-
   if ( ! alltau_gen_match->size() ) return 0;
   Int_t gm=alltau_gen_match->at(0);
-
+  
 //  promptE   =1;
 //  promptMu  =2;
 //  tauE      =3;
@@ -741,30 +731,51 @@ Int_t TNtupleAnalyzer::fitsGenCategory(const Int_t mode)
 //  tauH      =5;
 //  realJet   =6;
 
-  if        (mode & _DY && mode & _TTAU) { // DY_T
-    if ( gm > 2 && gm < 6) return 1;
-  } else if (mode & _DY && mode & _JTAU) { // DY_J
-    if (gm==realJet) return 1;
-  } else if (mode & _DY && mode & _LTAU) { // DY_L
-    if ( !(gm > 2 && gm < 6)   && (gm!=realJet)  ) return 1;
-  } else if (mode & _TT && mode & _TTAU) { // TT_T 
-    if ( gm > 2 && gm < 6) return 1;
-  } else if (mode & _TT && mode & _JTAU) { // TT_J
-    if (gm==realJet) return 1;
-  } else if (mode & _TT && mode & _LTAU) { // TT_L
-    if ( !(gm > 2 && gm < 6)   && (gm!=realJet)  ) return 1;
-  } else if (mode & _VV && mode &_TTAU) {  // VV_T
-    if ( gm > 2 && gm < 6 ) return 1;
-  } else if (mode & _VV && mode & _JTAU) { // VV_J
-    if (gm==realJet) return 1;
-  } else if (mode & _VV && mode & _LTAU) { // VV_L
-    if ( !(gm > 2 && gm < 6)   && (gm!=realJet)  ) return 1;
-  } else if (mode & _QCD) {
-    return 1;
-  } else {
-    return 1;
+  if (EMB == 1){ //TODO FIXME Ugly code (don't copy paste)
+    if (mode & (_DY) && mode & _TTAU) { //EMBEDDING 
+      if ( gm > 2 && gm < 6) return 1;
+    } else if (mode & _DY && mode & _JTAU) { // DY_J
+      if (gm==realJet) return 1;
+    } else if (mode & _DY && mode & _LTAU) { // DY_L
+      if ( !(gm > 2 && gm < 6)   && (gm!=realJet)  ) return 1;
+    }  else if (mode & _TT && mode & _JTAU) { // TT_J
+      if (gm==realJet) return 1;
+    } else if (mode & _TT && mode & _LTAU) { // TT_L
+      if ( !(gm > 2 && gm < 6)   && (gm!=realJet)  ) return 1;
+    } else if (mode & _VV && mode & _JTAU) { // VV_J
+      if (gm==realJet) return 1;
+    } else if (mode & _VV && mode & _LTAU) { // VV_L
+      if ( !(gm > 2 && gm < 6)   && (gm!=realJet)  ) return 1;
+    } else if (mode & _QCD) {
+      return 1;
+    } else {
+      return 1;
+    }
+  }else{
+    if (mode & _DY && mode & _TTAU) {         //DY_T
+      if (gm==tauH) return 1;
+    } else if (mode & _DY && mode & _JTAU) {  //DY_J
+      if (gm==realJet) return 1;
+    } else if (mode & _DY && mode & _LTAU) {  //DY_L
+      if ( (gm!=tauH)     && (gm!=realJet)  ) return 1;
+    } else if (mode & _TT && mode & _TTAU) {  //TT_T
+      if (gm==tauH) return 1;
+    } else if (mode & _TT && mode & _JTAU) {  //TT_J
+      if (gm==realJet) return 1;
+    } else if (mode & _TT && mode & _LTAU) {  //TT_L
+      if ( (gm!=tauH)     && (gm!=realJet)  ) return 1;
+    } else if (mode & _VV && mode &_TTAU) {   //VV_T
+      if (gm==tauH) return 1;
+    } else if (mode & _VV && mode & _JTAU) {  //VV_J
+      if (gm==realJet) return 1;
+    } else if (mode & _VV && mode & _LTAU) {  //VV_L
+      if ( (gm!=tauH)     && (gm!=realJet)  ) return 1;
+    } else if (mode & _QCD) {
+      return 1;
+    } else {
+      return 1;
+    }
   }
-
   return 0;
 }
 

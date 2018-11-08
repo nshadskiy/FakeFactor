@@ -96,6 +96,7 @@ const TString s_DY           ="DY";
 const TString s_DY_J         ="DY_J";
 const TString s_DY_TT        ="DY_TT";
 const TString s_DY_L         ="DY_L";
+const TString s_EMB          ="EMB";
 const TString s_loose        ="loose";
 const TString s_tight_alt    ="tight_alt";
 const TString s_tight        ="tight";
@@ -114,12 +115,9 @@ const TString path_img_mc        = path_img+"mc_"+s_chan[CHAN]+"/";
 const TString path_img_mc_woQCD  = path_img+"mc_woQCD_"+s_chan[CHAN]+"/";
 
 //Input directories
-const TString indir = "/data/higgs/data_2017/"+ver+"/";
-// const TString datafiles[3] = { indir+"BASIS_ntuple_SingleMuon_mt_"+ver+".root", indir+"BASIS_ntuple_SingleElectron_et_"+ver+".root" , indir + "BASIS_ntuple_Tau_tt_"+ver+".root" };
-// const TString datafile   = datafiles[CHAN];
+const TString indir = "/afs/hephy.at/data/higgs01/"+ver+"/";
 const TString datafile   = indir + s_chan[CHAN] + "-NOMINAL_ntuple_Data.root";
-const TString EMBfile    = indir + "/../" + s_chan[CHAN] + "-NOMINAL_ntuple_Embedded.root";
-
+const TString EMBfile    = indir + s_chan[CHAN] + "-NOMINAL_ntuple_EMB.root";
 const TString DY_NJfile  = indir + s_chan[CHAN] + "-NOMINAL_ntuple_DY.root";
 const TString DYfile     = DY_NJfile;
 const TString Wjetsfile  = indir + s_chan[CHAN] + "-NOMINAL_ntuple_WJets.root";
@@ -128,7 +126,7 @@ const TString TTfile     = indir + s_chan[CHAN] + "-NOMINAL_ntuple_TT.root";
 
 //not used:
 const TString QCDfile    = indir + s_chan[CHAN] + "-NOMINAL_ntuple_QCD.root";
-const TString SIGNALfile = indir + s_chan[CHAN] + "-NOMINAL_ntuple_SIGNAL.root";
+const TString SIGNALfile = indir + s_chan[CHAN] + "-NOMINAL_ntuple_ggH.root";
 //
 
 // Preselection files
@@ -136,15 +134,12 @@ const TString preselection_data          = path_presel+"preselection_data"+s_dou
 const TString preselection_EMB           = path_presel+"preselection_EMB"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_Wjets         = path_presel+"preselection_Wjets"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_DY            = path_presel+"preselection_DY"+s_doubleCount[COINFLIP]+".root";
-const TString preselection_DY_TT         = preselection_EMB;
 const TString preselection_DY_J          = path_presel+"preselection_DY_J"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_DY_L          = path_presel+"preselection_DY_L"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_TT            = path_presel+"preselection_TT"+s_doubleCount[COINFLIP]+".root";
-const TString preselection_TT_T          = preselection_EMB;
 const TString preselection_TT_J          = path_presel+"preselection_TT_J"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_TT_L          = path_presel+"preselection_TT_L"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_VV            = path_presel+"preselection_VV"+s_doubleCount[COINFLIP]+".root";
-const TString preselection_VV_T          = preselection_EMB;
 const TString preselection_VV_J          = path_presel+"preselection_VV_J"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_VV_L          = path_presel+"preselection_VV_L"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_MCsum         = path_presel+"preselection_"+s_MCsum+s_doubleCount[COINFLIP]+".root";
@@ -152,6 +147,16 @@ const TString preselection_MCsum_woQCD   = path_presel+"preselection_woQCD"+s_MC
 const TString preselection_QCD           = path_presel+"preselection_QCD"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_QCD_Pt        = path_presel+"preselection_QCD_Pt"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_signal        = path_presel+"preselection_signal"+s_doubleCount[COINFLIP]+".root";
+#if(EMB == 0)
+const TString preselection_DY_TT         = path_presel+"preselection_DY_TT"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_TT_T          = path_presel+"preselection_TT_T"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_VV_T          = path_presel+"preselection_VV_T"+s_doubleCount[COINFLIP]+".root";
+#endif
+#if(EMB == 1)
+const TString preselection_DY_TT         = preselection_EMB;
+const TString preselection_TT_T          = preselection_EMB;
+const TString preselection_VV_T          = preselection_EMB;
+#endif
 
 const TString fit_formula                = "fit_formula.root";
 

@@ -21,7 +21,7 @@ void Preselection() {
     tmp=preselection_data;
     compressFile(preselection_data);
   }
-  if(num==1||num==0){
+  if(EMB == 1 && (num==1||num==0)){
     Analyzer->loadFile(EMBfile,"TauCheck"); 
     Analyzer->select(preselection_EMB,_DY|_TTAU); //_DY only as placeholder so it gets checked in TNtupleAnalyzer::fitsGenCategory() 
     Analyzer->closeFile();
@@ -34,6 +34,14 @@ void Preselection() {
     Analyzer->closeFile();
     tmp=preselection_TT;
     compressFile(preselection_TT);
+  }
+  
+  if (EMB == 0 && (num==2 || num==3||num==0)) {
+    Analyzer->loadFile(TTfile,"TauCheck");
+    Analyzer->select(preselection_TT_T,_TT|_TTAU);
+    Analyzer->closeFile();
+    tmp=preselection_TT_T;
+    compressFile(preselection_TT_T);
   }
   if (num==2 || num==3||num==0) {
     Analyzer->loadFile(TTfile,"TauCheck");
@@ -48,6 +56,7 @@ void Preselection() {
     Analyzer->closeFile();
     compressFile(preselection_TT_L);
   }
+  
   if (num==6||num==0) {
     Analyzer->loadFile(Wjetsfile,"TauCheck");
     Analyzer->select(preselection_Wjets,0);
@@ -59,6 +68,12 @@ void Preselection() {
     Analyzer->select(preselection_DY,0);
     Analyzer->closeFile();
     compressFile(preselection_DY);
+  }
+  if (EMB == 0 && (num==8 || num==7 ||num==0||num==99)) {
+    Analyzer->loadFile(DY_NJfile,"TauCheck");
+    Analyzer->select(preselection_DY_TT,_DY|_TTAU);
+    Analyzer->closeFile();
+    compressFile(preselection_DY_TT);
   }
   if (num==8 || num==7 ||num==0||num==99) {
     Analyzer->loadFile(DY_NJfile,"TauCheck");
@@ -77,6 +92,12 @@ void Preselection() {
     Analyzer->select(preselection_VV,0);
     Analyzer->closeFile();
     compressFile(preselection_VV);
+  }
+  if (EMB == 0 && (num==11 || num==13||num==0||num==99) && useVV) {
+    Analyzer->loadFile(VVfile,"TauCheck");
+    Analyzer->select(preselection_VV_T,_VV|_TTAU);
+    Analyzer->closeFile();
+    compressFile(preselection_VV_T);
   }
   if ( (num==11 || num==13||num==0||num==99) && useVV) {
     Analyzer->loadFile(VVfile,"TauCheck");
@@ -103,29 +124,29 @@ void Preselection() {
     compressFile(preselection_signal);
   }
   
-  //////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////
+  if( EMB == 0 ){
+    if (num==0) {
+      std::cout << "Creating merged tree in file " << preselection_MCsum_woQCD << std::endl;
+      TChain* MCch=new TChain("Events");
+      MCch->Add(preselection_Wjets);
+      MCch->Add(preselection_DY);
+      MCch->Add(preselection_TT);
+      MCch->Add(preselection_VV);
+      TFile* MCf = new TFile(preselection_MCsum_woQCD,"recreate");
+      MCch->Merge(MCf,0);
+    }
+    if (num==0) {
+      std::cout << "Creating merged tree in file " << preselection_MCsum << std::endl;
+      TChain* MCch=new TChain("Events");
+      MCch->Add(preselection_MCsum_woQCD);
+      if ( CHAN==kMU ) MCch->Add(preselection_QCD);
+      
+      TFile* MCf = new TFile(preselection_MCsum,"recreate");
+      MCch->Merge(MCf,0);
+    }
+  }
   
-  if (num==0) {
-    std::cout << "Creating merged tree in file " << preselection_MCsum_woQCD << std::endl;
-    TChain* MCch=new TChain("Events");
-    MCch->Add(preselection_Wjets);
-    MCch->Add(preselection_DY);
-    MCch->Add(preselection_TT);
-    MCch->Add(preselection_VV);
-    TFile* MCf = new TFile(preselection_MCsum_woQCD,"recreate");
-    MCch->Merge(MCf,0);
-  }
-  if (num==0) {
-    std::cout << "Creating merged tree in file " << preselection_MCsum << std::endl;
-    TChain* MCch=new TChain("Events");
-    MCch->Add(preselection_MCsum_woQCD);
-    if ( CHAN==kMU ) MCch->Add(preselection_QCD);
-    
-    TFile* MCf = new TFile(preselection_MCsum,"recreate");
-    MCch->Merge(MCf,0);
-  }
-
-    
   delete Analyzer;
   
 }

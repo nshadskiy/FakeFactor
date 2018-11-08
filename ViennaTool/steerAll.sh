@@ -3,6 +3,7 @@
 # steerAll.sh 1 #skip preselection (any other argument works as well)
 
 channel=$(grep 'int CHAN' "Settings.h" | awk -F'[=;]' '{print $2}')
+embedding=$(grep '#define EMBEDDING' "Settings.h" | awk -F'[B]' '{print $2}')
 output=$(grep 'output_folder' "Settings.h" | awk -F'[=;]' '{print $2}' | tr -d '"')
 analysis=$(grep 'analysis' "Settings.h" | awk -F'[=;]' '{print $2}' | tr -d '"')
 #dc_path=$(grep 'DC_folder' "Settings.h" | awk -F'[=;]' '{print $2}' | tr -d '"')
@@ -11,6 +12,7 @@ if [ "$channel" == " kMU" ];  then chan="mt"; fi
 if [ "$channel" == " kTAU" ]; then chan="tt"; fi
 echo Channel: $chan
 echo Output : $output
+echo Embedding: $embedding
 #echo $dc_path
 
 sed s/user=\"whoami\"/user=\"$USER\"/g Settings.h >/tmp/Settings$USER.h
@@ -30,8 +32,10 @@ make -B
 
 if [ "${1}" == "" ]; then
     ./Preselection
-    ./SRHisto
-    ./CRHisto
+    if [ $embedding == 0 ]; then 
+        ./SRHisto
+        ./CRHisto
+    fi
 fi
 
 ./steerFF
