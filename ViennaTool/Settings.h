@@ -5,16 +5,16 @@
 #define kTAU         2
 ///////////////////////////////////////////////////
 #define EMB          1
-#define selCHAN      kMU
-const int CHAN     = kMU;
-const TString analysis      ="FakeFactor_SM_ML_Embedding_v6";
-const TString output_folder ="/afs/hephy.at/user/f/fspreitzer/public/Htautau/FakeRate/SM_ML/FakeFactor_SM_ML_Embedding_v6";
+#define selCHAN      kEL
+const int CHAN     = kEL;
+const TString analysis      ="FakeFactor_SM_ML_Embedding_v7";
+const TString output_folder ="/afs/hephy.at/user/f/fspreitzer/public/Htautau/FakeRate/SM_ML/FakeFactor_SM_ML_Embedding_v7";
 const TString DC_folder     ="/afs/hephy.at/work/f/fspreitzer/cmssw/ff_test/CMSSW_8_0_25/src/ViennaTool/HTTutilities/Jet2TauFakes/data";
 ///////////////////////////////////////////////////
-const TString user="fspreitzer";
-const Double_t luminosity=41.529; 
+const TString user="fspreitzer";    
+const Double_t luminosity=41.529;   
 const int use_svfit = 0; //set to 1 to change input directory name accordingly
-const TString ver = "v6"; 
+const TString ver = "v7"; 
 ///////////////////////////////////////////////////
 //Out of date
 const int inclusive_selection=1; 
@@ -23,8 +23,8 @@ const int useVV=1;
 const int useMVAMET=0;
 ///////////////////////////////////////////////////
 //Out of date - no need to change
-const int DEBUG=0; //set to 1 for additional output
-const int ALLPLOTS=0; //set to 1 for PDFs etc
+const int DEBUG=1; //set to 1 for additional output
+const int ALLPLOTS=1; //set to 1 for PDFs etc
 const int DOQCD=1; //set to 1 to include QCD estimate, 0 for w/o; only works for MC
 const int DOMC=0; //set to 1 for MC, 0 for data
 const int doCuts=0;
@@ -34,7 +34,7 @@ const int doSRHisto = 1;
 const int doCRHisto = 1;
 ///////////////////////////////////////////////////
 //steerFF
-const int doCalcWeights=1; //calc fractions
+const int doCalcWeights=0; //calc fractions
 const int doCalc=1; //calc FFs
 ///////////////////////////////////////////////////
 //No need to change
@@ -57,12 +57,12 @@ const double fitMin =  30;
 const int fitBins  =  470;
 const int COINFLIP=1;
 // const Double_t Pt_cuts_Wjets[]    = {30.,33,38,50,60,75,90,110,140,170,500}; // original
-const Double_t Pt_cuts_Wjets[]    = {30.,33,38,50,60,75,90,110,170,500};
+const Double_t Pt_cuts_Wjets[]    = {30.,34,40,51,60,75,90,110,500};
 const Double_t Pt_cuts_DY[]       = {30.,40.};
 const Double_t Pt_cuts_TT_SR[]    = {30.,32.,34.,37.,40.,45,52,70,90,115,175,500};
 const Double_t Pt_cuts_TT_CR[]    = {30.};
-const Double_t Pt_cuts_QCD[]      = {30,32,35,40,50,120,500};
-const Double_t Pt_cuts_QCD_AI[]   = {30,32,35,40,50,120,500};
+const Double_t Pt_cuts_QCD[]      = {30,32.5,36,42,50,500};
+const Double_t Pt_cuts_QCD_AI[]   = {30,32.5,36,42,50,500};
 #endif
 //////////////////////////////////////////////////
 //ETAU Settings
@@ -89,7 +89,7 @@ const Double_t Pt_cuts_Wjets[]    = {40.,};
 const Double_t Pt_cuts_DY[]       = {40.};
 const Double_t Pt_cuts_TT_SR[]    = {40.};
 const Double_t Pt_cuts_TT_CR[]    = {40.};
-const Double_t Pt_cuts_QCD[]      = {40.,42.5,45.,50.,55,60,65,75,95,155};
+const Double_t Pt_cuts_QCD[]      = {40.,42.5,45.,50.,55,60,65,100,155};
 const Double_t Pt_cuts_QCD_AI[]   = {40,42.5,45,50,60,75,115,180};
 #endif
 //////////////////////////////////////////////////
@@ -115,7 +115,7 @@ const Double_t DR_LEP_CUT=0.5;
 const Double_t LEP_ETA_CUT=2.1;
 const Double_t LEP_PT_CUT=10;
 const Double_t LEP_ISO_CUT=0.15;
-const Double_t LEP_ISO_CUT_ET=0.1; //this is only important for signal electron, for all other selections LEP_ISO_CUT is taken
+const Double_t LEP_ISO_CUT_ET=0.15; //this is only important for signal electron, for all other selections LEP_ISO_CUT is taken
 const Double_t TAU1_ISO_CUT=9; //>9(vtight/tight)
 const Double_t DR_TAU_LEP_CUT=0.4;
 const Double_t TAU_ETA_CUT=2.3;

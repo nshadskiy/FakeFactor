@@ -48,7 +48,6 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
   for (Int_t jentry=0; jentry<nentries;jentry++){
     if (jentry%1000000 == 0) cout << "Event " << jentry << endl;
     event->GetEntry(jentry);
-    
     Int_t ntau=setTreeValues(preselFile, mode); //preselection happens in there now
     if (ntau>=1){ t_Events->Fill(); pc++; }
     if(CHAN==kTAU && !COINFLIP){
@@ -72,76 +71,84 @@ void TNtupleAnalyzer::closeFile()
 
 Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t mode, Int_t whichTau)
 {
-  if(CHAN==kMU && !((event->flagMETFilter >0.5)*(event->trg_singlemuon_27 > 0.5))) return 0; // + crosstrigger
-  if(CHAN==kEL && !((event->flagMETFilter >0.5)*(event->trg_singleelectron_35 > 0.5)) )  return 0;
-  if( !preselectionFile.Contains("preselection_EMB")){
-    if(CHAN==kTAU && !((event->flagMETFilter >0.5)* (event->trg_doubletau_40_tightiso>0.5) * (event->trg_doubletau_40_mediso_tightid>0.5) * (event->trg_doubletau_35_tightiso_tightid>0.5))) return 0;
-  }else{
-    //Embedding: 
-    // cout << event->flagMETFilter << " " << event->pt_1 << " " << event->pt_2 << endl;
-    if(CHAN==kTAU && ((event->flagMETFilter < 0.5) || (event->pt_1 < 40) || (event->pt_2 < 40) )) return 0;
-  }
+  // cout << event->flagMETFilter << " " << event->trg_singlemuon_27 << " " << event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2 << " " << event->q_1 << " " << event->weight << " " <<event->dilepton_veto <<  endl;
+  // if(CHAN==kMU && !((event->flagMETFilter >0.5)*(event->trg_singlemuon_27 > 0.5)*(event->trg_singlemuon_24 > 0.5)*(event->trg_crossmuon_mu20tau27 > 0.5)*(event->pt_1>21)*(event->pt_2>20))) return 0; 
+  if(CHAN==kMU && ((event->flagMETFilter <0.5)|| !((event->trg_singlemuon_27 > 0.5)||(event->trg_singlemuon_24>0.5)||(event->trg_crossmuon_mu20tau27 > 0.5)) || (event->pt_2<23))) return 0; 
+  if(CHAN==kEL && ((event->flagMETFilter <0.5)|| !((event->trg_singleelectron_27> 0.5)||(event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)||(event->trg_crossele_ele24tau30  > 0.5))) ||(event->pt_2<23))  return 0;
+  if(CHAN==kTAU && ((event->flagMETFilter <0.5)|| !((event->trg_doubletau_40_tightiso>0.5) || (event->trg_doubletau_40_mediso_tightid>0.5) || (event->trg_doubletau_35_tightiso_tightid>0.5)))) return 0;
+  
   TLorentzVector vec1, vec2, vec;
   //////////////////////////////////////////////////////////////////////////
   weight=1.;
-  if(!preselectionFile.Contains("preselection_EMB")){
-    
-    if(!preselectionFile.Contains("preselection_data")){
-      weight = luminosity*event->weight;
+  if( !preselectionFile.Contains("preselection_data")){
+    if( !preselectionFile.Contains("preselection_EMB")){
+      weight *= luminosity *  event->weight;
       if (CHAN == kTAU) weight *= event->sf_DoubleTauTight;
       else              weight *= event->sf_SingleOrCrossTrigger;
-    }
-
-    // if(!preselectionFile.Contains("preselection_data"))weight = 1000*luminosity*event->puweight*event->trk_sf*event->reco_sf*event->genweight*event->antilep_tauscaling*event->idisoweight_1;
-
-    if( CHAN == kTAU && !preselectionFile.Contains("preselection_data") ){ // CHANGE IF TAU WP CHANGES!
-      if(event->gen_match_1 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1) weight *= 0.89; //vtight = 0.86, tight = 0.89
-      else if(event->gen_match_1 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 ) weight *= 0.88;
-      if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.89;
-      else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.88;
-    }
-    if( CHAN != kTAU && !preselectionFile.Contains("preselection_data") ){
-      if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.89;
-      else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.88;
-    }
-
-    // if (CHAN == kMU  && !preselectionFile.Contains("preselection_data") ) weight *= event->singleTriggerSFLeg1;
-    // if (CHAN == kEL  && !preselectionFile.Contains("preselection_data") ) weight *= event->singleTriggerSFLeg1;
-    // if (CHAN == kTAU && !preselectionFile.Contains("preselection_data") ) weight *= event->xTriggerSFLeg1 * event->xTriggerSFLeg2;
-
-    // if(preselectionFile.Contains("preselection_TT")){
-    //   weight *= event->topWeight_run1;
-    // }
-    // if(preselectionFile.Contains("preselection_TT") || preselectionFile.Contains("preselection_VV")){
-    //   weight *= event->xsec*event->genNEventsWeight;
-    // }
-
-    // if(preselectionFile.Contains("preselection_DY")){
-    //   weight *= event->zPtReweightWeight;
-    //   switch (event->NUP){
-    //     case 0: weight *= 5.91296350328e-05; break;
-    //     case 1: weight *= 1.01562362959e-05; break;
-    //     case 2: weight *= 2.15030982864e-05; break;
-    //     case 3: weight *= 1.35063197418e-05; break;
-    //     case 4: weight *= 9.22459522375e-06; break;
-    //   }
-    // }
-    // if(preselectionFile.Contains("preselection_Wjets")){
-    //   switch (event->NUP){
-    //     case 0: weight *= 0.000790555230048; break;
-    //     case 1: weight *= 0.000150361226486; break;
-    //     case 2: weight *= 0.000307137166339; break;
-    //     case 3: weight *= 5.55843884964e-05; break;
-    //     case 4: weight *= 5.2271728229e-05; break;
-    //   }
-    // }
-  }else{
-    if(CHAN != kTAU){
-      weight = (event->generatorWeight)*(event->muonEffTrgWeight)*(event->idWeight_1*(event->triggerWeight_1*(event->triggerWeight_1<1.8)+(event->triggerWeight_1>=1.8))*event->isoWeight_1)*(event->embeddedDecayModeWeight)*(((event->gen_match_2 == 5)*0.97 + (event->gen_match_2 != 5)));
+      if( CHAN!=kTAU && preselectionFile.Contains("preselection_TT") ) weight *= event->topPtReweightWeightRun1;
+      if( CHAN!=kTAU && preselectionFile.Contains("preselection_DY") ) weight *= event->zPtReweightWeight;
     }else{
-      weight = ((event->generatorWeight)*(event->muonEffTrgWeight)*(event->crossTriggerDataEfficiencyWeight_tight_MVA_1*event->crossTriggerDataEfficiencyWeight_tight_MVA_2 )*(event->embeddedDecayModeWeight)*(((event->gen_match_1 == 5)*0.97 + (event->gen_match_1 != 5))*((event->gen_match_2 == 5)*0.97 + (event->gen_match_2 != 5))));
+      weight *= event->emb_weight;
     }
   }
+  // if(!preselectionFile.Contains("preselection_EMB")){
+    
+  //   if(!preselectionFile.Contains("preselection_data")){
+  //     weight = luminosity*event->weight;
+  //     if (CHAN == kTAU) weight *= event->sf_DoubleTauTight;
+  //     else              weight *= event->sf_SingleOrCrossTrigger;
+  //   }
+
+  //   // if(!preselectionFile.Contains("preselection_data"))weight = 1000*luminosity*event->puweight*event->trk_sf*event->reco_sf*event->genweight*event->antilep_tauscaling*event->idisoweight_1;
+
+  //   if( CHAN == kTAU && !preselectionFile.Contains("preselection_data") ){ // CHANGE IF TAU WP CHANGES!
+  //     if(event->gen_match_1 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1) weight *= 0.89; //vtight = 0.86, tight = 0.89
+  //     else if(event->gen_match_1 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 ) weight *= 0.88;
+  //     if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.89;
+  //     else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.88;
+  //   }
+  //   if( CHAN != kTAU && !preselectionFile.Contains("preselection_data") ){
+  //     if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.89;
+  //     else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.88;
+  //   }
+
+  //   // if (CHAN == kMU  && !preselectionFile.Contains("preselection_data") ) weight *= event->singleTriggerSFLeg1;
+  //   // if (CHAN == kEL  && !preselectionFile.Contains("preselection_data") ) weight *= event->singleTriggerSFLeg1;
+  //   // if (CHAN == kTAU && !preselectionFile.Contains("preselection_data") ) weight *= event->xTriggerSFLeg1 * event->xTriggerSFLeg2;
+
+  //   // if(preselectionFile.Contains("preselection_TT")){
+  //   //   weight *= event->topWeight_run1;
+  //   // }
+  //   // if(preselectionFile.Contains("preselection_TT") || preselectionFile.Contains("preselection_VV")){
+  //   //   weight *= event->xsec*event->genNEventsWeight;
+  //   // }
+
+  //   // if(preselectionFile.Contains("preselection_DY")){
+  //   //   weight *= event->zPtReweightWeight;
+  //   //   switch (event->NUP){
+  //   //     case 0: weight *= 5.91296350328e-05; break;
+  //   //     case 1: weight *= 1.01562362959e-05; break;
+  //   //     case 2: weight *= 2.15030982864e-05; break;
+  //   //     case 3: weight *= 1.35063197418e-05; break;
+  //   //     case 4: weight *= 9.22459522375e-06; break;
+  //   //   }
+  //   // }
+  //   // if(preselectionFile.Contains("preselection_Wjets")){
+  //   //   switch (event->NUP){
+  //   //     case 0: weight *= 0.000790555230048; break;
+  //   //     case 1: weight *= 0.000150361226486; break;
+  //   //     case 2: weight *= 0.000307137166339; break;
+  //   //     case 3: weight *= 5.55843884964e-05; break;
+  //   //     case 4: weight *= 5.2271728229e-05; break;
+  //   //   }
+  //   // }
+  // }else{
+  //   if(CHAN != kTAU){
+  //     weight = (event->generatorWeight)*(event->muonEffTrgWeight)*(event->idWeight_1*(event->triggerWeight_1*(event->triggerWeight_1<1.8)+(event->triggerWeight_1>=1.8))*event->isoWeight_1)*(event->embeddedDecayModeWeight)*(((event->gen_match_2 == 5)*0.97 + (event->gen_match_2 != 5)));
+  //   }else{
+  //     weight = ((event->generatorWeight)*(event->muonEffTrgWeight)*(event->crossTriggerDataEfficiencyWeight_tight_MVA_1*event->crossTriggerDataEfficiencyWeight_tight_MVA_2 )*(event->embeddedDecayModeWeight)*(((event->gen_match_1 == 5)*0.97 + (event->gen_match_1 != 5))*((event->gen_match_2 == 5)*0.97 + (event->gen_match_2 != 5))));
+  //   }
+  // }
   weight_sf=weight;
   
   if(CHAN==kTAU && !COINFLIP){
@@ -212,7 +219,6 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     if ( CHAN == kMU || CHAN == kTAU ){  //for now: in kTAU, fill lep with muons and otherLep with electrons
       if(event->addlepton_p4){ // from new NanoAOD
         for(int i = 0; i < event->addlepton_p4->size(); i++){
-          
           if ( abs(event->addlepton_pdgId->at(i)) == 13) {	// 13 == muon
             m_lep  ->push_back( TLorentzVector(event->addlepton_p4->at(i)) );	
             m_lep_q->push_back( TMath::Sign(1,event->addlepton_pdgId->at(i)) );
@@ -225,7 +231,6 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
             m_otherLep_iso->push_back( event->addlepton_iso->at(i) );
           }
         }
-        
         nLep 	  = m_lep->size();
         nOtherLep = m_otherLep->size();
         
@@ -256,7 +261,9 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       }
     } else if ( CHAN == kEL ){
       if(event->addlepton_p4){ // from new NanoAOD 
+        
         for(int i = 0; i < event->addlepton_p4->size(); i++){
+
           if ( abs(event->addlepton_pdgId->at(i)) == 11) {	//electron
             m_lep  ->push_back( TLorentzVector(event->addlepton_p4->at(i)) );	
             m_lep_q->push_back( TMath::Sign(1,event->addlepton_pdgId->at(i)) );
@@ -268,7 +275,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
             m_otherLep_iso->push_back( event->addlepton_iso->at(i) );
           }
         }
-
+        
         nLep 	  = m_lep->size();
         nOtherLep = m_otherLep->size();
 
@@ -326,6 +333,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       m_iso=otherLep_iso;
     }
   }
+
   Double_t lep1_eta=-999, lep1_phi=-999, lep2_eta=-999, lep2_phi=-999;
 
   //for dR calculations
@@ -424,11 +432,16 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   if( !preselectionFile.Contains("preselection_EMB")){
     if ( event->addlepton_p4 ) loop_end = event->addlepton_p4->size();
     else loop_end = event->nadditionalTau;
-
+    
     for (int i=0; i<loop_end; i++){ 
         if ( event->addlepton_p4 ) pdgID = event->addlepton_pdgId->at(i);	//to get only taus in nanoAOD file
       else pdgID = 15;	// to allow every entry in addtau-list
       
+      if (abs(pdgID) <= 10 ){
+        cout << "Warning: Detected event with addlepton_pdgID < 10 -> discard event" << endl;
+        return 0;
+      }
+
       if (abs(pdgID) != 15) continue; //discard non-taus
 
         if ( ! (event->addlepton_p4->at(i).Pt() > m_tau_pt_cut ) ) continue;
@@ -443,12 +456,13 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       
       if( event->addlepton_p4 ) m=event->addlepton_tauDM->at(i);
       else 					  m=event->addtau_decayMode->at(i);
-
+      
         if ( !( (m>=0&&m<=4)||(m>=10&&m<=14) ) ) continue;
         dR=this->calcDR( event->eta_1, event->phi_1, event->addlepton_p4->at(i).Eta(), event->addlepton_p4->at(i).Phi() );
         if ( CHAN!=kTAU && dR<0.5 ) continue;
 
       if ( event->addlepton_p4 ){ //nanoAOD
+        
         
         alltau_pt ->push_back(event->addlepton_p4->at(i).Pt());  
         alltau_eta->push_back(event->addlepton_p4->at(i).Eta());
@@ -460,6 +474,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
         alltau_tightMVA ->push_back( (event->addlepton_tauID->at(i) & 0x8) > 0 );
         alltau_vtightMVA->push_back( (event->addlepton_tauID->at(i) & 0x10) > 0 );
         
+       
         bitmask=event->addlepton_tauAntiEle->at(i); //add in .h
         antiEle = ( bitmask & 0x8) > 0;
         bitmask=event->addlepton_tauAntiMu->at(i); //add in .h

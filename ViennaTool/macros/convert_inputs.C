@@ -237,13 +237,16 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
     TString tight_cat="";
     const TString d="ViennaTool/fakefactor/data_"+s_chan[CHAN]+"/";
     TFile *f_data_CR=new TFile(d+"FF_corr_TT_MCsum_noGen.root");
+    cout << "f_data_CR: " << d+"FF_corr_TT_MCsum_noGen.root" << endl;
+    cout << "f_MC_CR: " << d+"FF_TT_J_only.root" << endl;
+    cout << "CR Histogram: " << hn << endl;
     TH1D *h_data_CR= (TH1D*)f_data_CR->Get(hn);
     TFile *f_MC_CR=new TFile(d+"FF_TT_J_only.root");
     TH1D *h_MC_CR= (TH1D*)f_MC_CR->Get(hn);
   
     //for(int i=1; i<=h_data_CR->GetNbinsX(); i++){
     for(int i=1; i<=2; i++){
-      if(fn.Contains("TT")) scale_factors.push_back( abs(h_data_CR->GetBinContent(i)/h_MC_CR->GetBinContent(i) ) );
+      if(fn.Contains("TT")) scale_factors.push_back( abs(h_data_CR->GetBinContent(1)/h_MC_CR->GetBinContent(1) ) );  //original: GetBinContent(i) (2x)
       else scale_factors.push_back(1.);
       cout << "Scale factor " << i-1 << " :" << scale_factors.at(i-1) << endl;
     }
@@ -280,7 +283,7 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
 
   if(fit_pT_bins) fn.ReplaceAll(".root","_fitted.root");
   TFile *f=new TFile( fn );
-
+  cout << "HistoNames: "<< hnout << endl;
   TH3D *hout                      = new TH3D( hnout,                             "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
   TH3D *hout_err_low              = new TH3D( hnout+"_error_low",                "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
   TH3D *hout_err_dm0_njet0_low    = new TH3D( hnout+"_error_dm0_njet0_low",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
@@ -337,7 +340,7 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
         }
       }
     }
-      
+    cout << "Different DecayBins: " << N_D2 << endl;
     for (int idm=0; idm<N_D2; idm++){
       for (int ijet=0; ijet<N_D3; ijet++){
         stringstream fitted_histo; fitted_histo << "dm" << idm << "_njet" << ijet;
@@ -359,7 +362,8 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
           hout_err_high->SetBinError(       ipt+1 , idm+1 , ijet+1 , err_high );
 
           if(idm==0 && ijet==0){
-            
+            // cout << "err_low: " << err_low << ", cont: " << cont << ", err_dm0njet0: " << err_dm0njet0 << endl;
+            // cout << "BINCONTENT : " << TMath::Sqrt( TMath::Power(err_low/cont,2) + TMath::Power(err_dm0njet0,2) ) << endl;
             hout_err_dm0_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , TMath::Sqrt( TMath::Power(err_low/cont,2) + TMath::Power(err_dm0njet0,2) ) );
             hout_err_dm0_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
             hout_err_dm1_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
@@ -438,7 +442,7 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
     return;
   }
   
-    
+  cout << "OutputFile: " << fout_n << endl;
   TFile *fout=new TFile ( fout_n , "RECREATE" );
   hout->Write();
   hout_err_low->Write();
@@ -716,9 +720,11 @@ void combineWSystematics( TString fW_nonclosure, TString sys_nonclosure, TString
     else if(CHAN==kEL) additionalDYuncertainty=WToDYUncertainty_et;
   }
   TH2D *out_t = new TH2D(tout, tout, sys_nonclosure_t->GetN(), sys_nonclosure_t->GetX()[0], sys_nonclosure_t->GetX()[sys_nonclosure_t->GetN()-1], sys_mtcorr_t->GetN(), sys_mtcorr_t->GetX()[0], sys_mtcorr_t->GetX()[sys_mtcorr_t->GetN()-1]);
+  // cout << "i-Bins: " << sys_nonclosure_t->GetN() << " , j-Bins: " << sys_mtcorr_t->GetN() << endl;
   for(Int_t i=0; i<=sys_nonclosure_t->GetN(); i++){
     for(Int_t j=0; j<=sys_mtcorr_t->GetN(); j++){
       //out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_mtcorr_t->GetY()[j],2) ) );
+      // cout << "Bincontent " << i << "," << j << ": " << TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_mtcorr_t->GetY()[j],2) + TMath::Power(additionalDYuncertainty,2) )<<endl;
       out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_mtcorr_t->GetY()[j],2) + TMath::Power(additionalDYuncertainty,2) ) );
     }
   }
@@ -741,22 +747,27 @@ void combineTTSystematics( TString fTT_nonclosure, TString sys_nonclosure, TStri
   TFile *f_MC_CR=new TFile(d+"FF_TT_J_only.root");
   TH1D *h_MC_CR= (TH1D*)f_MC_CR->Get("c_t"+tight_cat);
 
-  Double_t scale_factors[]={abs(h_data_CR->GetBinContent(1)-h_MC_CR->GetBinContent(1))/h_MC_CR->GetBinContent(1), abs(h_data_CR->GetBinContent(2)-h_MC_CR->GetBinContent(2))/h_MC_CR->GetBinContent(2)};
+  Double_t scale_factors[]={abs(h_data_CR->GetBinContent(1)-h_MC_CR->GetBinContent(1))/h_MC_CR->GetBinContent(1), abs(h_data_CR->GetBinContent(1)-h_MC_CR->GetBinContent(1))/h_MC_CR->GetBinContent(1)};
   //Double_t scale_factors[]={0.37,0.09};
   //Double_t scale_factors[]={0.23,0.06};
   cout << "///////////////////////////////////////////////////////" << endl;
-  cout << "TT data/MC scale factors (decay mode):" << endl;
+  cout << "TT data/MC scale factors:" << endl;
   cout << "Data: " << h_data_CR->GetBinContent(1) << " and MC: " << h_MC_CR->GetBinContent(1) << " -> " << scale_factors[0] << endl;
-  cout << "Data: " << h_data_CR->GetBinContent(2) << " and MC: " << h_MC_CR->GetBinContent(2) << " -> " << scale_factors[1] << endl;
+  // cout << "Data: " << h_data_CR->GetBinContent(2) << " and MC: " << h_MC_CR->GetBinContent(2) << " -> " << scale_factors[1] << endl;
   
 
   TH2D *out_t = new TH2D(tout, tout, 2,0,2,sys_nonclosure_t->GetN(), sys_nonclosure_t->GetX()[0], sys_nonclosure_t->GetX()[sys_nonclosure_t->GetN()-1]);
-  for(Int_t i=0; i<2; i++){
+  for(Int_t i=0; i<1; i++){
     for(Int_t j=0; j<=sys_nonclosure_t->GetN(); j++){
+      // cout << "Bincontent " << i << "," << j << ": " << TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2)+TMath::Power(scale_factors[i],2) ) << endl;
+      // cout << "Bincontent_Test " << i << "," << j << ": " << TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) ) << endl;
       if(!DOMC)out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2)+TMath::Power(scale_factors[i],2) ));
       else out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) ) );
+      if(!DOMC)out_t->SetBinContent(i+1,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2)+TMath::Power(scale_factors[i],2) ));
+      else out_t->SetBinContent(i+1,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) ) );
     }
   }
+  // cout << "TT-Outputfile: " << fout.ReplaceAll(".root",tight_cat+".root") << endl;
   TFile *fout_f=new TFile(fout.ReplaceAll(".root",tight_cat+".root"),"UPDATE");
   fout_f->cd();
   out_t->Write();

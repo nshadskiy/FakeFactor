@@ -65,44 +65,46 @@ void fitFakeFactors(){
             
 	 else */ 
   if (CHAN == kMU && modes.at(imode) & _W_JETS && ijet == 0) {
-          cf.set_fitFunc( "landau(0)" );
-
+          cf.set_fitFunc( "landau(0)+pol0(2)" );
           cf.set_err_scale( 3.0 );
-        cf.set_histMaxFrac(0.75);
           cf.set_err_cl( 0 );
-          cf.set_histMaxFrac( 0.58 );
+          cf.set_histMaxFrac( 170.0/500 );
           cf.set_smoothFrac(0.25);
           cf.set_smoothMode("spline3");              
           }
   else if (CHAN == kMU && modes.at(imode) & _W_JETS) {
-          cf.set_fitFunc( "landau(0)+pol0(2)" );
-
+          if (ijet == 1) cf.set_fitFunc( "pol1(2)" );
           cf.set_err_scale( 3.0 );
-        cf.set_histMaxFrac(0.75);
           cf.set_err_cl( 0 );
-          cf.set_histMaxFrac( 0.58 );
+          cf.set_histMaxFrac( 0.55 );
           cf.set_smoothFrac(0.25);
           cf.set_smoothMode("spline3");              
           }
   
   else if (CHAN == kMU && modes.at(imode) & _QCD) {
-    cf.set_histMaxFrac(0.33);
-  } 
-  else if( CHAN==kEL && modes.at(imode) & _QCD && modes.at(imode) & _AI && idm == 0  ){
-	      cf.set_fitFunc( "pol0(2)" );
-	      cf.set_err_scale( 3.0 );
-	      cf.set_err_cl( 0 );
-              cf.set_histMaxFrac( 0.1 );
-              cf.set_smoothFrac(0.15);
-              cf.set_smoothMode("spline3");              
+         cf.set_fitFunc( "pol1(2)" );
+          cf.set_err_scale( 3.0 );
+          cf.set_err_cl( 0 );
+          cf.set_histMaxFrac( 0.2 );
+          cf.set_smoothFrac(0.25);
+          cf.set_smoothMode("spline3");              
           }
-  else if( CHAN==kEL && modes.at(imode) & _QCD ){
-	      cf.set_fitFunc( "pol1(2)" );
-	      cf.set_err_scale( 3.0 );
-	      cf.set_err_cl( 0 );
-              cf.set_histMaxFrac( 0.15 );
-              cf.set_smoothFrac(0.15);
-              cf.set_smoothMode("spline3");              
+  
+ else if( CHAN==kEL && (modes.at(imode) & _QCD) && modes.at(imode) & _AI  ) {
+	      	    cf.set_fitFunc( "pol1(2)" );
+              cf.set_err_scale( 3.0 );
+              if( ijet == 0 ) {cf.set_histMaxFrac( 0.21 );  cf.set_smoothFrac(0.19);}
+              else            {cf.set_histMaxFrac( 0.176 );  cf.set_smoothFrac(0.15);}
+              cf.set_err_cl( 0 );          
+              cf.set_smoothMode("spline3");
+         }              
+         else if( CHAN==kEL && (modes.at(imode) & _QCD) ) {
+	      	    cf.set_fitFunc( "pol1(2)" );
+              cf.set_err_scale( 3.0 );
+              cf.set_err_cl( 0 );         
+              if( ijet == 0 ) {cf.set_histMaxFrac( 0.16 );  cf.set_smoothFrac(0.15);}
+              else            {cf.set_histMaxFrac( 0.22 );  cf.set_smoothFrac(0.2);}
+              cf.set_smoothMode("spline3");     
           }
     else if( CHAN==kEL && modes.at(imode) & _TT ){
 	      cf.set_fitFunc( "landau(0)+pol0(2)" );
@@ -128,15 +130,18 @@ void fitFakeFactors(){
               cf.set_smoothFrac(0.15);
               cf.set_smoothMode("spline3");              
           }
-	  if( CHAN==kTAU && !(ijet == 0 && idm == 0) ){ //use default p0 for 1p0j, only //THIS IS USED FOR "TIGHT WP"
+	  if( CHAN==kTAU ){ //use default p0 for 1p0j, only //THIS IS USED FOR "TIGHT WP"  #&& !(ijet == 0 && idm == 0) 
 	    //	  else if( CHAN==kTAU && ijet == 1 ){ //use default p0 for 1p1j/3p1j //THIS IS USED FOR "VERY TIGHT WP"
 	    cf.set_fitFunc( "landau(0)+pol1(2)" );
 	    cf.set_err_scale( 1.2 );
-	    //change "cut-off" for alternative (otherwise take default)
-	    if      (ijet == 0 && idm == 1) cf.set_histMaxFrac( 0.25 );
-	    else if (ijet == 1 && idm == 1) cf.set_histMaxFrac( 0.35 );
-	    else                       cf.set_histMaxFrac( 0.40 );
-	    cf.set_smoothFrac(0.20);
+	    // //change "cut-off" for alternative (otherwise take default)
+	    // if      (ijet == 0 && idm == 1) cf.set_histMaxFrac( 0.35 );
+	    // else if (ijet == 1 && idm == 1) cf.set_histMaxFrac( 0.35 );
+      // if ( modes.at(imode) & _AI  ) 
+      cf.set_histMaxFrac( 0.45 ); cf.set_smoothFrac(0.3);
+      // else if ( ijet == 0) {cf.set_histMaxFrac( 0.26 );  cf.set_smoothFrac(0.2);}
+      // else if ( ijet == 1) {cf.set_histMaxFrac( 0.2 );  cf.set_smoothFrac(0.18);}
+	    
 	    cf.set_smoothMode("spline3");              
           }
 	  else if( false ){ //use default p0 for 3p0j, but inflate errors! //THIS IS USED FOR "TIGHT WP"
@@ -195,7 +200,7 @@ void fitFakeFactors(){
           //  g_fit->SetMarkerStyle(21);
           g_fit->SetTitle("");
           g_fit->Draw();
-          g_fit->GetXaxis()->SetTitle("p_{T}(jet) (GeV)");
+          g_fit->GetXaxis()->SetTitle("p_{T}(tau) (GeV)");
           g_fit->GetXaxis()->SetTitleSize(0.06);
           g_fit->GetXaxis()->SetTitleFont(42);
           g_fit->GetXaxis()->SetTitleOffset(1.06);
@@ -264,8 +269,8 @@ void fitFakeFactors(){
           else l.DrawLatex(0.52,0.8,"FFs "+bkg);
           if(idm==0) l1.DrawLatex(0.52,0.7,decayMode+", "+jetMode);
           else l1.DrawLatex(0.52,0.7,decayMode+", "+jetMode);*/
-          if(idm==0) l1.DrawLatex(0.19,0.915,channel+" "+decayMode+", "+jetMode);
-          else l1.DrawLatex(0.19,0.915,channel+" "+decayMode+", "+jetMode);
+          if(idm==0) l1.DrawLatex(0.19,0.915,channel+" "+jetMode);
+          else l1.DrawLatex(0.19,0.915,channel+" "+jetMode);
           //l2.DrawLatex(0.16,0.85,channel);
 
           TLatex cms1 = TLatex( 0.19, 0.838, "CMS" );
@@ -288,7 +293,7 @@ void fitFakeFactors(){
           cms3.SetTextSize(0.05);
           cms3.SetTextFont(52);
           
-          TLatex infoRight = TLatex( 0.665, 0.915, "41.86 fb^{-1} (13 TeV)" );
+          TLatex infoRight = TLatex( 0.665, 0.915, "41.5 fb^{-1} (13 TeV)" );
           infoRight.SetNDC();
           infoRight.SetTextFont(42);
           infoRight.SetTextSize(0.03);

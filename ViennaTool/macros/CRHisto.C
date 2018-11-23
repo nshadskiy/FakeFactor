@@ -43,7 +43,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
       for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt
         for (int is=0; is<nSA; is++){ //loop over samples
           presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root";
-          if(EMB == 1 && ssa[is].Contains("_T")) presel_file = path_presel+s_preselection+"_EMB"+CF+".root";
+          // if(EMB == 1 && ssa[is].Contains("_T")) presel_file = path_presel+s_preselection+"_EMB"+CF+".root";
           Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root"  );
         }
         if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_data.root"  );
@@ -54,7 +54,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
     for (int ic=3; ic<nCR; ic++){ //loop over CRs
       for (int is=0; is<nSA; is++){ //loop over samples
         presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root"; 
-        if(EMB == 1 && ssa[is].Contains("_T")) presel_file = path_presel+s_preselection+"_EMB"+CF+".root";
+        // if(EMB == 1 && ssa[is].Contains("_T")) presel_file = path_presel+s_preselection+"_EMB"+CF+".root";
         Analyzer->getCRHisto(presel_file, icr[ic]|LEPPT , path_sim+s_CR+"_"+scr[ic]+"_lepPt_"+ssa[is]+".root"  );
       }
       if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , icr[ic]|LEPPT , path_sim+s_CR+"_"+scr[ic]+"_lepPt_data.root"  );
@@ -66,7 +66,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
       for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
         for (int is=0; is<nSA; is++){ //loop over samples
           presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root";
-          if(EMB == 1 && ssa[is].Contains("_T")) presel_file = path_presel+s_preselection+"_EMB"+CF+".root";
+          // if(EMB == 1 && ssa[is].Contains("_T")) presel_file = path_presel+s_preselection+"_EMB"+CF+".root";
           Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_"+ssa[is]+".root"  );
         }
         if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_data.root"  );
@@ -79,7 +79,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
       for (int ic=3; ic<nCR; ic++){ //loop over CRs
         for (int is=0; is<nSA; is++){ //loop over samples
           presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root";
-          if(EMB == 1 && ssa[is].Contains("_T")) presel_file = path_presel+s_preselection+"_EMB"+CF+".root";
+          // if(EMB == 1 && ssa[is].Contains("_T")) presel_file = path_presel+s_preselection+"_EMB"+CF+".root";
           Analyzer->getCRHisto(presel_file, LEPPT|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_"+ssa[is]+".root"  );
         }
         if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , LEPPT|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_data.root"  );
@@ -92,7 +92,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
       for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
         for (int is=0; is<nSA; is++){ //loop over samples
           presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root";
-          if(EMB == 1 && ssa[is].Contains("_T")) presel_file = path_presel+s_preselection+"_EMB"+CF+".root";
+          // if(EMB == 1 && ssa[is].Contains("_T")) presel_file = path_presel+s_preselection+"_EMB"+CF+".root";
           Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_"+ssa[is]+".root"  );
         }
         if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_data.root"  );

@@ -3,7 +3,7 @@
 # steerAll.sh 1 #skip preselection (any other argument works as well)
 
 channel=$(grep 'int CHAN' "Settings.h" | awk -F'[=;]' '{print $2}')
-embedding=$(grep '#define EMBEDDING' "Settings.h" | awk -F'[B]' '{print $2}')
+embedding=$(grep '#define EMB' "Settings.h" | awk -F'[B]' '{print $2}')
 output=$(grep 'output_folder' "Settings.h" | awk -F'[=;]' '{print $2}' | tr -d '"')
 analysis=$(grep 'analysis' "Settings.h" | awk -F'[=;]' '{print $2}' | tr -d '"')
 #dc_path=$(grep 'DC_folder' "Settings.h" | awk -F'[=;]' '{print $2}' | tr -d '"')
@@ -11,7 +11,7 @@ if [ "$channel" == " kEL" ];  then chan="et"; fi
 if [ "$channel" == " kMU" ];  then chan="mt"; fi
 if [ "$channel" == " kTAU" ]; then chan="tt"; fi
 echo Channel: $chan
-echo Output : $output
+echo Output: $output
 echo Embedding: $embedding
 #echo $dc_path
 
@@ -29,25 +29,29 @@ echo "Compiling the framework"
 sh BuildStructure.sh
 cd ../
 make -B
-
+# exit 0
 if [ "${1}" == "" ]; then
     ./Preselection
+    # exit 0
     if [ $embedding == 0 ]; then 
         ./SRHisto
         ./CRHisto
     fi
 fi
-
+# exit 0
 ./steerFF
 ./fitFakeFactors
+# exit 0
 cd ViennaTool/Images/data_$chan
 #gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf
 gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
 cd -
-
+exit 0
 ./calcCorrections
 python plotCorrections.py --channel $channel
+# exit 0
 ./convert_inputs
+# exit 0
 python cpTDHaftPublic.py --destination $output --channel $channel
 python producePublicFakeFactors.py --input $output --channel $channel
 #python cpPublicFFtoDC.py --source $output --destination $dc_path --channel $channel

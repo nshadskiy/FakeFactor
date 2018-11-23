@@ -117,7 +117,7 @@ void PlotterClass::plotPieFractions_mutau_etau(TString channel, TString outfile,
   cms1.Draw();
   if(preliminary) cms2.Draw();
 
-  TLatex infoRight = TLatex( 0.675, 0.955, "41.86 fb^{-1} (13 TeV)" );
+  TLatex infoRight = TLatex( 0.675, 0.955, "41.5 fb^{-1} (13 TeV)" );
   infoRight.SetNDC();
   infoRight.SetTextSize(0.035);
   infoRight.SetTextFont(42);
@@ -213,7 +213,7 @@ void PlotterClass::plotPieFractions_tautau(TString channel, TString outfile, Int
   cms1.Draw();
   if(preliminary) cms2.Draw();
 
-  TLatex infoRight = TLatex( 0.675, 0.915, "41.86 fb^{-1} (13 TeV)" );
+  TLatex infoRight = TLatex( 0.675, 0.915, "41.5 fb^{-1} (13 TeV)" );
   infoRight.SetNDC();
   infoRight.SetTextSize(0.07);
   infoRight.SetTextFont(42);
@@ -395,12 +395,12 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
   TString caption=getCaption(ltext);
   TString description=getDescription(ltext);
 
-  stringstream used_lumi; used_lumi << luminosity; TString Tused_lumi = used_lumi.str();
+  // stringstream used_lumi; used_lumi << luminosity; TString Tused_lumi = used_lumi.str();
   TLatex l;
   l.SetTextSize(0.04);
   l.SetNDC();
   //l.SetTextFont(102);
-  l.DrawLatex(0.75,0.93,Tused_lumi+" fb^{-1} (13 TeV)");
+  l.DrawLatex(0.75,0.93,"41.5 fb^{-1} (13 TeV)");
 
   TLatex c;
   cout << "Caption: " << caption << endl;

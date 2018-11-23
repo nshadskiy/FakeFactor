@@ -325,7 +325,7 @@ for x in range(0,len(categories)):
             ),
             Leaf(
                 name='mviscorr_tt',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_MC_TT_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/Correction_MC_TT_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='TT_OS_MC_mvis_correction',
                 vars=['mvis']
             ),

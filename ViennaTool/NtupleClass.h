@@ -40,7 +40,7 @@ public :
    Float_t         embeddedDecayModeWeight;
    Float_t         idWeight_1;
    Float_t         isoWeight_1;
-   Float_t         reco_sf;
+   Float_t         sf_reco;
    Float_t         singleTriggerSFLeg1;
    Float_t         xTriggerSFLeg1;
    Float_t         xTriggerSFLeg2;
@@ -57,11 +57,16 @@ public :
    Float_t         idisoweight_1;
    Float_t         anti_idisoweight_1;
    Float_t         idisoweight_2;
-   Float_t         trk_sf;
+   Float_t         sf_trk;
    Float_t         effweight;
    Float_t         stitchedWeight;
    Float_t         topWeight;
    Float_t         topWeight_run1;
+   Float_t         topPtReweightWeightRun1;
+   Float_t         eleTauFakeRateWeight;
+   Float_t         muTauFakeRateWeight;
+   Double_t         emb_weight;
+   Float_t         doubleTauTrgWeight;
    Float_t         zPtReweightWeight;
    Float_t         zpt_weight_nom;
    Float_t         zpt_weight_esup;
@@ -76,7 +81,9 @@ public :
    Float_t         zpt_weight_statpt80down;
    Int_t           trg_singlemuon;
    Int_t           trg_singlemuon_lowpt;
+   Int_t           trg_singlemuon_24;
    Int_t           trg_singlemuon_27;
+   Int_t           trg_crossmuon_mu20tau27;
 //    Int_t           trg_mutaucross;
    Int_t           trg_singleelectron;
    Int_t           trg_singleelectron_27;
@@ -150,13 +157,13 @@ public :
    Int_t           againstMuonLoose3_1;
    Int_t           againstMuonTight3_1;
    Float_t         byCombinedIsolationDeltaBetaCorrRaw3Hits_1;
-   Int_t           byLooseCombinedIsolationDeltaBetaCorr3Hits_1;
-   Int_t           byMediumCombinedIsolationDeltaBetaCorr3Hits_1;
-   Int_t           byTightCombinedIsolationDeltaBetaCorr3Hits_1;
-   Int_t           byIsolationMVA3newDMwoLTraw_1;
-   Int_t           byIsolationMVA3oldDMwoLTraw_1;
-   Float_t         byIsolationMVA3newDMwLTraw_1;
-   Float_t         byIsolationMVA3oldDMwLTraw_1;
+   Float_t           byLooseCombinedIsolationDeltaBetaCorr3Hits_1;
+   Float_t           byMediumCombinedIsolationDeltaBetaCorr3Hits_1;
+   Float_t           byTightCombinedIsolationDeltaBetaCorr3Hits_1;
+   Float_t           byIsolationMVA3newDMwoLTraw_1;
+   Float_t           byIsolationMVA3oldDMwoLTraw_1;
+   Int_t         byIsolationMVA3newDMwLTraw_1;
+   Int_t         byIsolationMVA3oldDMwLTraw_1;
    Int_t           byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1;
    Int_t           byLooseIsolationMVArun2017v2DBoldDMwLT2017_1;
    Int_t           byMediumIsolationMVArun2017v2DBoldDMwLT2017_1;
@@ -213,13 +220,13 @@ public :
    Int_t           againstMuonLoose3_2;
    Int_t           againstMuonTight3_2;
    Float_t         byCombinedIsolationDeltaBetaCorrRaw3Hits_2;
-   Int_t           byLooseCombinedIsolationDeltaBetaCorr3Hits_2;
-   Int_t           byMediumCombinedIsolationDeltaBetaCorr3Hits_2;
-   Int_t           byTightCombinedIsolationDeltaBetaCorr3Hits_2;
-   Int_t           byIsolationMVA3newDMwoLTraw_2;
-   Int_t           byIsolationMVA3oldDMwoLTraw_2;
-   Float_t         byIsolationMVA3newDMwLTraw_2;
-   Float_t         byIsolationMVA3oldDMwLTraw_2;
+   Float_t           byLooseCombinedIsolationDeltaBetaCorr3Hits_2;
+   Float_t           byMediumCombinedIsolationDeltaBetaCorr3Hits_2;
+   Float_t           byTightCombinedIsolationDeltaBetaCorr3Hits_2;
+   Float_t           byIsolationMVA3newDMwoLTraw_2;
+   Float_t           byIsolationMVA3oldDMwoLTraw_2;
+   Int_t         byIsolationMVA3newDMwLTraw_2;
+   Int_t         byIsolationMVA3oldDMwLTraw_2;
    Int_t           byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2;
    Int_t           byLooseIsolationMVArun2017v2DBoldDMwLT2017_2;
    Int_t           byMediumIsolationMVArun2017v2DBoldDMwLT2017_2;
@@ -327,12 +334,12 @@ public :
    std::vector<int>     *addtau_gen_match;
    std::vector<double>  *addtau_mt;
    std::vector<double>  *addtau_mvis;
-   Bool_t          passesIsoCuts;
-   Bool_t          passesLepIsoCuts;
-   Bool_t          passesTauLepVetos;
-   Bool_t          passesThirdLepVeto;
-   Bool_t          passesDiMuonVeto;
-   Bool_t          passesDiElectronVeto;
+   Int_t          passesIsoCuts;
+   Int_t          passesLepIsoCuts;
+   Int_t          passesTauLepVetos;
+   Int_t          passesThirdLepVeto;
+   Int_t          passesDiMuonVeto;
+   Int_t          passesDiElectronVeto;
 //    Bool_t          matchXTrig_obj;
    Bool_t          dilepton_veto;
    Bool_t          extraelec_veto;
@@ -432,7 +439,7 @@ public :
    TBranch        *b_embeddedDecayModeWeight;
    TBranch        *b_idWeight_1;
    TBranch        *b_isoWeight_1;
-   TBranch        *b_reco_sf;
+   TBranch        *b_sf_reco;
    TBranch        *b_singleTriggerSFLeg1;
    TBranch        *b_xTriggerSFLeg1;
    TBranch        *b_xTriggerSFLeg2;
@@ -445,11 +452,16 @@ public :
    TBranch        *b_idisoweight_1;   //!
    TBranch        *b_anti_idisoweight_1;   //!
    TBranch        *b_idisoweight_2;   //!
-   TBranch        *b_trk_sf;   //!
+   TBranch        *b_sf_trk;   //!
    TBranch        *b_effweight;   //!
    TBranch        *b_stitchedWeight;   //!
    TBranch        *b_topWeight;   //!
    TBranch        *b_topWeight_run1;   //!
+   TBranch        *b_topPtReweightWeightRun1;   //!
+   TBranch        *b_eleTauFakeRateWeight;   //!
+   TBranch        *b_muTauFakeRateWeight;   //!
+   TBranch        *b_emb_weight;   //!
+   TBranch        *b_doubleTauTrgWeight;   //!
    TBranch        *b_zPtReweightWeight;   //!
    TBranch        *b_zpt_weight_nom;   //!
    TBranch        *b_zpt_weight_esup;   //!
@@ -464,7 +476,9 @@ public :
    TBranch        *b_zpt_weight_statpt80down;   //!
    TBranch        *b_trg_singlemuon;   //!
    TBranch        *b_trg_singlemuon_lowpt;   //!
+   TBranch        *b_trg_singlemuon_24;   //!
    TBranch        *b_trg_singlemuon_27;   //!
+   TBranch        *b_trg_crossmuon_mu20tau27;   //!
 //    TBranch        *b_trg_mutaucross;   //!
    TBranch        *b_trg_singleelectron;   //!
    TBranch        *b_trg_singleelectron_27;   //!
@@ -952,7 +966,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("embeddedDecayModeWeight", &embeddedDecayModeWeight, &b_embeddedDecayModeWeight);
    fChain->SetBranchAddress("idWeight_1", &idWeight_1, &b_idWeight_1);
    fChain->SetBranchAddress("isoWeight_1", &isoWeight_1, &b_isoWeight_1);
-   fChain->SetBranchAddress("reco_sf", &reco_sf, &b_reco_sf);
+   fChain->SetBranchAddress("sf_reco", &sf_reco, &b_sf_reco);
    fChain->SetBranchAddress("singleTriggerSFLeg1", &singleTriggerSFLeg1, &b_singleTriggerSFLeg1);
    fChain->SetBranchAddress("xTriggerSFLeg1", &xTriggerSFLeg1, &b_xTriggerSFLeg1);
    fChain->SetBranchAddress("xTriggerSFLeg2", &xTriggerSFLeg2, &b_xTriggerSFLeg2);
@@ -965,11 +979,16 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("idisoweight_1", &idisoweight_1, &b_idisoweight_1);
    fChain->SetBranchAddress("anti_idisoweight_1", &anti_idisoweight_1, &b_anti_idisoweight_1);
    fChain->SetBranchAddress("idisoweight_2", &idisoweight_2, &b_idisoweight_2);
-   fChain->SetBranchAddress("trk_sf", &trk_sf, &b_trk_sf);
+   fChain->SetBranchAddress("sf_trk", &sf_trk, &b_sf_trk);
    fChain->SetBranchAddress("effweight", &effweight, &b_effweight);
    fChain->SetBranchAddress("stitchedWeight", &stitchedWeight, &b_stitchedWeight);
    fChain->SetBranchAddress("topWeight", &topWeight, &b_topWeight);
    fChain->SetBranchAddress("topWeight_run1", &topWeight_run1, &b_topWeight_run1);
+   fChain->SetBranchAddress("topPtReweightWeightRun1", &topPtReweightWeightRun1, &b_topPtReweightWeightRun1);
+   fChain->SetBranchAddress("eleTauFakeRateWeight", &eleTauFakeRateWeight, &b_eleTauFakeRateWeight);
+   fChain->SetBranchAddress("muTauFakeRateWeight", &muTauFakeRateWeight, &b_muTauFakeRateWeight);
+   fChain->SetBranchAddress("emb_weight", &emb_weight, &b_emb_weight);
+   fChain->SetBranchAddress("doubleTauTrgWeight", &doubleTauTrgWeight, &b_doubleTauTrgWeight);
    fChain->SetBranchAddress("zPtReweightWeight", &zPtReweightWeight, &b_zPtReweightWeight);
    fChain->SetBranchAddress("zpt_weight_nom", &zpt_weight_nom, &b_zpt_weight_nom);
    fChain->SetBranchAddress("zpt_weight_esup", &zpt_weight_esup, &b_zpt_weight_esup);
@@ -984,7 +1003,9 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("zpt_weight_statpt80down", &zpt_weight_statpt80down, &b_zpt_weight_statpt80down);
    fChain->SetBranchAddress("trg_singlemuon", &trg_singlemuon, &b_trg_singlemuon);
    fChain->SetBranchAddress("trg_singlemuon_lowpt", &trg_singlemuon_lowpt, &b_trg_singlemuon_lowpt);
+   fChain->SetBranchAddress("trg_singlemuon_24", &trg_singlemuon_24, &b_trg_singlemuon_24);
    fChain->SetBranchAddress("trg_singlemuon_27", &trg_singlemuon_27, &b_trg_singlemuon_27);
+   fChain->SetBranchAddress("trg_crossmuon_mu20tau27", &trg_crossmuon_mu20tau27, &b_trg_crossmuon_mu20tau27);
 //    fChain->SetBranchAddress("trg_mutaucross", &trg_mutaucross, &b_trg_mutaucross);
    fChain->SetBranchAddress("trg_singleelectron_27", &trg_singleelectron_27, &b_trg_singleelectron_27);
    fChain->SetBranchAddress("trg_singleelectron_32", &trg_singleelectron_32, &b_trg_singleelectron_32);

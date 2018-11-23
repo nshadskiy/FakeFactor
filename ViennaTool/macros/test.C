@@ -5,7 +5,7 @@ using namespace std;
 
 void test(){
 
-  TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170628_tight/mt/inclusive/fakeFactors_20170628_tight.root";
+  TString fname="/afs/hephy.at/user/f/fspreitzer/public/Htautau/FakeRate/SM_ML/FakeFactor_SM_ML_Embedding_v7/et/inclusive/fakeFactors_tight.root";
   //TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170718/mt/inclusive/fakeFactors_mt_inclusive.root";
   //TString fname="/afs/hephy.at/work/j/jbrandstetter/cmssw/CMSSW_8_0_20/src/HTTutilities/Jet2TauFakes/data/mt/boosted/fakeFactors_20170228.root";
   //TString fname="/afs/hephy.at/user/j/jbrandstetter/public/Htautau/FakeRate2016/20170217_MC/mt/incl/fakeFactors_20170217_MC.root";
@@ -27,12 +27,12 @@ void test(){
   inputs[4] = 100; //mvis
   inputs[5] = 200; //mttot;
   inputs[6] = 0.99;*/
-  inputs[0] = 100; //tau_pt;
-  inputs[1] = 0;  //tau_decay
-  inputs[2] = 0;  //njets
-  inputs[3] = 100; //mvis;
-  inputs[4] = 30; //mt
-  inputs[5] = 0.1; //muiso;
+  inputs[0] = 46.1241; //tau_pt;
+  inputs[1] = 0;  //tau_decay;
+  inputs[2] = 1;  //njets;
+  inputs[3] = 222.465; //mvis;
+  inputs[4] = 24.505; //mt;
+  inputs[5] = 0.08; //muiso;
 
   // Retrieve fake factors
   double ff_nom = ff->value(inputs); // nominal fake factor

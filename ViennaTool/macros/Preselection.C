@@ -14,20 +14,20 @@ void Preselection() {
   std::cout << "Number: " << num << std::endl;
   TNtupleAnalyzer *Analyzer = new TNtupleAnalyzer();
   TString tmp;
-  if (num==1||num==0) {
-    Analyzer->loadFile(datafile,"TauCheck");
-    Analyzer->select(preselection_data,0);
-    Analyzer->closeFile();
-    tmp=preselection_data;
-    compressFile(preselection_data);
-  }
-  if(EMB == 1 && (num==1||num==0)){
-    Analyzer->loadFile(EMBfile,"TauCheck"); 
-    Analyzer->select(preselection_EMB,_DY|_TTAU); //_DY only as placeholder so it gets checked in TNtupleAnalyzer::fitsGenCategory() 
-    Analyzer->closeFile();
-    tmp=preselection_EMB;
-    compressFile(preselection_EMB);
-  }
+  // if (num==1||num==0) {
+  //   Analyzer->loadFile(datafile,"TauCheck");
+  //   Analyzer->select(preselection_data,0);
+  //   Analyzer->closeFile();
+  //   tmp=preselection_data;
+  //   compressFile(preselection_data);
+  // }
+  // if(EMB == 1 && (num==1||num==0)){
+  //   Analyzer->loadFile(EMBfile,"TauCheck"); 
+  //   Analyzer->select(preselection_EMB,_DY|_TTAU); //_DY only as placeholder so it gets checked in TNtupleAnalyzer::fitsGenCategory() 
+  //   Analyzer->closeFile();
+  //   tmp=preselection_EMB;
+  //   compressFile(preselection_EMB);
+  // }
   if (num==2||num==0) {
     Analyzer->loadFile(TTfile,"TauCheck");
     Analyzer->select(preselection_TT,0);

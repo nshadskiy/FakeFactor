@@ -114,7 +114,7 @@ if __name__ == '__main__':
           cms1.SetTextFont(62);
           cms1.SetTextSize(0.06);
           
-          infoRight = R.TLatex( 0.68, 0.915, "35.9 fb^{-1} (13 TeV)" )
+          infoRight = R.TLatex( 0.68, 0.915, "41.5 fb^{-1} (13 TeV)" )
           infoRight.SetNDC();
           infoRight.SetTextSize(0.03);
           infoRight.SetTextFont(42);
