@@ -213,11 +213,11 @@ TGraphAsymmErrors* CustomFit::makeFitGraph(TH1D* h_in){
     y[i]=h_in->GetBinContent( this->fitFromBin+i );
     ey_u[i]=h_in->GetBinErrorUp( this->fitFromBin+i );
     ey_d[i]=h_in->GetBinErrorLow( this->fitFromBin+i );
-    ex[i]  =h_in->GetBinWidth( this->fitFromBin+i );
+    // ex[i]  =h_in->GetBinWidth( this->fitFromBin+i );
     //    std::cout << i << " " << x[i] << " " << y[i] << std::endl;
   }
 
-  g=new TGraphAsymmErrors( bin_centers.size() , x , y , ex , ex , ey_d , ey_u );
+  g=new TGraphAsymmErrors( bin_centers.size() , x , y , 0 , 0 , ey_d , ey_u );
 
   return g;
 }

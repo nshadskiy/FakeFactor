@@ -31,7 +31,7 @@ cd ../
 make -B
 # exit 0
 if [ "${1}" == "" ]; then
-    ./Preselection
+    # ./Preselection
     # exit 0
     if [ $embedding == 0 ]; then 
         ./SRHisto
