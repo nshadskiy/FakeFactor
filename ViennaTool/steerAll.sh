@@ -31,16 +31,13 @@ cd ../
 make -B
 
 if [ "${1}" == "" ]; then
-    # ./Preselection
-    # exit 0
+    ./Preselection
+    
     if [ $embedding == 0 ]; then 
-        # ./SRHisto
-        # exit 0 
+        ./SRHisto
         ./CRHisto
     fi
 fi
-
-exit 0
 
 ./steerFF
 ./fitFakeFactors
