@@ -667,7 +667,7 @@ void combineQCDSystematics( TString fQCD_nonclosure, TString sys_nonclosure, TSt
         //if(!CALC_SS_SR) out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) ) );
         if(!CALC_SS_SR){
           Float_t binContent = TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) + TMath::Power(sys_OSSS_t->GetY()[i],2) + TMath::Power(addUncertainty,2) );
-          if(binContent>1) binContent=0;
+          if(binContent>1) binContent=1;
           out_t->SetBinContent(i,j,binContent );
         }
         else out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) ) );
@@ -693,7 +693,7 @@ void combineQCDSystematics( TString fQCD_nonclosure, TString sys_nonclosure, TSt
         //if(!CALC_SS_SR) out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) ) );
         if(!CALC_SS_SR){
           Float_t binContent=TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) + TMath::Power(sys_OSSS_t->GetY()[i],2) + TMath::Power(addUncertainty,2) );
-          if(binContent>1)binContent=0;
+          if(binContent>1)binContent=1;
           out_t->SetBinContent(i,j,binContent);
         }
         else out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_otherLep_t->GetY()[j],2) ) );

@@ -69,7 +69,7 @@ Int_t GlobalClass::isTight_alt(const Int_t mode, const Int_t ind) //default: 0,0
 {
   if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != 6 ) return 0; }
 
-  if ( event_s->alltau_mediumMVA->at(ind) && !event_s->alltau_vtightMVA->at(ind) ) return 1; 
+  if ( event_s->alltau_mediumMVA->at(ind) && !event_s->alltau_tightMVA->at(ind) ) return 1; 
 
   return 0;
 }

@@ -29,29 +29,32 @@ echo "Compiling the framework"
 sh BuildStructure.sh
 cd ../
 make -B
-# exit 0
+
 if [ "${1}" == "" ]; then
     # ./Preselection
     # exit 0
     if [ $embedding == 0 ]; then 
-        ./SRHisto
+        # ./SRHisto
+        # exit 0 
         ./CRHisto
     fi
 fi
-# exit 0
+
+exit 0
+
 ./steerFF
 ./fitFakeFactors
-# exit 0
+
 cd ViennaTool/Images/data_$chan
 #gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf
 gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
 cd -
-exit 0
+
 ./calcCorrections
 python plotCorrections.py --channel $channel
-# exit 0
+
 ./convert_inputs
-# exit 0
+
 python cpTDHaftPublic.py --destination $output --channel $channel
 python producePublicFakeFactors.py --input $output --channel $channel
 #python cpPublicFFtoDC.py --source $output --destination $dc_path --channel $channel

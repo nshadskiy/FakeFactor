@@ -1467,12 +1467,23 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   TGraphAsymmErrors *g=   gsk.returnSmoothedGraph();
 
   Double_t x185; Double_t y185;
-  g->GetPoint(185*4,x185,y185);
+  Double_t scale_error_from=100;
+  Double_t lim=(scale_error_from+20)*4;
+  Int_t constPoint = 0;
+  if(mode & _QCD) constPoint = 223;
+  else constPoint = 185;
+  g->GetPoint(constPoint*4,x185,y185);
   for(int i=0; i<g->GetN(); i++){
     Double_t x; Double_t y;
-    if(i>185*4){
+    if(i>constPoint*4){
       g->GetPoint(i,x,y);
       g->SetPoint(i,x,y185);
+    }
+    if (CHAN == kMU && (mode & _QCD) && i>lim){
+      float upfactor=(i-lim)/lim+1;
+      upfactor=pow(upfactor,0.7);
+      g->SetPointEYlow(i, upfactor*g->GetErrorYlow(i) );
+      g->SetPointEYhigh(i, upfactor*g->GetErrorYhigh(i) );
     }
   }
 
@@ -1587,7 +1598,6 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
           closure_h->Fill(event_s->lep_pt,FF_value*event_s->weight_sf*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );
         } 
       }
-      
     }
 
     closure_h->Multiply(ratio_l);
@@ -1984,14 +1994,14 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
 
   Double_t x200; Double_t y200;
   if(CHAN==kMU)g->GetPoint(180*4,x200,y200);
-  if(CHAN==kEL)g->GetPoint(110*4,x200,y200);
+  if(CHAN==kEL)g->GetPoint(190*4,x200,y200); // TODO CHANGE (110*4,x200,y200)
   for(int i=0; i<g->GetN(); i++){
     Double_t x; Double_t y;
     if(CHAN==kMU && i>180*4){
       g->GetPoint(i,x,y);
       g->SetPoint(i,x,y200);
     }
-    else if(CHAN==kEL && i>110*4){
+    else if(CHAN==kEL && i>190*4){ //CHANGE 110
       g->GetPoint(i,x,y);
       g->SetPoint(i,x,y200);
     }

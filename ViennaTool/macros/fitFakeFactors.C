@@ -51,8 +51,8 @@ void fitFakeFactors(){
           const int nbins=pt_bins.at(imode);
           cout << "NBINS: " << nbins << endl;
           double a_bins[nbins] = {};
-          if(modes.at(imode) & _QCD && !modes.at(imode) & _AI ) for(int ibin=0; ibin<nbins; ibin++){a_bins[ibin]=Pt_cuts_QCD[ibin];}
-          if(modes.at(imode) & _QCD && modes.at(imode) & _AI ) for(int ibin=0; ibin<nbins; ibin++){a_bins[ibin]=Pt_cuts_QCD_AI[ibin];}
+          if(modes.at(imode) & _QCD && !(modes.at(imode) & _AI) ) for(int ibin=0; ibin<nbins; ibin++){a_bins[ibin]=Pt_cuts_QCD[ibin];}
+          if(modes.at(imode) & _QCD && (modes.at(imode) & _AI) ) for(int ibin=0; ibin<nbins; ibin++){a_bins[ibin]=Pt_cuts_QCD_AI[ibin];}
           if(modes.at(imode) & _W_JETS) for(int ibin=0; ibin<nbins; ibin++){a_bins[ibin]=Pt_cuts_Wjets[ibin];}
           if(modes.at(imode) & _TT) for(int ibin=0; ibin<nbins; ibin++){a_bins[ibin]=Pt_cuts_TT_SR[ibin];}
           
@@ -73,16 +73,25 @@ void fitFakeFactors(){
           cf.set_smoothMode("spline3");              
           }
   else if (CHAN == kMU && modes.at(imode) & _W_JETS) {
-          if (ijet == 1) cf.set_fitFunc( "pol1(2)" );
+          cf.set_fitFunc( "pol1(2)" );
           cf.set_err_scale( 3.0 );
           cf.set_err_cl( 0 );
-          cf.set_histMaxFrac( 0.55 );
+          cf.set_histMaxFrac( 160.0/500.0 );
+          cf.set_smoothFrac(0.25);
+          cf.set_smoothMode("spline3");              
+          }
+  
+  else if (CHAN == kMU && modes.at(imode) & _QCD && modes.at(imode) & _AI && ijet == 1) {
+         cf.set_fitFunc( "pol1(2)" );
+          cf.set_err_scale( 3.0 );
+          cf.set_err_cl( 0 );
+          cf.set_histMaxFrac( 60.0/500.0 );
           cf.set_smoothFrac(0.25);
           cf.set_smoothMode("spline3");              
           }
   
   else if (CHAN == kMU && modes.at(imode) & _QCD) {
-         cf.set_fitFunc( "pol1(2)" );
+         cf.set_fitFunc( "landau(0)+pol0(2)" );
           cf.set_err_scale( 3.0 );
           cf.set_err_cl( 0 );
           cf.set_histMaxFrac( 0.2 );
@@ -91,9 +100,10 @@ void fitFakeFactors(){
           }
   
  else if( CHAN==kEL && (modes.at(imode) & _QCD) && modes.at(imode) & _AI  ) {
-	      	    cf.set_fitFunc( "pol1(2)" );
+	      	    if( ijet == 0 )cf.set_fitFunc( "pol1(2)" );
+              else     	     cf.set_fitFunc( "pol1(2)" );
               cf.set_err_scale( 3.0 );
-              if( ijet == 0 ) {cf.set_histMaxFrac( 0.21 );  cf.set_smoothFrac(0.19);}
+              if( ijet == 0 ) {cf.set_histMaxFrac( 90.0/500.0 );  cf.set_smoothFrac(0.19);}
               else            {cf.set_histMaxFrac( 0.176 );  cf.set_smoothFrac(0.15);}
               cf.set_err_cl( 0 );          
               cf.set_smoothMode("spline3");
@@ -102,15 +112,23 @@ void fitFakeFactors(){
 	      	    cf.set_fitFunc( "pol1(2)" );
               cf.set_err_scale( 3.0 );
               cf.set_err_cl( 0 );         
-              if( ijet == 0 ) {cf.set_histMaxFrac( 0.16 );  cf.set_smoothFrac(0.15);}
-              else            {cf.set_histMaxFrac( 0.22 );  cf.set_smoothFrac(0.2);}
+              if( ijet == 0 ) {cf.set_histMaxFrac( 48.0/500 );  cf.set_smoothFrac(0.15);}
+              else            {cf.set_histMaxFrac( 101.0/500.0 );  cf.set_smoothFrac(0.2);}
               cf.set_smoothMode("spline3");     
           }
     else if( CHAN==kEL && modes.at(imode) & _TT ){
-	      cf.set_fitFunc( "landau(0)+pol0(2)" );
+	      cf.set_fitFunc( "landau(0)+pol1(2)" );
 	      cf.set_err_scale( 3.0 );
 	      cf.set_err_cl( 0 );
               cf.set_histMaxFrac( 0.385 );
+              cf.set_smoothFrac(0.15);
+              cf.set_smoothMode("spline3");              
+          }
+    else if( CHAN==kEL && modes.at(imode) & _W_JETS && modes.at(imode) & _AI ){
+	      cf.set_fitFunc( "pol1(2)" );
+	      cf.set_err_scale( 3.0 );
+	      cf.set_err_cl( 0 );
+              cf.set_histMaxFrac( 105.0/500.0 );
               cf.set_smoothFrac(0.15);
               cf.set_smoothMode("spline3");              
           }
@@ -118,7 +136,7 @@ void fitFakeFactors(){
 	      cf.set_fitFunc( "pol1(2)" );  
 	      cf.set_err_scale( 3.0 );
 	      cf.set_err_cl( 0 );
-              cf.set_histMaxFrac( 0.2 );
+              cf.set_histMaxFrac( 105.0/500.0 );
               cf.set_smoothFrac(0.15);
               cf.set_smoothMode("spline3");              
           }
@@ -126,11 +144,11 @@ void fitFakeFactors(){
 	      cf.set_fitFunc( "pol1(2)" );
 	      cf.set_err_scale( 3.0 );
 	      cf.set_err_cl( 0 );
-              cf.set_histMaxFrac( 0.33 );
+              cf.set_histMaxFrac( 109.0/500.0 );
               cf.set_smoothFrac(0.15);
               cf.set_smoothMode("spline3");              
           }
-	  if( CHAN==kTAU ){ //use default p0 for 1p0j, only //THIS IS USED FOR "TIGHT WP"  #&& !(ijet == 0 && idm == 0) 
+	  else if( CHAN==kTAU ){ //use default p0 for 1p0j, only //THIS IS USED FOR "TIGHT WP"  #&& !(ijet == 0 && idm == 0) 
 	    //	  else if( CHAN==kTAU && ijet == 1 ){ //use default p0 for 1p1j/3p1j //THIS IS USED FOR "VERY TIGHT WP"
 	    cf.set_fitFunc( "landau(0)+pol1(2)" );
 	    cf.set_err_scale( 1.2 );
@@ -138,7 +156,12 @@ void fitFakeFactors(){
 	    // if      (ijet == 0 && idm == 1) cf.set_histMaxFrac( 0.35 );
 	    // else if (ijet == 1 && idm == 1) cf.set_histMaxFrac( 0.35 );
       // if ( modes.at(imode) & _AI  ) 
-      cf.set_histMaxFrac( 0.45 ); cf.set_smoothFrac(0.3);
+      if(modes.at(imode) & _AI) cf.set_histMaxFrac( 142.0/500.0 ); 
+      else{
+        if( ijet == 0) cf.set_histMaxFrac( 104.0/500.0 ); 
+        else cf.set_histMaxFrac( 126.0/500.0 ); 
+      } 
+      cf.set_smoothFrac(0.3);
       // else if ( ijet == 0) {cf.set_histMaxFrac( 0.26 );  cf.set_smoothFrac(0.2);}
       // else if ( ijet == 1) {cf.set_histMaxFrac( 0.2 );  cf.set_smoothFrac(0.18);}
 	    
@@ -171,13 +194,14 @@ void fitFakeFactors(){
           
           cf.fitHisto();
           
-          TGraph *g_fit_input=cf.returnFitInputGraph(); //the input to the fit: data points in the range given
+          TGraphAsymmErrors *g_fit_input=cf.returnFitInputGraph(); //the input to the fit: data points in the range given
           TF1 *f_fit=cf.returnFitForm();                //the fit result (function)
           TGraphAsymmErrors *g_fit=cf.returnFitGraph();              //the fit result binned (histo)
           TGraphAsymmErrors *g_fit2=new TGraphAsymmErrors( *g_fit );
 
           double ymax = 0.7; double ymin = 0.001;
 	  //          if(CHAN==kTAU){ymax = 1.0; ymin = 0.301;}
+    
           for(int i=0; i<g_fit->GetN(); i++){
             Double_t x; Double_t y;
             g_fit->GetPoint(i,x,y);
@@ -185,6 +209,17 @@ void fitFakeFactors(){
             if(y+g_fit->GetErrorYhigh(i)>=ymax-0.01){
               g_fit->SetPointEYhigh( i,ymax-0.01-y );
             }
+          }
+
+          for( int i=0; i<g_fit_input->GetN()-1; i++){
+            Double_t x; Double_t y;
+            g_fit_input->GetPoint( i,x,y );
+            // cout << x << " " << y << endl;
+            // cout << a_bins[i] << " " << a_bins[i+1] << endl;
+            // cout << "errorbars x " << abs(x-a_bins[i+1]) << " " << abs(a_bins[i]-x) << endl;
+            g_fit_input->SetPointEXlow ( i, abs(a_bins[i]-x) );
+            g_fit_input->SetPointEXhigh( i, abs(x-a_bins[i+1]) );
+            
           }
 
           TCanvas *c2=new TCanvas("new","FFfit",800,800);
@@ -231,7 +266,7 @@ void fitFakeFactors(){
           g_fit_input->SetLineWidth(2.);
           g_fit_input->SetMarkerSize(1.6);
           g_fit_input->SetMarkerStyle(20);
-          g_fit_input->Draw("P SAME");
+          g_fit_input->Draw("E P SAME");
 
           TGraph* legendGraph = new TGraph();
           legendGraph->SetLineColor(kBlack);
@@ -262,7 +297,7 @@ void fitFakeFactors(){
           //l.SetTextFont(102);
           TString bkg=""; {if(modes.at(imode) & _QCD) bkg+="QCD"; else if(modes.at(imode) & _W_JETS) bkg+="W+jets"; else if(modes.at(imode) & _TT) bkg+="TT";}
           TString decayMode=""; {if(idm==0) decayMode+="1-prong"; else decayMode+="3-prong";}
-          TString jetMode=""; { if(modes.at(imode) & _TT ) jetMode+="#geq 0jet"; else if(ijet==0) jetMode+="0jet"; else jetMode+="#geq 1jet";}
+          TString jetMode=""; { if(modes.at(imode) & _TT ) jetMode+="#geq 0jet"; else if(ijet==0) jetMode+="0jet"; else jetMode+="#geq1jet";}
           TString channel=""; { if(CHAN == kMU) channel+="#mu^{}#tau_{h}"; else if(CHAN == kEL) channel+="e#tau_{h}"; else channel+="#tau_{h}#tau_{h}";}
           //{if(modes.at(imode) & _QCD) channel+=" QCD multijet"; else if(modes.at(imode) & _W_JETS) channel+=" W+jets"; else if(modes.at(imode) & _TT) channel+=" t#bar{t}";}
           /*if(idm==0) l.DrawLatex(0.52,0.8,"FFs "+bkg);
@@ -332,11 +367,12 @@ void fitFakeFactors(){
             g_fit->GetPoint(i,x,y);
             if(y-g_fit->GetErrorYlow(i)<0) g_fit->SetPointEYlow( i,y );
             if(y+g_fit->GetErrorYhigh(i)>=1.) g_fit->SetPointEYhigh( i,0.99-y );
+
           }
           
           g_fit->SetName(convert.str().c_str());
           g_fit->GetYaxis()->SetRangeUser(0.,1.);
-          g_fit->GetXaxis()->SetRangeUser(fitMin-0.1,fitMax+7);
+          g_fit->GetXaxis()->SetRangeUser(fitMin-0.1,fitMax+7); //TODO
 
           gPad->RedrawAxis();
           

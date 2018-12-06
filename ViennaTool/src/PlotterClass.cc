@@ -248,13 +248,17 @@ void PlotterClass::plotCR(const std::vector<TString> fname, const std::vector<TS
   if ( fname.at(0).Contains("_mvis") ) hname+="mvis";
   if ( fname.at(0).Contains("_pt") )   hname+="pt";
   if ( fname.at(0).Contains("_muiso") )   hname+="muiso";
+  if ( fname.at(0).Contains("_lepPt") )   hname+="lepPt";
 
-  //XX  TCanvas* c=new TCanvas("c","Plot for control region "+cr,1200,800);
-  TLegend* leg = new TLegend(0.70,0.30,0.88,0.88);
+  TLegend* leg = new TLegend(0.6,0.15,0.88,0.9);
   std::vector<TH1D*> hist;
   std::vector<TFile*> f;
   THStack* hs = new THStack("w","");
-  leg->SetHeader(cr + " CR, " + iso + " isolation" );
+  
+  TString region = " ";
+  if ( fname.at(0).Contains("AI")) region += "AI ";
+  if ( fname.at(0).Contains("SS")) region += "SS ";
+  leg->SetHeader(cr + region +"CR, " + iso + " isolation" );
 
   //sim
   //  TH1D* hsum= (TH1D*) hist.at(0)->Clone();
@@ -269,9 +273,9 @@ void PlotterClass::plotCR(const std::vector<TString> fname, const std::vector<TS
 
     for(int is=0; is<nSAMPLES; is++){
       if (type.at(ih)==vsuff[is]){
-	hist.at(ih)->SetFillColor(vcolor[is]);
-	leg->AddEntry(hist.at(ih),vlabel[is],"f");
-	break;
+        hist.at(ih)->SetFillColor(vcolor[is]);
+        leg->AddEntry(hist.at(ih),vlabel[is],"f");
+        break;
       }
     }
 
@@ -376,7 +380,9 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
     float bw=hdata->GetBinWidth(1);
     TString m_ytitle="Events / "; m_ytitle+=(int)bw; m_ytitle+=" GeV";
     hdata->GetYaxis()->SetTitle(m_ytitle);
-    hdata->GetYaxis()->SetTitleOffset(1.25);
+    hdata->GetYaxis()->SetTitleSize( 0.8* hdata->GetXaxis()->GetTitleSize()   * pad2_xfac );
+    hdata->GetYaxis()->SetLabelSize( 0.8* hdata->GetXaxis()->GetTitleSize()   * pad2_xfac );
+    hdata->GetYaxis()->SetTitleOffset(0.91);
     hdata->GetXaxis()->SetLabelSize(0);
   }
 
@@ -397,7 +403,7 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
 
   // stringstream used_lumi; used_lumi << luminosity; TString Tused_lumi = used_lumi.str();
   TLatex l;
-  l.SetTextSize(0.04);
+  l.SetTextSize(0.06);
   l.SetNDC();
   //l.SetTextFont(102);
   l.DrawLatex(0.75,0.93,"41.5 fb^{-1} (13 TeV)");
@@ -405,7 +411,7 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
   TLatex c;
   cout << "Caption: " << caption << endl;
   if (caption != ""){
-    c.SetTextSize(0.04);
+    c.SetTextSize(0.06);
     c.SetNDC();
     c.DrawLatex(0.18,0.93,caption);
   }
@@ -413,12 +419,12 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
   TLatex pre;
   pre.SetTextSize(0.07);
   pre.SetNDC();
-  pre.DrawLatex(0.17,0.85,"CMS");
+  pre.DrawLatex(0.2,0.85,"CMS");
   TLatex pre1;
   pre1.SetTextSize(0.04);
   pre1.SetTextFont(12);
   pre1.SetNDC();
-  pre1.DrawLatex(0.17,0.81,"Preliminary");
+  pre1.DrawLatex(0.2,0.81,"Preliminary");
   
 
   
@@ -433,15 +439,16 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
     h_mc_err->GetYaxis()->SetRangeUser(0.0,2.4);
     if (hd_name=="c_t") extra_fac=1.5;
   }
-
-  h_mc_err->GetXaxis()->SetTitleSize(   h_mc_err->GetXaxis()->GetTitleSize()   * pad2_xfac );
+  // cout << "TITLE SIZE: " << 1.7*  h_mc_err->GetXaxis()->GetTitleSize()   * pad2_xfac << endl;
+  // cout << "LABEL SIZE: " << 1.7* h_mc_err->GetXaxis()->GetLabelSize()   * pad2_xfac * extra_fac << endl;
+  h_mc_err->GetXaxis()->SetTitleSize( 1.5*  h_mc_err->GetXaxis()->GetTitleSize()   * pad2_xfac );
   //  h_mc_err->GetXaxis()->SetTitleOffset( h_mc_err->GetXaxis()->GetTitleOffset() / pad2_xfac );
-  h_mc_err->GetXaxis()->SetLabelSize(   h_mc_err->GetXaxis()->GetLabelSize()   * pad2_xfac * extra_fac );
+  h_mc_err->GetXaxis()->SetLabelSize(  1.5* h_mc_err->GetXaxis()->GetLabelSize()   * pad2_xfac * extra_fac );
   //  h_mc_err->GetXaxis()->SetLabelOffset( h_mc_err->GetXaxis()->GetLabelSize()   * pad2_xfac );
 
-  h_mc_err->GetYaxis()->SetTitleSize(   h_mc_err->GetYaxis()->GetTitleSize()   * pad2_xfac );
-  h_mc_err->GetYaxis()->SetTitleOffset( h_mc_err->GetYaxis()->GetTitleOffset() / pad2_xfac );
-  h_mc_err->GetYaxis()->SetLabelSize(   h_mc_err->GetYaxis()->GetLabelSize()   * pad2_xfac );
+  h_mc_err->GetYaxis()->SetTitleSize( 1.5*  h_mc_err->GetYaxis()->GetTitleSize()   * pad2_xfac );
+  h_mc_err->GetYaxis()->SetTitleOffset(  h_mc_err->GetYaxis()->GetTitleOffset() / pad2_xfac );
+  h_mc_err->GetYaxis()->SetLabelSize( 1.5*  h_mc_err->GetYaxis()->GetLabelSize()   * pad2_xfac );
   //  h_mc_err->GetYaxis()->SetLabelOffset( h_mc_err->GetYaxis()->GetLabelSize()   * pad2_xfac );
 
   h_mc_err->GetYaxis()->SetNdivisions(306);

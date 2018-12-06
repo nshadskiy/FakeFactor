@@ -43,7 +43,6 @@ void CRHisto(int doCalc, int nCR, int nQU) {
       for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt
         for (int is=0; is<nSA; is++){ //loop over samples
           presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root";
-          // if(EMB == 1 && ssa[is].Contains("_T")) presel_file = path_presel+s_preselection+"_EMB"+CF+".root";
           Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root"  );
         }
         if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_data.root"  );
@@ -54,7 +53,6 @@ void CRHisto(int doCalc, int nCR, int nQU) {
     for (int ic=3; ic<nCR; ic++){ //loop over CRs
       for (int is=0; is<nSA; is++){ //loop over samples
         presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root"; 
-        // if(EMB == 1 && ssa[is].Contains("_T")) presel_file = path_presel+s_preselection+"_EMB"+CF+".root";
         Analyzer->getCRHisto(presel_file, icr[ic]|LEPPT , path_sim+s_CR+"_"+scr[ic]+"_lepPt_"+ssa[is]+".root"  );
       }
       if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , icr[ic]|LEPPT , path_sim+s_CR+"_"+scr[ic]+"_lepPt_data.root"  );
@@ -66,7 +64,6 @@ void CRHisto(int doCalc, int nCR, int nQU) {
       for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
         for (int is=0; is<nSA; is++){ //loop over samples
           presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root";
-          // if(EMB == 1 && ssa[is].Contains("_T")) presel_file = path_presel+s_preselection+"_EMB"+CF+".root";
           Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_"+ssa[is]+".root"  );
         }
         if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_data.root"  );
@@ -79,7 +76,6 @@ void CRHisto(int doCalc, int nCR, int nQU) {
       for (int ic=3; ic<nCR; ic++){ //loop over CRs
         for (int is=0; is<nSA; is++){ //loop over samples
           presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root";
-          // if(EMB == 1 && ssa[is].Contains("_T")) presel_file = path_presel+s_preselection+"_EMB"+CF+".root";
           Analyzer->getCRHisto(presel_file, LEPPT|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_"+ssa[is]+".root"  );
         }
         if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , LEPPT|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_data.root"  );
@@ -92,7 +88,6 @@ void CRHisto(int doCalc, int nCR, int nQU) {
       for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
         for (int is=0; is<nSA; is++){ //loop over samples
           presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root";
-          // if(EMB == 1 && ssa[is].Contains("_T")) presel_file = path_presel+s_preselection+"_EMB"+CF+".root";
           Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_"+ssa[is]+".root"  );
         }
         if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_data.root"  );
@@ -265,12 +260,45 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   for (int ic=0; ic<nCR; ic++){ //loop over CRs
     for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt, muiso
       for (int iq=0; iq<nQU; iq++){ //loop over loose/tight
-	std::vector<TString> cr; 
-	for (int is=0; is<nSA; is++){ cr.push_back(path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root"); }
-	Analyzer->plotCR(cr, ty, path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_data.root", squ[iq], scr[ic]    , m_path_img+s_CR+"_"+scr[ic]+"_"+squ[iq]+"_"+tvarCR[iv], tvarCR_l[iv] ); 
+        std::vector<TString> cr; 
+        for (int is=0; is<nSA; is++){ cr.push_back(path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root");}
+        cout << path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_data.root" << " " << squ[iq] << " " <<  scr[ic] << " " << m_path_img+s_CR+"_"+scr[ic]+"_"+squ[iq]+"_"+tvarCR[iv] << " " << tvarCR_l[iv]  << endl;
+        Analyzer->plotCR(cr, ty, path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_data.root", squ[iq], scr[ic]    , m_path_img+s_CR+"_"+scr[ic]+"_"+squ[iq]+"_"+tvarCR[iv], tvarCR_l[iv] ); 
       }
     }
   }
+
+  // Plot AI CR:
+
+  std::vector<TString> cr; 
+  for (int is=0; is<nSA; is++){ cr.push_back(path_sim+s_CR+"_QCD_mvis_AI_"+ssa[is]+".root"); if(DEBUG){cout << "FNAME: "<< path_sim+s_CR+"_QCD_mvis_AI_"+ssa[is]+".root" << endl;} }
+  for (int iq=0; iq<nQU; iq++){ //loop over loose/tight
+    Analyzer->plotCR(cr, ty, path_sim+s_CR+"_QCD_mvis_AI_data.root", squ[iq], "QCD", m_path_img+s_CR+"_QCD_AI_"+squ[iq]+"_mvis", tvarCR_l[1] ); 
+  }
+  cr.clear();
+ 
+  for (int is=0; is<nSA; is++){ cr.push_back(path_sim+s_CR+"_Wjets_mvis_SS_"+ssa[is]+".root"); if(DEBUG){cout << "FNAME: "<< path_sim+s_CR+"_Wjets_mvis_SS_"+ssa[is]+".root" << endl;} }
+  for (int iq=0; iq<nQU; iq++){ //loop over loose/tight
+    Analyzer->plotCR(cr, ty, path_sim+s_CR+"_Wjets_mvis_SS_data.root", squ[iq], "Wjets", m_path_img+s_CR+"_Wjets_SS_"+squ[iq]+"_mvis", tvarCR_l[1] ); 
+  }
+  cr.clear();
+ 
+  
+  for (int is=0; is<nSA; is++){ cr.push_back(path_sim+s_CR+"_QCD_lepPt_"+ssa[is]+".root"); if(DEBUG){ cout << "FNAME: "<< path_sim+s_CR+"_QCD_lepPt_"+ssa[is]+".root" << endl;} }
+  for (int iq=0; iq<nQU; iq++){ //loop over loose/tight
+    Analyzer->plotCR(cr, ty, path_sim+s_CR+"_QCD_lepPt_data.root", squ[iq], "QCD", m_path_img+s_CR+"_QCD_lepPt_"+squ[iq], tvar_l[3] ); 
+  }
+  cr.clear();
+  
+  if(CHAN == kTAU){
+    for (int is=0; is<nSA; is++){ cr.push_back(path_sim+s_CR+"_QCD_lepPt_AI_"+ssa[is]+".root"); if(DEBUG){cout << "FNAME: "<< path_sim+s_CR+"_QCD_lepPt_AI_"+ssa[is]+".root" << endl;} }
+    for (int iq=0; iq<nQU; iq++){ //loop over loose/tight
+      Analyzer->plotCR(cr, ty, path_sim+s_CR+"_QCD_lepPt_AI_data.root", squ[iq], "QCD", m_path_img+s_CR+"_QCD_lepPt_AI_"+squ[iq], tvar_l[3] ); 
+    }
+  }
+  cr.clear();
+
+  //end of plots
 
   delete Analyzer;
 

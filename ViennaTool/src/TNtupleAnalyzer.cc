@@ -73,8 +73,12 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 {
   // cout << event->flagMETFilter << " " << event->trg_singlemuon_27 << " " << event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2 << " " << event->q_1 << " " << event->weight << " " <<event->dilepton_veto <<  endl;
   // if(CHAN==kMU && !((event->flagMETFilter >0.5)*(event->trg_singlemuon_27 > 0.5)*(event->trg_singlemuon_24 > 0.5)*(event->trg_crossmuon_mu20tau27 > 0.5)*(event->pt_1>21)*(event->pt_2>20))) return 0; 
+  
   if(CHAN==kMU && ((event->flagMETFilter <0.5)|| !((event->trg_singlemuon_27 > 0.5)||(event->trg_singlemuon_24>0.5)||(event->trg_crossmuon_mu20tau27 > 0.5)) || (event->pt_2<23))) return 0; 
-  if(CHAN==kEL && ((event->flagMETFilter <0.5)|| !((event->trg_singleelectron_27> 0.5)||(event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)||(event->trg_crossele_ele24tau30  > 0.5))) ||(event->pt_2<23))  return 0;
+  // if(CHAN==kEL && ((event->flagMETFilter <0.5)|| !((event->trg_singleelectron_27> 0.5)||(event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)||(event->trg_crossele_ele24tau30  > 0.5))) ||(event->pt_2<23))  return 0;
+  
+  if(CHAN==kEL && !preselectionFile.Contains("preselection_EMB") && ((event->flagMETFilter <0.5)|| !((event->trg_singleelectron_27> 0.5)||(event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)||(event->trg_crossele_ele24tau30  > 0.5))) ||(event->pt_2<23))  return 0;
+  if(CHAN==kEL && preselectionFile.Contains("preselection_EMB") &&  ((event->flagMETFilter <0.5)|| !((event->pt_1>20 && event->pt_1<24) || (event->trg_singleelectron_27> 0.5)||(event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)||(event->trg_crossele_ele24tau30  > 0.5))) ||(event->pt_2<23))  return 0;
   if(CHAN==kTAU && ((event->flagMETFilter <0.5)|| !((event->trg_doubletau_40_tightiso>0.5) || (event->trg_doubletau_40_mediso_tightid>0.5) || (event->trg_doubletau_35_tightiso_tightid>0.5)))) return 0;
   
   TLorentzVector vec1, vec2, vec;

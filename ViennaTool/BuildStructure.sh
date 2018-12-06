@@ -1,6 +1,6 @@
 #!/bin/bash
 user=fspreitzer
-fftype=FakeFactor_SM_ML_Embedding_v7
+fftype=FakeFactor_SM_ML_Embedding_v8
 
 line=" --------------------------------------------------------------------------------------"
 echo $line
