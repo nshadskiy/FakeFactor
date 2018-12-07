@@ -21,39 +21,39 @@ void Preselection() {
       Analyzer->select(preselection_TT_J_EMB,_TT|_JTAU);
       Analyzer->closeFile();
       tmp=preselection_TT_J;
-      compressFile(preselection_TT_J);
+      compressFile(preselection_TT_J_EMB);
     }
     if (num==2 || num==5||num==0) {
       Analyzer->loadFile(TTfile,"TauCheck");
       Analyzer->select(preselection_TT_L_EMB,_TT|_LTAU);
       Analyzer->closeFile();
-      compressFile(preselection_TT_L);
+      compressFile(preselection_TT_L_EMB);
     }
     
     if (num==8 || num==7 ||num==0||num==99) {
       Analyzer->loadFile(DY_NJfile,"TauCheck");
       Analyzer->select(preselection_DY_J_EMB,_DY|_JTAU);
       Analyzer->closeFile();
-      compressFile(preselection_DY_J);
+      compressFile(preselection_DY_J_EMB);
     }
     if (num==10 || num==7 ||num==0||num==99) {
       Analyzer->loadFile(DY_NJfile,"TauCheck");
       Analyzer->select(preselection_DY_L_EMB,_DY|_LTAU);
       Analyzer->closeFile();
-      compressFile(preselection_DY_L);
+      compressFile(preselection_DY_L_EMB);
     }
       
     if ( (num==11 || num==13||num==0||num==99) && useVV) {
       Analyzer->loadFile(VVfile,"TauCheck");
       Analyzer->select(preselection_VV_J_EMB,_VV|_JTAU);
       Analyzer->closeFile();
-      compressFile(preselection_VV_J);
+      compressFile(preselection_VV_J_EMB);
     }
     if ( (num==11 || num==14||num==0||num==99) && useVV) {
       Analyzer->loadFile(VVfile,"TauCheck");
       Analyzer->select(preselection_VV_L_EMB,_VV|_LTAU);
       Analyzer->closeFile();
-      compressFile(preselection_VV_L);
+      compressFile(preselection_VV_L_EMB);
     }
     return;
   }
