@@ -109,7 +109,12 @@ const TString path_ff_data       = path_ff+"data_"+s_chan[CHAN]+"/";
 const TString path_ff_mc         = path_ff+"mc_"+s_chan[CHAN]+"/";
 const TString path_ff_mc_woQCD   = path_ff+"mc_woQCD_"+s_chan[CHAN]+"/";
 const TString path_sim           = "ViennaTool/sim/"+s_chan[CHAN]+"/";
-const TString path_img           = "ViennaTool/Images/";
+#if(EMB == 1)
+const TString path_img           = "ViennaTool/Images_EMB/";
+#endif
+#if(EMB == 0)
+const TString path_img           = "ViennaTool/Images_NonEMB/";
+#endif
 const TString path_img_data      = path_img+"data_"+s_chan[CHAN]+"/";
 const TString path_img_mc        = path_img+"mc_"+s_chan[CHAN]+"/";
 const TString path_img_mc_woQCD  = path_img+"mc_woQCD_"+s_chan[CHAN]+"/";
@@ -135,28 +140,28 @@ const TString preselection_EMB           = path_presel+"preselection_EMB"+s_doub
 const TString preselection_Wjets         = path_presel+"preselection_Wjets"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_DY            = path_presel+"preselection_DY"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_DY_J          = path_presel+"preselection_DY_J"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_DY_J_EMB      = path_presel+"preselection_DY_J"+s_doubleCount[COINFLIP]+"_EMB.root";
 const TString preselection_DY_L          = path_presel+"preselection_DY_L"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_DY_L_EMB      = path_presel+"preselection_DY_L"+s_doubleCount[COINFLIP]+"_EMB.root";
 const TString preselection_TT            = path_presel+"preselection_TT"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_TT_J          = path_presel+"preselection_TT_J"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_TT_J_EMB      = path_presel+"preselection_TT_J"+s_doubleCount[COINFLIP]+"_EMB.root";
 const TString preselection_TT_L          = path_presel+"preselection_TT_L"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_TT_L_EMB      = path_presel+"preselection_TT_L"+s_doubleCount[COINFLIP]+"_EMB.root";
 const TString preselection_VV            = path_presel+"preselection_VV"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_VV_J          = path_presel+"preselection_VV_J"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_VV_J_EMB      = path_presel+"preselection_VV_J"+s_doubleCount[COINFLIP]+"_EMB.root";
 const TString preselection_VV_L          = path_presel+"preselection_VV_L"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_VV_L_EMB      = path_presel+"preselection_VV_L"+s_doubleCount[COINFLIP]+"_EMB.root";
 const TString preselection_MCsum         = path_presel+"preselection_"+s_MCsum+s_doubleCount[COINFLIP]+".root";
 const TString preselection_MCsum_woQCD   = path_presel+"preselection_woQCD"+s_MCsum+s_doubleCount[COINFLIP]+".root";
 const TString preselection_QCD           = path_presel+"preselection_QCD"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_QCD_Pt        = path_presel+"preselection_QCD_Pt"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_signal        = path_presel+"preselection_signal"+s_doubleCount[COINFLIP]+".root";
-#if(EMB == 0)
 const TString preselection_DY_TT         = path_presel+"preselection_DY_TT"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_TT_T          = path_presel+"preselection_TT_T"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_VV_T          = path_presel+"preselection_VV_T"+s_doubleCount[COINFLIP]+".root";
-#endif
-#if(EMB == 1)
-const TString preselection_DY_TT         = preselection_EMB;
-const TString preselection_TT_T          = preselection_EMB;
-const TString preselection_VV_T          = preselection_EMB;
-#endif
+
 
 const TString fit_formula                = "fit_formula.root";
 

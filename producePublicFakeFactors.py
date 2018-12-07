@@ -7,6 +7,7 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--channel', dest = 'channel', help='Channel for producing public FFs: mt,et,tt', type=str, metavar = 'TAG', required = True)
 	parser.add_argument('--input', dest = 'input', help='Input directory - full string', type=str, metavar = 'TAG', required = True)
+	parser.add_argument('--embedding', dest = 'embedding', help='Embedded or Non-Embedded FF', type=str, metavar = 'TAG', required = True)
 	args = parser.parse_args()
 
 	#create Histogram with X-Axis interval [0,1], filled with binwidth 0.01 according to function f(x)=x
@@ -30,7 +31,10 @@ if __name__ == '__main__':
 
 	if( channel == "mt" or channel == "et"):
 	  log = open('copy.log', 'a')
-	  p = sp.Popen(["python producePublicFakeFactors_mt_et.py --channel {0} --input {1}".format(channel,args.input)],shell=True)
+	  if( args.embedding == "0"):
+	  	p = sp.Popen(["python producePublicFakeFactors_mt_et_NonEMB.py --channel {0} --input {1}".format(channel,args.input)],shell=True)
+	  else:
+			p = sp.Popen(["python producePublicFakeFactors_mt_et_EMB.py --channel {0} --input {1}".format(channel,args.input)],shell=True)
 	  p.wait()
 	if( channel == "tt"):
 	  p = sp.Popen(["python producePublicFakeFactors_tt.py --channel {0} --input {1}".format(channel,args.input)],shell=True)

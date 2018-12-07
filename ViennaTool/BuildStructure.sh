@@ -1,6 +1,6 @@
 #!/bin/bash
 user=fspreitzer
-fftype=FakeFactor_SM_ML_Embedding_v8
+fftype=FakeFactor_2017_Test
 
 line=" --------------------------------------------------------------------------------------"
 echo $line
@@ -41,46 +41,87 @@ else
     mkdir -p sim/tt
 fi
 
-if [ -d "Images" ]; then
-    if [ ! -d "Images/data_mt" ]; then
-        mkdir -p Images/data_mt
+if [ -d "Images_EMB" ]; then
+    if [ ! -d "Images_EMB/data_mt_EMB" ]; then
+        mkdir -p Images_EMB/data_mt_EMB
     fi
-    if [ ! -d "Images/data_et" ]; then
-        mkdir -p Images/data_et
+    if [ ! -d "Images_EMB/data_et_EMB" ]; then
+        mkdir -p Images_EMB/data_et_EMB
     fi
-    if [ ! -d "Images/data_tt" ]; then
-        mkdir -p Images/data_tt
+    if [ ! -d "Images_EMB/data_tt_EMB" ]; then
+        mkdir -p Images_EMB/data_tt_EMB
     fi
-    if [ ! -d "Images/mc_mt" ]; then
-        mkdir -p Images/mc_mt
+    if [ ! -d "Images_EMB/mc_mt" ]; then
+        mkdir -p Images_EMB/mc_mt
     fi
-    if [ ! -d "Images/mc_et" ]; then
-        mkdir -p Images/mc_et
+    if [ ! -d "Images_EMB/mc_et" ]; then
+        mkdir -p Images_EMB/mc_et
     fi
-    if [ ! -d "Images/mc_tt" ]; then
-        mkdir -p Images/mc_tt
+    if [ ! -d "Images_EMB/mc_tt" ]; then
+        mkdir -p Images_EMB/mc_tt
     fi
-    if [ ! -d "Images/mc_woQCD_mt" ]; then
-        mkdir -p Images/mc_woQCD_mt
+    if [ ! -d "Images_EMB/mc_woQCD_mt" ]; then
+        mkdir -p Images_EMB/mc_woQCD_mt
     fi
-    if [ ! -d "Images/mc_woQCD_et" ]; then
-        mkdir -p Images/mc_woQCd_et
+    if [ ! -d "Images_EMB/mc_woQCD_et" ]; then
+        mkdir -p Images_EMB/mc_woQCd_et
     fi
-    if [ ! -d "Images/mc_woQCD_tt" ]; then
-        mkdir -p Images/mc_woQCd_tt
+    if [ ! -d "Images_EMB/mc_woQCD_tt" ]; then
+        mkdir -p Images_EMB/mc_woQCd_tt
     fi
     
     
 else
-    mkdir -p Images/data_mt
-    mkdir -p Images/data_et
-    mkdir -p Images/data_tt
-    mkdir -p Images/mc_mt
-    mkdir -p Images/mc_et
-    mkdir -p Images/mc_tt
-    mkdir -p Images/mc_woQCD_mt
-    mkdir -p Images/mc_woQCD_et
-    mkdir -p Images/mc_woQCD_tt
+    mkdir -p Images_EMB/data_mt
+    mkdir -p Images_EMB/data_et
+    mkdir -p Images_EMB/data_tt
+    mkdir -p Images_EMB/mc_mt
+    mkdir -p Images_EMB/mc_et
+    mkdir -p Images_EMB/mc_tt
+    mkdir -p Images_EMB/mc_woQCD_mt
+    mkdir -p Images_EMB/mc_woQCD_et
+    mkdir -p Images_EMB/mc_woQCD_tt
+fi
+if [ -d "Images_NonEMB" ]; then
+    if [ ! -d "Images_NonEMB/data_mt_EMB" ]; then
+        mkdir -p Images_NonEMB/data_mt_EMB
+    fi
+    if [ ! -d "Images_NonEMB/data_et_EMB" ]; then
+        mkdir -p Images_NonEMB/data_et_EMB
+    fi
+    if [ ! -d "Images_NonEMB/data_tt_EMB" ]; then
+        mkdir -p Images_NonEMB/data_tt_EMB
+    fi
+    if [ ! -d "Images_NonEMB/mc_mt" ]; then
+        mkdir -p Images_NonEMB/mc_mt
+    fi
+    if [ ! -d "Images_NonEMB/mc_et" ]; then
+        mkdir -p Images_NonEMB/mc_et
+    fi
+    if [ ! -d "Images_NonEMB/mc_tt" ]; then
+        mkdir -p Images_NonEMB/mc_tt
+    fi
+    if [ ! -d "Images_NonEMB/mc_woQCD_mt" ]; then
+        mkdir -p Images_NonEMB/mc_woQCD_mt
+    fi
+    if [ ! -d "Images_NonEMB/mc_woQCD_et" ]; then
+        mkdir -p Images_NonEMB/mc_woQCd_et
+    fi
+    if [ ! -d "Images_NonEMB/mc_woQCD_tt" ]; then
+        mkdir -p Images_NonEMB/mc_woQCd_tt
+    fi
+    
+    
+else
+    mkdir -p Images_NonEMB/data_mt
+    mkdir -p Images_NonEMB/data_et
+    mkdir -p Images_NonEMB/data_tt
+    mkdir -p Images_NonEMB/mc_mt
+    mkdir -p Images_NonEMB/mc_et
+    mkdir -p Images_NonEMB/mc_tt
+    mkdir -p Images_NonEMB/mc_woQCD_mt
+    mkdir -p Images_NonEMB/mc_woQCD_et
+    mkdir -p Images_NonEMB/mc_woQCD_tt
 fi
 
 if [ -d "fakefactor" ]; then

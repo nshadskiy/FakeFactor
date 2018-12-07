@@ -62,37 +62,37 @@ void CalcFF() {
   }else{
     //EMBEDDING
     pre_sub_wj.push_back(preselection_EMB); 
-    pre_sub_wj.push_back(preselection_DY_J); 
-    pre_sub_wj.push_back(preselection_DY_L); 
-    pre_sub_wj.push_back(preselection_TT_J); 
-    pre_sub_wj.push_back(preselection_TT_L); 
-    pre_sub_wj.push_back(preselection_VV_J);
-    pre_sub_wj.push_back(preselection_VV_L);
+    pre_sub_wj.push_back(preselection_DY_J_EMB); 
+    pre_sub_wj.push_back(preselection_DY_L_EMB); 
+    pre_sub_wj.push_back(preselection_TT_J_EMB); 
+    pre_sub_wj.push_back(preselection_TT_L_EMB); 
+    pre_sub_wj.push_back(preselection_VV_J_EMB);
+    pre_sub_wj.push_back(preselection_VV_L_EMB);
 
     pre_sub_dy.push_back(preselection_EMB); 
     pre_sub_dy.push_back(preselection_Wjets); 
-    pre_sub_dy.push_back(preselection_TT_J); 
-    pre_sub_dy.push_back(preselection_TT_L); 
-    pre_sub_dy.push_back(preselection_DY_L); 
-    pre_sub_dy.push_back(preselection_VV_J);
-    pre_sub_dy.push_back(preselection_VV_L);
+    pre_sub_dy.push_back(preselection_TT_J_EMB); 
+    pre_sub_dy.push_back(preselection_TT_L_EMB); 
+    pre_sub_dy.push_back(preselection_DY_L_EMB); 
+    pre_sub_dy.push_back(preselection_VV_J_EMB);
+    pre_sub_dy.push_back(preselection_VV_L_EMB);
 
     pre_sub_tt.push_back(preselection_EMB); 
     pre_sub_tt.push_back(preselection_Wjets); 
-    pre_sub_tt.push_back(preselection_DY_J); 
-    pre_sub_tt.push_back(preselection_DY_L); 
-    pre_sub_tt.push_back(preselection_TT_L); 
-    pre_sub_tt.push_back(preselection_VV_J);
-    pre_sub_tt.push_back(preselection_VV_L);
+    pre_sub_tt.push_back(preselection_DY_J_EMB); 
+    pre_sub_tt.push_back(preselection_DY_L_EMB); 
+    pre_sub_tt.push_back(preselection_TT_L_EMB); 
+    pre_sub_tt.push_back(preselection_VV_J_EMB);
+    pre_sub_tt.push_back(preselection_VV_L_EMB);
     
     pre_sub_qcd.push_back(preselection_EMB); 
     pre_sub_qcd.push_back(preselection_Wjets); 
-    pre_sub_qcd.push_back(preselection_DY_J); 
-    pre_sub_qcd.push_back(preselection_DY_L); 
-    pre_sub_qcd.push_back(preselection_TT_J); 
-    pre_sub_qcd.push_back(preselection_TT_L); 
-    pre_sub_qcd.push_back(preselection_VV_J);
-    pre_sub_qcd.push_back(preselection_VV_L);
+    pre_sub_qcd.push_back(preselection_DY_J_EMB); 
+    pre_sub_qcd.push_back(preselection_DY_L_EMB); 
+    pre_sub_qcd.push_back(preselection_TT_J_EMB); 
+    pre_sub_qcd.push_back(preselection_TT_L_EMB); 
+    pre_sub_qcd.push_back(preselection_VV_J_EMB);
+    pre_sub_qcd.push_back(preselection_VV_L_EMB);
   }
 
   Float_t yields[5];

@@ -14,6 +14,50 @@ void Preselection() {
   std::cout << "Number: " << num << std::endl;
   TNtupleAnalyzer *Analyzer = new TNtupleAnalyzer();
   TString tmp;
+
+  if( EMB == 1 ){
+    if (num==2 || num==3||num==0) {
+      Analyzer->loadFile(TTfile,"TauCheck");
+      Analyzer->select(preselection_TT_J_EMB,_TT|_JTAU);
+      Analyzer->closeFile();
+      tmp=preselection_TT_J;
+      compressFile(preselection_TT_J);
+    }
+    if (num==2 || num==5||num==0) {
+      Analyzer->loadFile(TTfile,"TauCheck");
+      Analyzer->select(preselection_TT_L_EMB,_TT|_LTAU);
+      Analyzer->closeFile();
+      compressFile(preselection_TT_L);
+    }
+    
+    if (num==8 || num==7 ||num==0||num==99) {
+      Analyzer->loadFile(DY_NJfile,"TauCheck");
+      Analyzer->select(preselection_DY_J_EMB,_DY|_JTAU);
+      Analyzer->closeFile();
+      compressFile(preselection_DY_J);
+    }
+    if (num==10 || num==7 ||num==0||num==99) {
+      Analyzer->loadFile(DY_NJfile,"TauCheck");
+      Analyzer->select(preselection_DY_L_EMB,_DY|_LTAU);
+      Analyzer->closeFile();
+      compressFile(preselection_DY_L);
+    }
+      
+    if ( (num==11 || num==13||num==0||num==99) && useVV) {
+      Analyzer->loadFile(VVfile,"TauCheck");
+      Analyzer->select(preselection_VV_J_EMB,_VV|_JTAU);
+      Analyzer->closeFile();
+      compressFile(preselection_VV_J);
+    }
+    if ( (num==11 || num==14||num==0||num==99) && useVV) {
+      Analyzer->loadFile(VVfile,"TauCheck");
+      Analyzer->select(preselection_VV_L_EMB,_VV|_LTAU);
+      Analyzer->closeFile();
+      compressFile(preselection_VV_L);
+    }
+    return;
+  }
+
   if (num==1||num==0) {
     Analyzer->loadFile(datafile,"TauCheck");
     Analyzer->select(preselection_data,0);
@@ -21,13 +65,6 @@ void Preselection() {
     tmp=preselection_data;
     compressFile(preselection_data);
   }
-  // if(EMB == 1 && (num==1||num==0)){
-  //   Analyzer->loadFile(EMBfile,"TauCheck"); 
-  //   Analyzer->select(preselection_EMB,_DY|_TTAU); //_DY only as placeholder so it gets checked in TNtupleAnalyzer::fitsGenCategory() 
-  //   Analyzer->closeFile();
-  //   tmp=preselection_EMB;
-  //   compressFile(preselection_EMB);
-  // }
   if (num==2||num==0) {
     Analyzer->loadFile(TTfile,"TauCheck");
     Analyzer->select(preselection_TT,0);
@@ -35,7 +72,6 @@ void Preselection() {
     tmp=preselection_TT;
     compressFile(preselection_TT);
   }
-  
   if (EMB == 0 && (num==2 || num==3||num==0)) {
     Analyzer->loadFile(TTfile,"TauCheck");
     Analyzer->select(preselection_TT_T,_TT|_TTAU);

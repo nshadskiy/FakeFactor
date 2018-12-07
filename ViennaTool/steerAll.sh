@@ -28,32 +28,47 @@ if [ "$channel" != " kTAU" ]; then ff_tocheck+=' ff_Wjets_dm?_njet?_??.pdf ff_Wj
 echo "Compiling the framework"
 sh BuildStructure.sh
 cd ../
+
+if [ $embedding == 1 ]; then
+    mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
+    mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
+    make -B
+    ./Preselection_EMB
+    mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
+    mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
+fi
 make -B
 
-if [ "${1}" == "" ]; then
-    ./Preselection
-    
-    if [ $embedding == 0 ]; then 
-        ./SRHisto
-        ./CRHisto
-    fi
+./Preselection
+if [ $embedding == 0 ]; then 
+    ./SRHisto
+    ./CRHisto
 fi
 
 ./steerFF
 ./fitFakeFactors
 
-cd ViennaTool/Images/data_$chan
-#gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf
-gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
-cd -
+if [ $embedding == 0 ]; then 
+    cd ViennaTool/Images_NonEMB/data_$chan
+    #gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf
+    gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
+    cd -
+fi
+if [ $embedding == 1 ]; then 
+    cd ViennaTool/Images_EMB/data_$chan
+    #gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf
+    gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
+    cd -
+fi
 
 ./calcCorrections
-python plotCorrections.py --channel $channel
+python plotCorrections.py --channel $channel --embedding $embedding
 
 ./convert_inputs
 
-python cpTDHaftPublic.py --destination $output --channel $channel
-python producePublicFakeFactors.py --input $output --channel $channel
+python cpTDHaftPublic.py --destination $output --channel $channel --embedding $embedding
+python producePublicFakeFactors.py --input $output --channel $channel --embedding $embedding
+
 #python cpPublicFFtoDC.py --source $output --destination $dc_path --channel $channel
 
 rm $output/constant.root

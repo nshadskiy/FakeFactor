@@ -214,6 +214,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--channel', dest = 'channel', help='Channel to copy', type=str, metavar = 'TAG', required = True)
+    parser.add_argument('--embedding', dest = 'embedding', help='Embedded or Non-Embedded FF', type=str, metavar = 'TAG', required = True)
     parser.add_argument('--destination', dest = 'destination', help='Destination folder', type=str, metavar = 'TAG', required = True)
     parser.add_argument('-f', dest='force', help='Force overwrite', action='store_true')
 
@@ -226,12 +227,16 @@ if __name__ == '__main__':
         channel = "et"
     elif(args.channel=="kTAU"):
         channel = "tt"
+
     
     source = 'ViennaTool/ff_2d/{0}/'.format( channel )
-    dest = '{0}/{1}/'.format( args.destination, channel )
+    dest_channel = channel
+    if(args.embedding=="0"):
+        dest_channel += "_NonEmbedded"
+    dest = '{0}/{1}/'.format( args.destination, dest_channel )
 
     print("Source:",source)
-    print("Destination:",dest)
+    print("Destination:",dest_channel)
 
     in_categories=['incl','_dummycat']
     in_altcategories=[]

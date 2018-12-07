@@ -51,25 +51,25 @@ for x in range(0,len(categories)):
         leaves=[
             Leaf(
                 name='ff_raw_qcd',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode',
                 vars=['tau_pt','tau_decay','njets']
             ),
             Leaf(
                 name='mviscorr_qcd',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
                 vars=['mvis']
             ),
             Leaf(
                 name='isocorr_qcd',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MuIso{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/Correction_Data_QCD_MuIso{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='QCD_SS_Data_FFSSMuMediumData_isomu_correction',
                 vars=['mu_iso']
             ),
             Leaf(
                 name='OSSS_corr_qcd',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_OSSS{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/Correction_Data_QCD_OSSS{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='QCD_SS_Data_FFSSMuMediumData_OSSS_correction',
                 vars=['mvis']
             )
@@ -85,7 +85,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='frac_qcd',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_qcd.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/frac_qcd.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
                      object='h_w_2d',
                      vars=['mt','tau_decay']
                  ),
@@ -104,7 +104,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_qcd_up',
-                     file='{INDIR}/{CHANNEL}/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_QCD_MVis_Iso_SS2OS_up',
                      vars=['mvis', 'mu_iso']
                  ),
@@ -122,7 +122,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_qcd_down',
-                     file='{INDIR}/{CHANNEL}/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_QCD_MVis_Iso_SS2OS_down',
                      vars=['mvis', 'mu_iso']
                  ),
@@ -142,7 +142,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_qcd_up',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -161,7 +161,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_qcd_down',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -180,19 +180,19 @@ for x in range(0,len(categories)):
         leaves=[
             Leaf(
                 name='ff_raw_w',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode',
                 vars=['tau_pt','tau_decay','njets']
             ),
             Leaf(
                 name='mviscorr_w',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_W_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/Correction_Data_W_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='W_OS_Data_FFOSData_mvis_correction',
                 vars=['mvis']
             ),
             Leaf(
                 name='mtcorr_w',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_MC_W_MT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/Correction_MC_W_MT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='W_OS_MC_FFOSMC_mt_correction',
                 vars=['mt']
             )
@@ -208,7 +208,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='frac_w',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_wjets.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/frac_wjets.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
                      object='h_w_2d',
                      vars=['mt','tau_decay']
                  ),
@@ -227,7 +227,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='frac_dy',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_dy.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/frac_dy.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
                      object='h_w_2d',
                      vars=['mt','tau_decay']
                  ),
@@ -246,7 +246,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_w_up',
-                     file='{INDIR}/{CHANNEL}/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_W_MVis_MT_up',
                      vars=['mvis', 'mt']
                  ),
@@ -264,7 +264,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_w_down',
-                     file='{INDIR}/{CHANNEL}/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_W_MVis_MT_down',
                      vars=['mvis', 'mt']
                  ),
@@ -282,7 +282,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_w_up',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -300,7 +300,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_w_down',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -319,13 +319,13 @@ for x in range(0,len(categories)):
         leaves=[
             Leaf(
             name='ff_raw_tt',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode',
                 vars=['tau_pt','tau_decay','njets']
             ),
             Leaf(
                 name='mviscorr_tt',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_MC_TT_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/Correction_MC_TT_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='TT_OS_MC_mvis_correction',
                 vars=['mvis']
             ),
@@ -341,7 +341,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='frac_tt',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_tt.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/frac_tt.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
                      object='h_w_2d',
                      vars=['mt','tau_decay']
                  ),
@@ -360,7 +360,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_tt_up',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_TT_MVis_up',
                      vars=['tau_decay','mvis']
                  ),
@@ -378,7 +378,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_tt_down',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_TT_MVis_down',
                      vars=['tau_decay','mvis']
                  ),
@@ -396,7 +396,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_up',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -414,7 +414,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_down',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -467,7 +467,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_qcd_up',
-                     file='{INDIR}/{CHANNEL}/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_QCD_MVis_Iso_SS2OS_up',
                      vars=['mvis', 'mu_iso']
                  ),
@@ -485,7 +485,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_qcd_down',
-                     file='{INDIR}/{CHANNEL}/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_QCD_MVis_Iso_SS2OS_down',
                      vars=['mvis', 'mu_iso']
                  ),
@@ -503,7 +503,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_qcd_up',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -521,7 +521,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_qcd_down',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -539,7 +539,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_qcd_up_dm0_njet0',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -557,7 +557,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_qcd_down_dm0_njet0',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -575,7 +575,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_qcd_up_dm0_njet1',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -593,7 +593,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_qcd_down_dm0_njet1',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -611,7 +611,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_qcd_up_dm1_njet0',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet0_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -629,7 +629,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_qcd_down_dm1_njet0',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet0_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -647,7 +647,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_qcd_up_dm1_njet1',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet1_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -665,7 +665,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_qcd_down_dm1_njet1',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet1_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -684,7 +684,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_w_up',
-                     file='{INDIR}/{CHANNEL}/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_W_MVis_MT_up',
                      vars=['mvis', 'mt']
                  ),
@@ -702,7 +702,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_w_down',
-                     file='{INDIR}/{CHANNEL}/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_W_MVis_MT_down',
                      vars=['mvis', 'mt']
                  ),
@@ -720,7 +720,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_w_up_dm0_njet0',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -738,7 +738,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_w_down_dm0_njet0',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -756,7 +756,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_w_up_dm0_njet1',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -774,7 +774,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_w_down_dm0_njet1',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -792,7 +792,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_w_up_dm1_njet0',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet0_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -810,7 +810,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_w_down_dm1_njet0',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet0_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -828,7 +828,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_w_up_dm1_njet1',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet1_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -846,7 +846,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_w_down_dm1_njet1',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm1_njet1_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -864,7 +864,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_w_up',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -882,7 +882,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_w_down',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -901,7 +901,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_tt_up',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_TT_MVis_up',
                      vars=['tau_decay','mvis']
                  ),
@@ -919,7 +919,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='sys_tt_down',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_TT_MVis_down',
                      vars=['tau_decay','mvis']
                  ),
@@ -937,7 +937,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_up_dm0_njet0',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet0_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -955,7 +955,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_down_dm0_njet0',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet0_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -973,7 +973,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_up_dm0_njet1',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet1_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -991,7 +991,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_down_dm0_njet1',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet1_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -1009,7 +1009,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_up_dm1_njet0',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet0_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -1027,7 +1027,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_down_dm1_njet0',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet0_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -1045,7 +1045,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_up_dm1_njet1',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet1_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -1063,7 +1063,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_down_dm1_njet1',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm1_njet1_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -1081,7 +1081,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_up',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_high',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -1099,7 +1099,7 @@ for x in range(0,len(categories)):
              leaves=[
                  Leaf(
                      name='stat_tt_down',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
@@ -1168,7 +1168,7 @@ for x in range(0,len(categories)):
     fill(ff_comb, comb_tt_up_stat_dm1_njet1,   sys='ff_tt_dm1_njet1_stat_up')
     fill(ff_comb, comb_tt_down_stat_dm1_njet1, sys='ff_tt_dm1_njet1_stat_down')
     
-    file = ROOT.TFile.Open("{INDIR}/{CHANNEL}/{CATEGORY}/fakeFactors_{ISOLATION}.root".format(INDIR=indir,CHANNEL=channel,CATEGORY=category, ISOLATION=isolation), "recreate")
+    file = ROOT.TFile.Open("{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/fakeFactors_{ISOLATION}.root".format(INDIR=indir,CHANNEL=channel,CATEGORY=category, ISOLATION=isolation), "recreate")
     # Write meta-data
     tag_ts     = ROOT.TString(tag)
     file.WriteObject(tag_ts     , "tag")
