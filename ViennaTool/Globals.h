@@ -260,6 +260,10 @@ const TString FF_corr_MC_Gen_sum                 = "FF_"+s_corr+"_"+s_MC+"_Gen_s
 
 
 // In SR
+const TString SR_EMB_mt_sim     = path_sim + s_SR+"_EMB_"+s_mt+".root";
+const TString SR_EMB_mvis_sim   = path_sim + s_SR+"_EMB_"+s_mvis+".root";
+const TString SR_EMB_pt_sim     = path_sim + s_SR+"_EMB_"+s_pt+".root";
+
 const TString SR_Wjets_mt_sim     = path_sim + s_SR+"_Wjets_"+s_mt+".root";
 const TString SR_Wjets_mvis_sim   = path_sim + s_SR+"_Wjets_"+s_mvis+".root";
 const TString SR_Wjets_pt_sim     = path_sim + s_SR+"_Wjets_"+s_pt+".root";
@@ -317,6 +321,10 @@ const TString SR_VV_L_mvis_sim    =path_sim + s_SR+"_VV_L_"+s_mvis+".root";
 const TString SR_VV_L_pt_sim      =path_sim + s_SR+"_VV_L_"+s_pt+".root";
 
 // In SS_SR
+const TString SS_SR_EMB_mt_sim     = path_sim + s_SS_SR+"_EMB_"+s_mt+".root";
+const TString SS_SR_EMB_mvis_sim   = path_sim + s_SS_SR+"_EMB_"+s_mvis+".root";
+const TString SS_SR_EMB_pt_sim     = path_sim + s_SS_SR+"_EMB_"+s_pt+".root";
+
 const TString SS_SR_Wjets_mt_sim     = path_sim + s_SS_SR+"_Wjets_"+s_mt+".root";
 const TString SS_SR_Wjets_mvis_sim   = path_sim + s_SS_SR+"_Wjets_"+s_mvis+".root";
 const TString SS_SR_Wjets_pt_sim     = path_sim + s_SS_SR+"_Wjets_"+s_pt+".root";
@@ -610,4 +618,3 @@ static const std::vector<TString> empty_vec_tstring;
 const Int_t nCAT=1;
 const TString categories[nCAT] = { "_dummycat"};
 const Int_t catMode[nCAT] = {_DUMMYCAT};
-

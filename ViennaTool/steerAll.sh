@@ -40,11 +40,9 @@ fi
 make -B
 
 ./Preselection
-if [ $embedding == 0 ]; then 
-    ./SRHisto
-    ./CRHisto
-fi
 
+./SRHisto
+./CRHisto
 ./steerFF
 ./fitFakeFactors
 
@@ -60,6 +58,7 @@ if [ $embedding == 1 ]; then
     gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
     cd -
 fi
+
 
 ./calcCorrections
 python plotCorrections.py --channel $channel --embedding $embedding

@@ -5,10 +5,10 @@
 #define kTAU         2
 ///////////////////////////////////////////////////
 #define EMB          1
-#define selCHAN      kEL
-const int CHAN     = kEL;
+#define selCHAN      kMU
+const int CHAN     = kMU;
 const TString analysis      ="FakeFactor_2017_Test";
-const TString output_folder ="/afs/hephy.at/user/f/fspreitzer/public/Htautau/FakeRate/SM_ML/FakeFactor_2017_Test";
+const TString output_folder ="/afs/hephy.at/user/f/fspreitzer/public/Htautau/FakeRate/SM_ML/FakeFactor_2017_Test_2";
 const TString DC_folder     ="/afs/hephy.at/work/f/fspreitzer/cmssw/ff_test/CMSSW_8_0_25/src/ViennaTool/HTTutilities/Jet2TauFakes/data";
 ///////////////////////////////////////////////////
 const TString user="fspreitzer";    

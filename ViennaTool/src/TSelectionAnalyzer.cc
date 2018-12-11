@@ -163,8 +163,8 @@ void TSelectionAnalyzer::getCRHisto(TString preselection,Int_t mode,TString outp
     if (isInCR(mode)) {
       allCR->Fill(fillVal,event_s->weight_sf);
       if (this->isTight()) {
-	ct++;
-	tightCR->Fill(fillVal,event_s->weight_sf); 
+        ct++;
+        tightCR->Fill(fillVal,event_s->weight_sf); 
       }
       else if (this->isLoose()) {
 	cl++;

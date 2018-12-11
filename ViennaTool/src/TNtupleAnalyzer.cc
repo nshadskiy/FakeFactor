@@ -94,78 +94,26 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     }else{
       weight *= event->emb_weight;
     }
+
+    if( CHAN == kTAU && !preselectionFile.Contains("preselection_EMB") ){ // CHANGE IF TAU WP CHANGES!
+        if(event->gen_match_1 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1) weight *= 0.89; //vtight = 0.86, tight = 0.89
+        else if(event->gen_match_1 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 ) weight *= 0.88;
+        if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.89;
+        else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.88;
+    }
+    if( CHAN != kTAU && !preselectionFile.Contains("preselection_EMB") ){
+      if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.89;
+      else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.88;
+    }
   }
-  // if(!preselectionFile.Contains("preselection_EMB")){
-    
-  //   if(!preselectionFile.Contains("preselection_data")){
-  //     weight = luminosity*event->weight;
-  //     if (CHAN == kTAU) weight *= event->sf_DoubleTauTight;
-  //     else              weight *= event->sf_SingleOrCrossTrigger;
-  //   }
-
-  //   // if(!preselectionFile.Contains("preselection_data"))weight = 1000*luminosity*event->puweight*event->trk_sf*event->reco_sf*event->genweight*event->antilep_tauscaling*event->idisoweight_1;
-
-  //   if( CHAN == kTAU && !preselectionFile.Contains("preselection_data") ){ // CHANGE IF TAU WP CHANGES!
-  //     if(event->gen_match_1 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1) weight *= 0.89; //vtight = 0.86, tight = 0.89
-  //     else if(event->gen_match_1 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 ) weight *= 0.88;
-  //     if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.89;
-  //     else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.88;
-  //   }
-  //   if( CHAN != kTAU && !preselectionFile.Contains("preselection_data") ){
-  //     if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.89;
-  //     else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.88;
-  //   }
-
-  //   // if (CHAN == kMU  && !preselectionFile.Contains("preselection_data") ) weight *= event->singleTriggerSFLeg1;
-  //   // if (CHAN == kEL  && !preselectionFile.Contains("preselection_data") ) weight *= event->singleTriggerSFLeg1;
-  //   // if (CHAN == kTAU && !preselectionFile.Contains("preselection_data") ) weight *= event->xTriggerSFLeg1 * event->xTriggerSFLeg2;
-
-  //   // if(preselectionFile.Contains("preselection_TT")){
-  //   //   weight *= event->topWeight_run1;
-  //   // }
-  //   // if(preselectionFile.Contains("preselection_TT") || preselectionFile.Contains("preselection_VV")){
-  //   //   weight *= event->xsec*event->genNEventsWeight;
-  //   // }
-
-  //   // if(preselectionFile.Contains("preselection_DY")){
-  //   //   weight *= event->zPtReweightWeight;
-  //   //   switch (event->NUP){
-  //   //     case 0: weight *= 5.91296350328e-05; break;
-  //   //     case 1: weight *= 1.01562362959e-05; break;
-  //   //     case 2: weight *= 2.15030982864e-05; break;
-  //   //     case 3: weight *= 1.35063197418e-05; break;
-  //   //     case 4: weight *= 9.22459522375e-06; break;
-  //   //   }
-  //   // }
-  //   // if(preselectionFile.Contains("preselection_Wjets")){
-  //   //   switch (event->NUP){
-  //   //     case 0: weight *= 0.000790555230048; break;
-  //   //     case 1: weight *= 0.000150361226486; break;
-  //   //     case 2: weight *= 0.000307137166339; break;
-  //   //     case 3: weight *= 5.55843884964e-05; break;
-  //   //     case 4: weight *= 5.2271728229e-05; break;
-  //   //   }
-  //   // }
-  // }else{
-  //   if(CHAN != kTAU){
-  //     weight = (event->generatorWeight)*(event->muonEffTrgWeight)*(event->idWeight_1*(event->triggerWeight_1*(event->triggerWeight_1<1.8)+(event->triggerWeight_1>=1.8))*event->isoWeight_1)*(event->embeddedDecayModeWeight)*(((event->gen_match_2 == 5)*0.97 + (event->gen_match_2 != 5)));
-  //   }else{
-  //     weight = ((event->generatorWeight)*(event->muonEffTrgWeight)*(event->crossTriggerDataEfficiencyWeight_tight_MVA_1*event->crossTriggerDataEfficiencyWeight_tight_MVA_2 )*(event->embeddedDecayModeWeight)*(((event->gen_match_1 == 5)*0.97 + (event->gen_match_1 != 5))*((event->gen_match_2 == 5)*0.97 + (event->gen_match_2 != 5))));
-  //   }
-  // }
+ 
   weight_sf=weight;
   
   if(CHAN==kTAU && !COINFLIP){
     weight=weight*0.5;
     weight_sf=weight_sf*0.5;
   }
-  //  "mt":"((extramuon_veto < 0.5) & (extraelec_veto < 0.5) & (dilepton_veto<0.5) & (againstMuonTight3_2>0.5) & (againstElectronVLooseMVA6_2>0.5))",
-	//	"et":"((extramuon_veto < 0.5) & (extraelec_veto < 0.5) & (dilepton_veto<0.5) & (againstMuonLoose3_2>0.5) & (againstElectronTightMVA6_2>0.5))",
-	//	"tt":"((extramuon_veto < 0.5) & (extraelec_veto < 0.5) & (dilepton_veto<0.5) & (againstMuonLoose3_1>0.5) & (againstElectronVLooseMVA6_1>0.5) & (againstMuonLoose3_2>0.5) & (againstElectronVLooseMVA6_2>0.5))"'
   
-  
-
-  // cout << event->againstElectronVLooseMVA6_1 << " " << event->againstElectronVLooseMVA6_2 << " " << event->againstMuonLoose3_1 << " " << event->againstMuonLoose3_2 << endl;
   if(CHAN==kMU) passesTauLepVetos = ((event->againstMuonTight3_2>0.5) && (event->againstElectronVLooseMVA6_2>0.5));
   if(CHAN==kEL) passesTauLepVetos = ((event->againstMuonLoose3_2>0.5) && (event->againstElectronTightMVA6_2>0.5));
   if(CHAN==kTAU)passesTauLepVetos = ((event->againstElectronVLooseMVA6_1>0.5)&&(event->againstElectronVLooseMVA6_2>0.5)&&(event->againstMuonLoose3_1>0.5)&&(event->againstMuonLoose3_2>0.5));

@@ -57,7 +57,7 @@ void Preselection() {
     }
     return;
   }
-
+  
   if (num==1||num==0) {
     Analyzer->loadFile(datafile,"TauCheck");
     Analyzer->select(preselection_data,0);
@@ -169,6 +169,33 @@ void Preselection() {
       MCch->Add(preselection_DY);
       MCch->Add(preselection_TT);
       MCch->Add(preselection_VV);
+      TFile* MCf = new TFile(preselection_MCsum_woQCD,"recreate");
+      MCch->Merge(MCf,0);
+    }
+    if (num==0) {
+      std::cout << "Creating merged tree in file " << preselection_MCsum << std::endl;
+      TChain* MCch=new TChain("Events");
+      MCch->Add(preselection_MCsum_woQCD);
+      if ( CHAN==kMU ) MCch->Add(preselection_QCD);
+      
+      TFile* MCf = new TFile(preselection_MCsum,"recreate");
+      MCch->Merge(MCf,0);
+    }
+  }else{
+    if (num==0) {
+      std::cout << "Creating merged tree in file " << preselection_MCsum_woQCD << std::endl;
+      TChain* MCch=new TChain("Events");
+      MCch->Add(preselection_Wjets);
+      MCch->Add(preselection_EMB);
+      MCch->Add(preselection_TT_J_EMB);
+      MCch->Add(preselection_TT_L_EMB);
+      MCch->Add(preselection_DY_J_EMB);
+      MCch->Add(preselection_DY_L_EMB);
+      MCch->Add(preselection_VV_J_EMB);
+      MCch->Add(preselection_VV_L_EMB);
+      // MCch->Add(preselection_DY);
+      // MCch->Add(preselection_TT);
+      // MCch->Add(preselection_VV);
       TFile* MCf = new TFile(preselection_MCsum_woQCD,"recreate");
       MCch->Merge(MCf,0);
     }

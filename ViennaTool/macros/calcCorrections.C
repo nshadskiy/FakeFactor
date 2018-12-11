@@ -49,6 +49,8 @@ void calcCorrections() {
     Analyzer->loadFile(m_preselection_data,"Events");
     Analyzer->calc_nonclosure(_QCD,                               p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure,"",0);
     //Analyzer->calc_nonclosure(_QCD,                               p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure,"_alt",0);
+
+    cout << "Analysizer->calc_nonclosure( " << _W_JETS << " " << p+FF_corr_Wjets_MCsum_noGen_fitted << " " << CR_Wjets_mvis_data_MCsubtracted << " " << p+FF_corr_Wjets_MCsum_noGen_nonclosure << " 0" << endl;
     Analyzer->calc_nonclosure(_W_JETS,                            p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure,"",0);
     //Analyzer->calc_nonclosure(_W_JETS,                            p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure,"_alt",0);
     Analyzer->calc_muisocorr(_QCD|MUISO,                          p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_muiso_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure, p+FF_corr_QCD_MCsum_noGen_muisocorr,"",0);

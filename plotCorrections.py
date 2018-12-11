@@ -1,4 +1,5 @@
 import ROOT as R
+from ROOT import TGraphAsymmErrors, TAxis
 import argparse
 
 if __name__ == '__main__':
@@ -7,7 +8,7 @@ if __name__ == '__main__':
 
      parser = argparse.ArgumentParser()
      parser.add_argument('--channel', dest = 'channel', help='Channel to plot: kMU,kEL,kTAU', type=str, metavar = 'TAG', required = True)
-	parser.add_argument('--embedding', dest = 'embedding', help='Embedded or Non-Embedded FF', type=str, metavar = 'TAG', required = True)
+     parser.add_argument('--embedding', dest = 'embedding', help='Embedded or Non-Embedded FF', type=str, metavar = 'TAG', required = True)
      args = parser.parse_args()
     
      preliminary = 'Preliminary'
@@ -17,7 +18,7 @@ if __name__ == '__main__':
               {'name': 'ViennaTool/fakefactor/data_mt/FF_corr_QCD_MCsum_noGen_muisocorr.root','data':'muiso_corr', 'graph':'muiso_QCD','CMS':preliminary,'Y':[0.4,1.3],'X':[0,0.71], 'Label':'iso(#mu)','file':'corr_QCD_lepiso','plotLabel1':'#mu^{}#tau_{h} QCD multijet','plotLabel2':'Iso(#mu) correction'},
               {'name': 'ViennaTool/fakefactor/data_mt/FF_corr_QCD_MCsum_noGen_OSSScorr.root','data':'OSSS_corr', 'graph':'OSSS_corr_QCD','CMS':preliminary,'Y':[0.2,2.1],'X':[0,305], 'Label':'m_{vis} (GeV)','file':'corr_QCD_OSSS','plotLabel1':'#mu^{}#tau_{h} QCD multijet','plotLabel2':'opposite/same charge correction'},
               {'name': 'ViennaTool/fakefactor/data_mt/FF_corr_TT_MC_noGen_nonclosure.root','data':'nonclosure_fit', 'graph':'nonclosure_TT_MC','CMS':'Simulation '+preliminary,'Y':[0.5,1.5],'X':[0,250], 'Label':'m_{vis} (GeV)','file':'corr_TT_nonclosure','plotLabel1':'#mu^{}#tau_{h} t#bar{t}','plotLabel2':'Nonclosure correction'},
-              {'name': 'ViennaTool/fakefactor/data_mt/FF_corr_Wjets_MC_noGen_mtcorr.root','data':'mt_corr', 'graph':'mt_corr_Wjets','CMS':'Simulation '+preliminary,'Y':[0.5,1.5],'X':[0,140], 'Label':'m^{#mu}_{T} [GeV]','file':'corr_W_mt','plotLabel1':'#mu^{}#tau_{h} W+jets','plotLabel2':'m^{#mu}_{T} correction'},
+              {'name': 'ViennaTool/fakefactor/data_mt/FF_corr_Wjets_MC_noGen_mtcorr.root','data':'mt_corr', 'graph':'mt_corr_Wjets','CMS':'Simulation '+preliminary,'Y':[0.5,1.5],'X':[0,50], 'Label':'m^{#mu}_{T} [GeV]','file':'corr_W_mt','plotLabel1':'#mu^{}#tau_{h} W+jets','plotLabel2':'m^{#mu}_{T} correction'},
               {'name': 'ViennaTool/fakefactor/data_mt/FF_corr_Wjets_MCsum_noGen_nonclosure.root','data':'nonclosure_fit', 'graph':'nonclosure_Wjets','CMS':preliminary,'Y':[0.5,1.5],'X':[0,305], 'Label':'m_{vis} (GeV)','file':'corr_W_nonclosure','plotLabel1':'#mu^{}#tau_{h} W+jets','plotLabel2':'Nonclosure correction'},
               #{'name': 'ViennaTool/fakefactor/data_mt/FF_corr_QCD_MCsum_noGen_nonclosure_alt.root','data':'nonclosure_fit', 'graph':'nonclosure_QCD','CMS':'Preliminary','Y':[0,2],'X':[0,305], 'Label':'m_{vis} [GeV]','file':'nonclosure_QCD_alt'},
               #{'name': 'ViennaTool/fakefactor/data_mt/FF_corr_QCD_MCsum_noGen_muisocorr_alt.root','data':'muiso_corr', 'graph':'muiso_QCD','CMS':'Preliminary','Y':[0.4,1.3],'X':[0,0.71], 'Label':'iso(#mu)','file':'muisocorr_QCD_alt'},
@@ -32,7 +33,7 @@ if __name__ == '__main__':
               {'name': 'ViennaTool/fakefactor/data_et/FF_corr_QCD_MCsum_noGen_muisocorr.root','data':'muiso_corr', 'graph':'muiso_QCD','CMS':preliminary,'Y':[0.4,1.3],'X':[0,0.71], 'Label':'iso(e)','file':'corr_QCD_lepiso','plotLabel1':'e#tau_{h} QCD multijet','plotLabel2':'Iso(e) correction'},
               {'name': 'ViennaTool/fakefactor/data_et/FF_corr_QCD_MCsum_noGen_OSSScorr.root','data':'OSSS_corr', 'graph':'OSSS_corr_QCD','CMS':preliminary,'Y':[0,2],'X':[0,305], 'Label':'m_{vis} (GeV)','file':'corr_QCD_OSSS','plotLabel1':'e#tau_{h} QCD multijet','plotLabel2':'opposite/same charge correction'},
               {'name': 'ViennaTool/fakefactor/data_et/FF_corr_TT_MC_noGen_nonclosure.root','data':'nonclosure_fit', 'graph':'nonclosure_TT_MC','CMS':'Simulation '+preliminary,'Y':[0.5,1.5],'X':[0,250], 'Label':'m_{vis} (GeV)','file':'corr_TT_nonclosure','plotLabel1':'e#tau_{h} t#bar{t}','plotLabel2':'Nonclosure correction'},
-              {'name': 'ViennaTool/fakefactor/data_et/FF_corr_Wjets_MC_noGen_mtcorr.root','data':'mt_corr', 'graph':'mt_corr_Wjets','CMS':'Simulation '+preliminary,'Y':[0.5,1.5],'X':[0,140], 'Label':'m^{e}_{T} [GeV]','file':'corr_mt_W','plotLabel1':'e#tau_{h} W+jets','plotLabel2':'m^{e}_{T} correction'},
+              {'name': 'ViennaTool/fakefactor/data_et/FF_corr_Wjets_MC_noGen_mtcorr.root','data':'mt_corr', 'graph':'mt_corr_Wjets','CMS':'Simulation '+preliminary,'Y':[0.5,1.5],'X':[0,50], 'Label':'m^{e}_{T} [GeV]','file':'corr_mt_W','plotLabel1':'e#tau_{h} W+jets','plotLabel2':'m^{e}_{T} correction'},
               {'name': 'ViennaTool/fakefactor/data_et/FF_corr_Wjets_MCsum_noGen_nonclosure.root','data':'nonclosure_fit', 'graph':'nonclosure_Wjets','CMS':preliminary,'Y':[0,2],'X':[0,305], 'Label':'m_{vis} (GeV)','file':'corr_W_nonclosure','plotLabel1':'e#tau_{h} W+jets','plotLabel2':'Nonclosure correction'},
               #{'name': 'ViennaTool/fakefactor/data_et/FF_corr_QCD_MCsum_noGen_nonclosure_alt.root','data':'nonclosure_fit', 'graph':'nonclosure_QCD','CMS':'Preliminary','Y':[0,2],'X':[0,305], 'Label':'m_{vis} [GeV/c]','file':'nonclosure_QCD_alt'},
               #{'name': 'ViennaTool/fakefactor/data_et/FF_corr_QCD_MCsum_noGen_muisocorr_alt.root','data':'muiso_corr', 'graph':'muiso_QCD','CMS':'Preliminary','Y':[0.4,1.3],'X':[0,0.71], 'Label':'iso(e)','file':'eisocorr_QCD_alt'},
@@ -90,10 +91,20 @@ if __name__ == '__main__':
           graph.GetXaxis().SetLabelSize(0.045)
 
           R.gStyle.SetEndErrorSize(0)
-          R.gStyle.SetErrorX(0)
-          datapoints.SetMarkerStyle(20)
-          datapoints.SetLineWidth(1)
-          datapoints.SetMarkerSize(1.5)
+          
+          datapoints_graph = TGraphAsymmErrors(datapoints.GetNbinsX())
+          for i in range(1,1+datapoints.GetNbinsX()):
+               datapoints_graph.SetPoint(i, datapoints.GetBinCenter(i), datapoints.GetBinContent(i))
+               datapoints_graph.SetPointEYhigh(i, datapoints.GetBinError(i))
+               datapoints_graph.SetPointEYlow(i, datapoints.GetBinError(i))
+               datapoints_graph.SetPointEXhigh(i, datapoints.GetBinCenter(i)-datapoints.GetBinLowEdge(i))
+               datapoints_graph.SetPointEXlow(i, datapoints.GetBinLowEdge(i+1)-datapoints.GetBinCenter(i))
+
+          
+          datapoints_graph.SetMarkerStyle(20)
+          datapoints_graph.SetLineWidth(1)
+          datapoints_graph.SetMarkerSize(1.5)
+
 
           legendGraph = R.TGraph();
           legendGraph.SetLineColor(R.kBlack)
@@ -105,7 +116,7 @@ if __name__ == '__main__':
           leg.SetLineColor(10)
           leg.SetTextFont(42)
           leg.SetTextSize(0.035)
-          leg.AddEntry(datapoints,"Measured","EP")
+          leg.AddEntry(datapoints_graph,"Measured","EP")
           leg.AddEntry(legendGraph,"#splitline{Smoothed}{curve}","lf")
           
           cms1 = R.TLatex( 0.16, 0.915, "CMS" )
@@ -140,7 +151,7 @@ if __name__ == '__main__':
           
           #DrawErrorBand(graph)
           graph.Draw('ap')
-          datapoints.Draw('e1p same')
+          datapoints_graph.Draw('e1p same')
           cms1.Draw()
           cms3.Draw()
           cms4.Draw()

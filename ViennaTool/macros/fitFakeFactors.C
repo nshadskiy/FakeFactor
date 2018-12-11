@@ -82,21 +82,21 @@ void fitFakeFactors(){
           }
   
   else if (CHAN == kMU && modes.at(imode) & _QCD && modes.at(imode) & _AI && ijet == 1) {
-         cf.set_fitFunc( "pol1(2)" );
+         cf.set_fitFunc( "landau(0)+pol0(2)" );
           cf.set_err_scale( 3.0 );
           cf.set_err_cl( 0 );
-          cf.set_histMaxFrac( 60.0/500.0 );
-          cf.set_smoothFrac(0.25);
+          cf.set_histMaxFrac( 68.0/500.0 );
+          cf.set_smoothFrac(51.0/500.0);
           cf.set_smoothMode("spline3");              
           }
   
   else if (CHAN == kMU && modes.at(imode) & _QCD) {
-         cf.set_fitFunc( "landau(0)+pol0(2)" );
+         cf.set_fitFunc( "landau(0)+pol1(2)" );
           cf.set_err_scale( 3.0 );
           cf.set_err_cl( 0 );
-          cf.set_histMaxFrac( 0.2 );
-          cf.set_smoothFrac(0.25);
-          cf.set_smoothMode("spline3");              
+          cf.set_histMaxFrac( 68.0/500.0 );
+          cf.set_smoothFrac(51.0/500);
+          cf.set_smoothMode("spline3");
           }
   
  else if( CHAN==kEL && (modes.at(imode) & _QCD) && modes.at(imode) & _AI  ) {

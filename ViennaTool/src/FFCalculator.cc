@@ -891,10 +891,10 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
       if ( !this->passesCuts(cuts,i) ) continue;
       //if(pre_main.Contains("data"))cout << "Before" << endl;
       if (  ( (mode & DOALL) && this->isInAll(mode,i) ) ||  ( doCR && this->isInCR(mode,i) ) || ( !doCR && this->isInSR(mode,i) )    ) {
-        //if(pre_main.Contains("data"))cout << "after" << endl;
-	nT=this->isTight(mode,i); nL=this->isLoose(mode,i); nT_alt=this->isTight_alt(mode,i);
-	if      (nT) {counter_histo_tight_CR->Fill(this->getBin(mode,i),event_s->weight_sf);}
-	if (nL) {counter_histo_loose_CR->Fill(this->getBin(mode,i),event_s->weight_sf);}
+              //if(pre_main.Contains("data"))cout << "after" << endl;
+        nT=this->isTight(mode,i); nL=this->isLoose(mode,i); nT_alt=this->isTight_alt(mode,i);
+        if      (nT) {counter_histo_tight_CR->Fill(this->getBin(mode,i),event_s->weight_sf);}
+        if (nL) {counter_histo_loose_CR->Fill(this->getBin(mode,i),event_s->weight_sf);}
         if (nT_alt) {counter_histo_tight_alt_CR->Fill(this->getBin(mode,i),event_s->weight_sf);}
 
         if(nL){
@@ -1323,7 +1323,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   cout << "Calculating corrections for " << ff_output << endl;
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
   cout << nentries << endl;
-
+  cout << "SUBTRACT MC " <<subtractMC << endl;
   TString sample;
   if(mode & _QCD) sample="_QCD";
   if(mode & _W_JETS) sample="_Wjets";
@@ -1486,7 +1486,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
       g->SetPointEYhigh(i, upfactor*g->GetErrorYhigh(i) );
     }
   }
-
+  
 
   g->SetTitle("nonclosure"+sample);
   g->SetName("nonclosure"+sample);

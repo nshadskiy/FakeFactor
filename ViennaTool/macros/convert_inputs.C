@@ -340,7 +340,7 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
         }
       }
     }
-    cout << "Different DecayBins: " << N_D2 << endl;
+    
     for (int idm=0; idm<N_D2; idm++){
       for (int ijet=0; ijet<N_D3; ijet++){
         stringstream fitted_histo; fitted_histo << "dm" << idm << "_njet" << ijet;
@@ -633,7 +633,7 @@ TString getCatString(Int_t categoryMode){
 }
 
 void convert_corrections( TString fn, TString gn, TString fout, TString gout, const TString tight_cat){
-
+  cout << "In Convert_Corrections: " << fn << " " << gn << " " << fout << " " << gout << " " << tight_cat << endl;
   TFile *f=new TFile(fn.ReplaceAll(".root",tight_cat+".root"));
   TGraphAsymmErrors *t=(TGraphAsymmErrors*)f->Get(gn);
   TFile *fout_h=new TFile(fout.ReplaceAll(".root",tight_cat+".root"),"RECREATE");

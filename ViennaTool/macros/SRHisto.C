@@ -21,16 +21,30 @@ void SRHisto() {
 
     std::vector<TString> ps;
     ps.push_back(preselection_data);
-    ps.push_back(preselection_Wjets); ps.push_back(preselection_TT_T); ps.push_back(preselection_TT_J); ps.push_back(preselection_TT_L);
-    if( useVV ) {ps.push_back(preselection_VV_T); ps.push_back(preselection_VV_J); ps.push_back(preselection_VV_L);}
-    ps.push_back(preselection_DY_TT); ps.push_back(preselection_DY_J); ps.push_back(preselection_DY_L); 
+    ps.push_back(preselection_Wjets); 
+    // ps.push_back(preselection_TT_T); 
+    ps.push_back(preselection_TT_J_EMB); 
+    ps.push_back(preselection_TT_L_EMB);
+    // ps.push_back(preselection_VV_T); 
+    ps.push_back(preselection_VV_J_EMB); 
+    ps.push_back(preselection_VV_L_EMB);
+    // ps.push_back(preselection_DY_TT); 
+    ps.push_back(preselection_DY_J_EMB); 
+    ps.push_back(preselection_DY_L_EMB); 
     if(DOQCD) ps.push_back(preselection_QCD);
 
     std::vector<TString> fl;
     fl.push_back(SR_data_mt); 
-    fl.push_back(SR_Wjets_mt_sim); fl.push_back(SR_TT_T_mt_sim); fl.push_back(SR_TT_J_mt_sim); fl.push_back(SR_TT_L_mt_sim);
-    if( useVV ) {fl.push_back(SR_VV_T_mt_sim); fl.push_back(SR_VV_J_mt_sim); fl.push_back(SR_VV_L_mt_sim);}
-    fl.push_back(SR_DY_TT_mt_sim); fl.push_back(SR_DY_J_mt_sim); fl.push_back(SR_DY_L_mt_sim); 
+    fl.push_back(SR_Wjets_mt_sim); 
+    // fl.push_back(SR_TT_T_mt_sim); 
+    fl.push_back(SR_TT_J_mt_sim); 
+    fl.push_back(SR_TT_L_mt_sim);
+    // fl.push_back(SR_VV_T_mt_sim); 
+    fl.push_back(SR_VV_J_mt_sim); 
+    fl.push_back(SR_VV_L_mt_sim);
+    // fl.push_back(SR_DY_TT_mt_sim);
+    fl.push_back(SR_DY_J_mt_sim); 
+    fl.push_back(SR_DY_L_mt_sim); 
     if(DOQCD) fl.push_back(SR_QCD_mt_sim);
     
     
@@ -78,6 +92,7 @@ void SRHisto() {
       if(!DOMC){
         for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
           TFile outfile ( path_sim+s_SR+"_data"+r2[iv]+"_AI_MCsubtracted.root","RECREATE"  );
+          cout << "WRITING: " << path_sim+s_SR+"_data"+r2[iv]+"_AI_MCsubtracted.root" << endl;
           TFile infile( path_sim+s_SR+"_data"+r2[iv]+"_AI.root"  );
           if(infile.IsZombie() ){cout << path_sim+s_SR+"_data"+r2[iv]+"_AI.root" << " not available" << endl; break;}
           for(int imode=0; imode<nmodes; imode++){
@@ -85,6 +100,7 @@ void SRHisto() {
             TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_mvis_MCsubtracted"); outhist->Add(inhist,-1);
             for (int is=0; is<nSA; is++){ //loop over samples
               if(ssa[is]=="QCD") continue;
+              cout << "WRITING: " << path_sim+s_SR+"_"+ssa[is]+r2[iv]+"_AI.root" << endl;
               TFile tmp(path_sim+s_SR+"_"+ssa[is]+r2[iv]+"_AI.root"  );
               if(tmp.IsZombie() ){cout << path_sim+s_SR+"_"+ssa[is]+r2[iv]+"_AI.root" << " not available"<<  endl; continue;}
               TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+r2[iv]);
