@@ -20,6 +20,8 @@ void SRHisto() {
     Analyzer->init();
 
     std::vector<TString> ps;
+    std::vector<TString> fl;
+    if(EMB == 0){
     ps.push_back(preselection_data);
     ps.push_back(preselection_Wjets); 
     ps.push_back(preselection_TT_T); 
@@ -33,7 +35,6 @@ void SRHisto() {
     ps.push_back(preselection_DY_L); 
     if(DOQCD) ps.push_back(preselection_QCD);
 
-    std::vector<TString> fl;
     fl.push_back(SR_data_mt); 
     fl.push_back(SR_Wjets_mt_sim); 
     fl.push_back(SR_TT_T_mt_sim); 
@@ -46,6 +47,29 @@ void SRHisto() {
     fl.push_back(SR_DY_J_mt_sim); 
     fl.push_back(SR_DY_L_mt_sim); 
     if(DOQCD) fl.push_back(SR_QCD_mt_sim);
+    }else{
+    ps.push_back(preselection_data);
+    ps.push_back(preselection_Wjets); 
+    ps.push_back(preselection_EMB); 
+    ps.push_back(preselection_TT_J_EMB); 
+    ps.push_back(preselection_TT_L_EMB);
+    ps.push_back(preselection_VV_J_EMB); 
+    ps.push_back(preselection_VV_L_EMB);
+    ps.push_back(preselection_DY_J_EMB); 
+    ps.push_back(preselection_DY_L_EMB); 
+    if(DOQCD) ps.push_back(preselection_QCD);
+
+    fl.push_back(SR_data_mt); 
+    fl.push_back(SR_Wjets_mt_sim); 
+    fl.push_back(SR_EMB_mt_sim);
+    fl.push_back(SR_TT_J_mt_sim); 
+    fl.push_back(SR_TT_L_mt_sim);
+    fl.push_back(SR_VV_J_mt_sim); 
+    fl.push_back(SR_VV_L_mt_sim);
+    fl.push_back(SR_DY_J_mt_sim); 
+    fl.push_back(SR_DY_L_mt_sim); 
+    if(DOQCD) fl.push_back(SR_QCD_mt_sim);
+    }
     
     
     //  if (DOQCD) fl.push_back(SR_QCD_mt_sim);
