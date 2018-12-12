@@ -6,12 +6,14 @@ git clone https://github.com/CMS-HTT/Jet2TauFakes.git HTTutilities/Jet2TauFakes
 cd HTTutilities/Jet2TauFakes  
 git checkout v0.2.1  
 cd ../../  
-scram b -j8  
+scram b -j 8  
 git init  
 
 git clone https://github.com/fspreitzer/FakeFactor.git -b FF2017ML  
 cd FakeFactor  
-
+mv * ..
+cd ..
+rm -rf FakeFactor
 
 cd ViennaTool/  
 em Settings.h  
@@ -20,7 +22,7 @@ em Settings.h
 #const TString user="fspreitzer";  
 em steerAll.sh  
 em BuildStructure.sh  
-#user=mflechl  
+#user=fspreitzer  
 #fftype=FakeFactor_SM_ML  
 
 
