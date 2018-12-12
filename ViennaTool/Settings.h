@@ -23,8 +23,8 @@ const int useVV=1;
 const int useMVAMET=0;
 ///////////////////////////////////////////////////
 //Out of date - no need to change
-const int DEBUG=1; //set to 1 for additional output
-const int ALLPLOTS=1; //set to 1 for PDFs etc
+const int DEBUG=0; //set to 1 for additional output
+const int ALLPLOTS=0; //set to 1 for PDFs etc
 const int DOQCD=1; //set to 1 to include QCD estimate, 0 for w/o; only works for MC
 const int DOMC=0; //set to 1 for MC, 0 for data
 const int doCuts=0;
