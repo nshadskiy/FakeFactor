@@ -61,8 +61,5 @@ class FFCalculator : public GlobalClass, public PlotterClass{
   void calc_muisocorr(const Int_t mode, const TString raw_ff, const TString CR_file, TString nonclosure_corr, TString ff_output, const TString tight_cat="", const Int_t doPlot=1, const Int_t subtractMC=1, const Int_t tau_ind=0 );
   void calc_mtcorr(const Int_t mode, const TString raw_ff, const TString CR_file, TString nonclosure_corr, TString ff_output, const TString tight_cat="", const Int_t doPlot=1, const Int_t tau_ind=0 );
   void calc_OSSScorr(const Int_t mode, const TString raw_ff, const TString SR_file_AI, TString nonclosure_corr, TString ff_output, const TString tight_cat="", const Int_t doPlot=1, const Int_t subtractMC=1, const Int_t tau_ind=0 );
-
-
 };
-
 #endif

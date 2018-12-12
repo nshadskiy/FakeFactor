@@ -2,6 +2,8 @@
 
 cmsrel CMSSW_8_0_25  
 cd CMSSW_8_0_25/src/; cmsenv  
+
+git clone https://github.com/fspreitzer/FakeFactor.git . -b FF2017ML_Embedding  
 git clone https://github.com/CMS-HTT/Jet2TauFakes.git HTTutilities/Jet2TauFakes  
 cd HTTutilities/Jet2TauFakes  
 git checkout v0.2.1  
@@ -9,7 +11,6 @@ cd ../../
 scram b -j 8  
 git init  
 
-git clone https://github.com/fspreitzer/FakeFactor.git . -b FF2017ML_Embedding  
 
 cd ViennaTool/  
 em Settings.h  
@@ -19,6 +20,6 @@ em Settings.h
 em steerAll.sh  
 em BuildStructure.sh  
 #user=fspreitzer  
-#fftype=FakeFactor_SM_ML  
+#fftype=[$analysis] #from Settings.h
 
-
+#instructions.txt for further instructions
