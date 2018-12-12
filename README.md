@@ -22,4 +22,4 @@ em BuildStructure.sh
 #user=fspreitzer  
 #fftype=FakeFactor_SM_ML  
 
-
+#instructions.txt for further instructions
