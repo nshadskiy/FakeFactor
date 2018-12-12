@@ -1,6 +1,6 @@
 #!/bin/bash
 user=fspreitzer
-fftype=FakeFactor_2017_Test_2
+fftype=FakeFactor_2017
 
 line=" --------------------------------------------------------------------------------------"
 echo $line
