@@ -9,7 +9,7 @@ cd ../../
 scram b -j 8  
 git init  
 
-git clone https://github.com/fspreitzer/FakeFactor.git -b FF2017ML  
+git clone https://github.com/fspreitzer/FakeFactor.git -b FF2017ML_Embedding  
 cd FakeFactor   
 mv * ..  
 cd ..  
