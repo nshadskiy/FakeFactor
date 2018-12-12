@@ -13,6 +13,7 @@ if [ "$channel" == " kTAU" ]; then chan="tt"; fi
 echo Channel: $chan
 echo Output: $output
 echo Embedding: $embedding
+echo User: $USER
 #echo $dc_path
 
 sed s/user=\"whoami\"/user=\"$USER\"/g Settings.h >/tmp/Settings$USER.h
@@ -29,6 +30,8 @@ echo "Compiling the framework"
 sh BuildStructure.sh
 cd ../
 
+echo "------ END OF steerAll.sh ---------"
+
 if [ $embedding == 1 ]; then
     mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
     mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
@@ -37,39 +40,39 @@ if [ $embedding == 1 ]; then
     mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
     mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
 fi
-make -B
+# make -B
 
-./Preselection
+# ./Preselection
 
-./SRHisto
-./CRHisto
+# ./SRHisto
+# ./CRHisto
 
-./steerFF
-./fitFakeFactors
+# ./steerFF
+# ./fitFakeFactors
 
-if [ $embedding == 0 ]; then 
-    cd ViennaTool/Images_NonEMB/data_$chan
-    #gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf
-    gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
-    cd -
-fi
-if [ $embedding == 1 ]; then 
-    cd ViennaTool/Images_EMB/data_$chan
-    #gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf
-    gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
-    cd -
-fi
-
-
-./calcCorrections
-python plotCorrections.py --channel $channel --embedding $embedding
-
-./convert_inputs
+# if [ $embedding == 0 ]; then 
+#     cd ViennaTool/Images_NonEMB/data_$chan
+#     #gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf
+#     gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
+#     cd -
+# fi
+# if [ $embedding == 1 ]; then 
+#     cd ViennaTool/Images_EMB/data_$chan
+#     #gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf
+#     gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
+#     cd -
+# fi
 
 
-python cpTDHaftPublic.py --destination $output --channel $channel --embedding $embedding
-python producePublicFakeFactors.py --input $output --channel $channel --embedding $embedding
+# ./calcCorrections
+# python plotCorrections.py --channel $channel --embedding $embedding
 
-#python cpPublicFFtoDC.py --source $output --destination $dc_path --channel $channel
+# ./convert_inputs
 
-rm $output/constant.root
+
+# python cpTDHaftPublic.py --destination $output --channel $channel --embedding $embedding
+# python producePublicFakeFactors.py --input $output --channel $channel --embedding $embedding
+
+# #python cpPublicFFtoDC.py --source $output --destination $dc_path --channel $channel
+
+# rm $output/constant.root
