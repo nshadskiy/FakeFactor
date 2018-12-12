@@ -34,10 +34,11 @@ if __name__ == '__main__':
 	  if( args.embedding == "0"):
 	  	p = sp.Popen(["python producePublicFakeFactors_mt_et_NonEMB.py --channel {0} --input {1}".format(channel,args.input)],shell=True)
 	  else:
+			print "EMBEDDED COPY"
 			p = sp.Popen(["python producePublicFakeFactors_mt_et_EMB.py --channel {0} --input {1}".format(channel,args.input)],shell=True)
 	  p.wait()
 	if( channel == "tt"):
-	  p = sp.Popen(["python producePublicFakeFactors_tt.py --channel {0} --input {1}".format(channel,args.input)],shell=True)
+	  p = sp.Popen(["python producePublicFakeFactors_tt.py --channel {0} --input {1} --embedding {2}".format(channel,args.input,args.embedding)],shell=True)
 	  p.wait()
 
 

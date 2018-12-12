@@ -724,10 +724,17 @@ void combineWSystematics( TString fW_nonclosure, TString sys_nonclosure, TString
   for(Int_t i=0; i<=sys_nonclosure_t->GetN(); i++){
     for(Int_t j=0; j<=sys_mtcorr_t->GetN(); j++){
       //out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_mtcorr_t->GetY()[j],2) ) );
+      // cout << i << "," << j << ": " << TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) << " " << TMath::Power(sys_mtcorr_t->GetY()[j],2) << " "<<  TMath::Power(additionalDYuncertainty,2) )<<endl;
       // cout << "Bincontent " << i << "," << j << ": " << TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_mtcorr_t->GetY()[j],2) + TMath::Power(additionalDYuncertainty,2) )<<endl;
       out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) + TMath::Power(sys_mtcorr_t->GetY()[j],2) + TMath::Power(additionalDYuncertainty,2) ) );
+      if( j == 2000) out_t->SetBinContent(i,j, out_t->GetBinContent(i,j-1));
+      if( i == 2000) out_t->SetBinContent(i,j, out_t->GetBinContent(i-1,j));
+      if( out_t->GetBinContent(i,j) > 1){
+        cout << i << " " << j << " " << out_t->GetBinContent(i,j) << endl;
+      } 
     }
   }
+  out_t->SetBinContent(2000,2000, out_t->GetBinContent(2000,1999) );
   TFile *fout_f=new TFile(fout.ReplaceAll(".root",tight_cat+".root"),"UPDATE");
   fout_f->cd();
   out_t->Write();

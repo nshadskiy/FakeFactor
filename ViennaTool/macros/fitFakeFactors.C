@@ -82,7 +82,7 @@ void fitFakeFactors(){
           }
   
   else if (CHAN == kMU && modes.at(imode) & _QCD && modes.at(imode) & _AI && ijet == 1) {
-         cf.set_fitFunc( "landau(0)+pol0(2)" );
+         cf.set_fitFunc( "pol1(2)" );
           cf.set_err_scale( 3.0 );
           cf.set_err_cl( 0 );
           cf.set_histMaxFrac( 68.0/500.0 );
@@ -158,7 +158,7 @@ void fitFakeFactors(){
       // if ( modes.at(imode) & _AI  ) 
       if(modes.at(imode) & _AI) cf.set_histMaxFrac( 142.0/500.0 ); 
       else{
-        if( ijet == 0) cf.set_histMaxFrac( 104.0/500.0 ); 
+        if( ijet == 0) cf.set_histMaxFrac( 132.0/500.0 ); 
         else cf.set_histMaxFrac( 126.0/500.0 ); 
       } 
       cf.set_smoothFrac(0.3);

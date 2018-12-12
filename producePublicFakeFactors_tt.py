@@ -6,6 +6,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--channel', dest = 'channel', help='Channel to plot: mt,et', type=str, metavar = 'TAG', required = True)
 parser.add_argument('--input', dest = 'indir', help='Input directory - full string', type=str, metavar = 'TAG', required = True)
+parser.add_argument('--embedding', dest = 'embedding', help='Embedded or Non-Embedded FF', type=str, metavar = 'TAG', required = True)
 args = parser.parse_args()
 
 channel=args.channel
@@ -14,6 +15,7 @@ FFtype=""
 #FFtype="_alt"
 categories = ['inclusive', 'dummycat']
 #categories = ['btag_looseiso', 'nobtag_looseiso']
+isolation="tight"
 
 for category in categories:
 
@@ -626,7 +628,11 @@ for category in categories:
     
     
     
-    file = ROOT.TFile.Open("{INDIR}/{CHANNEL}/{CATEGORY}/fakeFactors_{CHANNEL}_{CATEGORY}.root".format(INDIR=indir,CHANNEL=channel,CATEGORY=category), "recreate")
+    if( args.embedding == "0"):
+        emb_string = "_NonEmbedded"
+    else:
+        emb_string = ""
+    file = ROOT.TFile.Open("{INDIR}/{CHANNEL}{EMBEDDING}/{CATEGORY}/fakeFactors_{ISOLATION}.root".format(INDIR=indir,CHANNEL=channel,CATEGORY=category,EMBEDDING=emb_string, ISOLATION=isolation), "recreate")
     # Write meta-data
     # Write fake factors
     file.WriteObject(ff_qcd_os.fakefactor  , "ff_qcd_os")

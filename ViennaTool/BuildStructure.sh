@@ -1,6 +1,6 @@
 #!/bin/bash
 user=fspreitzer
-fftype=FakeFactor_2017_20181211
+fftype=FakeFactor_2017_Test_2
 
 line=" --------------------------------------------------------------------------------------"
 echo $line
@@ -72,6 +72,7 @@ if [ -d "Images_EMB" ]; then
     
     
 else
+    mkdir -p Images_EMB
     mkdir -p Images_EMB/data_mt
     mkdir -p Images_EMB/data_et
     mkdir -p Images_EMB/data_tt
@@ -113,6 +114,7 @@ if [ -d "Images_NonEMB" ]; then
     
     
 else
+    mkdir -p Images_NonEMB
     mkdir -p Images_NonEMB/data_mt
     mkdir -p Images_NonEMB/data_et
     mkdir -p Images_NonEMB/data_tt

@@ -43,6 +43,7 @@ make -B
 
 ./SRHisto
 ./CRHisto
+
 ./steerFF
 ./fitFakeFactors
 
@@ -64,6 +65,7 @@ fi
 python plotCorrections.py --channel $channel --embedding $embedding
 
 ./convert_inputs
+
 
 python cpTDHaftPublic.py --destination $output --channel $channel --embedding $embedding
 python producePublicFakeFactors.py --input $output --channel $channel --embedding $embedding

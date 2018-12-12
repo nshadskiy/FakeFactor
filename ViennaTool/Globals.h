@@ -598,6 +598,7 @@ const Int_t color_TT_L  =kGreen-1;
 const Int_t color_sum   =kMagenta;
 const Int_t color_QCD   =kCyan;
 
+#if(EMB == 0)
 const int nSAMPLES=10;
 const int nSAMPLES_COMP=7;
 static const TString vlabel[nSAMPLES]={"W+jets","ttJ (j#rightarrow#tau)","ttT (#tau#rightarrow#tau)","ttL (l#rightarrow#tau)","ZJ (j#rightarrow#tau)","ZTT (#tau#rightarrow#tau)","ZL (l#rightarrow#tau)","VV (j#rightarrow#tau)", "VV (#tau#rightarrow#tau)","VV (l#rightarrow#tau)"};
@@ -607,7 +608,21 @@ const Int_t vcolor[nSAMPLES]=         {kRed    ,kGreen                  ,kGreen+
 
 const int smap[nSAMPLES]=      {0,2,6,7,1,4,5,3,8,9};
 const int smap_noqcd[nSAMPLES-1]={0,2,5,6,1,3,4,7,8};
+#endif
+#if(EMB == 1)
+const int nSAMPLES=8;
+const int nSAMPLES_COMP=5; 
+static const TString vlabel[nSAMPLES]={"W+jets","ttJ (j#rightarrow#tau)","ttL (l#rightarrow#tau)","ZJ (j#rightarrow#tau)","ZL (l#rightarrow#tau)","VV (j#rightarrow#tau)", "VV (l#rightarrow#tau)","EMB"};
+static const TString vname[nSAMPLES]= {"Wjets" ,"ttJ"                   ,"ttL"                   ,"ZJ"                     ,"ZL"                     ,"QCD", "VVL", "EMB"};
+static const TString vsuff[nSAMPLES]= {"Wjets" ,"TT_J"                  ,"TT_L"                  ,"DY_J"                   ,"DY_L"                   ,"VV_J", "VV_L", "EMB"};
+// static const TString vlabel[nSAMPLES]={"W+jets","ttJ (j#rightarrow#tau)","ttT (#tau#rightarrow#tau)","ttL (l#rightarrow#tau)","ZJ (j#rightarrow#tau)","ZTT (#tau#rightarrow#tau)","ZL (l#rightarrow#tau)","VV (j#rightarrow#tau)", "VV (#tau#rightarrow#tau)","VV (l#rightarrow#tau)"};
+// static const TString vname[nSAMPLES]= {"Wjets" ,"ttJ"                   ,"ttT"                      ,"ttL"                   ,"ZJ"                     ,"ZTT"                      ,"ZL"                     ,"QCD", "VVT", "VVL"};
+// static const TString vsuff[nSAMPLES]= {"Wjets" ,"TT_J"                  ,"TT_T"                     ,"TT_L"                  ,"DY_J"                   ,"DY_TT"                    ,"DY_L"                   ,"VV_J", "VV_T", "VV_L"};
+const Int_t vcolor[10]=         {kRed    ,kGreen                  ,kGreen+2                   ,kGreen-1                ,kBlue                    ,kYellow                    ,kViolet                  ,kYellow-5, kYellow-6,kYellow-8};
 
+const int smap[10]=      {0,2,6,7,1,4,5,3,8,9};
+const int smap_noqcd[9]={0,2,5,6,1,3,4,7,8};
+#endif
 
 const unsigned NC=10;
 const TString c_text[NC]={"1p","3p","pt1","pt2","pt3","eta1","eta2","eta3","jet0","jet1"};

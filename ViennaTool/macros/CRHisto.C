@@ -25,7 +25,8 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   const int icr[nCR]=        {_W_JETS , _DY  , _TT  , _QCD};
   const TString scr[nCR]=    {s_Wjets, s_DY , s_TT , s_QCD};
   
-  const TString sjet[3]=    {"","_0jet","_1jet"};
+  const TString sjet[1]=    {""};
+  // const TString sjet[3]=    {"","_0jet","_1jet"};
 
 
   int nSA; if(useVV){nSA=nSAMPLES;}else{nSA=nSAMPLES-3;}
@@ -60,7 +61,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
         presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root"; 
         if((EMB==1 && ( presel_file.Contains("DY_J") || presel_file.Contains("DY_L") || presel_file.Contains("TT_J") || presel_file.Contains("DY_L") || presel_file.Contains("VV_J") || presel_file.Contains("VV_L") )) ){
             presel_file = presel_file.ReplaceAll(".root", "_EMB.root");
-          }
+        }
         Analyzer->getCRHisto(presel_file, icr[ic]|LEPPT , path_sim+s_CR+"_"+scr[ic]+"_lepPt_"+ssa[is]+".root"  );
       }
       if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , icr[ic]|LEPPT , path_sim+s_CR+"_"+scr[ic]+"_lepPt_data.root"  );
@@ -76,17 +77,17 @@ void CRHisto(int doCalc, int nCR, int nQU) {
             presel_file = presel_file.ReplaceAll(".root", "_EMB.root");
           }
           Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_"+ssa[is]+".root"  );
-          Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_0jet_"+ssa[is]+".root"  );
-          Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_1jet_"+ssa[is]+".root"  );
+          // Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_0jet_"+ssa[is]+".root"  );
+          // Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_1jet_"+ssa[is]+".root"  );
         }
         if(!DOMC){ 
          Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_data.root"  );
-         Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_0jet_data.root"  );
-         Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_1jet_data.root"  );
+        //  Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_0jet_data.root"  );
+        //  Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_1jet_data.root"  );
         }else{
          Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_MCsum.root"  );
-         Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_0jet_MCsum.root"  );
-         Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_1jet_MCsum.root"  );
+        //  Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_0jet_MCsum.root"  );
+        //  Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_1jet_MCsum.root"  );
         }
       }
     }
@@ -100,12 +101,12 @@ void CRHisto(int doCalc, int nCR, int nQU) {
             presel_file = presel_file.ReplaceAll(".root", "_EMB.root");
           }
           Analyzer->getCRHisto(presel_file, LEPPT|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_"+ssa[is]+".root"  );
-          Analyzer->getCRHisto(presel_file, LEPPT|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_0jet_"+ssa[is]+".root"  );
-          Analyzer->getCRHisto(presel_file, LEPPT|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_1jet_"+ssa[is]+".root"  );
+          // Analyzer->getCRHisto(presel_file, LEPPT|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_0jet_"+ssa[is]+".root"  );
+          // Analyzer->getCRHisto(presel_file, LEPPT|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_1jet_"+ssa[is]+".root"  );
         }
         if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , LEPPT|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_data.root"  );
-        if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , LEPPT|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_0jet_data.root"  );
-        if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , LEPPT|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_1jet_data.root"  );
+        // if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , LEPPT|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_0jet_data.root"  );
+        // if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , LEPPT|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_1jet_data.root"  );
       }
     }
     
@@ -119,17 +120,17 @@ void CRHisto(int doCalc, int nCR, int nQU) {
             presel_file = presel_file.ReplaceAll(".root", "_EMB.root");
           }
           Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_"+ssa[is]+".root"  );
-          Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_0jet_"+ssa[is]+".root"  );
-          Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_1jet_"+ssa[is]+".root"  );
+          // Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_0jet_"+ssa[is]+".root"  );
+          // Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_1jet_"+ssa[is]+".root"  );
         }
         if(!DOMC){
          Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_data.root"  );
-         Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_0jet_data.root"  );
-         Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_1jet_data.root"  );
+        //  Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_0jet_data.root"  );
+        //  Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_1jet_data.root"  );
         }else{
          Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_MCsum.root"  );
-         Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_0jet_MCsum.root"  );
-         Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_1jet_MCsum.root"  );
+        //  Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_0jet_MCsum.root"  );
+        //  Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_1jet_MCsum.root"  );
         }
       }
     }
@@ -173,7 +174,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
       for (int ic=3; ic<nCR; ic++){ //loop over CRs
         if ( !doCalc ) break;
         for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
-          for (int ij=0; ij<=2; ij++){ //loop over inclusive, 0jet, 1jet
+          for (int ij=0; ij<=0; ij++){ //loop over inclusive, 0jet, 1jet //TODO
           
             TFile outfile ( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI"+sjet[ij]+"_data_MCsubtracted.root","RECREATE"  );
             TFile infile( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI"+sjet[ij]+"_data.root"  );
@@ -206,7 +207,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
       for (int ic=0; ic<1; ic++){ //loop over CRs
         if ( !doCalc ) break;
         for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
-         for (int ij=0; ij<=2; ij++){ //loop over inclusive, 0jet, 1jet
+         for (int ij=0; ij<=0; ij++){ //loop over inclusive, 0jet, 1jet
             TFile outfile ( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS"+sjet[ij]+"_data_MCsubtracted.root","RECREATE"  );
             TFile infile( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS"+sjet[ij]+"_data.root"  );
             for(int imode=0; imode<nmodes; imode++){

@@ -35,3 +35,7 @@ Images/data_CHAN/pTfitTT_dmX_njet0_CHAN_preliminary.png
 
 macros/calcCorrections <-> src/FFCalculator.cc
 
+#EMBEDDING
+
+FF tool has to be run once with EMB = 0, and after that with EMB = 1
+This is because the tt-bar FakeFactors are calculated with MC, while the other FakeFactors use Embedded samples.
