@@ -20,6 +20,6 @@ em Settings.h
 em steerAll.sh  
 em BuildStructure.sh  
 #user=fspreitzer  
-#fftype=FakeFactor_SM_ML  
+#fftype=[$analysis] #from Settings.h
 
 #instructions.txt for further instructions
