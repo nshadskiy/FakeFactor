@@ -10,10 +10,10 @@ scram b -j 8
 git init  
 
 git clone https://github.com/fspreitzer/FakeFactor.git -b FF2017ML  
-cd FakeFactor  
-mv * ..
-cd ..
-rm -rf FakeFactor
+cd FakeFactor   
+mv * ..  
+cd ..  
+rm -rf FakeFactor  
 
 cd ViennaTool/  
 em Settings.h  
