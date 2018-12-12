@@ -1,6 +1,6 @@
 #!/bin/bash
-user=fspreitzer
-fftype=FakeFactor_2017_Test_2
+user=jandrejkovic
+fftype=FakeFactor_2017_Test
 
 line=" --------------------------------------------------------------------------------------"
 echo $line
@@ -9,20 +9,22 @@ echo "Group CMS-HTT"
 echo "Hephy Vienna"
 echo $line
 
-if [ -d "/data/$user/$fftype/preselection" ]; then
-    if [ ! -d "/data/$user/$fftype/preselection/mt" ]; then
-        mkdir -p /data/$user/$fftype/preselection/mt
+echo "data/$user/$fftype/preselection"
+if [ -d "data/$user/$fftype/preselection" ]; then
+    if [ ! -d "data/$user/$fftype/preselection/mt" ]; then
+        mkdir -p data/$user/$fftype/preselection/mt
     fi
-    if [ ! -d "/data/$user/$fftype/preselection/et" ]; then
-        mkdir -p /data/$user/$fftype/preselection/et
+    if [ ! -d "data/$user/$fftype/preselection/et" ]; then
+        mkdir -p data/$user/$fftype/preselection/et
     fi
-    if [ ! -d "/data/$user/$fftype/preselection/tt" ]; then
-        mkdir -p /data/$user/$fftype/preselection/tt
+    if [ ! -d "data/$user/$fftype/preselection/tt" ]; then
+        mkdir -p data/$user/$fftype/preselection/tt
     fi
 else
-    mkdir -p /data/$user/$fftype/preselection/mt
-    mkdir -p /data/$user/$fftype/preselection/et
-    mkdir -p /data/$user/$fftype/preselection/tt
+    echo "create data/* directories..."
+    mkdir -p data/$user/$fftype/preselection/mt
+    mkdir -p data/$user/$fftype/preselection/et
+    mkdir -p data/$user/$fftype/preselection/tt
 fi
 
 if [ -d "sim" ]; then
@@ -215,5 +217,5 @@ fi
 
 
 
-
+echo "----- END of BuildStructure.sh --------"
 echo $line
