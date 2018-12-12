@@ -1,6 +1,6 @@
 #!/bin/bash
 user=fspreitzer
-fftype=FakeFactor_2017
+fftype=FakeFactor_2017_Test_2
 
 line=" --------------------------------------------------------------------------------------"
 echo $line
@@ -43,13 +43,13 @@ fi
 
 if [ -d "Images_EMB" ]; then
     if [ ! -d "Images_EMB/data_mt_EMB" ]; then
-        mkdir -p Images_EMB/data_mt_EMB
+        mkdir -p Images_EMB/data_mt
     fi
     if [ ! -d "Images_EMB/data_et_EMB" ]; then
-        mkdir -p Images_EMB/data_et_EMB
+        mkdir -p Images_EMB/data_et
     fi
     if [ ! -d "Images_EMB/data_tt_EMB" ]; then
-        mkdir -p Images_EMB/data_tt_EMB
+        mkdir -p Images_EMB/data_tt
     fi
     if [ ! -d "Images_EMB/mc_mt" ]; then
         mkdir -p Images_EMB/mc_mt
@@ -85,13 +85,13 @@ else
 fi
 if [ -d "Images_NonEMB" ]; then
     if [ ! -d "Images_NonEMB/data_mt_EMB" ]; then
-        mkdir -p Images_NonEMB/data_mt_EMB
+        mkdir -p Images_NonEMB/data_mt
     fi
     if [ ! -d "Images_NonEMB/data_et_EMB" ]; then
-        mkdir -p Images_NonEMB/data_et_EMB
+        mkdir -p Images_NonEMB/data_et
     fi
     if [ ! -d "Images_NonEMB/data_tt_EMB" ]; then
-        mkdir -p Images_NonEMB/data_tt_EMB
+        mkdir -p Images_NonEMB/data_tt
     fi
     if [ ! -d "Images_NonEMB/mc_mt" ]; then
         mkdir -p Images_NonEMB/mc_mt
