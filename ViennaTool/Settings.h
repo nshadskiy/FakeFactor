@@ -34,7 +34,7 @@ const int doSRHisto = 1;
 const int doCRHisto = 1;
 ///////////////////////////////////////////////////
 //steerFF
-const int doCalcWeights=0; //calc fractions
+const int doCalcWeights=1; //calc fractions
 const int doCalc=1; //calc FFs
 ///////////////////////////////////////////////////
 //No need to change
