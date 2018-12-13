@@ -23,3 +23,9 @@ em BuildStructure.sh
 #fftype=[$analysis] #from Settings.h
 
 #instructions.txt for further instructions
+
+in Settings.h set doCalcWeights=1 for the first time you run the code :
+//steerFF
+const int doCalcWeights=1; //calc fractions
+
+

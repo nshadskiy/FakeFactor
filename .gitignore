@@ -108,3 +108,28 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+CRHisto
+CustomFit.o
+FFCalculator.o
+GaussianKernelSmoother.o
+GlobalClass.o
+HTTutilities/*
+NtupleClass.o
+PlotterClass.o
+Preselection
+Preselection_EMB
+SRHisto
+SignalClass.o
+TNtupleAnalyzer.o
+TSelectionAnalyzer.o
+ViennaTool/Images_NonEMB/*
+ViennaTool/logFile_steerAll/*
+ViennaTool/output_steerAll.txt
+ViennaTool/toCheck.pdf
+calcCorrections
+convert_inputs
+fitFakeFactors
+steerFF
+test
+
