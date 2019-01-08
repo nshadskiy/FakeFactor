@@ -29,41 +29,40 @@ echo "Compiling the framework"
 sh BuildStructure.sh
 cd ../
 
-if [ $embedding == 1 ]; then
-    mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
-    mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
-    make -B
-    ./Preselection_EMB
-    mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
-    mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
-fi
+# if [ $embedding == 1 ]; then
+#      mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
+#      mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
+#      make -B
+#      ./Preselection_EMB
+#      mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
+#      mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
+# fi
 make -B
 
-./Preselection
+# ./Preselection
 
-./SRHisto
+./SRHisto  
 ./CRHisto
-
+# #exit 0
 ./steerFF
 ./fitFakeFactors
 
 if [ $embedding == 0 ]; then 
-    cd ViennaTool/Images_NonEMB/data_$chan
-    #gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf
-    gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
-    cd -
+     cd ViennaTool/Images_NonEMB/data_$chan
+     #gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf
+     gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
+     cd -
 fi
 if [ $embedding == 1 ]; then 
-    cd ViennaTool/Images_EMB/data_$chan
-    #gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf
-    gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
-    cd -
+     cd ViennaTool/Images_EMB/data_$chan
+     #gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf
+     gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
+     cd -
 fi
-
 
 ./calcCorrections
 python plotCorrections.py --channel $channel --embedding $embedding
-
+# exit 0
 ./convert_inputs
 
 

@@ -27,18 +27,19 @@
 #define LEPPT   268435456
 #define SVFIT  1073741824
 
-//int max:     4294967295
+//int max:     2147483648
 
-#define NP1          1
-#define NP3          2
-#define PT1          4
-#define PT2          8
-#define PT3         16
-#define ETA1        32
-#define ETA2        64
-#define ETA3       128
-#define JET0       256
-#define JET1       512
+#define NP1           1
+#define NP3           2
+#define PT1           4
+#define PT2           8
+#define PT3          16
+#define ETA1         32
+#define ETA2         64
+#define ETA3        128
+
+#define JET0   67108864
+#define JET1  134217728
 
 #define _COLOR          1
 #define _COLOR_RUN1     2
@@ -199,9 +200,15 @@ const TString FF_corr_Wjets_MCsum_noGen_fitted                  = "FF_"+s_corr+"
 const TString FF_corr_Wjets_MC_noGen                            = "FF_"+s_corr+"_Wjets_MC_noGen.root";
 const TString FF_corr_Wjets_MC_noGen_fitted                     = "FF_"+s_corr+"_Wjets_MC_noGen_fitted.root";
 const TString FF_corr_Wjets_MCsum_noGen_nonclosure              = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_nonclosure.root";
+const TString FF_corr_Wjets_MCsum_noGen_nonclosure_0jet         = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_nonclosure_0jet.root";
+const TString FF_corr_Wjets_MCsum_noGen_nonclosure_1jet         = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_nonclosure_1jet.root";
 const TString FF_corr_Wjets_MCsum_noGen_nonclosure_SS_SR        = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_nonclosure_SS_SR.root";
 const TString FF_corr_Wjets_MC_noGen_nonclosure                 = "FF_"+s_corr+"_Wjets_MC_noGen_nonclosure.root";
+const TString FF_corr_Wjets_MC_noGen_nonclosure_0jet            = "FF_"+s_corr+"_Wjets_MC_noGen_nonclosure_0jet.root";
+const TString FF_corr_Wjets_MC_noGen_nonclosure_1jet            = "FF_"+s_corr+"_Wjets_MC_noGen_nonclosure_1jet.root";
 const TString FF_corr_Wjets_MC_noGen_mtcorr                     = "FF_"+s_corr+"_Wjets_MC_noGen_mtcorr.root";
+const TString FF_corr_Wjets_MC_noGen_mtcorr_0jet                = "FF_"+s_corr+"_Wjets_MC_noGen_mtcorr_0jet.root";
+const TString FF_corr_Wjets_MC_noGen_mtcorr_1jet                = "FF_"+s_corr+"_Wjets_MC_noGen_mtcorr_1jet.root";
 const TString FF_corr_Wjets_MC_noGen_mtcorr_SS_SR               = "FF_"+s_corr+"_Wjets_MC_noGen_mtcorr_SS_SR.root";
 const TString FF_corr_Wjets_MCsum_noGen_weighted                = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_"+s_weighted+".root";
 const TString FF_corr_Wjets_MCsum_noGen_SR                      = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_"+s_SR+".root";
@@ -234,11 +241,21 @@ const TString FF_corr_QCD_data_weighted                        = "FF_"+s_corr+"_
 const TString FF_corr_QCD_MCsum_noGen                          = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen.root";
 const TString FF_corr_QCD_MCsum_noGen_fitted                   = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_fitted.root";
 const TString FF_corr_QCD_MCsum_noGen_muisocorr                = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_muisocorr.root";
+const TString FF_corr_QCD_MCsum_noGen_muisocorr_0jet           = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_muisocorr_0jet.root";
+const TString FF_corr_QCD_MCsum_noGen_muisocorr_1jet           = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_muisocorr_1jet.root";
 const TString FF_corr_QCD_MCsum_noGen_muisocorr_AI             = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_muisocorr_AI.root";
 const TString FF_corr_QCD_MCsum_noGen_nonclosure               = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure.root";
+const TString FF_corr_QCD_MCsum_noGen_nonclosure_0jet          = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure_0jet.root";
+const TString FF_corr_QCD_MCsum_noGen_nonclosure_1jet          = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure_1jet.root";
 const TString FF_corr_QCD_MCsum_noGen_nonclosure_AI            = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure_AI.root";
+const TString FF_corr_QCD_MCsum_noGen_nonclosure_AI_0jet       = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure_AI_0jet.root";
+const TString FF_corr_QCD_MCsum_noGen_nonclosure_AI_1jet       = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure_AI_1jet.root";
 const TString FF_corr_QCD_MCsum_noGen_nonclosure_lepPt         = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure_lepPt.root";
+const TString FF_corr_QCD_MCsum_noGen_nonclosure_lepPt_0jet    = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure_lepPt_0jet.root";
+const TString FF_corr_QCD_MCsum_noGen_nonclosure_lepPt_1jet    = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure_lepPt_1jet.root";
 const TString FF_corr_QCD_MCsum_noGen_OSSScorr                 = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_OSSScorr.root";
+const TString FF_corr_QCD_MCsum_noGen_OSSScorr_0jet            = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_OSSScorr_0jet.root";
+const TString FF_corr_QCD_MCsum_noGen_OSSScorr_1jet            = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_OSSScorr_1jet.root";
 const TString FF_corr_QCD_MCsum_noGen_OS                       = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_OS.root";  
 const TString FF_corr_QCD_MCsum_noGen_weighted                 = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_"+s_weighted+".root";
 const TString FF_corr_QCD_MCsum_noGen_SR                       = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_"+s_SR+".root";

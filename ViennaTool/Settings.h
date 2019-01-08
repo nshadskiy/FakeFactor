@@ -4,7 +4,7 @@
 #define kEL          1
 #define kTAU         2
 ///////////////////////////////////////////////////
-#define EMB          0
+#define EMB          1
 #define selCHAN      kTAU
 const int CHAN     = kTAU;
 const TString analysis      ="FakeFactor_2017";
@@ -36,6 +36,9 @@ const int doCRHisto = 1;
 //steerFF
 const int doCalcWeights=1; //calc fractions
 const int doCalc=1; //calc FFs
+///////////////////////////////////////////////////
+//calcCorrections
+const int doNJetBinning=1; //Calculate separate corrections for 0jet/1jet
 ///////////////////////////////////////////////////
 //No need to change
 const int doDebugPlots=1;    //1 to also calculate FF in SR; and do bkg estimate with unweighted FF per sample ->for control plots
