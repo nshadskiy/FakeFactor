@@ -1168,7 +1168,7 @@ for x in range(0,len(categories)):
     fill(ff_comb, comb_tt_up_stat_dm1_njet1,   sys='ff_tt_dm1_njet1_stat_up')
     fill(ff_comb, comb_tt_down_stat_dm1_njet1, sys='ff_tt_dm1_njet1_stat_down')
     
-    file = ROOT.TFile.Open("{INDIR}/{CHANNEL}/{CATEGORY}/fakeFactors_{ISOLATION}.root".format(INDIR=indir,CHANNEL=channel,CATEGORY=category, ISOLATION=isolation), "recreate")
+    file = ROOT.TFile.Open("{INDIR}/{CHANNEL}/{CATEGORY}/fakeFactors_{ISOLATION}_old.root".format(INDIR=indir,CHANNEL=channel,CATEGORY=category, ISOLATION=isolation), "recreate")
     # Write meta-data
     tag_ts     = ROOT.TString(tag)
     file.WriteObject(tag_ts     , "tag")
