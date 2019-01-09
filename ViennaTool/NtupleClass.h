@@ -29,8 +29,7 @@ public :
    Int_t           run;
    Float_t         lumi;
    ULong64_t       evt;
-   Double_t         weight;
-   Double_t         emb_weight;
+   Float_t         weight;
    Float_t         lumiWeight;
    Float_t         puweight;
    Float_t         xsec;
@@ -41,7 +40,7 @@ public :
    Float_t         embeddedDecayModeWeight;
    Float_t         idWeight_1;
    Float_t         isoWeight_1;
-   Float_t         reco_sf;
+   Float_t         sf_reco;
    Float_t         singleTriggerSFLeg1;
    Float_t         xTriggerSFLeg1;
    Float_t         xTriggerSFLeg2;
@@ -58,13 +57,17 @@ public :
    Float_t         idisoweight_1;
    Float_t         anti_idisoweight_1;
    Float_t         idisoweight_2;
-   Float_t         trk_sf;
+   Float_t         sf_trk;
    Float_t         effweight;
    Float_t         stitchedWeight;
    Float_t         topWeight;
    Float_t         topWeight_run1;
-   Float_t         zPtReweightWeight;
    Float_t         topPtReweightWeightRun1;
+   Float_t         eleTauFakeRateWeight;
+   Float_t         muTauFakeRateWeight;
+   Double_t         emb_weight;
+   Float_t         doubleTauTrgWeight;
+   Float_t         zPtReweightWeight;
    Float_t         zpt_weight_nom;
    Float_t         zpt_weight_esup;
    Float_t         zpt_weight_esdown;
@@ -76,27 +79,27 @@ public :
    Float_t         zpt_weight_statpt40down;
    Float_t         zpt_weight_statpt80up;
    Float_t         zpt_weight_statpt80down;
-   Bool_t           trg_singlemuon;
-   Bool_t           trg_singlemuon_lowpt;
-   Bool_t           trg_singlemuon_24;
-   Bool_t           trg_singlemuon_27;
-   Bool_t           trg_crossmuon_mu20tau27;
+   Int_t           trg_singlemuon;
+   Int_t           trg_singlemuon_lowpt;
+   Int_t           trg_singlemuon_24;
+   Int_t           trg_singlemuon_27;
+   Int_t           trg_crossmuon_mu20tau27;
 //    Int_t           trg_mutaucross;
-   Bool_t           trg_singleelectron;
-   Bool_t           trg_singleelectron_27;
-   Bool_t           trg_singleelectron_32;
-   Bool_t           trg_singleelectron_35;
-   Bool_t           trg_singleelectron_lowpt;
-   Bool_t           trg_crossele_ele24tau30;
+   Int_t           trg_singleelectron;
+   Int_t           trg_singleelectron_27;
+   Int_t           trg_singleelectron_32;
+   Int_t           trg_singleelectron_35;
+   Int_t           trg_singleelectron_lowpt;
+   Int_t           trg_crossele_ele24tau30;
 //    Int_t           trg_singletau;
-   Bool_t           trg_doubletau;
-   Bool_t           trg_doubletau_lowpt;
-   Bool_t           trg_doubletau_mediso;
-   Bool_t           trg_muonelectron;
-   Bool_t           trg_doubletau_35_tightiso_tightid;
-   Bool_t           trg_doubletau_40_mediso_tightid;
-   Bool_t           trg_doubletau_40_tightiso;
-   Bool_t           isEmbedded;
+   Int_t           trg_doubletau;
+   Int_t           trg_doubletau_lowpt;
+   Int_t           trg_doubletau_mediso;
+   Int_t           trg_muonelectron;
+   Int_t           trg_doubletau_35_tightiso_tightid;
+   Int_t           trg_doubletau_40_mediso_tightid;
+   Int_t           trg_doubletau_40_tightiso;
+   Int_t           isEmbedded;
    Float_t         gen_Mll;
    Float_t         genpX;
    Float_t         genpY;
@@ -119,9 +122,9 @@ public :
 //    Int_t           flagGoodVertices;
 //    Int_t           flagEeBadScFilter;
 //    Int_t           flagGlobalTightHalo2016Filter;
-   Float_t           Flag_badMuons;
-   Float_t           Flag_duplicateMuons;
-   Float_t           flagMETFilter;
+   Int_t           Flag_badMuons;
+   Int_t           Flag_duplicateMuons;
+   Int_t           flagMETFilter;
 //    Float_t         matchedJetPt03_1;
 //    Float_t         matchedJetPt05_1;
 //    Float_t         matchedJetPt03_2;
@@ -130,7 +133,7 @@ public :
    Int_t           gen_match_2;
    Int_t           gen_match_jetId_1;
    Int_t           gen_match_jetId_2;
-   Float_t           genJets;
+   Int_t           genJets;
    Float_t         genPt_1;
    Float_t         genPt_2;
    Int_t           genJet_match_1;
@@ -140,37 +143,37 @@ public :
    Float_t         eta_1;
    Float_t         eta_SC_1;
    Float_t         m_1;
-   Float_t           q_1;
+   Int_t           q_1;
    Float_t         d0_1;
    Float_t         dZ_1;
    Float_t         mt_1;
    Float_t         pfmt_1;
    Float_t         iso_1;
-   Float_t           againstElectronLooseMVA6_1;
-   Float_t           againstElectronMediumMVA6_1;
-   Float_t           againstElectronTightMVA6_1;
-   Float_t           againstElectronVLooseMVA6_1;
-   Float_t           againstElectronVTightMVA6_1;
-   Float_t           againstMuonLoose3_1;
-   Float_t           againstMuonTight3_1;
+   Int_t           againstElectronLooseMVA6_1;
+   Int_t           againstElectronMediumMVA6_1;
+   Int_t           againstElectronTightMVA6_1;
+   Int_t           againstElectronVLooseMVA6_1;
+   Int_t           againstElectronVTightMVA6_1;
+   Int_t           againstMuonLoose3_1;
+   Int_t           againstMuonTight3_1;
    Float_t         byCombinedIsolationDeltaBetaCorrRaw3Hits_1;
-   Int_t           byLooseCombinedIsolationDeltaBetaCorr3Hits_1;
-   Int_t           byMediumCombinedIsolationDeltaBetaCorr3Hits_1;
-   Int_t           byTightCombinedIsolationDeltaBetaCorr3Hits_1;
-   Int_t           byIsolationMVA3newDMwoLTraw_1;
-   Int_t           byIsolationMVA3oldDMwoLTraw_1;
-   Float_t         byIsolationMVA3newDMwLTraw_1;
-   Float_t         byIsolationMVA3oldDMwLTraw_1;
-   Float_t           byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1;
-   Float_t           byLooseIsolationMVArun2017v2DBoldDMwLT2017_1;
-   Float_t           byMediumIsolationMVArun2017v2DBoldDMwLT2017_1;
-   Float_t           byTightIsolationMVArun2017v2DBoldDMwLT2017_1;
-   Float_t           byVTightIsolationMVArun2017v2DBoldDMwLT2017_1;
-   Float_t           byVLooseIsolationMVArun2017v1DBoldDMwLT2017_1;
-   Float_t           byLooseIsolationMVArun2017v1DBoldDMwLT2017_1;
-   Float_t           byMediumIsolationMVArun2017v1DBoldDMwLT2017_1;
-   Float_t           byTightIsolationMVArun2017v1DBoldDMwLT2017_1;
-   Float_t           byVTightIsolationMVArun2017v1DBoldDMwLT2017_1;
+   Float_t           byLooseCombinedIsolationDeltaBetaCorr3Hits_1;
+   Float_t           byMediumCombinedIsolationDeltaBetaCorr3Hits_1;
+   Float_t           byTightCombinedIsolationDeltaBetaCorr3Hits_1;
+   Float_t           byIsolationMVA3newDMwoLTraw_1;
+   Float_t           byIsolationMVA3oldDMwoLTraw_1;
+   Int_t         byIsolationMVA3newDMwLTraw_1;
+   Int_t         byIsolationMVA3oldDMwLTraw_1;
+   Int_t           byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1;
+   Int_t           byLooseIsolationMVArun2017v2DBoldDMwLT2017_1;
+   Int_t           byMediumIsolationMVArun2017v2DBoldDMwLT2017_1;
+   Int_t           byTightIsolationMVArun2017v2DBoldDMwLT2017_1;
+   Int_t           byVTightIsolationMVArun2017v2DBoldDMwLT2017_1;
+   Int_t           byVLooseIsolationMVArun2017v1DBoldDMwLT2017_1;
+   Int_t           byLooseIsolationMVArun2017v1DBoldDMwLT2017_1;
+   Int_t           byMediumIsolationMVArun2017v1DBoldDMwLT2017_1;
+   Int_t           byTightIsolationMVArun2017v1DBoldDMwLT2017_1;
+   Int_t           byVTightIsolationMVArun2017v1DBoldDMwLT2017_1;
 //    Int_t           byVLooseIsolationMVArun2v1DBnewDMwLT_1;
 //    Int_t           byLooseIsolationMVArun2v1DBnewDMwLT_1;
 //    Int_t           byMediumIsolationMVArun2v1DBnewDMwLT_1;
@@ -203,37 +206,37 @@ public :
    Float_t         phi_2;
    Float_t         eta_2;
    Float_t         m_2;
-   Float_t           q_2;
+   Int_t           q_2;
    Float_t         d0_2;
    Float_t         dZ_2;
    Float_t         mt_2;
    Float_t         pfmt_2;
    Float_t         iso_2;
-   Float_t           againstElectronLooseMVA6_2;
-   Float_t           againstElectronMediumMVA6_2;
-   Float_t           againstElectronTightMVA6_2;
-   Float_t           againstElectronVLooseMVA6_2;
-   Float_t           againstElectronVTightMVA6_2;
-   Float_t           againstMuonLoose3_2;
-   Float_t           againstMuonTight3_2;
+   Int_t           againstElectronLooseMVA6_2;
+   Int_t           againstElectronMediumMVA6_2;
+   Int_t           againstElectronTightMVA6_2;
+   Int_t           againstElectronVLooseMVA6_2;
+   Int_t           againstElectronVTightMVA6_2;
+   Int_t           againstMuonLoose3_2;
+   Int_t           againstMuonTight3_2;
    Float_t         byCombinedIsolationDeltaBetaCorrRaw3Hits_2;
-   Int_t           byLooseCombinedIsolationDeltaBetaCorr3Hits_2;
-   Int_t           byMediumCombinedIsolationDeltaBetaCorr3Hits_2;
-   Int_t           byTightCombinedIsolationDeltaBetaCorr3Hits_2;
-   Int_t           byIsolationMVA3newDMwoLTraw_2;
-   Int_t           byIsolationMVA3oldDMwoLTraw_2;
-   Float_t         byIsolationMVA3newDMwLTraw_2;
-   Float_t         byIsolationMVA3oldDMwLTraw_2;
-   Float_t           byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2;
-   Float_t           byLooseIsolationMVArun2017v2DBoldDMwLT2017_2;
-   Float_t           byMediumIsolationMVArun2017v2DBoldDMwLT2017_2;
-   Float_t           byTightIsolationMVArun2017v2DBoldDMwLT2017_2;
-   Float_t           byVTightIsolationMVArun2017v2DBoldDMwLT2017_2;
-   Float_t           byVLooseIsolationMVArun2017v1DBoldDMwLT2017_2;
-   Float_t           byLooseIsolationMVArun2017v1DBoldDMwLT2017_2;
-   Float_t           byMediumIsolationMVArun2017v1DBoldDMwLT2017_2;
-   Float_t           byTightIsolationMVArun2017v1DBoldDMwLT2017_2;
-   Float_t           byVTightIsolationMVArun2017v1DBoldDMwLT2017_2;
+   Float_t           byLooseCombinedIsolationDeltaBetaCorr3Hits_2;
+   Float_t           byMediumCombinedIsolationDeltaBetaCorr3Hits_2;
+   Float_t           byTightCombinedIsolationDeltaBetaCorr3Hits_2;
+   Float_t           byIsolationMVA3newDMwoLTraw_2;
+   Float_t           byIsolationMVA3oldDMwoLTraw_2;
+   Int_t         byIsolationMVA3newDMwLTraw_2;
+   Int_t         byIsolationMVA3oldDMwLTraw_2;
+   Int_t           byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2;
+   Int_t           byLooseIsolationMVArun2017v2DBoldDMwLT2017_2;
+   Int_t           byMediumIsolationMVArun2017v2DBoldDMwLT2017_2;
+   Int_t           byTightIsolationMVArun2017v2DBoldDMwLT2017_2;
+   Int_t           byVTightIsolationMVArun2017v2DBoldDMwLT2017_2;
+   Int_t           byVLooseIsolationMVArun2017v1DBoldDMwLT2017_2;
+   Int_t           byLooseIsolationMVArun2017v1DBoldDMwLT2017_2;
+   Int_t           byMediumIsolationMVArun2017v1DBoldDMwLT2017_2;
+   Int_t           byTightIsolationMVArun2017v1DBoldDMwLT2017_2;
+   Int_t           byVTightIsolationMVArun2017v1DBoldDMwLT2017_2;
 //    Int_t           byVLooseIsolationMVArun2v1DBnewDMwLT_2;
 //    Int_t           byLooseIsolationMVArun2v1DBnewDMwLT_2;
 //    Int_t           byMediumIsolationMVArun2v1DBnewDMwLT_2;
@@ -331,12 +334,12 @@ public :
    std::vector<int>     *addtau_gen_match;
    std::vector<double>  *addtau_mt;
    std::vector<double>  *addtau_mvis;
-   Bool_t          passesIsoCuts;
-   Bool_t          passesLepIsoCuts;
-   Bool_t          passesTauLepVetos;
-   Bool_t          passesThirdLepVeto;
-   Bool_t          passesDiMuonVeto;
-   Bool_t          passesDiElectronVeto;
+   Int_t          passesIsoCuts;
+   Int_t          passesLepIsoCuts;
+   Int_t          passesTauLepVetos;
+   Int_t          passesThirdLepVeto;
+   Int_t          passesDiMuonVeto;
+   Int_t          passesDiElectronVeto;
 //    Bool_t          matchXTrig_obj;
    Bool_t          dilepton_veto;
    Bool_t          extraelec_veto;
@@ -427,7 +430,6 @@ public :
    TBranch        *b_evt;   //!
    TBranch        *b_weight;   //!
    TBranch        *b_lumiWeight;   //!
-   TBranch        *b_emb_weight;   //!
    TBranch        *b_puweight;   //!
    TBranch        *b_xsec;
    TBranch        *b_genNEventsWeight;
@@ -437,7 +439,7 @@ public :
    TBranch        *b_embeddedDecayModeWeight;
    TBranch        *b_idWeight_1;
    TBranch        *b_isoWeight_1;
-   TBranch        *b_reco_sf;
+   TBranch        *b_sf_reco;
    TBranch        *b_singleTriggerSFLeg1;
    TBranch        *b_xTriggerSFLeg1;
    TBranch        *b_xTriggerSFLeg2;
@@ -450,13 +452,17 @@ public :
    TBranch        *b_idisoweight_1;   //!
    TBranch        *b_anti_idisoweight_1;   //!
    TBranch        *b_idisoweight_2;   //!
-   TBranch        *b_trk_sf;   //!
+   TBranch        *b_sf_trk;   //!
    TBranch        *b_effweight;   //!
    TBranch        *b_stitchedWeight;   //!
    TBranch        *b_topWeight;   //!
    TBranch        *b_topWeight_run1;   //!
-   TBranch        *b_zPtReweightWeight;   //!
    TBranch        *b_topPtReweightWeightRun1;   //!
+   TBranch        *b_eleTauFakeRateWeight;   //!
+   TBranch        *b_muTauFakeRateWeight;   //!
+   TBranch        *b_emb_weight;   //!
+   TBranch        *b_doubleTauTrgWeight;   //!
+   TBranch        *b_zPtReweightWeight;   //!
    TBranch        *b_zpt_weight_nom;   //!
    TBranch        *b_zpt_weight_esup;   //!
    TBranch        *b_zpt_weight_esdown;   //!
@@ -951,7 +957,6 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("evt", &evt, &b_evt);
    fChain->SetBranchAddress("weight", &weight, &b_weight);
    fChain->SetBranchAddress("lumiWeight", &lumiWeight, &b_lumiWeight);
-   fChain->SetBranchAddress("emb_weight", &emb_weight, &b_emb_weight);
    fChain->SetBranchAddress("puweight", &puweight, &b_puweight);
    fChain->SetBranchAddress("xsec", &xsec, &b_xsec);
    fChain->SetBranchAddress("genNEventsWeight", &genNEventsWeight, &b_genNEventsWeight);
@@ -961,7 +966,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("embeddedDecayModeWeight", &embeddedDecayModeWeight, &b_embeddedDecayModeWeight);
    fChain->SetBranchAddress("idWeight_1", &idWeight_1, &b_idWeight_1);
    fChain->SetBranchAddress("isoWeight_1", &isoWeight_1, &b_isoWeight_1);
-   fChain->SetBranchAddress("reco_sf", &reco_sf, &b_reco_sf);
+   fChain->SetBranchAddress("sf_reco", &sf_reco, &b_sf_reco);
    fChain->SetBranchAddress("singleTriggerSFLeg1", &singleTriggerSFLeg1, &b_singleTriggerSFLeg1);
    fChain->SetBranchAddress("xTriggerSFLeg1", &xTriggerSFLeg1, &b_xTriggerSFLeg1);
    fChain->SetBranchAddress("xTriggerSFLeg2", &xTriggerSFLeg2, &b_xTriggerSFLeg2);
@@ -974,13 +979,17 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("idisoweight_1", &idisoweight_1, &b_idisoweight_1);
    fChain->SetBranchAddress("anti_idisoweight_1", &anti_idisoweight_1, &b_anti_idisoweight_1);
    fChain->SetBranchAddress("idisoweight_2", &idisoweight_2, &b_idisoweight_2);
-   fChain->SetBranchAddress("trk_sf", &trk_sf, &b_trk_sf);
+   fChain->SetBranchAddress("sf_trk", &sf_trk, &b_sf_trk);
    fChain->SetBranchAddress("effweight", &effweight, &b_effweight);
    fChain->SetBranchAddress("stitchedWeight", &stitchedWeight, &b_stitchedWeight);
    fChain->SetBranchAddress("topWeight", &topWeight, &b_topWeight);
    fChain->SetBranchAddress("topWeight_run1", &topWeight_run1, &b_topWeight_run1);
-   fChain->SetBranchAddress("zPtReweightWeight", &zPtReweightWeight, &b_zPtReweightWeight);
    fChain->SetBranchAddress("topPtReweightWeightRun1", &topPtReweightWeightRun1, &b_topPtReweightWeightRun1);
+   fChain->SetBranchAddress("eleTauFakeRateWeight", &eleTauFakeRateWeight, &b_eleTauFakeRateWeight);
+   fChain->SetBranchAddress("muTauFakeRateWeight", &muTauFakeRateWeight, &b_muTauFakeRateWeight);
+   fChain->SetBranchAddress("emb_weight", &emb_weight, &b_emb_weight);
+   fChain->SetBranchAddress("doubleTauTrgWeight", &doubleTauTrgWeight, &b_doubleTauTrgWeight);
+   fChain->SetBranchAddress("zPtReweightWeight", &zPtReweightWeight, &b_zPtReweightWeight);
    fChain->SetBranchAddress("zpt_weight_nom", &zpt_weight_nom, &b_zpt_weight_nom);
    fChain->SetBranchAddress("zpt_weight_esup", &zpt_weight_esup, &b_zpt_weight_esup);
    fChain->SetBranchAddress("zpt_weight_esdown", &zpt_weight_esdown, &b_zpt_weight_esdown);
