@@ -46,7 +46,7 @@ for x in range(0,len(categories)):
     
     qcd_os = Node(
         name='ff_qcd_os',
-        formula='{isocorr_qcd}*{mviscorr_qcd}*{ff_raw_qcd}*{OSSS_corr_qcd}', # SS -> OS correction = 1.23
+        formula='{ff_raw_qcd}*{OSSS_corr_qcd}*([njets]==0*({mviscorr_qcd_0jet}*{isocorr_qcd_0jet}) + [njets]>0*({mviscorr_qcd_1jet}*{isocorr_qcd_1jet}) )', # SS -> OS correction = 1.23
         #formula='{isocorr_qcd}*{mviscorr_qcd}*{ff_raw_qcd}',
         leaves=[
             Leaf(
@@ -56,14 +56,26 @@ for x in range(0,len(categories)):
                 vars=['tau_pt','tau_decay','njets']
             ),
             Leaf(
-                name='mviscorr_qcd',
-                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                name='mviscorr_qcd_0jet',
+                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}_0jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
                 vars=['mvis']
             ),
             Leaf(
-                name='isocorr_qcd',
-                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/Correction_Data_QCD_MuIso{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                name='mviscorr_qcd_1jet',
+                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}_1jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
+                vars=['mvis']
+            ),
+            Leaf(
+                name='isocorr_qcd_0jet',
+                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/Correction_Data_QCD_MuIso{FF}_0jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                object='QCD_SS_Data_FFSSMuMediumData_isomu_correction',
+                vars=['mu_iso']
+            ),
+            Leaf(
+                name='isocorr_qcd_1jet',
+                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/Correction_Data_QCD_MuIso{FF}_1jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='QCD_SS_Data_FFSSMuMediumData_isomu_correction',
                 vars=['mu_iso']
             ),
@@ -176,7 +188,7 @@ for x in range(0,len(categories)):
     
     w = Node(
         name='ff_w',
-        formula='{mtcorr_w}*{ff_raw_w}*{mviscorr_w}',
+        formula='{ff_raw_w}*( [njets]==0*({mviscorr_w_0jet}*{mtcorr_w_0jet}) + [njets]>0*({mviscorr_w_1jet}*{mtcorr_w_1jet}) )',
         leaves=[
             Leaf(
                 name='ff_raw_w',
@@ -185,14 +197,26 @@ for x in range(0,len(categories)):
                 vars=['tau_pt','tau_decay','njets']
             ),
             Leaf(
-                name='mviscorr_w',
-                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/Correction_Data_W_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                name='mviscorr_w_0jet',
+                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/Correction_Data_W_MVis{FF}_0jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='W_OS_Data_FFOSData_mvis_correction',
                 vars=['mvis']
             ),
             Leaf(
-                name='mtcorr_w',
-                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/Correction_MC_W_MT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                name='mviscorr_w_1jet',
+                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/Correction_Data_W_MVis{FF}_1jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                object='W_OS_Data_FFOSData_mvis_correction',
+                vars=['mvis']
+            ),
+            Leaf(
+                name='mtcorr_w_0jet',
+                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/Correction_MC_W_MT{FF}_0jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                object='W_OS_MC_FFOSMC_mt_correction',
+                vars=['mt']
+            ),
+            Leaf(
+                name='mtcorr_w_1jet',
+                file='{INDIR}/{CHANNEL}_NonEmbedded/{CATEGORY}/pieces/Correction_MC_W_MT{FF}_1jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='W_OS_MC_FFOSMC_mt_correction',
                 vars=['mt']
             )

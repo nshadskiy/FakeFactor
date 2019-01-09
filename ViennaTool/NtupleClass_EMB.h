@@ -29,7 +29,7 @@ public :
    Int_t           run;
    Float_t         lumi;
    ULong64_t       evt;
-   Float_t         weight;
+   Double_t         weight;
    Double_t         emb_weight;
    Float_t         lumiWeight;
    Float_t         puweight;

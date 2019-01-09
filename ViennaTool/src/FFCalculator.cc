@@ -1322,8 +1322,9 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
 
   cout << "Calculating corrections for " << ff_output << endl;
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
-  cout << nentries << endl;
-  cout << "SUBTRACT MC " <<subtractMC << endl;
+  TString cr_file=compare_file;
+  if(mode & JET0 ) cr_file = cr_file.ReplaceAll("_data","_0jet_data");
+  if(mode & JET1 ) cr_file = cr_file.ReplaceAll("_data","_1jet_data");
   TString sample;
   if(mode & _QCD) sample="_QCD";
   if(mode & _W_JETS) sample="_Wjets";
@@ -1348,7 +1349,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
     TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"+tight_cat); fittedFFs.push_back(dm1njet1);
   }
   
-  TFile compare(compare_file);
+  TFile compare(cr_file);
   Double_t FF_value=0;
   if(subtractMC){
     TString ff_inputHist="hh_l"; 
@@ -1470,8 +1471,25 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   Double_t scale_error_from=100;
   Double_t lim=(scale_error_from+20)*4;
   Int_t constPoint = 0;
-  if(mode & _QCD) constPoint = 223;
-  else constPoint = 185;
+  if(mode & _QCD) {
+    // constPoint = 223; //223
+    if(mode & JET0){
+      if(CHAN != kEL) constPoint = 255;
+      else constPoint = 215;
+    } 
+    else {
+      if(CHAN != kEL) constPoint = 125;
+      else constPoint = 165;
+    }
+  }
+  else constPoint = 170;
+  if(mode & _TT) constPoint = 153;
+
+  if(CHAN ==kTAU){
+    if(mode & JET0) constPoint = 195;
+    // if(mode & JET1) constPoint = 153;
+  }
+
   g->GetPoint(constPoint*4,x185,y185);
   for(int i=0; i<g->GetN(); i++){
     Double_t x; Double_t y;
@@ -1534,6 +1552,9 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
   cout << nentries << endl;
 
+  TString cr_file=compare_file;
+  if(mode & JET0 ) cr_file = cr_file.ReplaceAll("_data","_0jet_data");
+  if(mode & JET1 ) cr_file = cr_file.ReplaceAll("_data","_1jet_data");
   TString sample;
   if(mode & _QCD) sample="_QCD";
   if(mode & _W_JETS) sample="_Wjets";
@@ -1562,7 +1583,7 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   if(nonclosure.IsZombie()) cout << nonclosure_corr << " does not exist" << endl;
   TH1D* nonclosure_h = (TH1D*) nonclosure.Get("nonclosure_fit_smoothed");
   
-  TFile compare(compare_file);
+  TFile compare(cr_file);
   if(subtractMC){
     TString ff_inputHist="hh_l"; 
     TH1D* compare_l              = (TH1D*) compare.Get(ff_inputHist+"_lepPt");
@@ -1678,10 +1699,13 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   TGraphAsymmErrors *g=   gsk.returnSmoothedGraph();
 
   Double_t xV; Double_t yV;
-  g->GetPoint(375*4,xV,yV);
+  Int_t constPoint = 375;
+  if( mode & JET0 ) constPoint = 394;
+  if( mode & JET1 ) constPoint = 378;
+  g->GetPoint(constPoint*4,xV,yV);
   for(int i=0; i<g->GetN(); i++){
     Double_t x; Double_t y;
-    if(i>375*4){
+    if(i>constPoint*4){
       g->GetPoint(i,x,y);
       g->SetPoint(i,x,yV);
     }
@@ -1736,6 +1760,10 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
   TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
   TH1D *output_h = new TH1D("muiso_corr","",w_muiso_n,w_muiso_v);
   TH1D *closure_h = new TH1D("closure","",w_muiso_n,w_muiso_v);
+  
+  TString compare_file=CR_file;
+  if(mode & JET0 ) compare_file = compare_file.ReplaceAll("_data","_0jet_data");
+  if(mode & JET1 ) compare_file = compare_file.ReplaceAll("_data","_1jet_data");
   TFile FF_lookup(raw_ff);
   if(FF_lookup.IsZombie()) cout << raw_ff << " does not exist" << endl;
   TH1D* FF_lookup_h = nullptr;
@@ -1751,9 +1779,9 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
   if(nonclosure.IsZombie()) cout << nonclosure_corr << " does not exist" << endl;
   TH1D* nonclosure_h = (TH1D*) nonclosure.Get("nonclosure_fit_smoothed");
   
-  TFile compare(CR_file);
+  TFile compare(compare_file);
   Double_t FF_value=0;
-  if(compare.IsZombie()) cout << CR_file << " does not exit" << endl;
+  if(compare.IsZombie()) cout << compare_file << " does not exit" << endl;
   if(subtractMC){
     TH1D* compare_l              = (TH1D*) compare.Get("hh_l_muiso");
     TH1D* compare_l_MCsubtracted = (TH1D*) compare.Get("hh_l_muiso_MCsubtracted");
@@ -1979,8 +2007,9 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
   gsk.set_doWidthInBins(1);
   gsk.set_doErrors(1);
   gsk.setWidth( 2. );
-  if(CHAN ==kTAU ) gsk.setWidth(1.5);
-  gsk.set_widthInBins_sf(1.115);
+  if(CHAN ==kTAU ) gsk.setWidth(1.08);
+  if(CHAN ==kTAU ) gsk.set_widthInBins_sf(1.01);
+  else gsk.set_widthInBins_sf(1.115);
   //if(mode & _QCD) gsk.set_lastBinFrom(170);
   gsk.getSmoothHisto();
   TH1D *h2=gsk.returnSmoothedHisto();
@@ -1993,11 +2022,11 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
   TGraphAsymmErrors *g=   gsk.returnSmoothedGraph();
 
   Double_t x200; Double_t y200;
-  if(CHAN==kMU)g->GetPoint(180*4,x200,y200);
+  if(CHAN==kMU)g->GetPoint(200*4,x200,y200);
   if(CHAN==kEL)g->GetPoint(190*4,x200,y200); // TODO CHANGE (110*4,x200,y200)
   for(int i=0; i<g->GetN(); i++){
     Double_t x; Double_t y;
-    if(CHAN==kMU && i>180*4){
+    if(CHAN==kMU && i>200*4){
       g->GetPoint(i,x,y);
       g->SetPoint(i,x,y200);
     }
@@ -2050,11 +2079,14 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
   cout << nentries << endl;
   TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
-
+  
+  TString compare_file=CR_file;
+  if(mode & JET0 ) compare_file = compare_file.ReplaceAll("mt_Wjets","mt_0jet_Wjets");
+  if(mode & JET1 ) compare_file = compare_file.ReplaceAll("mt_Wjets","mt_1jet_Wjets");
   TH1D *output_h = new TH1D("mt_corr","",w_mt_n,w_mt_v);
   TH1D *closure_h = new TH1D("closure","",w_mt_n,w_mt_v);
   Double_t FF_value=0;
-  TFile compare(CR_file);
+  TFile compare(compare_file);
   TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_mt");
   TFile FF_lookup(raw_ff);
   TH1D* FF_lookup_h = nullptr;

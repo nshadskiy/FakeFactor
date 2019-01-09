@@ -78,7 +78,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   // if(CHAN==kEL && ((event->flagMETFilter <0.5)|| !((event->trg_singleelectron_27> 0.5)||(event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)||(event->trg_crossele_ele24tau30  > 0.5))) ||(event->pt_2<23))  return 0;
   
   if(CHAN==kEL && !preselectionFile.Contains("preselection_EMB") && ((event->flagMETFilter <0.5)|| !((event->trg_singleelectron_27> 0.5)||(event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)||(event->trg_crossele_ele24tau30  > 0.5))) ||(event->pt_2<23))  return 0;
-  if(CHAN==kEL && preselectionFile.Contains("preselection_EMB") &&  ((event->flagMETFilter <0.5)|| !((event->pt_1>20 && event->pt_1<24) || (event->trg_singleelectron_27> 0.5)||(event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)||(event->trg_crossele_ele24tau30  > 0.5))) ||(event->pt_2<23))  return 0;
+  if(CHAN==kEL && preselectionFile.Contains("preselection_EMB") &&  ((event->flagMETFilter <0.5)|| !((event->trg_singleelectron_27> 0.5)||(event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)||(event->trg_crossele_ele24tau30  > 0.5))) ||(event->pt_2<23))  return 0; //(event->pt_1>20 && event->pt_1<24) ||
   if(CHAN==kTAU && ((event->flagMETFilter <0.5)|| !((event->trg_doubletau_40_tightiso>0.5) || (event->trg_doubletau_40_mediso_tightid>0.5) || (event->trg_doubletau_35_tightiso_tightid>0.5)))) return 0;
   
   TLorentzVector vec1, vec2, vec;
@@ -89,10 +89,10 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       weight *= luminosity *  event->weight;
       if (CHAN == kTAU) weight *= event->sf_DoubleTauTight;
       else              weight *= event->sf_SingleOrCrossTrigger;
-      if( CHAN!=kTAU && preselectionFile.Contains("preselection_TT") ) weight *= event->topPtReweightWeightRun1;
-      if( CHAN!=kTAU && preselectionFile.Contains("preselection_DY") ) weight *= event->zPtReweightWeight;
+      if( preselectionFile.Contains("preselection_TT") ) weight *= event->topPtReweightWeightRun1;
+      if( preselectionFile.Contains("preselection_DY") ) weight *= event->zPtReweightWeight;
     }else{
-      weight *= event->emb_weight;
+      weight *= event->weight;
     }
 
     if( CHAN == kTAU && !preselectionFile.Contains("preselection_EMB") ){ // CHANGE IF TAU WP CHANGES!

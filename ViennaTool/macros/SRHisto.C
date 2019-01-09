@@ -20,32 +20,56 @@ void SRHisto() {
     Analyzer->init();
 
     std::vector<TString> ps;
-    ps.push_back(preselection_data);
-    ps.push_back(preselection_Wjets); 
-    ps.push_back(preselection_TT_T); 
-    ps.push_back(preselection_TT_J); 
-    ps.push_back(preselection_TT_L);
-    ps.push_back(preselection_VV_T); 
-    ps.push_back(preselection_VV_J); 
-    ps.push_back(preselection_VV_L);
-    ps.push_back(preselection_DY_TT); 
-    ps.push_back(preselection_DY_J); 
-    ps.push_back(preselection_DY_L); 
-    if(DOQCD) ps.push_back(preselection_QCD);
-
     std::vector<TString> fl;
-    fl.push_back(SR_data_mt); 
-    fl.push_back(SR_Wjets_mt_sim); 
-    fl.push_back(SR_TT_T_mt_sim); 
-    fl.push_back(SR_TT_J_mt_sim); 
-    fl.push_back(SR_TT_L_mt_sim);
-    fl.push_back(SR_VV_T_mt_sim); 
-    fl.push_back(SR_VV_J_mt_sim); 
-    fl.push_back(SR_VV_L_mt_sim);
-    fl.push_back(SR_DY_TT_mt_sim);
-    fl.push_back(SR_DY_J_mt_sim); 
-    fl.push_back(SR_DY_L_mt_sim); 
-    if(DOQCD) fl.push_back(SR_QCD_mt_sim);
+    if(EMB == 1){
+      ps.push_back(preselection_data);
+      ps.push_back(preselection_Wjets); 
+      ps.push_back(preselection_EMB); 
+      ps.push_back(preselection_TT_J_EMB); 
+      ps.push_back(preselection_TT_L_EMB);
+      ps.push_back(preselection_VV_J_EMB); 
+      ps.push_back(preselection_VV_L_EMB);
+      ps.push_back(preselection_DY_J_EMB); 
+      ps.push_back(preselection_DY_L_EMB); 
+      if(DOQCD) ps.push_back(preselection_QCD);
+
+      fl.push_back(SR_data_mt); 
+      fl.push_back(SR_Wjets_mt_sim); 
+      fl.push_back(SR_EMB_mt_sim); 
+      fl.push_back(SR_TT_J_mt_sim); 
+      fl.push_back(SR_TT_L_mt_sim);
+      fl.push_back(SR_VV_J_mt_sim); 
+      fl.push_back(SR_VV_L_mt_sim);
+      fl.push_back(SR_DY_J_mt_sim); 
+      fl.push_back(SR_DY_L_mt_sim); 
+      if(DOQCD) fl.push_back(SR_QCD_mt_sim);
+    }else{
+      ps.push_back(preselection_data);
+      ps.push_back(preselection_Wjets); 
+      ps.push_back(preselection_TT_T); 
+      ps.push_back(preselection_TT_J); 
+      ps.push_back(preselection_TT_L);
+      ps.push_back(preselection_VV_T); 
+      ps.push_back(preselection_VV_J); 
+      ps.push_back(preselection_VV_L);
+      ps.push_back(preselection_DY_T); 
+      ps.push_back(preselection_DY_J); 
+      ps.push_back(preselection_DY_L); 
+      if(DOQCD) ps.push_back(preselection_QCD);
+
+      fl.push_back(SR_data_mt); 
+      fl.push_back(SR_Wjets_mt_sim); 
+      fl.push_back(SR_TT_T_mt_sim);
+      fl.push_back(SR_TT_J_mt_sim); 
+      fl.push_back(SR_TT_L_mt_sim);
+      fl.push_back(SR_VV_T_mt_sim); 
+      fl.push_back(SR_VV_J_mt_sim); 
+      fl.push_back(SR_VV_L_mt_sim);
+      fl.push_back(SR_DY_T_mt_sim); 
+      fl.push_back(SR_DY_J_mt_sim); 
+      fl.push_back(SR_DY_L_mt_sim); 
+      if(DOQCD) fl.push_back(SR_QCD_mt_sim);
+    }
     
     
     //  if (DOQCD) fl.push_back(SR_QCD_mt_sim);
@@ -85,7 +109,7 @@ void SRHisto() {
       
       TString modes[] = {"l","t","t_alt"};
       Int_t nmodes = 3;
-      int nSA; if(useVV){nSA=nSAMPLES-1;}else{nSA=nSAMPLES-4;} //signal sample is also subtracted
+      int nSA; if(useVV){nSA=nSAMPLES;}else{nSA=nSAMPLES-4;} //signal sample is also subtracted
       const TString *ssa=vsuff;
       //////////////////////////////////////////////////////////////////////////////////////////////////////
       //Get AI mvis histos with MC subtracted

@@ -37,6 +37,9 @@ const int doCRHisto = 1;
 const int doCalcWeights=1; //calc fractions
 const int doCalc=1; //calc FFs
 ///////////////////////////////////////////////////
+//calcCorrections
+const int doNJetBinning=1; //Calculate separate corrections for 0jet/1jet
+///////////////////////////////////////////////////
 //No need to change
 const int doDebugPlots=1;    //1 to also calculate FF in SR; and do bkg estimate with unweighted FF per sample ->for control plots
 const int doCutPlots=1;      //1 to also calculate cut-dependent plots (prong, eta, pt)
