@@ -1,15 +1,17 @@
 #!/bin/bash
 user=jandrejkovic
-fftype=FakeFactor_2017_Test
+fftype=FakeFactor_2017_v8
 
-line=" --------------------------------------------------------------------------------------"
+line=" -------------------------------------------"
+echo "###### START of BuildStructure.sh ######"
 echo $line
 echo "Starting $fftype analysis"
 echo "Group CMS-HTT"
 echo "Hephy Vienna"
 echo $line
 
-echo "/data/$user/$fftype/preselection"
+echo "Buidling folder structure"
+
 if [ -d "/data/$user/$fftype/preselection" ]; then
     if [ ! -d "/data/$user/$fftype/preselection/mt" ]; then
         mkdir -p /data/$user/$fftype/preselection/mt
@@ -217,5 +219,4 @@ fi
 
 
 
-echo "----- END of BuildStructure.sh --------"
-echo $line
+echo "###### END of BuildStructure.sh ######"
