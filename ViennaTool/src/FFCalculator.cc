@@ -177,8 +177,8 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
       Double_t fracWeight=event_s->weight_sf;
       if ( !fulfillCategory(mode) ) continue;
       if ( this->isInSR(NO_SR) ){
-	if (this->isLoose()) h_n.at(i)->Fill(this->getWeightBin(),fracWeight);
-	else if (this->isTight()) h_n_tight.at(i)->Fill(this->getWeightBin(),fracWeight);
+        if (this->isLoose()) h_n.at(i)->Fill(this->getWeightBin(),fracWeight);
+        else if (this->isTight()) h_n_tight.at(i)->Fill(this->getWeightBin(),fracWeight);
         if (this->isTight_alt()) h_n_tt.at(i)->Fill(this->getWeightBin(),fracWeight);
       }
       if ( this->isInSR( NO_SR | _SS ) && this->isLoose() ) 
@@ -917,11 +917,11 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
       for (unsigned i=0; i<ntau; i++){
-	if ( !this->passesCuts(cuts,i) ) continue;
-	if (  ( (mode & DOALL) && this->isInAll(mode,i) ) ||  ( doCR && this->isInCR(mode,i) ) || ( !doCR && this->isInSR(mode,i) )    ) {
-	  nT=this->isTight(mode,i); nL=this->isLoose(mode,i); nT_alt=this->isTight_alt(mode,i);
-	  if (nT) {counter_histo_tight_CR_cont.at(is)->Fill(this->getBin(mode,i),event_s->weight_sf);}
-	  else if (nL) {counter_histo_loose_CR_cont.at(is)->Fill(this->getBin(mode,i),event_s->weight_sf);}
+        if ( !this->passesCuts(cuts,i) ) continue;
+        if (  ( (mode & DOALL) && this->isInAll(mode,i) ) ||  ( doCR && this->isInCR(mode,i) ) || ( !doCR && this->isInSR(mode,i) )    ) {
+          nT=this->isTight(mode,i); nL=this->isLoose(mode,i); nT_alt=this->isTight_alt(mode,i);
+          if (nT) {counter_histo_tight_CR_cont.at(is)->Fill(this->getBin(mode,i),event_s->weight_sf);}
+          else if (nL) {counter_histo_loose_CR_cont.at(is)->Fill(this->getBin(mode,i),event_s->weight_sf);}
           if (nT_alt) {counter_histo_tight_alt_CR_cont.at(is)->Fill(this->getBin(mode,i),event_s->weight_sf);}
 
           if(nL){
@@ -931,7 +931,7 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
             bin_values[dm_index+this->getNtracks(mode)*njet_index][pT_index]=bin_values[dm_index+this->getNtracks(mode)*njet_index][pT_index]+event_s->alltau_pt->at(i)*event_s->weight_sf*(-1);
             bin_counters[dm_index+this->getNtracks(mode)*njet_index][pT_index]=bin_counters[dm_index+this->getNtracks(mode)*njet_index][pT_index]+event_s->weight_sf*(-1);
           }
-	}
+      	}
       }
     }
     if (DEBUG) std::cout<<std::endl<<"In contamination file "<<pre_sub.at(is)<<" "<< counter_histo_loose_CR_cont.at(is)->Integral(-1,-1) <<" loose "<<counter_histo_tight_CR_cont.at(is)->Integral(-1,-1)<<" tight, " <<counter_histo_tight_alt_CR_cont.at(is)->Integral(-1,-1)<<" loose tt."<<std::endl;

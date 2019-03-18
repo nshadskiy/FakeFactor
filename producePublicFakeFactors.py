@@ -7,7 +7,7 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--channel', dest = 'channel', help='Channel for producing public FFs: mt,et,tt', type=str, metavar = 'TAG', required = True)
 	parser.add_argument('--input', dest = 'input', help='Input directory - full string', type=str, metavar = 'TAG', required = True)
-	parser.add_argument('--embedding', dest = 'embedding', help='Embedded or Non-Embedded FF', type=str, metavar = 'TAG', required = True)
+	parser.add_argument('--njetbinning', dest = 'njetbinning', help='Use corrections binned in NJets or not', type=str, metavar = 'TAG', required = True)
 	args = parser.parse_args()
 
 	#create Histogram with X-Axis interval [0,1], filled with binwidth 0.01 according to function f(x)=x
@@ -23,25 +23,24 @@ if __name__ == '__main__':
 
 	channel = args.channel
 	if(args.channel == "kMU"):
-	  channel = "mt"
+		channel = "mt"
 	elif(args.channel == "kEL"):
-	  channel = "et"
+		channel = "et"
 	elif(args.channel == "kTAU"):
-	  channel = "tt"
+		channel = "tt"
 
 	if( channel == "mt" or channel == "et"):
-	  log = open('copy.log', 'a')
-	  if( args.embedding == "0"):
-	  	p = sp.Popen(["python producePublicFakeFactors_mt_et_NonEMB.py --channel {0} --input {1}".format(channel,args.input)],shell=True)
-	  else:
-			print "EMBEDDED COPY"
-			p = sp.Popen(["python producePublicFakeFactors_mt_et_EMB.py --channel {0} --input {1}".format(channel,args.input)],shell=True)
-	  p.wait()
+		log = open('copy.log', 'a')
+		if( args.njetbinning ):
+			p = sp.Popen(["python producePublicFakeFactors_mt_et.py --channel {0} --input {1}".format(channel,args.input)],shell=True)
+		else: 
+			p = sp.Popen(["python producePublicFakeFactors_mt_et_NJETBINNING.py --channel {0} --input {1}".format(channel,args.input)],shell=True)
+		p.wait()
 	if( channel == "tt"):
-		if(args.embedding == "0"):
-			p = sp.Popen(["python producePublicFakeFactors_tt.py --channel {0}_NonEmbedded --input {1} --embedding {2}".format(channel,args.input,args.embedding)],shell=True)
+		if( args.njetbinning ):
+			p = sp.Popen(["python producePublicFakeFactors_tt.py --channel {0} --input {1}".format(channel,args.input)],shell=True)
 		else:
-			p = sp.Popen(["python producePublicFakeFactors_tt.py --channel {0} --input {1} --embedding {2}".format(channel,args.input,args.embedding)],shell=True)
+			p = sp.Popen(["python producePublicFakeFactors_tt_NJETBINNING.py --channel {0} --input {1}".format(channel,args.input)],shell=True)
 		p.wait()
 
 

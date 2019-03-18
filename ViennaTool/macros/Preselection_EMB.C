@@ -17,7 +17,7 @@ void Preselection() {
 
   if(EMB == 1 && (num==1||num==0)){
     Analyzer->loadFile(EMBfile,"TauCheck"); 
-    Analyzer->select(preselection_EMB,_DY|_TTAU); //_DY only as placeholder so it gets checked in TNtupleAnalyzer::fitsGenCategory() 
+    Analyzer->select(preselection_EMB,_DY|_TTAU); //_DY only set so it gets checked in TNtupleAnalyzer::fitsGenCategory() 
     Analyzer->closeFile();
     tmp=preselection_EMB;
     compressFile(preselection_EMB);

@@ -29,6 +29,9 @@ class GlobalClass{
   void closeFile();
   void init();
   Int_t passesCuts(const Int_t cuts, const Int_t ind);
+  TString getWPCutString(const TString isolation, const Int_t mode=0, const Int_t useTauIndex=0);
+  TString getCRCutString(const Int_t mode=0);
+  TString getSRCutString(const Int_t mode=0, const Int_t categoryMode=0);
   Int_t isLoose(const Int_t mode=0, const Int_t ind=0);
   Int_t isTight_alt(const Int_t mode=0, const Int_t ind=0);
   Int_t isTight(const Int_t mode=0, const Int_t ind=0);

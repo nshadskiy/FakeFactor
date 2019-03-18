@@ -48,6 +48,13 @@
 #define _COMPARE       16
 #define _COMPARE2      32
 
+//isolation
+#define _VLOOSE         1
+#define _LOOSE          2
+#define _MEDIUM         4
+#define _TIGHT          8
+#define _VTIGHT        16
+
 //be very careful to not overlap with other marks -> use category mark extra
 #define _INCL              1
 #define _DUMMYCAT          2
@@ -110,12 +117,7 @@ const TString path_ff_data       = path_ff+"data_"+s_chan[CHAN]+"/";
 const TString path_ff_mc         = path_ff+"mc_"+s_chan[CHAN]+"/";
 const TString path_ff_mc_woQCD   = path_ff+"mc_woQCD_"+s_chan[CHAN]+"/";
 const TString path_sim           = "ViennaTool/sim/"+s_chan[CHAN]+"/";
-#if(EMB == 1)
-const TString path_img           = "ViennaTool/Images_EMB/";
-#endif
-#if(EMB == 0)
-const TString path_img           = "ViennaTool/Images_NonEMB/";
-#endif
+const TString path_img           = "ViennaTool/Images/";
 const TString path_img_data      = path_img+"data_"+s_chan[CHAN]+"/";
 const TString path_img_mc        = path_img+"mc_"+s_chan[CHAN]+"/";
 const TString path_img_mc_woQCD  = path_img+"mc_woQCD_"+s_chan[CHAN]+"/";

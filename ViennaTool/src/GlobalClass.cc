@@ -3,6 +3,8 @@
 #include <iostream>
 #include <sstream>
 
+
+
 using namespace std;
 
 GlobalClass::GlobalClass()
@@ -49,25 +51,81 @@ void GlobalClass::init()
   gStyle->SetPalette(1);
 }
 
+TString GlobalClass::getWPCutString(const TString isolation, const Int_t mode, const Int_t useTauIndex){
+  
+  TString tau_index = "0";
+  if (useTauIndex) tau_index = "tau_iso_ind";
+
+  Int_t fulfill, fail;
+  TString s_genmatch = "1";
+  TString s_fulfill = "1";
+  TString s_fail = "1";
+  
+  if( isolation == "tight"){
+    fulfill = wpTightFulfill;
+    fail = wpTightFail;
+  }else if( isolation == "loose"){
+    fulfill = wpLooseFulfill;
+    fail = wpLooseFail;
+  }else if( isolation == "tight_alt"){
+    fulfill = _MEDIUM;
+    fail = _TIGHT;
+  }else{
+    std::cout << "Error in GlobalClass::getWPCutString():  No valid isolation mode selected, use 'tight' or 'loose'! " << std::endl;
+    return "0";
+  }
+
+  if (mode & GEN_MATCH) s_genmatch = "(alltau_gen_match["+tau_index+"]=="+to_string(realJet)+")";
+  
+  if     (fulfill == _VLOOSE) s_fulfill = "(alltau_vlooseMVA["+tau_index+"]>0.5)";
+  else if(fulfill == _LOOSE)  s_fulfill = "(alltau_looseMVA["+tau_index+"]>0.5)";
+  else if(fulfill == _MEDIUM) s_fulfill = "(alltau_mediumMVA["+tau_index+"]>0.5)";
+  else if(fulfill == _TIGHT)  s_fulfill = "(alltau_tightMVA["+tau_index+"]>0.5)";
+  else if(fulfill == _VTIGHT) s_fulfill = "(alltau_vtightMVA["+tau_index+"]>0.5)";
+  else{
+    std::cout << "Error in GlobalClass::getWPCutString():  No valid working point selected, use '_VLOOSE', '_LOOSE', '_MEDIUM', '_TIGHT', '_VTIGHT'! " << std::endl;
+    return "0";
+  }
+
+  if     (fail == _VLOOSE) s_fail = "(alltau_vlooseMVA["+tau_index+"]<0.5)";
+  else if(fail == _LOOSE)  s_fail = "(alltau_looseMVA["+tau_index+"]<0.5)";
+  else if(fail == _MEDIUM) s_fail = "(alltau_mediumMVA["+tau_index+"]<0.5)";
+  else if(fail == _TIGHT)  s_fail = "(alltau_tightMVA["+tau_index+"]<0.5)";
+  else if(fail == _VTIGHT) s_fail = "(alltau_vtightMVA["+tau_index+"]<0.5)";
+  else if(fail != 0){
+    std::cout << "Error in GlobalClass::getWPCutString():  No valid working point selected, use '_VLOOSE', '_LOOSE', '_MEDIUM', '_TIGHT', '_VTIGHT', '0'! " << std::endl;
+    return "0";
+  }
+
+  return "("+s_genmatch + "&&" + s_fulfill + "&&" + s_fail+")";
+}
 
 Int_t GlobalClass::isLoose(const Int_t mode, const Int_t ind) //default: 0,0
 {
-  if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != 6 ) return 0; }
+  if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != realJet ) return 0; }
 
-  if( CHAN == kTAU ){
-    if ( !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1; //for vloose ! tight
-    // if ( !event_s->alltau_vtightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1; //for vloose ! vtight
-      //  if ( !event_s->alltau_tightMVA->at(ind)  && event_s->alltau_looseMVA->at(ind) ) return 1; // for loose ! tight
-    //    if ( !event_s->alltau_vtightMVA->at(ind) && event_s->alltau_looseMVA->at(ind) ) return 1; // for loose ! vtight
-  }
-  else if ( !event_s->alltau_tightMVA->at(ind) && event_s->alltau_vlooseMVA->at(ind) ) return 1;
+  Int_t c1 = 0;
+  Int_t c2 = 0;
+  Int_t returnValue = 0;
   
-  return 0;
+  if      ( wpLooseFulfill == _VLOOSE && event_s->alltau_vlooseMVA->at(ind) ) c1 = 1;
+  else if ( wpLooseFulfill == _LOOSE  && event_s->alltau_looseMVA->at(ind)  ) c1 = 1;
+  else if ( wpLooseFulfill == _MEDIUM && event_s->alltau_mediumMVA->at(ind) ) c1 = 1;
+  else if ( wpLooseFulfill == _TIGHT  && event_s->alltau_tightMVA->at(ind)  ) c1 = 1;
+  else if ( wpLooseFulfill == _VTIGHT && event_s->alltau_vtightMVA->at(ind) ) c1 = 1;
+
+  if      ( wpLooseFail == _VLOOSE && !event_s->alltau_vlooseMVA->at(ind) ) c2 = 1;
+  else if ( wpLooseFail == _LOOSE  && !event_s->alltau_looseMVA->at(ind)  ) c2 = 1;
+  else if ( wpLooseFail == _MEDIUM && !event_s->alltau_mediumMVA->at(ind) ) c2 = 1;
+  else if ( wpLooseFail == _TIGHT  && !event_s->alltau_tightMVA->at(ind)  ) c2 = 1;
+  else if ( wpLooseFail == _VTIGHT && !event_s->alltau_vtightMVA->at(ind) ) c2 = 1;
+  
+  return c1*c2;
 }
 
 Int_t GlobalClass::isTight_alt(const Int_t mode, const Int_t ind) //default: 0,0
 {
-  if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != 6 ) return 0; }
+  if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != realJet ) return 0; }
 
   if ( event_s->alltau_mediumMVA->at(ind) && !event_s->alltau_tightMVA->at(ind) ) return 1; 
 
@@ -76,18 +134,26 @@ Int_t GlobalClass::isTight_alt(const Int_t mode, const Int_t ind) //default: 0,0
 
 Int_t GlobalClass::isTight(const Int_t mode, const Int_t ind) //default: 0,0
 {
-  if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != 6 ) return 0; }
+  if (mode & GEN_MATCH){ if ( event_s->alltau_gen_match->at(ind) != realJet ) return 0; }
+  
+  Int_t c1 = 0;
+  Int_t c2 = 0;
+  Int_t returnValue = 0;
 
-  if(CHAN == kTAU){
-    // if ( event_s->alltau_vtightMVA->at(ind)) return 1; //for vtight - ADAPT ALSO IN src/TNtupleAnalyzer.cc ("CHANGE IF TAU WP CHANGES!")
-    if ( event_s->alltau_tightMVA->at(ind)) return 1; //for tight
-    // if ( event_s->alltau_tightMVA->at(ind) && !event_s->alltau_vtightMVA->at(ind)) return 1; //for (tight & !vtight)
-  }
-  else{
-    if ( event_s->alltau_tightMVA->at(ind)) return 1;
-  }
-
-  return 0;
+  if      ( wpTightFulfill == _VLOOSE && event_s->alltau_vlooseMVA->at(ind) ) c1 = 1;
+  else if ( wpTightFulfill == _LOOSE  && event_s->alltau_looseMVA->at(ind)  ) c1 = 1;
+  else if ( wpTightFulfill == _MEDIUM && event_s->alltau_mediumMVA->at(ind) ) c1 = 1;
+  else if ( wpTightFulfill == _TIGHT  && event_s->alltau_tightMVA->at(ind)  ) c1 = 1;
+  else if ( wpTightFulfill == _VTIGHT && event_s->alltau_vtightMVA->at(ind) ) c1 = 1;
+  
+  if      ( wpTightFail == _VLOOSE && !event_s->alltau_vlooseMVA->at(ind) ) c2 = 1;
+  else if ( wpTightFail == _LOOSE  && !event_s->alltau_looseMVA->at(ind)  ) c2 = 1;
+  else if ( wpTightFail == _MEDIUM && !event_s->alltau_mediumMVA->at(ind) ) c2 = 1;
+  else if ( wpTightFail == _TIGHT  && !event_s->alltau_tightMVA->at(ind)  ) c2 = 1;
+  else if ( wpTightFail == _VTIGHT && !event_s->alltau_vtightMVA->at(ind) ) c2 = 1;
+  else if ( wpTightFail == 0) c2 = 1;
+  
+  return c1*c2;
 }
 
 Int_t GlobalClass::isInSR(const Int_t mode, const Int_t ind)
@@ -144,6 +210,110 @@ Int_t GlobalClass::isInSR(const Int_t mode, const Int_t ind)
 
   return 0;
  
+}
+
+TString GlobalClass::getSRCutString(const Int_t mode, const Int_t categoryMode){
+
+  Double_t isolation; Double_t antiIso_min; Double_t antiIso_max;
+  if(CHAN==kMU) isolation=LEP_ISO_CUT;
+  if(CHAN==kEL) isolation=LEP_ISO_CUT_ET;
+  antiIso_min=isolation; antiIso_max=isolation+0.1;
+  
+  TString s_genmatch, s_jetmode, s_mode = "";
+
+  if ( mode & GEN_MATCH ) s_genmatch = " * (alltau_gen_match[tau_iso_ind] == 6) ";
+
+  if(mode & JET0) s_jetmode = " * (njets == 0) ";
+  else if(mode & JET1) s_jetmode = " * (njets > 0) ";
+  
+  if ( mode & _SS || CALC_SS_SR ) s_mode = "( tau_iso_ind >= 0) * (lep_q * alltau_q[tau_iso_ind] >= 0)";
+  else                            s_mode = "( tau_iso_ind >= 0) * (lep_q * alltau_q[tau_iso_ind] <= 0)";
+
+  s_mode += " * (passesDLVeto > 0.5) * (passes3LVeto > 0.5)";
+
+  if( (inclusive_selection && (CHAN==kMU || CHAN==kEL)) || categoryMode & _DUMMYCAT ) s_mode += " * (alltau_mt[tau_iso_ind] < " + to_string(MT_CUT) + ")";
+
+  if( CHAN != kTAU ){
+    if( !(mode & NO_SR) ) s_mode += " * (alltau_mt[tau_iso_ind] < "+ to_string(MT_CUT) +")";
+  }
+
+  if( CHAN == kTAU ){
+    if ( mode & _AI ) s_mode += " * (lep_iso < "+to_string(TAU1_ISO_CUT) +")";
+    else s_mode += " * (lep_iso > "+to_string(TAU1_ISO_CUT) +")";
+  }else{
+    if ( mode & _AI ) s_mode += " * (lep_iso > "+to_string(antiIso_min)+") * (lep_iso < "+to_string(antiIso_max)+") ";
+    else if ( !(mode & MUISO)) s_mode += " * (lep_iso < " +to_string(isolation) + ") ";
+  }
+  
+  return s_mode + s_genmatch + s_jetmode; 
+}
+
+TString GlobalClass::getCRCutString(const Int_t mode){
+  TString s_genmatch, s_jetmode, s_mode = "";
+
+  Double_t lep_iso_min; Double_t lep_iso_max;
+  Double_t isolation=0; Double_t antiIso_min; Double_t antiIso_max;
+  if(CHAN==kMU) isolation=LEP_ISO_CUT;
+  if(CHAN==kEL){
+    isolation=LEP_ISO_CUT_ET;
+    lep_iso_min = 0.02;
+    lep_iso_max = 0.15;
+  }else{
+    lep_iso_min = 0.05;
+    lep_iso_max = 0.15;
+  }
+  antiIso_min=isolation; antiIso_max=isolation+0.1;
+
+  
+  if( mode & GEN_MATCH ) s_genmatch = " && (alltau_gen_match[tau_iso_ind] == 6) ";
+  
+  if(mode & JET0) s_jetmode = " && (njets == 0) ";
+  else if(mode & JET1) s_jetmode = " && (njets > 0) ";
+
+  if( mode & _DY ){
+    s_mode = "(lep_iso < "+to_string(isolation)+")&&(alltau_dRToLep[0] > "+to_string(DR_TAU_LEP_CUT)+")&&(m_leplep > 70)&&(m_leplep < 110)";
+  }
+  else if( mode & _TT ){
+    s_mode = "(n_iso_lep >= 1)&&(n_iso_otherLep >= 1)&&(alltau_dRToLep[0] > "+to_string(DR_TAU_LEP_CUT)+")&&(alltau_dRToOtherLep[0] > "+to_string(DR_TAU_LEP_CUT)+")&&(njets>1)&&(bpt_1>=20)";
+  }
+  else if( mode & _W_JETS){
+    s_mode = "(passesDLVeto > 0.5) && (passes3LVeto > 0.5) && (bpt_1 < 20)";
+    if( !(mode & NO_SR) ) s_mode += " && (alltau_mt[0] > 70)";
+    if( CHAN == kTAU ) s_mode += " && (lep_iso > "+to_string(TAU1_ISO_CUT)+")";
+    else s_mode += " && (lep_iso < "+to_string(isolation)+")";
+    if( CALC_SS_SR ) s_mode += "&& (lep_q*alltau_q[0]>0.0)";
+    else s_mode += "&& (lep_q*alltau_q[0]<0.0)";
+  }
+  else if( mode & _QCD ){
+    if( CHAN == kTAU ){
+      if( mode & SR ){
+        s_mode = "(lep_iso > "+to_string(TAU1_ISO_CUT)+")&&(lep_q*alltau_q[0]<0.0)";
+      }else{
+        if( mode & _AI){
+          s_mode = "(lep_iso < "+to_string(TAU1_ISO_CUT)+")";
+        }else{
+          s_mode = "(lep_iso > "+to_string(TAU1_ISO_CUT)+")";
+        }
+        s_mode += " && (lep_q*alltau_q[0]>0.0) && (passesDLVeto > 0.5) && (passes3LVeto > 0.5)";
+      }
+    }else{
+      s_mode = "(alltau_mt[0] < 40)";
+      s_mode += " && (lep_q * alltau_q[0] >= 0) && (passesDLVeto > 0.5) && (passes3LVeto > 0.5) ";
+      if( !CALC_SS_SR && !(mode & _AI) ){
+        if( !(mode & MUISO) ) s_mode += " && (lep_iso > "+to_string(lep_iso_min)+") && (lep_iso < "+to_string(lep_iso_max)+") ";
+      }
+      else if( CALC_SS_SR ){
+        s_mode += " && (lep_q * alltau_q[0] < 0)";
+        if( !(mode & MUISO) ) s_mode += " && (lep_iso > "+to_string(antiIso_min)+") && (lep_iso < "+to_string(antiIso_max)+") ";
+      }
+      else if( mode & _AI ){
+        s_mode += " && (lep_iso > "+to_string(antiIso_min)+") && (lep_iso < "+to_string(antiIso_max)+")";
+      }
+    
+    }
+  }
+
+  return s_mode + s_genmatch + s_jetmode; 
 }
 
 Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
@@ -236,8 +406,8 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
 	   //	   (  ( !CALC_SS_SR && event_s->alltau_mt->at(ind)<MT_CUT   && ( event_s->lep_iso<LEP_ISO_CUT || ( mode & MUISO ) ) ) || //DEFAULT
 	   //	      (  CALC_SS_SR                                     && event_s->lep_iso>LEP_ISO_CUT )   ) && //DEFAULT
            (event_s->lep_q*event_s->alltau_q->at(ind)>=0.) &&
-	   event_s->passesDLVeto             &&
-	   event_s->passes3LVeto        
+            event_s->passesDLVeto             &&
+            event_s->passes3LVeto        
 	   )
     returnVal=1;
   else returnVal=0; 

@@ -5,10 +5,10 @@
 #define kTAU         2
 ///////////////////////////////////////////////////
 #define EMB          1
-#define selCHAN      kTAU
-const int CHAN     = kTAU;
-const TString analysis      ="FakeFactor_2017";
-const TString output_folder ="/afs/hephy.at/user/f/fspreitzer/public/Htautau/FakeRate/SM_ML/FakeFactor_2017";
+#define selCHAN      kMU
+const int CHAN     = kMU;
+const TString analysis      ="FakeFactor_2017_DeploymentTest";
+const TString output_folder ="/afs/hephy.at/user/f/fspreitzer/public/Htautau/FakeRate/SM_ML/FakeFactor_2017_DeploymentTest_NoDM";
 const TString DC_folder     ="/afs/hephy.at/work/f/fspreitzer/cmssw/ff_test/CMSSW_8_0_25/src/ViennaTool/HTTutilities/Jet2TauFakes/data";
 ///////////////////////////////////////////////////
 const TString user="fspreitzer";    
@@ -22,8 +22,8 @@ const int exclusive_selection=1;
 const int useVV=1;
 const int useMVAMET=0;
 ///////////////////////////////////////////////////
-//Out of date - no need to change
-const int DEBUG=0; //set to 1 for additional output
+//Out of date - no need to change 
+const int DEBUG=1; //set to 1 for additional output
 const int ALLPLOTS=0; //set to 1 for PDFs etc
 const int DOQCD=1; //set to 1 to include QCD estimate, 0 for w/o; only works for MC
 const int DOMC=0; //set to 1 for MC, 0 for data
@@ -38,7 +38,7 @@ const int doCalcWeights=1; //calc fractions
 const int doCalc=1; //calc FFs
 ///////////////////////////////////////////////////
 //calcCorrections
-const int doNJetBinning=1; //Calculate separate corrections for 0jet/1jet
+const int doNJetBinning=0; //Calculate separate corrections for 0jet/1jet
 ///////////////////////////////////////////////////
 //No need to change
 const int doDebugPlots=1;    //1 to also calculate FF in SR; and do bkg estimate with unweighted FF per sample ->for control plots
@@ -54,17 +54,29 @@ const int doTemplateFitForWeights=0; //template fit for fractions, default: 0
 //////////////////////////////////////////////////
 const int fit_pT_bins = 1; //use fitted pT bins as input for ff
 //////////////////////////////////////////////////
+//Working point definition://
+// _VLOOSE = 1
+//  _LOOSE = 2
+// _MEDIUM = 4
+//  _TIGHT = 8
+// _VTIGHT = 16
+//  settings for tight vs vloose&(!tight)
+const int wpTightFulfill = 8; 
+const int wpTightFail    = 0;
+const int wpLooseFulfill = 1;
+const int wpLooseFail    = 8;
+///////////////////////////////////////////////////
 //MUTAU Settings
 #if(selCHAN==kMU)
 const double fitMin =  23;
 const int fitBins  =  470;
 const int COINFLIP=1;
-const Double_t Pt_cuts_Wjets[]    = {23,27,30.,34,40,51,60,75,90,110,500};
+const Double_t Pt_cuts_Wjets[]    = {23,25,30.,34,39,48,60,95,110,500}; //del 75
 const Double_t Pt_cuts_DY[]       = {23,30.,40.};
-const Double_t Pt_cuts_TT_SR[]    = {23,27,30.,32.,34.,37.,40.,45,52,70,90,115,175,500};
+const Double_t Pt_cuts_TT_SR[]    = {23,26,29.,32.,35.,38.,41.,45,52,70,90,115,175,500};
 const Double_t Pt_cuts_TT_CR[]    = {23.};
-const Double_t Pt_cuts_QCD[]      = {23,26,30,32.5,36,42,50,500};
-const Double_t Pt_cuts_QCD_AI[]   = {23,26,30,32.5,36,42,50,500};
+const Double_t Pt_cuts_QCD[]      = {23,26,29,32.5,36,42,65,500};
+const Double_t Pt_cuts_QCD_AI[]   = {23,26,29,32.5,36,42,65,500};
 #endif
 //////////////////////////////////////////////////
 //ETAU Settings
@@ -72,9 +84,9 @@ const Double_t Pt_cuts_QCD_AI[]   = {23,26,30,32.5,36,42,50,500};
 const double fitMin =  23;
 const int fitBins  =  470;
 const int COINFLIP=1;
-const Double_t Pt_cuts_Wjets[]    = {23.,26.,30.,34.,39.,50,60,75,90,110,500};
+const Double_t Pt_cuts_Wjets[]    = {23.,26.,30.,34.,39.,50,60,75,90,115,500};
 const Double_t Pt_cuts_DY[]       = {23.,30.,40.};
-const Double_t Pt_cuts_TT_SR[]    = {23.,25.,28.,30.,32.,34,37.,40,45,70,110,160,500};
+const Double_t Pt_cuts_TT_SR[]    = {23.,25.,28.,30.,32.,34,37.,40,45,70,100,160,500};
 const Double_t Pt_cuts_TT_CR[]    = {20.};
 const Double_t Pt_cuts_QCD[]      = {23,28,33,40,50,500};
 const Double_t Pt_cuts_QCD_AI[]   = {23,28,33,40,59,120,500};
@@ -89,7 +101,7 @@ const Double_t Pt_cuts_Wjets[]    = {40.,};
 const Double_t Pt_cuts_DY[]       = {40.};
 const Double_t Pt_cuts_TT_SR[]    = {40.};
 const Double_t Pt_cuts_TT_CR[]    = {40.};
-const Double_t Pt_cuts_QCD[]      = {40.,42.5,45.,50.,55,60,65,100,500};
+const Double_t Pt_cuts_QCD[]      = {40.,42.5,45.,50.,55,60,65,105,500};
 const Double_t Pt_cuts_QCD_AI[]   = {40,42.5,45,50,60,75,115,500};
 #endif
 //////////////////////////////////////////////////
