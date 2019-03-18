@@ -38,3 +38,8 @@ macros/calcCorrections <-> src/FFCalculator.cc
 #EMBEDDING
 
 Be sure to run the Preselection with EMB=1 first!
+
+#Decay mode binning
+
+By default, decay-mode 1-prong/3-prong are merged to ensure better statistics when calculating FF/corrections.
+To enable two different bins for the decay mode set all Decay_cuts_X[] arrays in Globals.h to {0,5}
