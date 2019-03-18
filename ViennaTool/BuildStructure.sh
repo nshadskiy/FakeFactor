@@ -1,5 +1,5 @@
 #!/bin/bash
-user=jandrejkovic
+user=S(grep 'TString user' "Settings.h" | awk -F'[=;]' '{print $2}' | tr -d '"')
 fftype=$(grep 'analysis' "Settings.h" | awk -F'[=;]' '{print $2}' | tr -d '"')
 
 line=" -------------------------------------------"
