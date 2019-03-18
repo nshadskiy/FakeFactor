@@ -8,7 +8,7 @@ if __name__ == '__main__':
 
      parser = argparse.ArgumentParser()
      parser.add_argument('--channel', dest = 'channel', help='Channel to plot: kMU,kEL,kTAU', type=str, metavar = 'TAG', required = True)
-     parser.add_argument('--embedding', dest = 'embedding', help='Embedded or Non-Embedded FF', type=str, metavar = 'TAG', required = True)
+     
      args = parser.parse_args()
     
      preliminary = 'Preliminary'
@@ -193,12 +193,8 @@ if __name__ == '__main__':
           ############################################################
           cms2.Draw()
           #cms2b.Draw()
-          if (args.embedding == "0" ):
-               canvas.Print( 'ViennaTool/Images_NonEMB/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'.png' )
-               canvas.Print( 'ViennaTool/Images_NonEMB/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'.pdf' )
-          else:
-               canvas.Print( 'ViennaTool/Images_EMB/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'.png' )
-               canvas.Print( 'ViennaTool/Images_EMB/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'.pdf' )
+          canvas.Print( 'ViennaTool/Images/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'.png' )
+          canvas.Print( 'ViennaTool/Images/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'.pdf' )
           #canvas.Print( 'tt/' + el['file'] + '.root')
 
 

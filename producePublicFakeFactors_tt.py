@@ -6,7 +6,6 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--channel', dest = 'channel', help='Channel to plot: mt,et', type=str, metavar = 'TAG', required = True)
 parser.add_argument('--input', dest = 'indir', help='Input directory - full string', type=str, metavar = 'TAG', required = True)
-parser.add_argument('--embedding', dest = 'embedding', help='Embedded or Non-Embedded FF', type=str, metavar = 'TAG', required = True)
 args = parser.parse_args()
 
 channel=args.channel
@@ -35,7 +34,7 @@ for category in categories:
     
     qcd_os = Node(
         name='ff_qcd_os',
-        formula='{ff_raw_qcd}*{OSSS_corr_qcd}*( ([njets]==0)*({mviscorr_qcd_0jet}*{ptcorr_qcd_0jet}) + ([njets]>=1)*({mviscorr_qcd_1jet}*{ptcorr_qcd_1jet}) )', 
+        formula='{mviscorr_qcd}*{ptcorr_qcd}*{OSSS_corr_qcd}*{ff_raw_qcd}', 
         leaves=[
             Leaf(
                 name='ff_raw_qcd',
@@ -44,26 +43,14 @@ for category in categories:
                 vars=['tau_pt','tau_decay','njets']
             ),
             Leaf(
-                name='mviscorr_qcd_0jet',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}_0jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                name='mviscorr_qcd',
+                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
                 vars=['mvis']
             ),
             Leaf(
-                name='mviscorr_qcd_1jet',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}_1jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
-                object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
-                vars=['mvis']
-            ),
-            Leaf(
-                name='ptcorr_qcd_0jet',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_PT{FF}_0jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
-                object='QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction',
-                vars=['tau2_pt']
-            ),
-            Leaf(
-                name='ptcorr_qcd_1jet',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_PT{FF}_1jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                name='ptcorr_qcd',
+                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_PT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction',
                 vars=['tau2_pt']
             ),
@@ -640,11 +627,7 @@ for category in categories:
     
     
     
-    if( args.embedding == "0"):
-        emb_string = "_NonEmbedded"
-    else:
-        emb_string = ""
-    file = ROOT.TFile.Open("{INDIR}/{CHANNEL}/{CATEGORY}/fakeFactors_{ISOLATION}.root".format(INDIR=indir,CHANNEL=channel,CATEGORY=category,ISOLATION=isolation), "recreate")
+    file = ROOT.TFile.Open("{INDIR}/{CHANNEL}/{CATEGORY}/fakeFactors_{ISOLATION}.root".format(INDIR=indir,CHANNEL=channel,CATEGORY=category, ISOLATION=isolation), "recreate")
     # Write meta-data
     # Write fake factors
     file.WriteObject(ff_qcd_os.fakefactor  , "ff_qcd_os")

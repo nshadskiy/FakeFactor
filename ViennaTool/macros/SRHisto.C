@@ -21,7 +21,7 @@ void SRHisto() {
 
     std::vector<TString> ps;
     std::vector<TString> fl;
-    if(EMB == 1){
+    if( EMB ){
       ps.push_back(preselection_data);
       ps.push_back(preselection_Wjets); 
       ps.push_back(preselection_EMB); 
@@ -52,7 +52,7 @@ void SRHisto() {
       ps.push_back(preselection_VV_T); 
       ps.push_back(preselection_VV_J); 
       ps.push_back(preselection_VV_L);
-      ps.push_back(preselection_DY_T); 
+      ps.push_back(preselection_DY_TT); 
       ps.push_back(preselection_DY_J); 
       ps.push_back(preselection_DY_L); 
       if(DOQCD) ps.push_back(preselection_QCD);
@@ -65,7 +65,7 @@ void SRHisto() {
       fl.push_back(SR_VV_T_mt_sim); 
       fl.push_back(SR_VV_J_mt_sim); 
       fl.push_back(SR_VV_L_mt_sim);
-      fl.push_back(SR_DY_T_mt_sim); 
+      fl.push_back(SR_DY_TT_mt_sim); 
       fl.push_back(SR_DY_J_mt_sim); 
       fl.push_back(SR_DY_L_mt_sim); 
       if(DOQCD) fl.push_back(SR_QCD_mt_sim);

@@ -7,17 +7,18 @@ channel=$(grep 'int CHAN' "Settings.h" | awk -F'[=;]' '{print $2}')
 embedding=$(grep '#define EMB' "Settings.h" | awk -F'[B]' '{print $2}')
 output=$(grep 'output_folder' "Settings.h" | awk -F'[=;]' '{print $2}' | tr -d '"')
 analysis=$(grep 'analysis' "Settings.h" | awk -F'[=;]' '{print $2}' | tr -d '"')
-#dc_path=$(grep 'DC_folder' "Settings.h" | awk -F'[=;]' '{print $2}' | tr -d '"')
+njetbinning=$(grep 'doNJetBinning' "Settings.h" | awk -F'[=;]' '{print $2}' )
 
 if [ "$channel" == " kEL" ];  then chan="et"; fi
 if [ "$channel" == " kMU" ];  then chan="mt"; fi
 if [ "$channel" == " kTAU" ]; then chan="tt"; fi
+
 echo Channel: $chan
 echo Output: $output
 echo Embedding: $embedding
 echo User: $USER
 echo Name: $analysis
-# #echo $dc_path
+echo doNjetBinning: $njetbinning
 
 # no entire sure but probably the correct inputs are placed
 #sed s/user=\"whoami\"/user=\"$USER\"/g Settings.h >/tmp/Settings$USER.h
@@ -37,49 +38,33 @@ sh BuildStructure.sh
 echo "Compiling the framework"
 cd ../
 
-if [ $embedding == 1 ]; then
-    mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
-    mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
-    make -B
-    ./Preselection_EMB
-    mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
-    mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
-fi
+echo "Compiling the framework... "
+
+mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
+mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
+make -B
+./Preselection_EMB
+mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
+mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
 
 make -B
+./Preselection
 
-# ./Preselection
+./SRHisto  
+./CRHisto
 
-# ./SRHisto  
-# ./CRHisto
-# # #exit 0
-# ./steerFF
-# ./fitFakeFactors
+./steerFF
+./fitFakeFactors
+cd ViennaTool/Images/data_$chan
+gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
+cd -
 
-# if [ $embedding == 0 ]; then 
-#      cd ViennaTool/Images_NonEMB/data_$chan
-#      #gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf
-#      gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
-#      cd -
-# fi
-# if [ $embedding == 1 ]; then 
-#      cd ViennaTool/Images_EMB/data_$chan
-#      #gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf
-#      gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
-#      cd -
-# fi
-
-# ./calcCorrections
-# python plotCorrections.py --channel $channel --embedding $embedding
-# # exit 0
-# ./convert_inputs
+./calcCorrections
+python plotCorrections.py --channel $channel 
+./convert_inputs
 
 
-# python cpTDHaftPublic.py --destination $output --channel $channel --embedding $embedding
-# python producePublicFakeFactors.py --input $output --channel $channel --embedding $embedding
+python cpTDHaftPublic.py --destination $output --channel $channel
+python producePublicFakeFactors.py --input $output --channel $channel --njetbinning $njetbinning
 
-# #python cpPublicFFtoDC.py --source $output --destination $dc_path --channel $channel
-
-# rm $output/constant.root
-
-# echo "------ END OF steerAll.sh ---------"
+echo "------ END OF steerAll.sh ---------"
