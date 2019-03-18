@@ -37,5 +37,4 @@ macros/calcCorrections <-> src/FFCalculator.cc
 
 #EMBEDDING
 
-FF tool has to be run once with EMB = 0, and after that with EMB = 1
-This is because the tt-bar FakeFactors are calculated with MC, while the other FakeFactors use Embedded samples.
+Be sure to run the Preselection with EMB=1 first!
