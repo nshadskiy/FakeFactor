@@ -8,9 +8,8 @@
 #--ViennaTool/Globals.h
 #-variable "indir": input directory
 ##########################
-#src/GlobalClass.cc contains most of the important functions:
-#isLoose(), isTight(), isInSR(), isInCR()
-#=> the FF WP is set in isTight() (for tautau: change is also in src/TNtupleAnalyzer.cc ! See below)
+#src/GlobalClass.cc contains most of the important functions
+#=>FF WP is set in Settings.h with the use of Tight/Loose Fulfill/Fail flags.
 ##########################
 
 
@@ -37,9 +36,14 @@ macros/calcCorrections <-> src/FFCalculator.cc
 
 #EMBEDDING
 
-Be sure to run the Preselection with EMB=1 first!
+The use of embedded samples can be enabled by setting EMB=1 (default) in Settings.h
+Be sure to also run the preselection with EMB=1 first!
 
 #Decay mode binning
 
 By default, decay-mode 1-prong/3-prong are merged to ensure better statistics when calculating FF/corrections.
 To enable two different bins for the decay mode set all Decay_cuts_X[] arrays in Globals.h to {0,5}
+
+#Corrections binned in 0jet/>=1jet
+
+By default there is no binning of the corrections in the nJet variable, however it can be enabled by setting doNJetBinning=1 in Settings.h
