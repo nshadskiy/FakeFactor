@@ -60,7 +60,8 @@ const int fit_pT_bins = 1; //use fitted pT bins as input for ff
 // _MEDIUM = 4
 //  _TIGHT = 8
 // _VTIGHT = 16
-//  settings for tight vs vloose&(!tight)
+// A WP condition is met if: (Fulfill && !Fail)
+// settings for tight vs vloose&(!tight):
 const int wpTightFulfill = 8; 
 const int wpTightFail    = 0;
 const int wpLooseFulfill = 1;
