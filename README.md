@@ -18,9 +18,7 @@ em Settings.h
 #const TString DC_folder     ="/afs/hephy.at/work/f/fspreitzer/cmssw/ff_test/CMSSW_8_0_25/src/ViennaTool/HTTutilities/Jet2TauFakes/data";  
 #const TString user="fspreitzer";  
 em steerAll.sh  
-em BuildStructure.sh  
-#user=fspreitzer  
-#fftype=[$analysis] #from Settings.h
+
 
 #instructions.txt for further instructions
 
