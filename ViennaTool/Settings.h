@@ -4,17 +4,18 @@
 #define kEL          1
 #define kTAU         2
 ///////////////////////////////////////////////////
-#define EMB          0
-#define selCHAN      kMU
+#define EMB          0   //0 for no embedding
+#define selCHAN      kMU //kEL or kTAU
 const int CHAN     = kMU;
-const TString analysis      ="FakeFactor_2018_v1";
-const TString output_folder ="/afs/hephy.at/user/j/jandrejkovic/public/Htautau/FakeRate/SM2018/FakeFactor_2019_03_20";
-const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data";
+const TString analysis      ="FakeFactor_2017_v9";
+const TString output_folder ="/afs/hephy.at/user/j/jandrejkovic/public/Htautau/FakeRate/SM2017/FakeFactor_2019_04_01";
+const TString ver = "v9"; 
+
+const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; //obsolete
 ///////////////////////////////////////////////////
 const TString user="jandrejkovic";    
-const Double_t luminosity=41.529;   
+const Double_t luminosity=59.74; //according to GOLDEN JSON (2017 = 41.529) see https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM    
 const int use_svfit = 0; //set to 1 to change input directory name accordingly
-const TString ver = "v8"; 
 ///////////////////////////////////////////////////
 //Out of date
 const int inclusive_selection=1; 
