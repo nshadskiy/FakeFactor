@@ -7,8 +7,8 @@
 #define EMB          0
 #define selCHAN      kMU
 const int CHAN     = kMU;
-const TString analysis      ="FakeFactor_2018_v1";
-const TString output_folder ="/afs/hephy.at/user/j/jandrejkovic/public/Htautau/FakeRate/SM2018/FakeFactor_2019_03_20";
+const TString analysis      ="FakeFactor_2017_v8";
+const TString output_folder ="/afs/hephy.at/user/j/jandrejkovic/public/Htautau/FakeRate/SM2017/FakeFactor_Test";
 const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data";
 ///////////////////////////////////////////////////
 const TString user="jandrejkovic";    

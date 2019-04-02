@@ -38,14 +38,14 @@ sh BuildStructure.sh
 echo "Compiling the framework"
 cd ../
 
-echo "Compiling the framework... "
-
-mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
-mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
-make -B
-./Preselection_EMB
-mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
-mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
+if [ $embedding == 1 ]; then
+	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
+	mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
+	make -B
+	./Preselection_EMB
+	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
+	mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
+fi
 
 make -B
 ./Preselection
