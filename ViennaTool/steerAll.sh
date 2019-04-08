@@ -24,47 +24,50 @@ echo doNjetBinning: $njetbinning
 #sed s/user=\"whoami\"/user=\"$USER\"/g Settings.h >/tmp/Settings$USER.h
 #yes | mv /tmp/Settings$USER.h Settings.h
 # correct user and FFanalysisName are set in BuildStructure.sh --> NO need to set it manually
-sed s/user=user/user=$USER/g BuildStructure_template.sh >/tmp/BuildStructure$USER.sh
-yes | mv /tmp/BuildStructure$USER.sh BuildStructure0.sh
-sed s/fftype=fftype/fftype=$analysis/g BuildStructure0.sh >/tmp/BuildStructure$USER.sh
-yes | mv /tmp/BuildStructure$USER.sh BuildStructure.sh
-yes | rm BuildStructure0.sh
 
-ff_tocheck='ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf'
-if [ "$channel" != " kTAU" ]; then ff_tocheck+=' ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf'; fi
 
-sh BuildStructure.sh
+# sed s/user=user/user=$USER/g BuildStructure_template.sh >/tmp/BuildStructure$USER.sh
+# yes | mv /tmp/BuildStructure$USER.sh BuildStructure0.sh
+# sed s/fftype=fftype/fftype=$analysis/g BuildStructure0.sh >/tmp/BuildStructure$USER.sh
+# yes | mv /tmp/BuildStructure$USER.sh BuildStructure.sh
+# yes | rm BuildStructure0.sh
+
+# ff_tocheck='ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf'
+# if [ "$channel" != " kTAU" ]; then ff_tocheck+=' ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf'; fi
+
+# sh BuildStructure.sh
 
 echo "Compiling the framework"
 cd ../
 
-echo "Compiling the framework... "
+# if [ $embedding == 1 ]; then
+# 	echo "Extra turnaround for embedded samples starts"
+# 	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
+# 	mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
+# 	make -B
+# 	./Preselection_EMB
+# 	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
+# 	mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
+# fi
+# make -B
+# ./Preselection
 
-mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
-mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
-make -B
-./Preselection_EMB
-mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
-mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
+# ./SRHisto  
+# ./CRHisto
 
-make -B
-./Preselection
-
-./SRHisto  
-./CRHisto
-
-./steerFF
-./fitFakeFactors
-cd ViennaTool/Images/data_$chan
-gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
-cd -
+# ./steerFF
+# ./fitFakeFactors
+# cd ViennaTool/Images/data_$chan
+# gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
+# cd -
 
 ./calcCorrections
 python plotCorrections.py --channel $channel 
-./convert_inputs
+
+#./convert_inputs
 
 
-python cpTDHaftPublic.py --destination $output --channel $channel
-python producePublicFakeFactors.py --input $output --channel $channel --njetbinning $njetbinning
+#python cpTDHaftPublic.py --destination $output --channel $channel
+#python producePublicFakeFactors.py --input $output --channel $channel --njetbinning $njetbinning
 
 echo "------ END OF steerAll.sh ---------"

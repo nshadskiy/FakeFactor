@@ -74,23 +74,27 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   // cout << event->flagMETFilter << " " << event->trg_singlemuon_27 << " " << event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2 << " " << event->q_1 << " " << event->weight << " " <<event->dilepton_veto <<  endl;
   // if(CHAN==kMU && !((event->flagMETFilter >0.5)*(event->trg_singlemuon_27 > 0.5)*(event->trg_singlemuon_24 > 0.5)*(event->trg_crossmuon_mu20tau27 > 0.5)*(event->pt_1>21)*(event->pt_2>20))) return 0; 
   
-  if(CHAN==kMU && ((event->flagMETFilter <0.5)|| !((event->trg_singlemuon_27 > 0.5)||(event->trg_singlemuon_24>0.5)||(event->trg_crossmuon_mu20tau27 > 0.5)) || (event->pt_2<23))) return 0; 
+  if(CHAN==kMU && ((event->flagMETFilter <0.5)|| !((event->trg_singlemuon_27 > 0.5)||(event->trg_singlemuon_24>0.5)) || (event->pt_2<23))) return 0; 
   // if(CHAN==kEL && ((event->flagMETFilter <0.5)|| !((event->trg_singleelectron_27> 0.5)||(event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)||(event->trg_crossele_ele24tau30  > 0.5))) ||(event->pt_2<23))  return 0;
   
-  if(CHAN==kEL && !preselectionFile.Contains("preselection_EMB") && ((event->flagMETFilter <0.5)|| !((event->trg_singleelectron_27> 0.5)||(event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)||(event->trg_crossele_ele24tau30  > 0.5))) ||(event->pt_2<23))  return 0;
-  if(CHAN==kEL && preselectionFile.Contains("preselection_EMB") &&  ((event->flagMETFilter <0.5)|| !((event->trg_singleelectron_27> 0.5)||(event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)||(event->trg_crossele_ele24tau30  > 0.5))) ||(event->pt_2<23))  return 0; //(event->pt_1>20 && event->pt_1<24) ||
-  if(CHAN==kTAU && ((event->flagMETFilter <0.5)|| !((event->trg_doubletau_40_tightiso>0.5) || (event->trg_doubletau_40_mediso_tightid>0.5) || (event->trg_doubletau_35_tightiso_tightid>0.5)))) return 0;
+  if(CHAN==kEL && !preselectionFile.Contains("preselection_EMB") && ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)) || (event->pt_2<23)))  return 0;
+  if(CHAN==kEL && preselectionFile.Contains("preselection_EMB") &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)) || (event->pt_2<23)))  return 0; //(event->pt_1>20 && event->pt_1<24) ||
+  //if(CHAN==kEL && !preselectionFile.Contains("preselection_EMB") && ((event->flagMETFilter <0.5)|| !((event->trg_singleelectron_27> 0.5)||(event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)||(event->trg_crossele_ele24tau30  > 0.5))) ||(event->pt_2<23))  return 0;
+  //if(CHAN==kEL && preselectionFile.Contains("preselection_EMB") &&  ((event->flagMETFilter <0.5)|| !((event->trg_singleelectron_27> 0.5)||(event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)||(event->trg_crossele_ele24tau30  > 0.5))) ||(event->pt_2<23))  return 0; //(event->pt_1>20 && event->pt_1<24) ||
+  if(CHAN==kTAU && ( (event->flagMETFilter <0.5) || !( (event->gen_match_1>0 && event->trg_doubletau_35_mediso_HPS) || (event->gen_match_1<0 && event->trg_doubletau_35_mediso_HPS && event->run>=317509) || (event->gen_match_1<0 && event->run<317509 && (event->trg_doubletau_40_tightiso || event->trg_doubletau_40_mediso_tightid || event->trg_doubletau_35_tightiso_tightid)) ) )) return 0;
   
+
+
   TLorentzVector vec1, vec2, vec;
   //////////////////////////////////////////////////////////////////////////
   weight=1.;
   if( !preselectionFile.Contains("preselection_data")){
     if( !preselectionFile.Contains("preselection_EMB")){
-      weight *= luminosity *  event->weight;
-      if (CHAN == kTAU) weight *= event->sf_DoubleTauTight;
+      weight *= luminosity *  event->puweight * event->stitchedWeight * event->genweight * event->eleTauFakeRateWeight * event->muTauFakeRateWeight * event->idisoweight_1 * event->idisoweight_2;
+      if (CHAN == kTAU) weight *= 1.;//event->sf_DoubleTauTight;
       else              weight *= event->sf_SingleOrCrossTrigger;
-      if( preselectionFile.Contains("preselection_TT") ) weight *= event->topPtReweightWeightRun1;
-      if( preselectionFile.Contains("preselection_DY") ) weight *= event->zPtReweightWeight;
+      if( preselectionFile.Contains("preselection_TT") ) weight *= 1.;//event->topPtReweightWeightRun1;
+      if( preselectionFile.Contains("preselection_DY") ) weight *= 1.;//event->zPtReweightWeight;
     }else{
       weight *= event->weight;
     }

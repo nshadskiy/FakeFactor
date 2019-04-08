@@ -96,6 +96,7 @@ public :
    Bool_t           trg_doubletau_35_tightiso_tightid;
    Bool_t           trg_doubletau_40_mediso_tightid;
    Bool_t           trg_doubletau_40_tightiso;
+   Bool_t           trg_doubletau_35_mediso_HPS;
    Bool_t           isEmbedded;
    Float_t         gen_Mll;
    Float_t         genpX;
@@ -1012,6 +1013,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("trg_doubletau_35_tightiso_tightid", &trg_doubletau_35_tightiso_tightid, &b_trg_doubletau_35_tightiso_tightid);
    fChain->SetBranchAddress("trg_doubletau_40_mediso_tightid", &trg_doubletau_40_mediso_tightid, &b_trg_doubletau_40_mediso_tightid);
    fChain->SetBranchAddress("trg_doubletau_40_tightiso", &trg_doubletau_40_tightiso, &b_trg_doubletau_40_tightiso);
+   fChain->SetBranchAddress("trg_doubletau_35_mediso_HPS", &trg_doubletau_35_mediso_HPS, &b_trg_doubletau_35_mediso_HPS);
    fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_tight_MVA_1", &crossTriggerDataEfficiencyWeight_tight_MVA_1, &b_crossTriggerDataEfficiencyWeight_tight_MVA_1);
    fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_tight_MVA_2", &crossTriggerDataEfficiencyWeight_tight_MVA_2, &b_crossTriggerDataEfficiencyWeight_tight_MVA_2);
    fChain->SetBranchAddress("crossTriggerMCEfficiencyWeight_tight_MVA_1", &crossTriggerMCEfficiencyWeight_tight_MVA_1, &b_crossTriggerMCEfficiencyWeight_tight_MVA_1);

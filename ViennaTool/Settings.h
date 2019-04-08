@@ -4,12 +4,12 @@
 #define kEL          1
 #define kTAU         2
 ///////////////////////////////////////////////////
-#define EMB          0   //0 for no embedding
-#define selCHAN      kMU //kEL or kTAU
-const int CHAN     = kMU;
-const TString analysis      ="FakeFactor_2017_v9";
-const TString output_folder ="/afs/hephy.at/user/j/jandrejkovic/public/Htautau/FakeRate/SM2017/FakeFactor_2019_04_01";
-const TString ver = "v9"; 
+#define EMB          0   
+#define selCHAN      kEL 
+const int CHAN     = kEL;
+const TString analysis      ="FakeFactor_2018_v1";
+const TString output_folder ="/afs/hephy.at/user/j/jandrejkovic/public/Htautau/FakeRate/SM2018/FakeFactor_2018_v1";
+const TString ver = "2018_v1"; 
 
 const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; //obsolete
 ///////////////////////////////////////////////////
@@ -25,7 +25,7 @@ const int useMVAMET=0;
 ///////////////////////////////////////////////////
 //Out of date - no need to change 
 const int DEBUG=1; //set to 1 for additional output
-const int ALLPLOTS=0; //set to 1 for PDFs etc
+const int ALLPLOTS=1; //set to 1 for PDFs etc
 const int DOQCD=1; //set to 1 to include QCD estimate, 0 for w/o; only works for MC
 const int DOMC=0; //set to 1 for MC, 0 for data
 const int doCuts=0;
