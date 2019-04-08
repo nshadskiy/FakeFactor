@@ -406,7 +406,9 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
   l.SetTextSize(0.06);
   l.SetNDC();
   //l.SetTextFont(102);
-  l.DrawLatex(0.75,0.93,"41.5 fb^{-1} (13 TeV)");
+  // FIXME lumi is hardcoded !
+  // l.DrawLatex(0.75,0.93,"41.5 fb^{-1} (13 TeV)");
+  l.DrawLatex(0.75,0.93,"59.7 fb^{-1} (13 TeV)");
 
   TLatex c;
   cout << "Caption: " << caption << endl;
