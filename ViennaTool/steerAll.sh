@@ -2,6 +2,7 @@
 # steerAll.sh   #to run all
 # steerAll.sh 1 #skip preselection (any other argument works as well)
 
+# extract channel, whether to use embedding, output directory and analysis name
 channel=$(grep 'int CHAN' "Settings.h" | awk -F'[=;]' '{print $2}')
 embedding=$(grep '#define EMB' "Settings.h" | awk -F'[B]' '{print $2}')
 output=$(grep 'output_folder' "Settings.h" | awk -F'[=;]' '{print $2}' | tr -d '"')
@@ -15,6 +16,8 @@ if [ "$channel" == " kTAU" ]; then chan="tt"; fi
 echo Channel: $chan
 echo Output: $output
 echo Embedding: $embedding
+echo User: $USER	
+echo Name: $analysis
 echo doNjetBinning: $njetbinning
 
 sed s/user=\"whoami\"/user=\"$USER\"/g Settings.h >/tmp/Settings$USER.h
@@ -23,6 +26,7 @@ sed s/user=whoami/user=$USER/g BuildStructure.sh >/tmp/BuildStructure$USER.sh
 yes | mv /tmp/BuildStructure$USER.sh BuildStructure.sh
 sed s/fftype=fftype/fftype=$analysis/g BuildStructure.sh >/tmp/BuildStructure$USER.sh
 yes | mv /tmp/BuildStructure$USER.sh BuildStructure.sh
+yes | rm BuildStructure0.sh
 
 ff_tocheck='ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf'
 if [ "$channel" != " kTAU" ]; then ff_tocheck+=' ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf'; fi
@@ -57,4 +61,4 @@ python plotCorrections.py --channel $channel  --doNjetBinning $njetbinning
 python cpTDHaftPublic.py --destination $output --channel $channel --doNjetBinning $njetbinning
 python producePublicFakeFactors.py --input $output --channel $channel --njetbinning $njetbinning
 
-rm $output/constant.root
+echo "------ END OF steerAll.sh ---------"
