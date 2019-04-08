@@ -170,39 +170,39 @@ void convert_inputs(Int_t inclusive=1, Int_t categoryMode=0){
     }
   }
     
-  fnW="weight_Wjets"+catString+SSstring+".root";
-  hn="h_w";
-  fout_nW="frac_wjets.root";
+  // fnW="weight_Wjets"+catString+SSstring+".root";
+  // hn="h_w";
+  // fout_nW="frac_wjets.root";
 
-  fnD="weight_DY_J"+catString+SSstring+".root";
-  hn="h_w";
-  fout_nD="frac_dy.root";
+  // fnD="weight_DY_J"+catString+SSstring+".root";
+  // hn="h_w";
+  // fout_nD="frac_dy.root";
 
-  fnT="weight_TT_J"+catString+SSstring+".root";
-  hn="h_w";
-  fout_nT="frac_tt.root";
+  // fnT="weight_TT_J"+catString+SSstring+".root";
+  // hn="h_w";
+  // fout_nT="frac_tt.root";
 
-  fnQ="weight_QCD"+catString+SSstring+".root";
-  hn="h_w";
-  fout_nQ="frac_qcd.root";
+  // fnQ="weight_QCD"+catString+SSstring+".root";
+  // hn="h_w";
+  // fout_nQ="frac_qcd.root";
 
-  hnout="h_w_2d";
+  // hnout="h_w_2d";
 
-  //stat. unc. of fractions
-  std::vector<TString> fn_other_w; fn_other_w.push_back( d+fnD ); fn_other_w.push_back( d+fnT ); fn_other_w.push_back( d+fnQ );
-  std::vector<TString> fn_other_d; fn_other_d.push_back( d+fnW ); fn_other_d.push_back( d+fnT ); fn_other_d.push_back( d+fnQ );
-  std::vector<TString> fn_other_t; fn_other_t.push_back( d+fnW ); fn_other_t.push_back( d+fnD ); fn_other_t.push_back( d+fnQ );
-  std::vector<TString> fn_other_q; fn_other_q.push_back( d+fnW ); fn_other_q.push_back( d+fnD ); fn_other_q.push_back( d+fnT );
+  // //stat. unc. of fractions
+  // std::vector<TString> fn_other_w; fn_other_w.push_back( d+fnD ); fn_other_w.push_back( d+fnT ); fn_other_w.push_back( d+fnQ );
+  // std::vector<TString> fn_other_d; fn_other_d.push_back( d+fnW ); fn_other_d.push_back( d+fnT ); fn_other_d.push_back( d+fnQ );
+  // std::vector<TString> fn_other_t; fn_other_t.push_back( d+fnW ); fn_other_t.push_back( d+fnD ); fn_other_t.push_back( d+fnQ );
+  // std::vector<TString> fn_other_q; fn_other_q.push_back( d+fnW ); fn_other_q.push_back( d+fnD ); fn_other_q.push_back( d+fnT );
 
-  std::vector<TString> hn_other_w; hn_other_w.push_back( hn+"D"); hn_other_w.push_back( hn+"T"); hn_other_w.push_back( hn+"Q");
-  std::vector<TString> hn_other_d; hn_other_d.push_back( hn+"W"); hn_other_d.push_back( hn+"T"); hn_other_d.push_back( hn+"Q");
-  std::vector<TString> hn_other_t; hn_other_t.push_back( hn+"W"); hn_other_t.push_back( hn+"D"); hn_other_t.push_back( hn+"Q");
-  std::vector<TString> hn_other_q; hn_other_q.push_back( hn+"W"); hn_other_q.push_back( hn+"D"); hn_other_q.push_back( hn+"T");
+  // std::vector<TString> hn_other_w; hn_other_w.push_back( hn+"D"); hn_other_w.push_back( hn+"T"); hn_other_w.push_back( hn+"Q");
+  // std::vector<TString> hn_other_d; hn_other_d.push_back( hn+"W"); hn_other_d.push_back( hn+"T"); hn_other_d.push_back( hn+"Q");
+  // std::vector<TString> hn_other_t; hn_other_t.push_back( hn+"W"); hn_other_t.push_back( hn+"D"); hn_other_t.push_back( hn+"Q");
+  // std::vector<TString> hn_other_q; hn_other_q.push_back( hn+"W"); hn_other_q.push_back( hn+"D"); hn_other_q.push_back( hn+"T");
 
-  make_frac_sys( d+fnW , fn_other_w , hn , hnout , hn_other_w , o+fout_nW , 1 );
-  make_frac_sys( d+fnD , fn_other_d , hn , hnout , hn_other_d , o+fout_nD , 1 );
-  make_frac_sys( d+fnT , fn_other_t , hn , hnout , hn_other_t , o+fout_nT , 1 );
-  make_frac_sys( d+fnQ , fn_other_q , hn , hnout , hn_other_q , o+fout_nQ , 1 );
+  // make_frac_sys( d+fnW , fn_other_w , hn , hnout , hn_other_w , o+fout_nW , 1 );
+  // make_frac_sys( d+fnD , fn_other_d , hn , hnout , hn_other_d , o+fout_nD , 1 );
+  // make_frac_sys( d+fnT , fn_other_t , hn , hnout , hn_other_t , o+fout_nT , 1 );
+  // make_frac_sys( d+fnQ , fn_other_q , hn , hnout , hn_other_q , o+fout_nQ , 1 );
 
 
 }
@@ -246,7 +246,7 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
   
     //for(int i=1; i<=h_data_CR->GetNbinsX(); i++){
     for(int i=1; i<=2; i++){
-      if( sizeof(Decay_cuts_Wjets)/sizeof(Decay_cuts_Wjets[0] > 1 )){
+      if( sizeof(Decay_cuts_Wjets)/sizeof(Decay_cuts_Wjets[0]) > 1 ){
         if(fn.Contains("TT")) scale_factors.push_back( abs(h_data_CR->GetBinContent(i)/h_MC_CR->GetBinContent(i) ) );  
         else scale_factors.push_back(1.);
       }else{
@@ -759,7 +759,7 @@ void combineTTSystematics( TString fTT_nonclosure, TString sys_nonclosure, TStri
   TH1D *h_MC_CR= (TH1D*)f_MC_CR->Get("c_t"+tight_cat);
 
   Double_t scale_factors[2];
-  if( sizeof(Decay_cuts_Wjets)/sizeof(Decay_cuts_Wjets[0] > 1 )){ // decide whether to use decay mode bins or not
+  if( sizeof(Decay_cuts_Wjets)/sizeof(Decay_cuts_Wjets[0]) > 1 ) { // decide whether to use decay mode bins or not
     scale_factors[0] = abs(h_data_CR->GetBinContent(1)-h_MC_CR->GetBinContent(1))/h_MC_CR->GetBinContent(1); 
     scale_factors[1] = abs(h_data_CR->GetBinContent(2)-h_MC_CR->GetBinContent(2))/h_MC_CR->GetBinContent(2); 
   }else{
@@ -772,19 +772,22 @@ void combineTTSystematics( TString fTT_nonclosure, TString sys_nonclosure, TStri
   cout << "///////////////////////////////////////////////////////" << endl;
   cout << "TT data/MC scale factors:" << endl;
   cout << "Data: " << h_data_CR->GetBinContent(1) << " and MC: " << h_MC_CR->GetBinContent(1) << " -> " << scale_factors[0] << endl;
-  if( sizeof(Decay_cuts_Wjets)/sizeof(Decay_cuts_Wjets[0] > 1 )){
+  if( sizeof(Decay_cuts_Wjets)/sizeof(Decay_cuts_Wjets[0]) > 1 ){
     cout << "Data: " << h_data_CR->GetBinContent(2) << " and MC: " << h_MC_CR->GetBinContent(2) << " -> " << scale_factors[1] << endl; 
   }
 
   TH2D *out_t = new TH2D(tout, tout, 2,0,2,sys_nonclosure_t->GetN(), sys_nonclosure_t->GetX()[0], sys_nonclosure_t->GetX()[sys_nonclosure_t->GetN()-1]);
-  for(Int_t i=0; i<1; i++){
+  for(Int_t i=0; i<2; i++){
     for(Int_t j=0; j<=sys_nonclosure_t->GetN(); j++){
-      // cout << "Bincontent " << i << "," << j << ": " << TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2)+TMath::Power(scale_factors[i],2) ) << endl;
-      // cout << "Bincontent_Test " << i << "," << j << ": " << TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) ) << endl;
       if(!DOMC)out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2)+TMath::Power(scale_factors[i],2) ));
       else out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) ) );
-      if(!DOMC)out_t->SetBinContent(i+1,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2)+TMath::Power(scale_factors[i],2) ));
-      else out_t->SetBinContent(i+1,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) ) );
+    }
+    if( sizeof(Decay_cuts_Wjets)/sizeof(Decay_cuts_Wjets[0]) > 1 ){
+      for(Int_t j=0; j<=sys_nonclosure_t->GetN(); j++){
+        if(!DOMC)out_t->SetBinContent(i+1,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2)+TMath::Power(scale_factors[i],2) ));
+        else out_t->SetBinContent(i+1,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) ) );
+      }
+      break;
     }
   }
   // cout << "TT-Outputfile: " << fout.ReplaceAll(".root",tight_cat+".root") << endl;
