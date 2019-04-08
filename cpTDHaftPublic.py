@@ -216,6 +216,7 @@ if __name__ == '__main__':
     parser.add_argument('--channel', dest = 'channel', help='Channel to copy', type=str, metavar = 'TAG', required = True)
     parser.add_argument('--destination', dest = 'destination', help='Destination folder', type=str, metavar = 'TAG', required = True)
     parser.add_argument('-f', dest='force', help='Force overwrite', action='store_true')
+    parser.add_argument('--doNjetBinning', dest = 'do_njetbinning', help='Defines if corrections are binned in 0jet/1jet', type=str, metavar = 'TAG', required = True)
 
     args = parser.parse_args()
 
@@ -249,9 +250,13 @@ if __name__ == '__main__':
     altFF3D=[]
     ttaltFF3D=[]
     fractions=['frac_qcd.root','frac_tt.root','frac_dy.root','frac_wjets.root']
-    corrections=['Correction_Data_QCD_MuIso.root','Correction_Data_QCD_MuIso_0jet.root','Correction_Data_QCD_MuIso_1jet.root','Correction_Data_QCD_MVis.root','Correction_Data_QCD_MVis_0jet.root','Correction_Data_QCD_MVis_1jet.root','Correction_Data_QCD_OSSS.root','Correction_Data_W_MVis.root','Correction_Data_W_MVis_0jet.root','Correction_Data_W_MVis_1jet.root','Correction_MC_W_MT.root','Correction_MC_W_MT_0jet.root','Correction_MC_W_MT_1jet.root','Correction_MC_TT_MVis.root','uncertainties_TT.root']
+    corrections=['Correction_Data_QCD_MuIso.root','Correction_Data_QCD_MVis.root','Correction_Data_QCD_OSSS.root','Correction_Data_W_MVis.root','Correction_MC_W_MT.root','Correction_MC_TT_MVis.root','uncertainties_TT.root']
+    if(args.do_njetbinning == 1):
+        corrections.extend(['Correction_Data_QCD_MuIso_0jet.root','Correction_Data_QCD_MuIso_1jet.root','Correction_Data_QCD_MVis_0jet.root','Correction_Data_QCD_MVis_1jet.root','Correction_Data_W_MVis_0jet.root','Correction_Data_W_MVis_1jet.root','Correction_MC_W_MT_0jet.root','Correction_MC_W_MT_1jet.root'])    
     altcorrections=[]
-    ttcorrections=['Correction_Data_QCD_PT.root','Correction_Data_QCD_PT_0jet.root','Correction_Data_QCD_PT_1jet.root','Correction_Data_QCD_MVis.root','Correction_Data_QCD_MVis_0jet.root','Correction_Data_QCD_MVis_1jet.root','Correction_Data_QCD_OSSS.root']
+    ttcorrections=['Correction_Data_QCD_PT.root','Correction_Data_QCD_MVis.root','Correction_Data_QCD_OSSS.root']
+    if(args.do_njetbinning == 1):
+        ttcorrections.extend(['Correction_Data_QCD_PT_0jet.root','Correction_Data_QCD_PT_1jet.root','Correction_Data_QCD_MVis_0jet.root','Correction_Data_QCD_MVis_1jet.root'])    
     ttaltcorrections=[]
     #ttaltcorrections=['Correction_Data_QCD_PT_alt.root','Correction_Data_QCD_MVis_alt.root','Correction_Data_QCD_OSSS_alt.root']
     ch = CMCHandler(channel, source, dest, in_categories, categories, in_altcategories, altcategories, in_ttcategories, ttcategories, QCDWUncertainties, FF3D, altFF3D, ttFF3D, fractions, corrections, altcorrections, ttcorrections)
@@ -263,7 +268,3 @@ if __name__ == '__main__':
     ch.copyFFinput()
     ch.copyFFfrac()
     ch.copyFFcorrections()
-
-
-
-
