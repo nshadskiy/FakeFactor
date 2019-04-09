@@ -76,24 +76,24 @@ for x in range(0,len(categories)):
         ]
     )
 
-    frac_qcd = replace_nodes(
-        qcd_os,
-        {'ff_qcd_os':
-         Node(
-             name='fracQCD',
-             formula='{frac_qcd}+0*{ff_qcd_os}',
-             leaves=[
-                 Leaf(
-                     name='frac_qcd',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_qcd.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
-                     object='h_w_2d',
-                     vars=['mt','tau_decay']
-                 ),
-                 qcd_os.find('ff_qcd_os')
-             ]
-         )
-        }
-    )
+    # frac_qcd = replace_nodes(
+    #     qcd_os,
+    #     {'ff_qcd_os':
+    #      Node(
+    #          name='fracQCD',
+    #          formula='{frac_qcd}+0*{ff_qcd_os}',
+    #          leaves=[
+    #              Leaf(
+    #                  name='frac_qcd',
+    #                  file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_qcd.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
+    #                  object='h_w_2d',
+    #                  vars=['mt','tau_decay']
+    #              ),
+    #              qcd_os.find('ff_qcd_os')
+    #          ]
+    #      )
+    #     }
+    # )
     
     qcd_os_up = replace_nodes(
         qcd_os, 
@@ -199,43 +199,43 @@ for x in range(0,len(categories)):
         ]
     )
     
-    frac_w = replace_nodes(
-        w,
-        {'ff_w':
-         Node(
-             name='fracW',
-             formula='{frac_w}+0*{ff_w}',
-             leaves=[
-                 Leaf(
-                     name='frac_w',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_wjets.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
-                     object='h_w_2d',
-                     vars=['mt','tau_decay']
-                 ),
-                 w.find('ff_w')
-             ]
-         )
-        }
-    )
+    # frac_w = replace_nodes(
+    #     w,
+    #     {'ff_w':
+    #      Node(
+    #          name='fracW',
+    #          formula='{frac_w}+0*{ff_w}',
+    #          leaves=[
+    #              Leaf(
+    #                  name='frac_w',
+    #                  file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_wjets.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
+    #                  object='h_w_2d',
+    #                  vars=['mt','tau_decay']
+    #              ),
+    #              w.find('ff_w')
+    #          ]
+    #      )
+    #     }
+    # )
     
-    frac_dy = replace_nodes(
-        w,
-        {'ff_w':
-         Node(
-             name='fracDY',
-             formula='{frac_dy}+0*{ff_w}',
-             leaves=[
-                 Leaf(
-                     name='frac_dy',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_dy.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
-                     object='h_w_2d',
-                     vars=['mt','tau_decay']
-                 ),
-                 w.find('ff_w')
-             ]
-     )
-        }
-    )
+    # frac_dy = replace_nodes(
+    #     w,
+    #     {'ff_w':
+    #      Node(
+    #          name='fracDY',
+    #          formula='{frac_dy}+0*{ff_w}',
+    #          leaves=[
+    #              Leaf(
+    #                  name='frac_dy',
+    #                  file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_dy.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
+    #                  object='h_w_2d',
+    #                  vars=['mt','tau_decay']
+    #              ),
+    #              w.find('ff_w')
+    #          ]
+    #  )
+    #     }
+    # )
     
     w_up = replace_nodes(
         w, 
@@ -332,24 +332,24 @@ for x in range(0,len(categories)):
         ]
     )
 
-    frac_tt = replace_nodes(
-        tt,
-        {'ff_tt':
-         Node(
-             name='fracTT',
-             formula='{frac_tt}+0*{ff_tt}',
-             leaves=[
-                 Leaf(
-                     name='frac_tt',
-                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_tt.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
-                     object='h_w_2d',
-                     vars=['mt','tau_decay']
-                 ),
-                 tt.find('ff_tt')
-             ]
-         )
-        }
-    )
+    # frac_tt = replace_nodes(
+    #     tt,
+    #     {'ff_tt':
+    #      Node(
+    #          name='fracTT',
+    #          formula='{frac_tt}+0*{ff_tt}',
+    #          leaves=[
+    #              Leaf(
+    #                  name='frac_tt',
+    #                  file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/frac_tt.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
+    #                  object='h_w_2d',
+    #                  vars=['mt','tau_decay']
+    #              ),
+    #              tt.find('ff_tt')
+    #          ]
+    #      )
+    #     }
+    # )
     
     tt_up = replace_nodes(
         tt,
@@ -1116,10 +1116,10 @@ for x in range(0,len(categories)):
     fill(ff_qcd_os, qcd_os_down, sys='ff_qcd_syst_down')
     fill(ff_qcd_os, qcd_os_up_stat,   sys='ff_qcd_stat_up')
     fill(ff_qcd_os, qcd_os_down_stat, sys='ff_qcd_stat_down')
-    fill(ff_qcd_os, frac_qcd, sys='frac_qcd')
+    # fill(ff_qcd_os, frac_qcd, sys='frac_qcd')
     fill(ff_w     , w)
-    fill(ff_w, frac_w, sys='frac_w')
-    fill(ff_w, frac_dy, sys='frac_dy')
+    # fill(ff_w, frac_w, sys='frac_w')
+    # fill(ff_w, frac_dy, sys='frac_dy')
     fill(ff_w, w_up,   sys='ff_w_syst_up')
     fill(ff_w, w_down, sys='ff_w_syst_down')
     fill(ff_w, w_up_stat,   sys='ff_w_stat_up')
@@ -1129,7 +1129,7 @@ for x in range(0,len(categories)):
     fill(ff_tt, tt_down, sys='ff_tt_syst_down')
     fill(ff_tt, tt_up_stat,   sys='ff_tt_stat_up')
     fill(ff_tt, tt_down_stat, sys='ff_tt_stat_down')
-    fill(ff_tt, frac_tt, sys='frac_tt')
+    # fill(ff_tt, frac_tt, sys='frac_tt')
     fill(ff_comb  , comb)
     fill(ff_comb, comb_qcd_up,   sys='ff_qcd_syst_up')
     fill(ff_comb, comb_qcd_down,   sys='ff_qcd_syst_down')
@@ -1168,7 +1168,7 @@ for x in range(0,len(categories)):
     fill(ff_comb, comb_tt_up_stat_dm1_njet1,   sys='ff_tt_dm1_njet1_stat_up')
     fill(ff_comb, comb_tt_down_stat_dm1_njet1, sys='ff_tt_dm1_njet1_stat_down')
     
-    file = ROOT.TFile.Open("{INDIR}/{CHANNEL}/{CATEGORY}/fakeFactors_{ISOLATION}_old.root".format(INDIR=indir,CHANNEL=channel,CATEGORY=category, ISOLATION=isolation), "recreate")
+    file = ROOT.TFile.Open("{INDIR}/{CHANNEL}/{CATEGORY}/fakeFactors_{ISOLATION}.root".format(INDIR=indir,CHANNEL=channel,CATEGORY=category, ISOLATION=isolation), "recreate")
     # Write meta-data
     tag_ts     = ROOT.TString(tag)
     file.WriteObject(tag_ts     , "tag")
