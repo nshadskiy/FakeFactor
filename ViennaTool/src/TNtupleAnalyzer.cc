@@ -93,21 +93,21 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       weight *= luminosity *  event->puweight * event->stitchedWeight * event->genweight * event->eleTauFakeRateWeight * event->muTauFakeRateWeight * event->idisoweight_1 * event->idisoweight_2;
       if (CHAN == kTAU) weight *= 1.;//event->sf_DoubleTauTight;
       else              weight *= event->sf_SingleOrCrossTrigger;
-      if( preselectionFile.Contains("preselection_TT") ) weight *= 1.;//event->topPtReweightWeightRun1;
-      if( preselectionFile.Contains("preselection_DY") ) weight *= 1.;//event->zPtReweightWeight;
+      if( preselectionFile.Contains("preselection_TT") ) weight *= event->topPtReweightWeightRun2;
+      if( preselectionFile.Contains("preselection_DY") ) weight *= event->zPtReweightWeight;
     }else{
       weight *= event->weight;
     }
 
-    if( CHAN == kTAU && !preselectionFile.Contains("preselection_EMB") ){ // CHANGE IF TAU WP CHANGES!
-        if(event->gen_match_1 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1) weight *= 0.89; //vtight = 0.86, tight = 0.89
-        else if(event->gen_match_1 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 ) weight *= 0.88;
-        if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.89;
-        else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.88;
+    if( CHAN == kTAU && !preselectionFile.Contains("preselection_EMB") ){ // CHANGE IF TAU WP CHANGES! https://twiki.cern.ch/twiki/bin/view/CMS/TauIDRecommendation13TeV#Tau_ID_SF_for_CMSSW_9_4_X_or_hig
+        if(event->gen_match_1 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1) weight *= 0.90; //vtight = 0.89, tight = 0.90
+        else if(event->gen_match_1 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 ) weight *= 0.90;
+        if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.90;
+        else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.90;
     }
     if( CHAN != kTAU && !preselectionFile.Contains("preselection_EMB") ){
-      if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.89;
-      else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.88;
+      if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.90;
+      else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.90;
     }
   }
  
