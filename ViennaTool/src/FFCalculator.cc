@@ -996,11 +996,6 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
   
   if (mode & VSVAR) return;
 
-  TFile f_w(weight_file);
-  if ( f_w.IsZombie()  ){ std::cout << "ERROR: Weight file does not exist: \"" << weight_file << "\"." << std::endl; return; }
-
-  TH1D *weight_histo=(TH1D*)f_w.Get("h_w"); //FIXME: check sample
-  //  std::cout << "ZZ " << weight_file << " " << weight_histo << std::endl;  
   
   if (DEBUG){
     std::cout << std::endl;
