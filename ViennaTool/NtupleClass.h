@@ -63,6 +63,7 @@ public :
    Float_t         topWeight;
    Float_t         topWeight_run1;
    Float_t         topPtReweightWeightRun1;
+   Float_t         topPtReweightWeightRun2;
    Float_t         eleTauFakeRateWeight;
    Float_t         muTauFakeRateWeight;
    Double_t         emb_weight;
@@ -459,6 +460,7 @@ public :
    TBranch        *b_topWeight;   //!
    TBranch        *b_topWeight_run1;   //!
    TBranch        *b_topPtReweightWeightRun1;   //!
+   TBranch        *b_topPtReweightWeightRun2;   //!
    TBranch        *b_eleTauFakeRateWeight;   //!
    TBranch        *b_muTauFakeRateWeight;   //!
    TBranch        *b_emb_weight;   //!
@@ -987,6 +989,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("topWeight", &topWeight, &b_topWeight);
    fChain->SetBranchAddress("topWeight_run1", &topWeight_run1, &b_topWeight_run1);
    fChain->SetBranchAddress("topPtReweightWeightRun1", &topPtReweightWeightRun1, &b_topPtReweightWeightRun1);
+   fChain->SetBranchAddress("topPtReweightWeightRun2", &topPtReweightWeightRun2, &b_topPtReweightWeightRun2);
    fChain->SetBranchAddress("eleTauFakeRateWeight", &eleTauFakeRateWeight, &b_eleTauFakeRateWeight);
    fChain->SetBranchAddress("muTauFakeRateWeight", &muTauFakeRateWeight, &b_muTauFakeRateWeight);
    fChain->SetBranchAddress("emb_weight", &emb_weight, &b_emb_weight);
