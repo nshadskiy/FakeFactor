@@ -5,11 +5,11 @@
 #define kTAU         2
 ///////////////////////////////////////////////////
 #define EMB          0   
-#define selCHAN      kEL 
-const int CHAN     = kEL;
-const TString analysis      ="FakeFactor_2018_v1";
-const TString output_folder ="/afs/hephy.at/user/j/jandrejkovic/public/Htautau/FakeRate/SM2018/FakeFactor_2018_v1";
-const TString ver = "2018_v1"; 
+#define selCHAN      kTAU 
+const int CHAN     = kTAU;
+const TString analysis      ="FakeFactor_2018_v2_pre1_T_ReRun_tt_channel";
+const TString output_folder ="/data/jandrejkovic/FakeRate/SM2018/FakeFactor_2018_v2_pre1_T_ReRun_tt_channel";
+const TString ver = "2018_v2"; 
 
 const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; //obsolete
 ///////////////////////////////////////////////////
@@ -35,7 +35,7 @@ const int doSRHisto = 1;
 const int doCRHisto = 1;
 ///////////////////////////////////////////////////
 //steerFF
-const int doCalcWeights=1; //calc fractions
+//const int doCalcWeights=1; //calc fractions
 const int doCalc=1; //calc FFs
 ///////////////////////////////////////////////////
 //calcCorrections
