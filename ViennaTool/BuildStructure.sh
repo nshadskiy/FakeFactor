@@ -1,18 +1,19 @@
 #!/bin/bash
 user=jandrejkovic
-fftype=FakeFactor_2018_v1
+fftype=FakeFactor_2018_v2_pre1_T_ReRun_tt_channel
 
 line=" -------------------------------------------"
-echo "###### START of BuildStructure.sh ######"
 echo $line
 echo "Starting $fftype analysis"
 echo "Group CMS-HTT"
 echo "Hephy Vienna"
+echo "version:" $fftype
 echo $line
 
 echo "Buidling folder structure"
 
 if [ -d "/data/$user/$fftype/preselection" ]; then
+    echo "directory is generated"
     if [ ! -d "/data/$user/$fftype/preselection/mt" ]; then
         mkdir -p /data/$user/$fftype/preselection/mt
     fi
@@ -216,7 +217,3 @@ else
     mkdir -p ff_2d/tt/incl;
     mkdir -p ff_2d/tt/_dummycat;
 fi
-
-
-
-echo "###### END of BuildStructure.sh ######"
