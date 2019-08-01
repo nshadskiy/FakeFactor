@@ -74,9 +74,12 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   // cout << event->flagMETFilter << " " << event->trg_singlemuon_27 << " " << event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2 << " " << event->q_1 << " " << event->weight << " " <<event->dilepton_veto <<  endl;
   // if(CHAN==kMU && !((event->flagMETFilter >0.5)*(event->trg_singlemuon_27 > 0.5)*(event->trg_singlemuon_24 > 0.5)*(event->trg_crossmuon_mu20tau27 > 0.5)*(event->pt_1>21)*(event->pt_2>20))) return 0; 
   
-  if(CHAN==kMU && ((event->flagMETFilter <0.5)|| !((event->trg_singlemuon_27 > 0.5)||(event->trg_singlemuon_24>0.5)) || (event->pt_2<23))) return 0; 
+  if(CHAN==kMU && ((event->flagMETFilter <0.5)|| !((event->trg_singlemu_22 > 0.5)||(event->trg_crossmu_mu19tau20>0.5)) || (event->pt_2<23))) return 0; 
+  // 2018: if(CHAN==kMU && ((event->flagMETFilter <0.5)|| !((event->trg_singlemuon_27 > 0.5)||(event->trg_singlemuon_24>0.5)) || (event->pt_2<23))) return 0; 
   // if(CHAN==kEL && ((event->flagMETFilter <0.5)|| !((event->trg_singleelectron_27> 0.5)||(event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)||(event->trg_crossele_ele24tau30  > 0.5))) ||(event->pt_2<23))  return 0;
   
+
+  // This needs some changes for 2016:
   if(CHAN==kEL && !preselectionFile.Contains("preselection_EMB") && ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)) || (event->pt_2<23)))  return 0;
   if(CHAN==kEL && preselectionFile.Contains("preselection_EMB") &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)) || (event->pt_2<23)))  return 0; //(event->pt_1>20 && event->pt_1<24) ||
   //if(CHAN==kEL && !preselectionFile.Contains("preselection_EMB") && ((event->flagMETFilter <0.5)|| !((event->trg_singleelectron_27> 0.5)||(event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)||(event->trg_crossele_ele24tau30  > 0.5))) ||(event->pt_2<23))  return 0;
@@ -100,14 +103,14 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     }
 
     if( CHAN == kTAU && !preselectionFile.Contains("preselection_EMB") ){ // CHANGE IF TAU WP CHANGES! https://twiki.cern.ch/twiki/bin/view/CMS/TauIDRecommendation13TeV#Tau_ID_SF_for_CMSSW_9_4_X_or_hig
-        if(event->gen_match_1 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1) weight *= 0.90; //vtight = 0.89, tight = 0.90
-        else if(event->gen_match_1 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 ) weight *= 0.90;
-        if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.90;
-        else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.90;
+        if(event->gen_match_1 == 5 && event->byTightIsolationDeepTau2017v2VSjet_1) weight *= 0.85; //vtight = 0.89, tight = 0.90
+        else if(event->gen_match_1 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_1 ) weight *= 0.85;
+        if(event->gen_match_2 == 5 && event->byTightIsolationDeepTau2017v2VSjet_2) weight *= 0.85;
+        else if(event->gen_match_2 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_2 ) weight *= 0.85;
     }
     if( CHAN != kTAU && !preselectionFile.Contains("preselection_EMB") ){
-      if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.90;
-      else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.90;
+      if(event->gen_match_2 == 5 && event->byTightIsolationDeepTau2017v2VSjet_2) weight *= 0.85;
+      else if(event->gen_match_2 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_2 ) weight *= 0.85;
     }
   }
  
@@ -356,11 +359,24 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   alltau_decay->resize(0);
   alltau_beta->resize(0);
   alltau_mediumBeta->resize(0);
+  alltau_vvvlooseMVA->resize(0);
+  alltau_vvlooseMVA->resize(0);
   alltau_vlooseMVA->resize(0);
   alltau_looseMVA->resize(0);
   alltau_mediumMVA->resize(0);
   alltau_tightMVA->resize(0);
   alltau_vtightMVA->resize(0);
+  alltau_vvtightMVA->resize(0);
+
+  // alltau_vvvlooseDeepTauIDv2VSjet->resize(0);
+  // alltau_vvlooseDeepTauIDv2VSjet->resize(0);
+  // alltau_vlooseDeepTauIDv2VSjet->resize(0);
+  // alltau_looseDeepTauIDv2VSjet->resize(0);
+  // alltau_mediumDeepTauIDv2VSjet->resize(0);
+  // alltau_tightDeepTauIDv2VSjet->resize(0);
+  // alltau_vtightDeepTauIDv2VSjet->resize(0);
+  // alltau_vvtightDeepTauIDv2VSjet->resize(0);
+
   alltau_lepVeto->resize(0);
   alltau_gen_match->resize(0);
   alltau_dRToLep->resize(0);
@@ -410,7 +426,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
       if (antiEle & antiMu == 0) continue;
       
-      if( event->addlepton_p4 ) m=event->addlepton_tauDM->at(i);
+      if( event->addlepton_p4 ) m=event->addlepton_tauDM->at(i); //nanoAOD
       else 					  m=event->addtau_decayMode->at(i);
       
         if ( !( (m>=0&&m<=4)||(m>=10&&m<=14) ) ) continue;
@@ -424,11 +440,21 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
         alltau_eta->push_back(event->addlepton_p4->at(i).Eta());
         alltau_phi->push_back(event->addlepton_p4->at(i).Phi());
         alltau_q  ->push_back(TMath::Sign(1, event->addlepton_pdgId->at(i)));	
-        alltau_vlooseMVA->push_back( (event->addlepton_tauID->at(i) & 0x1) > 0 );
-        alltau_looseMVA ->push_back( (event->addlepton_tauID->at(i) & 0x2) > 0 );
-        alltau_mediumMVA->push_back( (event->addlepton_tauID->at(i) & 0x4) > 0 );
-        alltau_tightMVA ->push_back( (event->addlepton_tauID->at(i) & 0x8) > 0 );
-        alltau_vtightMVA->push_back( (event->addlepton_tauID->at(i) & 0x10) > 0 );
+
+        // alltau_vlooseMVA->push_back( (event->addlepton_tauID->at(i) & 0x1) > 0 );
+        // alltau_looseMVA ->push_back( (event->addlepton_tauID->at(i) & 0x2) > 0 );
+        // alltau_mediumMVA->push_back( (event->addlepton_tauID->at(i) & 0x4) > 0 );
+        // alltau_tightMVA ->push_back( (event->addlepton_tauID->at(i) & 0x8) > 0 );
+        // alltau_vtightMVA->push_back( (event->addlepton_tauID->at(i) & 0x10) > 0 );
+    
+        alltau_vvvlooseMVA->push_back( (event->addlepton_tauID->at(i) & 0x1) > 0 );
+        alltau_vvlooseMVA->push_back( (event->addlepton_tauID->at(i) & 0x2) > 0 );
+        alltau_vlooseMVA->push_back( (event->addlepton_tauID->at(i) & 0x4) > 0 );
+        alltau_looseMVA->push_back( (event->addlepton_tauID->at(i) & 0x8) > 0 );
+        alltau_mediumMVA->push_back( (event->addlepton_tauID->at(i) & 0x10) > 0 );
+        alltau_tightMVA->push_back( (event->addlepton_tauID->at(i) & 0x20) > 0 );
+        alltau_vtightMVA->push_back( (event->addlepton_tauID->at(i) & 0x40) > 0 );
+        alltau_vvtightMVA->push_back( (event->addlepton_tauID->at(i) & 0x80) > 0 );
         
        
         bitmask=event->addlepton_tauAntiEle->at(i); //add in .h
@@ -441,19 +467,20 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
         alltau_gen_match->push_back(event->addlepton_mc_match->at(i));	
         alltau_mvis->push_back(event->addlepton_mvis->at(i));
       }else{ // non nanoAOD
-        alltau_pt ->push_back(event->addtau_pt->at(i));
-        alltau_eta->push_back(event->addtau_eta->at(i));
-        alltau_phi->push_back(event->addtau_phi->at(i));
-        alltau_q  ->push_back(event->addtau_q->at(i));
-        alltau_vlooseMVA->push_back( event->addtau_byVLooseIsolationMVArun2v1DBoldDMwLT->at(i));
-        alltau_looseMVA ->push_back( event->addtau_byLooseIsolationMVArun2v1DBoldDMwLT->at(i));
-        alltau_mediumMVA->push_back( event->addtau_byMediumIsolationMVArun2v1DBoldDMwLT->at(i));
-        alltau_tightMVA ->push_back( event->addtau_byTightIsolationMVArun2v1DBoldDMwLT->at(i));
-        alltau_vtightMVA->push_back( event->addtau_byVTightIsolationMVArun2v1DBoldDMwLT->at(i));
-        alltau_lepVeto->push_back(event->addtau_passesTauLepVetos->at(i));
-        alltau_beta->push_back(event->addtau_byCombinedIsolationDeltaBetaCorrRaw3Hits->at(i));
-        alltau_gen_match->push_back(event->addtau_gen_match->at(i));
-        alltau_mvis->push_back(event->addtau_mvis->at(i));
+        std::cout<< "You are not using nanoAOD samples !?!" << std::endl;
+        // alltau_pt ->push_back(event->addtau_pt->at(i));
+        // alltau_eta->push_back(event->addtau_eta->at(i));
+        // alltau_phi->push_back(event->addtau_phi->at(i));
+        // alltau_q  ->push_back(event->addtau_q->at(i));
+        // alltau_vlooseMVA->push_back( event->addtau_byVLooseIsolationMVArun2v1DBoldDMwLT->at(i));
+        // alltau_looseMVA ->push_back( event->addtau_byLooseIsolationMVArun2v1DBoldDMwLT->at(i));
+        // alltau_mediumMVA->push_back( event->addtau_byMediumIsolationMVArun2v1DBoldDMwLT->at(i));
+        // alltau_tightMVA ->push_back( event->addtau_byTightIsolationMVArun2v1DBoldDMwLT->at(i));
+        // alltau_vtightMVA->push_back( event->addtau_byVTightIsolationMVArun2v1DBoldDMwLT->at(i));
+        // alltau_lepVeto->push_back(event->addtau_passesTauLepVetos->at(i));
+        // alltau_beta->push_back(event->addtau_byCombinedIsolationDeltaBetaCorrRaw3Hits->at(i));
+        // alltau_gen_match->push_back(event->addtau_gen_match->at(i));
+        // alltau_mvis->push_back(event->addtau_mvis->at(i));
       }
         alltau_decay->push_back(m); //distinction between nanoAod/other already made earlier
         
@@ -507,8 +534,13 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   }
   
   float decay=event->decayMode_2;
+  int newDMs=event->decayModeFindingOldDMs_2;
+  // std::cout<<"decayModeFindingNewDMs_2: " << newDMs << "using old DMs for testing" << std::endl;
   // TODO: there is no passestaulepvetos in embedded samples!!!
-  if ( (passesTauLepVetos) && ( (decay>=0&&decay<=4)||(decay>=10&&decay<=14)   ) && (dR>0.5) && (event->pt_2 > m_tau_pt_cut ) && (fabs(event->eta_2) < m_tau_eta_cut) && (TT_AS_LEP==1) ){
+  
+  // For DeepTauID ask for newDMs and veto DMs 5 and 6
+  if ( (passesTauLepVetos) && (decay != 5 && decay != 6 ) &&  (newDMs==1) && (dR>0.5) && (event->pt_2 > m_tau_pt_cut ) && (fabs(event->eta_2) < m_tau_eta_cut) && (TT_AS_LEP==1) ){
+    
     Int_t tpos=0;
     tau_iso_ind=tpos;
     alltau_pt->insert(alltau_pt->begin()+tpos,event->pt_2);
@@ -517,22 +549,41 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     
     alltau_q->insert(alltau_q->begin()+tpos,event->q_2/abs(event->q_2));
     alltau_decay->insert(alltau_decay->begin()+tpos,decay);
-    alltau_beta->insert(alltau_beta->begin()+tpos,event->byCombinedIsolationDeltaBetaCorrRaw3Hits_2);
+    // alltau_beta->insert(alltau_beta->begin()+tpos,event->byCombinedIsolationDeltaBetaCorrRaw3Hits_2);
     if(preselectionFile.Contains("preselection_EMB")){
-      alltau_mediumBeta->insert(alltau_mediumBeta->begin()+tpos,event->byMediumCombinedIsolationDeltaBetaCorr3Hits_2 > 0);
-      alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 > 0 );
-      alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_2 > 0 );
-      alltau_mediumMVA->insert(alltau_mediumMVA->begin()+tpos, event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_2 > 0 );
-      alltau_tightMVA->insert(alltau_tightMVA->begin()+tpos, event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2 > 0 );
-      alltau_vtightMVA->insert(alltau_vtightMVA->begin()+tpos, event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_2 > 0 );
+      // alltau_mediumBeta->insert(alltau_mediumBeta->begin()+tpos,event->byMediumCombinedIsolationDeltaBetaCorr3Hits_2 > 0);
+      // alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 > 0 );
+      // alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_2 > 0 );
+      // alltau_mediumMVA->insert(alltau_mediumMVA->begin()+tpos, event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_2 > 0 );
+      // alltau_tightMVA->insert(alltau_tightMVA->begin()+tpos, event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2 > 0 );
+      // alltau_vtightMVA->insert(alltau_vtightMVA->begin()+tpos, event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_2 > 0 );
+
+      alltau_vvvlooseMVA->insert(alltau_vvvlooseMVA->begin()+tpos, event->byVVVLooseIsolationDeepTau2017v2VSjet_2 > 0);
+      alltau_vvlooseMVA->insert(alltau_vvlooseMVA->begin()+tpos, event->byVVLooseIsolationDeepTau2017v2VSjet_2 > 0);
+      alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationDeepTau2017v2VSjet_2 > 0);
+      alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationDeepTau2017v2VSjet_2 > 0);
+      alltau_mediumMVA->insert(alltau_mediumMVA->begin()+tpos, event->byMediumIsolationDeepTau2017v2VSjet_2 > 0);
+      alltau_tightMVA->insert(alltau_tightMVA->begin()+tpos, event->byTightIsolationDeepTau2017v2VSjet_2 > 0);
+      alltau_vtightMVA->insert(alltau_vtightMVA->begin()+tpos, event->byVTightIsolationDeepTau2017v2VSjet_2 > 0);
+      alltau_vvtightMVA->insert(alltau_vvtightMVA->begin()+tpos, event->byVVTightIsolationDeepTau2017v2VSjet_2 > 0);
     }else{
-      alltau_mediumBeta->insert(alltau_mediumBeta->begin()+tpos,event->byMediumCombinedIsolationDeltaBetaCorr3Hits_2 );
-      alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 );
-      alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_2 );
-      alltau_mediumMVA->insert(alltau_mediumMVA->begin()+tpos, event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_2 );
-      alltau_tightMVA->insert(alltau_tightMVA->begin()+tpos, event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2 );
-      alltau_vtightMVA->insert(alltau_vtightMVA->begin()+tpos, event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_2 );
-    }
+      // alltau_mediumBeta->insert(alltau_mediumBeta->begin()+tpos,event->byMediumCombinedIsolationDeltaBetaCorr3Hits_2 );
+      // alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 );
+      // alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_2 );
+      // alltau_mediumMVA->insert(alltau_mediumMVA->begin()+tpos, event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_2 );
+      // alltau_tightMVA->insert(alltau_tightMVA->begin()+tpos, event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2 );
+      // alltau_vtightMVA->insert(alltau_vtightMVA->begin()+tpos, event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_2 );
+
+      alltau_vvvlooseMVA->insert(alltau_vvvlooseMVA->begin()+tpos, event->byVVVLooseIsolationDeepTau2017v2VSjet_2 );
+      alltau_vvlooseMVA->insert(alltau_vvlooseMVA->begin()+tpos, event->byVVLooseIsolationDeepTau2017v2VSjet_2 );
+      alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationDeepTau2017v2VSjet_2 );
+      alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationDeepTau2017v2VSjet_2 );
+      alltau_mediumMVA->insert(alltau_mediumMVA->begin()+tpos, event->byMediumIsolationDeepTau2017v2VSjet_2 );
+      alltau_tightMVA->insert(alltau_tightMVA->begin()+tpos, event->byTightIsolationDeepTau2017v2VSjet_2 );
+      alltau_vtightMVA->insert(alltau_vtightMVA->begin()+tpos, event->byVTightIsolationDeepTau2017v2VSjet_2 );
+      alltau_vvtightMVA->insert(alltau_vvtightMVA->begin()+tpos, event->byVVTightIsolationDeepTau2017v2VSjet_2 );
+      }
+
     alltau_lepVeto->insert(alltau_lepVeto->begin()+tpos,passesTauLepVetos);
     alltau_gen_match->insert(alltau_gen_match->begin()+tpos,event->gen_match_2);
     alltau_mvis->insert(alltau_mvis->begin()+tpos,event->m_vis);
@@ -574,8 +625,16 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
  
   //now, for _1, the same as above for the tt chan. FIXME very ugly to duplicate code, should be moved to a dedicated method
   if ( TT_AS_LEP == 2 ){ //only possible for kTAU
+
     float decay=event->decayMode_1;
-    if ( (passesTauLepVetos) && ( (decay>=0&&decay<=4)||(decay>=10&&decay<=14)   ) && (dR>0.5) && (event->pt_1 > m_tau_pt_cut ) && ( fabs(event->eta_1) < m_tau_eta_cut ) ){
+
+
+    int newDMs=event->decayModeFindingOldDMs_1;
+
+    // std::cout<<"decayModeFindingNewDMs_1: " << newDMs << "used still old DMs because waiting for Ntuples with newDMs" << std::endl;
+
+    // For DeepTauID ask for newDMs and veto DMs 5 and 6    
+    if ( (passesTauLepVetos) && (decay != 5 && decay != 6 ) &&  (newDMs==1) && (dR>0.5) && (event->pt_1 > m_tau_pt_cut ) && ( fabs(event->eta_1) < m_tau_eta_cut ) ){
       Int_t tpos=0;
       tau_iso_ind=tpos;    
       alltau_pt->insert(alltau_pt->begin()+tpos,event->pt_1);
@@ -583,23 +642,44 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       alltau_phi->insert(alltau_phi->begin()+tpos,event->phi_1);
       alltau_q->insert(alltau_q->begin()+tpos,event->q_1);
       alltau_decay->insert(alltau_decay->begin()+tpos,decay);
-      alltau_beta->insert(alltau_beta->begin()+tpos,event->byCombinedIsolationDeltaBetaCorrRaw3Hits_1);
+      // alltau_beta->insert(alltau_beta->begin()+tpos,event->byCombinedIsolationDeltaBetaCorrRaw3Hits_1);
       //  alltau_looseBeta->insert(alltau_looseBeta->begin()+tpos,event->byLooseCombinedIsolationDeltaBetaCorr3Hits_1);
       //  alltau_tightBeta->insert(alltau_tightBeta->begin()+tpos,event->byTightCombinedIsolationDeltaBetaCorr3Hits_1);
       if(preselectionFile.Contains("preselection_EMB")){
-        alltau_mediumBeta->insert(alltau_mediumBeta->begin()+tpos,event->byMediumCombinedIsolationDeltaBetaCorr3Hits_1> 0);
-        alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 > 0 );
-        alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_1 > 0);
-        alltau_mediumMVA->insert(alltau_mediumMVA->begin()+tpos, event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_1 > 0);
-        alltau_tightMVA->insert(alltau_tightMVA->begin()+tpos, event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1 > 0);
-        alltau_vtightMVA->insert(alltau_vtightMVA->begin()+tpos, event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_1 > 0);
+        // alltau_mediumBeta->insert(alltau_mediumBeta->begin()+tpos,event->byMediumCombinedIsolationDeltaBetaCorr3Hits_1> 0);
+        // alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 > 0 );
+        // alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_1 > 0);
+        // alltau_mediumMVA->insert(alltau_mediumMVA->begin()+tpos, event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_1 > 0);
+        // alltau_tightMVA->insert(alltau_tightMVA->begin()+tpos, event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1 > 0);
+        // alltau_vtightMVA->insert(alltau_vtightMVA->begin()+tpos, event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_1 > 0);
+
+        // deepTauIDv2
+        alltau_vvvlooseMVA->insert(alltau_vvvlooseMVA->begin()+tpos, event->byVVVLooseIsolationDeepTau2017v2VSjet_1 > 0);
+        alltau_vvlooseMVA->insert(alltau_vvlooseMVA->begin()+tpos, event->byVVLooseIsolationDeepTau2017v2VSjet_1 > 0);
+        alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationDeepTau2017v2VSjet_1 > 0);
+        alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationDeepTau2017v2VSjet_1 > 0);
+        alltau_mediumMVA->insert(alltau_mediumMVA->begin()+tpos, event->byMediumIsolationDeepTau2017v2VSjet_1 > 0);
+        alltau_tightMVA->insert(alltau_tightMVA->begin()+tpos, event->byTightIsolationDeepTau2017v2VSjet_1 > 0);
+        alltau_vtightMVA->insert(alltau_vtightMVA->begin()+tpos, event->byVTightIsolationDeepTau2017v2VSjet_1 > 0);
+        alltau_vvtightMVA->insert(alltau_vvtightMVA->begin()+tpos, event->byVVTightIsolationDeepTau2017v2VSjet_1 > 0);
+
       }else{
-        alltau_mediumBeta->insert(alltau_mediumBeta->begin()+tpos,event->byMediumCombinedIsolationDeltaBetaCorr3Hits_1 );
-        alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 );
-        alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_1 );
-        alltau_mediumMVA->insert(alltau_mediumMVA->begin()+tpos, event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_1 );
-        alltau_tightMVA->insert(alltau_tightMVA->begin()+tpos, event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1 );
-        alltau_vtightMVA->insert(alltau_vtightMVA->begin()+tpos, event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_1 );
+        // alltau_mediumBeta->insert(alltau_mediumBeta->begin()+tpos,event->byMediumCombinedIsolationDeltaBetaCorr3Hits_1 );
+        // alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 );
+        // alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_1 );
+        // alltau_mediumMVA->insert(alltau_mediumMVA->begin()+tpos, event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_1 );
+        // alltau_tightMVA->insert(alltau_tightMVA->begin()+tpos, event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1 );
+        // alltau_vtightMVA->insert(alltau_vtightMVA->begin()+tpos, event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_1 );
+
+        // deepTauIDv2
+        alltau_vvvlooseMVA->insert(alltau_vvvlooseMVA->begin()+tpos, event->byVVVLooseIsolationDeepTau2017v2VSjet_1 );
+        alltau_vvlooseMVA->insert(alltau_vvlooseMVA->begin()+tpos, event->byVVLooseIsolationDeepTau2017v2VSjet_1 );
+        alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationDeepTau2017v2VSjet_1 );
+        alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationDeepTau2017v2VSjet_1 );
+        alltau_mediumMVA->insert(alltau_mediumMVA->begin()+tpos, event->byMediumIsolationDeepTau2017v2VSjet_1 );
+        alltau_tightMVA->insert(alltau_tightMVA->begin()+tpos, event->byTightIsolationDeepTau2017v2VSjet_1 );
+        alltau_vtightMVA->insert(alltau_vtightMVA->begin()+tpos, event->byVTightIsolationDeepTau2017v2VSjet_1 );
+        alltau_vvtightMVA->insert(alltau_vvtightMVA->begin()+tpos, event->byVVTightIsolationDeepTau2017v2VSjet_1 );
       }
       alltau_lepVeto->insert(alltau_lepVeto->begin()+tpos,passesTauLepVetos);
       alltau_gen_match->insert(alltau_gen_match->begin()+tpos,event->gen_match_1);
@@ -641,9 +721,11 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     }
   }
 
-  lep_vloose = 0;
-  lep_loose = 0;
-  lep_medium = 0;
+  lep_vvvloose = 0;
+  lep_vvloose  = 0;
+  lep_vloose   = 0;
+  lep_loose    = 0;
+  lep_medium   = 0; 
 
   if ( CHAN == kTAU ){
     //now: take "other tau" (as determined by the random number above) as "lep"
@@ -656,10 +738,20 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       //lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_2==1) || (calcVTightFF==0 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2==1) )  ? 10 : 0;
       // lep_iso = (event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_2==0 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2==1) ? 10 : 0;  //CHANGE IF TAU WP CHANGES! tight & !vtight
       // lep_iso = event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_2==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! vtight
-      lep_iso = event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! tight
-      lep_vloose = ( event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 == 1 ) ? 1 : 0;
-      lep_loose = ( event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_2 == 1 ) ? 1 : 0;
-      lep_medium = ( event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_2 == 1 ) ? 1 : 0;
+      
+      // 
+      // lep_iso = event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! tight
+      // lep_vloose = ( event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 == 1 ) ? 1 : 0;
+      // lep_loose = ( event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_2 == 1 ) ? 1 : 0;
+      // lep_medium = ( event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_2 == 1 ) ? 1 : 0;
+
+      lep_iso = event->byTightIsolationDeepTau2017v2VSjet_2==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! tight
+      lep_vvvloose = ( event->byVVVLooseIsolationDeepTau2017v2VSjet_2 == 1 ) ? 1 : 0;
+      lep_vvloose = ( event->byVVLooseIsolationDeepTau2017v2VSjet_2 == 1 ) ? 1 : 0;
+      lep_vloose = ( event->byVLooseIsolationDeepTau2017v2VSjet_2 == 1 ) ? 1 : 0;
+      lep_loose = ( event->byLooseIsolationDeepTau2017v2VSjet_2 == 1 ) ? 1 : 0;
+      lep_medium = ( event->byMediumIsolationDeepTau2017v2VSjet_2 == 1 ) ? 1 : 0;
+
     } else{
       lep_dR=-99; //needed for mZ in ee/mumu CR; not needed for tautau
       lep_pt=event->pt_1;
@@ -669,10 +761,18 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       //lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_1==1) || (calcVTightFF==0 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1==1) )  ? 10 : 0;
       // lep_iso = (event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_1==0 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1==1) ? 10 : 0;  //CHANGE IF TAU WP CHANGES! tight & !vtight
       // lep_iso = event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_1==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! vtight
-      lep_iso = event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! tight
-      lep_vloose = ( event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 == 1 ) ? 1 : 0;
-      lep_loose = ( event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_1 == 1 ) ? 1 : 0;
-      lep_medium = ( event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_1 == 1 ) ? 1 : 0;
+      // lep_iso = event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! tight
+      // lep_vloose = ( event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 == 1 ) ? 1 : 0;
+      // lep_loose = ( event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_1 == 1 ) ? 1 : 0;
+      // lep_medium = ( event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_1 == 1 ) ? 1 : 0;
+
+      lep_iso = event->byTightIsolationDeepTau2017v2VSjet_1==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! tight
+      lep_vvvloose = ( event->byVVVLooseIsolationDeepTau2017v2VSjet_1 == 1 ) ? 1 : 0;
+      lep_vvloose = ( event->byVVLooseIsolationDeepTau2017v2VSjet_1 == 1 ) ? 1 : 0;
+      lep_vloose = ( event->byVLooseIsolationDeepTau2017v2VSjet_1 == 1 ) ? 1 : 0;
+      lep_loose = ( event->byLooseIsolationDeepTau2017v2VSjet_1 == 1 ) ? 1 : 0;
+      lep_medium = ( event->byMediumIsolationDeepTau2017v2VSjet_1 == 1 ) ? 1 : 0;
+
     }
   }
 
@@ -786,6 +886,8 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   tree->Branch("lep_phi",&lep_phi);
   tree->Branch("lep_q"  ,&lep_q);
   tree->Branch("lep_iso",&lep_iso);
+  tree->Branch("lep_vvvloose",&lep_vvvloose);
+  tree->Branch("lep_vvloose",&lep_vvloose);
   tree->Branch("lep_vloose",&lep_vloose);
   tree->Branch("lep_loose",&lep_loose);
   tree->Branch("lep_medium",&lep_medium);
@@ -798,11 +900,24 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   tree->Branch("alltau_decay",&alltau_decay);
   tree->Branch("alltau_beta",&alltau_beta);
   tree->Branch("alltau_mediumBeta",&alltau_mediumBeta);
+  tree->Branch("alltau_vvvlooseMVA",&alltau_vvvlooseMVA);
+  tree->Branch("alltau_vvlooseMVA",&alltau_vvlooseMVA);
   tree->Branch("alltau_vlooseMVA",&alltau_vlooseMVA);
   tree->Branch("alltau_looseMVA",&alltau_looseMVA);
   tree->Branch("alltau_mediumMVA",&alltau_mediumMVA);
   tree->Branch("alltau_tightMVA",&alltau_tightMVA);
   tree->Branch("alltau_vtightMVA",&alltau_vtightMVA);
+  tree->Branch("alltau_vvtightMVA",&alltau_vvtightMVA);
+  // deepTauIDv2
+  // tree->Branch("alltau_vvvlooseDeepTauIDv2VSjet",&alltau_vvvlooseDeepTauIDv2VSjet);
+  // tree->Branch("alltau_vvlooseDeepTauIDv2VSjet",&alltau_vvlooseDeepTauIDv2VSjet);
+  // tree->Branch("alltau_vlooseDeepTauIDv2VSjet",&alltau_vlooseDeepTauIDv2VSjet);
+  // tree->Branch("alltau_looseDeepTauIDv2VSjet",&alltau_looseDeepTauIDv2VSjet);
+  // tree->Branch("alltau_mediumDeepTauIDv2VSjet",&alltau_mediumDeepTauIDv2VSjet);
+  // tree->Branch("alltau_tightDeepTauIDv2VSjet",&alltau_tightDeepTauIDv2VSjet);
+  // tree->Branch("alltau_vtightDeepTauIDv2VSjet",&alltau_vtightDeepTauIDv2VSjet);
+  // tree->Branch("alltau_vvtightDeepTauIDv2VSjet",&alltau_vvtightDeepTauIDv2VSjet);
+
   tree->Branch("alltau_lepVeto",&alltau_lepVeto);
   tree->Branch("alltau_gen_match",&alltau_gen_match);
   tree->Branch("alltau_dRToLep",&alltau_dRToLep);
@@ -822,11 +937,24 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   alltau_decay=new vector<Int_t>;
   alltau_beta=new vector<Double_t>;
   alltau_mediumBeta=new vector<Int_t>;
+  alltau_vvvlooseMVA=new vector<Int_t>;
+  alltau_vvlooseMVA=new vector<Int_t>;
   alltau_vlooseMVA=new vector<Int_t>;
   alltau_looseMVA=new vector<Int_t>;
   alltau_mediumMVA=new vector<Int_t>;
   alltau_tightMVA=new vector<Int_t>;
   alltau_vtightMVA=new vector<Int_t>;
+  alltau_vvtightMVA=new vector<Int_t>;
+
+  // alltau_vvvlooseDeepTauIDv2VSjet=new vector<Int_t>;
+  // alltau_vvlooseDeepTauIDv2VSjet=new vector<Int_t>;
+  // alltau_vlooseDeepTauIDv2VSjet=new vector<Int_t>;
+  // alltau_looseDeepTauIDv2VSjet=new vector<Int_t>;
+  // alltau_mediumDeepTauIDv2VSjet=new vector<Int_t>;
+  // alltau_tightDeepTauIDv2VSjet=new vector<Int_t>;
+  // alltau_vtightDeepTauIDv2VSjet=new vector<Int_t>;
+  // alltau_vvtightDeepTauIDv2VSjet=new vector<Int_t>;
+
   alltau_lepVeto=new vector<Int_t>;
   alltau_gen_match=new vector<Int_t>;
   alltau_dRToLep=new vector<Double_t>;

@@ -65,9 +65,12 @@ public :
    std::vector<int>     *alltau_mediumBeta;
    std::vector<int>     *alltau_vlooseMVA;
    std::vector<int>     *alltau_looseMVA;
+   std::vector<int>     *alltau_vvlooseMVA;
+   std::vector<int>     *alltau_vvvlooseMVA;
    std::vector<int>     *alltau_mediumMVA;
    std::vector<int>     *alltau_tightMVA;
    std::vector<int>     *alltau_vtightMVA;
+   std::vector<int>     *alltau_vvtightMVA;
    std::vector<int>     *alltau_lepVeto;
    std::vector<int>     *alltau_gen_match;
    std::vector<double>  *alltau_dRToLep;
@@ -120,11 +123,14 @@ public :
    TBranch        *b_alltau_decay;   //!
    TBranch        *b_alltau_beta;   //!
    TBranch        *b_alltau_mediumBeta;   //!
+   TBranch        *b_alltau_vvvlooseMVA;   //!
+   TBranch        *b_alltau_vvlooseMVA;   //!
    TBranch        *b_alltau_vlooseMVA;   //!
    TBranch        *b_alltau_looseMVA;     //!
    TBranch        *b_alltau_mediumMVA;   //!
    TBranch        *b_alltau_tightMVA;   //!
    TBranch        *b_alltau_vtightMVA;   //!
+   TBranch        *b_alltau_vvtightMVA;   //!
    TBranch        *b_alltau_lepVeto;   //!
    TBranch        *b_alltau_gen_match;   //!
    TBranch        *b_alltau_dRToLep;   //!
@@ -209,11 +215,14 @@ void SignalClass::Init(TTree *tree)
    alltau_decay = 0;
    alltau_beta = 0;
    alltau_mediumBeta = 0;
+   alltau_vvvlooseMVA = 0;
+   alltau_vvlooseMVA = 0;
    alltau_vlooseMVA = 0;
    alltau_looseMVA = 0;
    alltau_mediumMVA = 0;
    alltau_tightMVA = 0;
    alltau_vtightMVA = 0;
+   alltau_vvtightMVA = 0;
    alltau_lepVeto = 0;
    alltau_gen_match = 0;
    alltau_dRToLep = 0;
@@ -268,11 +277,14 @@ void SignalClass::Init(TTree *tree)
    fChain->SetBranchAddress("alltau_decay", &alltau_decay, &b_alltau_decay);
    fChain->SetBranchAddress("alltau_beta", &alltau_beta, &b_alltau_beta);
    fChain->SetBranchAddress("alltau_mediumBeta", &alltau_mediumBeta, &b_alltau_mediumBeta);
+   fChain->SetBranchAddress("alltau_vvvlooseMVA", &alltau_vvvlooseMVA, &b_alltau_vvvlooseMVA);
+   fChain->SetBranchAddress("alltau_vvlooseMVA", &alltau_vvlooseMVA, &b_alltau_vvlooseMVA);
    fChain->SetBranchAddress("alltau_vlooseMVA", &alltau_vlooseMVA, &b_alltau_vlooseMVA);
    fChain->SetBranchAddress("alltau_looseMVA", &alltau_looseMVA, &b_alltau_looseMVA);
    fChain->SetBranchAddress("alltau_mediumMVA", &alltau_mediumMVA, &b_alltau_mediumMVA);
    fChain->SetBranchAddress("alltau_tightMVA", &alltau_tightMVA, &b_alltau_tightMVA);
    fChain->SetBranchAddress("alltau_vtightMVA", &alltau_vtightMVA, &b_alltau_vtightMVA);
+   fChain->SetBranchAddress("alltau_vvtightMVA", &alltau_vvtightMVA, &b_alltau_vvtightMVA);
    fChain->SetBranchAddress("alltau_lepVeto", &alltau_lepVeto, &b_alltau_lepVeto);
    fChain->SetBranchAddress("alltau_gen_match", &alltau_gen_match, &b_alltau_gen_match);
    fChain->SetBranchAddress("alltau_dRToLep", &alltau_dRToLep, &b_alltau_dRToLep);

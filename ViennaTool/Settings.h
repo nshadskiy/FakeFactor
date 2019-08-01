@@ -5,16 +5,17 @@
 #define kTAU         2
 ///////////////////////////////////////////////////
 #define EMB          0   
-#define selCHAN      kTAU 
-const int CHAN     = kTAU;
-const TString analysis      ="FakeFactor_2018_v2_pre1_T_ReRun_tt_channel";
-const TString output_folder ="/data/jandrejkovic/FakeRate/SM2018/FakeFactor_2018_v2_pre1_T_ReRun_tt_channel";
-const TString ver = "2018_v2"; 
+#define selCHAN      kMU 
+const int CHAN     = kMU;
+// FakeFactor_2016_DeepTauIDv2_v0
+const TString analysis      ="FakeFactor_2016_DeepTauIDv2_v0";
+const TString output_folder ="/data/jandrejkovic/FakeRate/SM2018/FakeFactor_2016_DeepTauIDv2_v0";
+const TString ver = "2016_v7"; // first time nanoAODv5 with deepTauIDv2 
 
 const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; //obsolete
 ///////////////////////////////////////////////////
 const TString user="jandrejkovic";    
-const Double_t luminosity=59.74; //according to GOLDEN JSON (2017 = 41.529) see https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM    
+const Double_t luminosity=35.922; //according to GOLDEN JSON see https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM    
 const int use_svfit = 0; //set to 1 to change input directory name accordingly
 ///////////////////////////////////////////////////
 //Out of date
@@ -55,18 +56,21 @@ const int doTemplateFitForWeights=0; //template fit for fractions, default: 0
 //////////////////////////////////////////////////
 const int fit_pT_bins = 1; //use fitted pT bins as input for ff
 //////////////////////////////////////////////////
-//Working point definition://
-// _VLOOSE = 1
-//  _LOOSE = 2
-// _MEDIUM = 4
-//  _TIGHT = 8
-// _VTIGHT = 16
+//Working point definition for deep TauID v2://
+// _VVVLOOSE         1
+// _VVLOOSE          2
+// _VLOOSE           4
+// _LOOSE            8
+// _MEDIUM          16
+// _TIGHT           32
+// _VTIGHT          64
+// _VVTIGHT        128
 // A WP condition is met if: (Fulfill && !Fail)
 // settings for tight vs vloose&(!tight):
-const int wpTightFulfill = 8; 
+const int wpTightFulfill = 32; 
 const int wpTightFail    = 0;
 const int wpLooseFulfill = 1;
-const int wpLooseFail    = 8;
+const int wpLooseFail    = 32;
 ///////////////////////////////////////////////////
 //MUTAU Settings
 #if(selCHAN==kMU)

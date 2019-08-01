@@ -85,7 +85,9 @@ public :
    Int_t           trg_singlemuon_24;
    Int_t           trg_singlemuon_27;
    Int_t           trg_crossmuon_mu20tau27;
+   Int_t           trg_singlemu_22;  
 //    Int_t           trg_mutaucross;
+   Int_t           trg_crossmu_mu19tau20;
    Int_t           trg_singleelectron;
    Int_t           trg_singleelectron_27;
    Int_t           trg_singleelectron_32;
@@ -158,24 +160,33 @@ public :
    Int_t           againstElectronVTightMVA6_1;
    Int_t           againstMuonLoose3_1;
    Int_t           againstMuonTight3_1;
-   Float_t         byCombinedIsolationDeltaBetaCorrRaw3Hits_1;
-   Float_t           byLooseCombinedIsolationDeltaBetaCorr3Hits_1;
-   Float_t           byMediumCombinedIsolationDeltaBetaCorr3Hits_1;
-   Float_t           byTightCombinedIsolationDeltaBetaCorr3Hits_1;
-   Float_t           byIsolationMVA3newDMwoLTraw_1;
-   Float_t           byIsolationMVA3oldDMwoLTraw_1;
-   Int_t         byIsolationMVA3newDMwLTraw_1;
-   Int_t         byIsolationMVA3oldDMwLTraw_1;
-   Int_t           byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1;
-   Int_t           byLooseIsolationMVArun2017v2DBoldDMwLT2017_1;
-   Int_t           byMediumIsolationMVArun2017v2DBoldDMwLT2017_1;
-   Int_t           byTightIsolationMVArun2017v2DBoldDMwLT2017_1;
-   Int_t           byVTightIsolationMVArun2017v2DBoldDMwLT2017_1;
-   Int_t           byVLooseIsolationMVArun2017v1DBoldDMwLT2017_1;
-   Int_t           byLooseIsolationMVArun2017v1DBoldDMwLT2017_1;
-   Int_t           byMediumIsolationMVArun2017v1DBoldDMwLT2017_1;
-   Int_t           byTightIsolationMVArun2017v1DBoldDMwLT2017_1;
-   Int_t           byVTightIsolationMVArun2017v1DBoldDMwLT2017_1;
+   // Float_t         byCombinedIsolationDeltaBetaCorrRaw3Hits_1;
+   // Float_t           byLooseCombinedIsolationDeltaBetaCorr3Hits_1;
+   // Float_t           byMediumCombinedIsolationDeltaBetaCorr3Hits_1;
+   // Float_t           byTightCombinedIsolationDeltaBetaCorr3Hits_1;
+   // Float_t           byIsolationMVA3newDMwoLTraw_1;
+   // Float_t           byIsolationMVA3oldDMwoLTraw_1;
+   // Int_t         byIsolationMVA3newDMwLTraw_1;
+   // Int_t         byIsolationMVA3oldDMwLTraw_1;
+   // Int_t           byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1;
+   // Int_t           byLooseIsolationMVArun2017v2DBoldDMwLT2017_1;
+   // Int_t           byMediumIsolationMVArun2017v2DBoldDMwLT2017_1;
+   // Int_t           byTightIsolationMVArun2017v2DBoldDMwLT2017_1;
+   // Int_t           byVTightIsolationMVArun2017v2DBoldDMwLT2017_1;
+   // Int_t           byVLooseIsolationMVArun2017v1DBoldDMwLT2017_1;
+   // Int_t           byLooseIsolationMVArun2017v1DBoldDMwLT2017_1;
+   // Int_t           byMediumIsolationMVArun2017v1DBoldDMwLT2017_1;
+   // Int_t           byTightIsolationMVArun2017v1DBoldDMwLT2017_1;
+   // Int_t           byVTightIsolationMVArun2017v1DBoldDMwLT2017_1;
+
+   Int_t           byVVVLooseIsolationDeepTau2017v2VSjet_1;
+   Int_t           byVVLooseIsolationDeepTau2017v2VSjet_1;
+   Int_t           byVLooseIsolationDeepTau2017v2VSjet_1;
+   Int_t           byLooseIsolationDeepTau2017v2VSjet_1;
+   Int_t           byMediumIsolationDeepTau2017v2VSjet_1;
+   Int_t           byTightIsolationDeepTau2017v2VSjet_1;
+   Int_t           byVTightIsolationDeepTau2017v2VSjet_1;
+   Int_t           byVVTightIsolationDeepTau2017v2VSjet_1;
 //    Int_t           byVLooseIsolationMVArun2v1DBnewDMwLT_1;
 //    Int_t           byLooseIsolationMVArun2v1DBnewDMwLT_1;
 //    Int_t           byMediumIsolationMVArun2v1DBnewDMwLT_1;
@@ -192,6 +203,7 @@ public :
    Float_t         neutralIsoPtSum_1;
    Float_t         puCorrPtSum_1;
    Int_t           decayModeFindingOldDMs_1;
+   Int_t           decayModeFindingNewDMs_1;
    Int_t           decayMode_1;
    Float_t         id_e_mva_nt_loose_1;
    Float_t         id_m_loose_1;
@@ -221,24 +233,33 @@ public :
    Int_t           againstElectronVTightMVA6_2;
    Int_t           againstMuonLoose3_2;
    Int_t           againstMuonTight3_2;
-   Float_t         byCombinedIsolationDeltaBetaCorrRaw3Hits_2;
-   Float_t           byLooseCombinedIsolationDeltaBetaCorr3Hits_2;
-   Float_t           byMediumCombinedIsolationDeltaBetaCorr3Hits_2;
-   Float_t           byTightCombinedIsolationDeltaBetaCorr3Hits_2;
-   Float_t           byIsolationMVA3newDMwoLTraw_2;
-   Float_t           byIsolationMVA3oldDMwoLTraw_2;
-   Int_t         byIsolationMVA3newDMwLTraw_2;
-   Int_t         byIsolationMVA3oldDMwLTraw_2;
-   Int_t           byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2;
-   Int_t           byLooseIsolationMVArun2017v2DBoldDMwLT2017_2;
-   Int_t           byMediumIsolationMVArun2017v2DBoldDMwLT2017_2;
-   Int_t           byTightIsolationMVArun2017v2DBoldDMwLT2017_2;
-   Int_t           byVTightIsolationMVArun2017v2DBoldDMwLT2017_2;
-   Int_t           byVLooseIsolationMVArun2017v1DBoldDMwLT2017_2;
-   Int_t           byLooseIsolationMVArun2017v1DBoldDMwLT2017_2;
-   Int_t           byMediumIsolationMVArun2017v1DBoldDMwLT2017_2;
-   Int_t           byTightIsolationMVArun2017v1DBoldDMwLT2017_2;
-   Int_t           byVTightIsolationMVArun2017v1DBoldDMwLT2017_2;
+   // Float_t         byCombinedIsolationDeltaBetaCorrRaw3Hits_2;
+   // Float_t           byLooseCombinedIsolationDeltaBetaCorr3Hits_2;
+   // Float_t           byMediumCombinedIsolationDeltaBetaCorr3Hits_2;
+   // Float_t           byTightCombinedIsolationDeltaBetaCorr3Hits_2;
+   // Float_t           byIsolationMVA3newDMwoLTraw_2;
+   // Float_t           byIsolationMVA3oldDMwoLTraw_2;
+   // Int_t         byIsolationMVA3newDMwLTraw_2;
+   // Int_t         byIsolationMVA3oldDMwLTraw_2;
+   // Int_t           byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2;
+   // Int_t           byLooseIsolationMVArun2017v2DBoldDMwLT2017_2;
+   // Int_t           byMediumIsolationMVArun2017v2DBoldDMwLT2017_2;
+   // Int_t           byTightIsolationMVArun2017v2DBoldDMwLT2017_2;
+   // Int_t           byVTightIsolationMVArun2017v2DBoldDMwLT2017_2;
+   // Int_t           byVLooseIsolationMVArun2017v1DBoldDMwLT2017_2;
+   // Int_t           byLooseIsolationMVArun2017v1DBoldDMwLT2017_2;
+   // Int_t           byMediumIsolationMVArun2017v1DBoldDMwLT2017_2;
+   // Int_t           byTightIsolationMVArun2017v1DBoldDMwLT2017_2;
+   // Int_t           byVTightIsolationMVArun2017v1DBoldDMwLT2017_2;
+
+   Int_t           byVVVLooseIsolationDeepTau2017v2VSjet_2;
+   Int_t           byVVLooseIsolationDeepTau2017v2VSjet_2;
+   Int_t           byVLooseIsolationDeepTau2017v2VSjet_2;
+   Int_t           byLooseIsolationDeepTau2017v2VSjet_2;
+   Int_t           byMediumIsolationDeepTau2017v2VSjet_2;
+   Int_t           byTightIsolationDeepTau2017v2VSjet_2;
+   Int_t           byVTightIsolationDeepTau2017v2VSjet_2;
+   Int_t           byVVTightIsolationDeepTau2017v2VSjet_2;
 //    Int_t           byVLooseIsolationMVArun2v1DBnewDMwLT_2;
 //    Int_t           byLooseIsolationMVArun2v1DBnewDMwLT_2;
 //    Int_t           byMediumIsolationMVArun2v1DBnewDMwLT_2;
@@ -255,6 +276,7 @@ public :
    Float_t         neutralIsoPtSum_2;
    Float_t         puCorrPtSum_2;
    Int_t           decayModeFindingOldDMs_2;
+   Int_t           decayModeFindingNewDMs_2;
    Int_t           decayMode_2;
    Float_t         pzetavis;
    Float_t         pzetamiss;
@@ -308,16 +330,27 @@ public :
    std::vector<double>  *addtau_phi;	//
    std::vector<double>  *addtau_m;		//
    std::vector<double>  *addtau_q;
+
+   std::vector<int>     *addtau_byVVVLooseIsolationDeepTau2017v2VSjet;
+   std::vector<int>     *addtau_byVVLooseIsolationDeepTau2017v2VSjet;
+   std::vector<int>     *addtau_byVLooseIsolationDeepTau2017v2VSjet;
+   std::vector<int>     *addtau_byLooseIsolationDeepTau2017v2VSjet;
+   std::vector<int>     *addtau_byMediumIsolationDeepTau2017v2VSjet;
+   std::vector<int>     *addtau_byTightIsolationDeepTau2017v2VSjet;
+   std::vector<int>     *addtau_byVTightIsolationDeepTau2017v2VSjet;
+   std::vector<int>     *addtau_byVVTightIsolationDeepTau2017v2VSjet;
+
 //    std::vector<double>  *addtau_byIsolationMVArun2v1DBnewDMwLTraw;
-   std::vector<double>  *addtau_byCombinedIsolationDeltaBetaCorrRaw3Hits;
-   std::vector<int>     *addtau_byMediumCombinedIsolationDeltaBetaCorr3Hits;
-   std::vector<int>     *addtau_byTightCombinedIsolationDeltaBetaCorr3Hits;
-   std::vector<int>     *addtau_byLooseCombinedIsolationDeltaBetaCorr3Hits;
-   std::vector<int>     *addtau_byVLooseIsolationMVArun2v1DBoldDMwLT;
-   std::vector<int>     *addtau_byLooseIsolationMVArun2v1DBoldDMwLT;
-   std::vector<int>     *addtau_byMediumIsolationMVArun2v1DBoldDMwLT;
-   std::vector<int>     *addtau_byTightIsolationMVArun2v1DBoldDMwLT;
-   std::vector<int>     *addtau_byVTightIsolationMVArun2v1DBoldDMwLT;
+   // std::vector<double>  *addtau_byCombinedIsolationDeltaBetaCorrRaw3Hits;
+   // std::vector<int>     *addtau_byMediumCombinedIsolationDeltaBetaCorr3Hits;
+   // std::vector<int>     *addtau_byTightCombinedIsolationDeltaBetaCorr3Hits;
+   // std::vector<int>     *addtau_byLooseCombinedIsolationDeltaBetaCorr3Hits;
+   // std::vector<int>     *addtau_byVLooseIsolationMVArun2v1DBoldDMwLT;
+   // std::vector<int>     *addtau_byLooseIsolationMVArun2v1DBoldDMwLT;
+   // std::vector<int>     *addtau_byMediumIsolationMVArun2v1DBoldDMwLT;
+   // std::vector<int>     *addtau_byTightIsolationMVArun2v1DBoldDMwLT;
+   // std::vector<int>     *addtau_byVTightIsolationMVArun2v1DBoldDMwLT;
+
 //    std::vector<int>     *addtau_byVLooseIsolationMVArun2v1DBnewDMwLT;
 //    std::vector<int>     *addtau_byLooseIsolationMVArun2v1DBnewDMwLT;
 //    std::vector<int>     *addtau_byMediumIsolationMVArun2v1DBnewDMwLT;
@@ -482,6 +515,7 @@ public :
    TBranch        *b_trg_singlemuon_24;   //!
    TBranch        *b_trg_singlemuon_27;   //!
    TBranch        *b_trg_crossmuon_mu20tau27;   //!
+   TBranch        *b_trg_singlemu_22;   //!
 //    TBranch        *b_trg_mutaucross;   //!
    TBranch        *b_trg_singleelectron;   //!
    TBranch        *b_trg_singleelectron_27;   //!
@@ -489,6 +523,7 @@ public :
    TBranch        *b_trg_singleelectron_35;   //!
    TBranch        *b_trg_singleelectron_lowpt;   //!
    TBranch        *b_trg_crossele_ele24tau30;   //!
+   TBranch        *b_trg_crossmu_mu19tau20;   //!
 //    TBranch        *b_trg_singletau;   //!
    TBranch        *b_trg_doubletau;   //!
    TBranch        *b_trg_doubletau_lowpt;   //!
@@ -559,24 +594,35 @@ public :
    TBranch        *b_againstElectronVTightMVA6_1;   //!
    TBranch        *b_againstMuonLoose3_1;   //!
    TBranch        *b_againstMuonTight3_1;   //!
-   TBranch        *b_byCombinedIsolationDeltaBetaCorrRaw3Hits_1;   //!
-   TBranch        *b_byLooseCombinedIsolationDeltaBetaCorr3Hits_1;   //!
-   TBranch        *b_byMediumCombinedIsolationDeltaBetaCorr3Hits_1;   //!
-   TBranch        *b_byTightCombinedIsolationDeltaBetaCorr3Hits_1;   //!
-   TBranch        *b_byIsolationMVA3newDMwoLTraw_1;   //!
-   TBranch        *b_byIsolationMVA3oldDMwoLTraw_1;   //!
-   TBranch        *b_byIsolationMVA3newDMwLTraw_1;   //!
-   TBranch        *b_byIsolationMVA3oldDMwLTraw_1;   //!
-   TBranch        *b_byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1;   //!
-   TBranch        *b_byLooseIsolationMVArun2017v2DBoldDMwLT2017_1;   //!
-   TBranch        *b_byMediumIsolationMVArun2017v2DBoldDMwLT2017_1;   //!
-   TBranch        *b_byTightIsolationMVArun2017v2DBoldDMwLT2017_1;   //!
-   TBranch        *b_byVTightIsolationMVArun2017v2DBoldDMwLT2017_1;   //!
-   TBranch        *b_byVLooseIsolationMVArun2017v1DBoldDMwLT2017_1;   //!
-   TBranch        *b_byLooseIsolationMVArun2017v1DBoldDMwLT2017_1;   //!
-   TBranch        *b_byMediumIsolationMVArun2017v1DBoldDMwLT2017_1;   //!
-   TBranch        *b_byTightIsolationMVArun2017v1DBoldDMwLT2017_1;   //!
-   TBranch        *b_byVTightIsolationMVArun2017v1DBoldDMwLT2017_1;   //!
+  
+   // TBranch        *b_byCombinedIsolationDeltaBetaCorrRaw3Hits_1;   //!
+   // TBranch        *b_byLooseCombinedIsolationDeltaBetaCorr3Hits_1;   //!
+   // TBranch        *b_byMediumCombinedIsolationDeltaBetaCorr3Hits_1;   //!
+   // TBranch        *b_byTightCombinedIsolationDeltaBetaCorr3Hits_1;   //!
+   // TBranch        *b_byIsolationMVA3newDMwoLTraw_1;   //!
+   // TBranch        *b_byIsolationMVA3oldDMwoLTraw_1;   //!
+   // TBranch        *b_byIsolationMVA3newDMwLTraw_1;   //!
+   // TBranch        *b_byIsolationMVA3oldDMwLTraw_1;   //!
+   // TBranch        *b_byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1;   //!
+   // TBranch        *b_byLooseIsolationMVArun2017v2DBoldDMwLT2017_1;   //!
+   // TBranch        *b_byMediumIsolationMVArun2017v2DBoldDMwLT2017_1;   //!
+   // TBranch        *b_byTightIsolationMVArun2017v2DBoldDMwLT2017_1;   //!
+   // TBranch        *b_byVTightIsolationMVArun2017v2DBoldDMwLT2017_1;   //!
+   // TBranch        *b_byVLooseIsolationMVArun2017v1DBoldDMwLT2017_1;   //!
+   // TBranch        *b_byLooseIsolationMVArun2017v1DBoldDMwLT2017_1;   //!
+   // TBranch        *b_byMediumIsolationMVArun2017v1DBoldDMwLT2017_1;   //!
+   // TBranch        *b_byTightIsolationMVArun2017v1DBoldDMwLT2017_1;   //!
+   // TBranch        *b_byVTightIsolationMVArun2017v1DBoldDMwLT2017_1;   //!
+
+   TBranch        *b_byVVVLooseIsolationDeepTau2017v2VSjet_1;
+   TBranch        *b_byVVLooseIsolationDeepTau2017v2VSjet_1;
+   TBranch        *b_byVLooseIsolationDeepTau2017v2VSjet_1;
+   TBranch        *b_byLooseIsolationDeepTau2017v2VSjet_1;
+   TBranch        *b_byMediumIsolationDeepTau2017v2VSjet_1;
+   TBranch        *b_byTightIsolationDeepTau2017v2VSjet_1;
+   TBranch        *b_byVTightIsolationDeepTau2017v2VSjet_1;
+   TBranch        *b_byVVTightIsolationDeepTau2017v2VSjet_1;
+
 //    TBranch        *b_byVLooseIsolationMVArun2v1DBnewDMwLT_1;   //!
 //    TBranch        *b_byLooseIsolationMVArun2v1DBnewDMwLT_1;   //!
 //    TBranch        *b_byMediumIsolationMVArun2v1DBnewDMwLT_1;   //!
@@ -593,6 +639,7 @@ public :
    TBranch        *b_neutralIsoPtSum_1;   //!
    TBranch        *b_puCorrPtSum_1;   //!
    TBranch        *b_decayModeFindingOldDMs_1;   //!
+   TBranch        *b_decayModeFindingNewDMs_1;   //!
    TBranch        *b_decayMode_1;   //!
    TBranch        *b_id_e_mva_nt_loose_1;   //!
    TBranch        *b_id_m_loose_1;   //!
@@ -622,24 +669,34 @@ public :
    TBranch        *b_againstElectronVTightMVA6_2;   //!
    TBranch        *b_againstMuonLoose3_2;   //!
    TBranch        *b_againstMuonTight3_2;   //!
-   TBranch        *b_byCombinedIsolationDeltaBetaCorrRaw3Hits_2;   //!
-   TBranch        *b_byLooseCombinedIsolationDeltaBetaCorr3Hits_2;   //!
-   TBranch        *b_byMediumCombinedIsolationDeltaBetaCorr3Hits_2;   //!
-   TBranch        *b_byTightCombinedIsolationDeltaBetaCorr3Hits_2;   //!
-   TBranch        *b_byIsolationMVA3newDMwoLTraw_2;   //!
-   TBranch        *b_byIsolationMVA3oldDMwoLTraw_2;   //!
-   TBranch        *b_byIsolationMVA3newDMwLTraw_2;   //!
-   TBranch        *b_byIsolationMVA3oldDMwLTraw_2;   //!
-   TBranch        *b_byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2;   //!
-   TBranch        *b_byLooseIsolationMVArun2017v2DBoldDMwLT2017_2;   //!
-   TBranch        *b_byMediumIsolationMVArun2017v2DBoldDMwLT2017_2;   //!
-   TBranch        *b_byTightIsolationMVArun2017v2DBoldDMwLT2017_2;   //!
-   TBranch        *b_byVTightIsolationMVArun2017v2DBoldDMwLT2017_2;   //!
-   TBranch        *b_byVLooseIsolationMVArun2017v1DBoldDMwLT2017_2;   //!
-   TBranch        *b_byLooseIsolationMVArun2017v1DBoldDMwLT2017_2;   //!
-   TBranch        *b_byMediumIsolationMVArun2017v1DBoldDMwLT2017_2;   //!
-   TBranch        *b_byTightIsolationMVArun2017v1DBoldDMwLT2017_2;   //!
-   TBranch        *b_byVTightIsolationMVArun2017v1DBoldDMwLT2017_2;   //!
+   // TBranch        *b_byCombinedIsolationDeltaBetaCorrRaw3Hits_2;   //!
+   // TBranch        *b_byLooseCombinedIsolationDeltaBetaCorr3Hits_2;   //!
+   // TBranch        *b_byMediumCombinedIsolationDeltaBetaCorr3Hits_2;   //!
+   // TBranch        *b_byTightCombinedIsolationDeltaBetaCorr3Hits_2;   //!
+   // TBranch        *b_byIsolationMVA3newDMwoLTraw_2;   //!
+   // TBranch        *b_byIsolationMVA3oldDMwoLTraw_2;   //!
+   // TBranch        *b_byIsolationMVA3newDMwLTraw_2;   //!
+   // TBranch        *b_byIsolationMVA3oldDMwLTraw_2;   //!
+   // TBranch        *b_byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2;   //!
+   // TBranch        *b_byLooseIsolationMVArun2017v2DBoldDMwLT2017_2;   //!
+   // TBranch        *b_byMediumIsolationMVArun2017v2DBoldDMwLT2017_2;   //!
+   // TBranch        *b_byTightIsolationMVArun2017v2DBoldDMwLT2017_2;   //!
+   // TBranch        *b_byVTightIsolationMVArun2017v2DBoldDMwLT2017_2;   //!
+   // TBranch        *b_byVLooseIsolationMVArun2017v1DBoldDMwLT2017_2;   //!
+   // TBranch        *b_byLooseIsolationMVArun2017v1DBoldDMwLT2017_2;   //!
+   // TBranch        *b_byMediumIsolationMVArun2017v1DBoldDMwLT2017_2;   //!
+   // TBranch        *b_byTightIsolationMVArun2017v1DBoldDMwLT2017_2;   //!
+   // TBranch        *b_byVTightIsolationMVArun2017v1DBoldDMwLT2017_2;   //!
+
+   TBranch        *b_byVVVLooseIsolationDeepTau2017v2VSjet_2;
+   TBranch        *b_byVVLooseIsolationDeepTau2017v2VSjet_2;
+   TBranch        *b_byVLooseIsolationDeepTau2017v2VSjet_2;
+   TBranch        *b_byLooseIsolationDeepTau2017v2VSjet_2;
+   TBranch        *b_byMediumIsolationDeepTau2017v2VSjet_2;
+   TBranch        *b_byTightIsolationDeepTau2017v2VSjet_2;
+   TBranch        *b_byVTightIsolationDeepTau2017v2VSjet_2;
+   TBranch        *b_byVVTightIsolationDeepTau2017v2VSjet_2;
+
 //    TBranch        *b_byVLooseIsolationMVArun2v1DBnewDMwLT_2;   //!
 //    TBranch        *b_byLooseIsolationMVArun2v1DBnewDMwLT_2;   //!
 //    TBranch        *b_byMediumIsolationMVArun2v1DBnewDMwLT_2;   //!
@@ -656,6 +713,7 @@ public :
    TBranch        *b_neutralIsoPtSum_2;   //!
    TBranch        *b_puCorrPtSum_2;   //!
    TBranch        *b_decayModeFindingOldDMs_2;   //!
+   TBranch        *b_decayModeFindingNewDMs_2;   //!
    TBranch        *b_decayMode_2;   //!
    TBranch        *b_pzetavis;   //!
    TBranch        *b_pzetamiss;   //!
@@ -710,15 +768,24 @@ public :
    TBranch        *b_addtau_m;   //!
    TBranch        *b_addtau_q;   //!
 //    TBranch        *b_addtau_byIsolationMVArun2v1DBnewDMwLTraw;   //!
-   TBranch        *b_addtau_byCombinedIsolationDeltaBetaCorrRaw3Hits;   //!
-   TBranch        *b_addtau_byMediumCombinedIsolationDeltaBetaCorr3Hits;   //!
-   TBranch        *b_addtau_byTightCombinedIsolationDeltaBetaCorr3Hits;   //!
-   TBranch        *b_addtau_byLooseCombinedIsolationDeltaBetaCorr3Hits;   //!
-   TBranch        *b_addtau_byVLooseIsolationMVArun2v1DBoldDMwLT;   //!
-   TBranch        *b_addtau_byLooseIsolationMVArun2v1DBoldDMwLT;   //!
-   TBranch        *b_addtau_byMediumIsolationMVArun2v1DBoldDMwLT;   //!
-   TBranch        *b_addtau_byTightIsolationMVArun2v1DBoldDMwLT;   //!
-   TBranch        *b_addtau_byVTightIsolationMVArun2v1DBoldDMwLT;   //!
+   // TBranch        *b_addtau_byCombinedIsolationDeltaBetaCorrRaw3Hits;   //!
+   // TBranch        *b_addtau_byMediumCombinedIsolationDeltaBetaCorr3Hits;   //!
+   // TBranch        *b_addtau_byTightCombinedIsolationDeltaBetaCorr3Hits;   //!
+   // TBranch        *b_addtau_byLooseCombinedIsolationDeltaBetaCorr3Hits;   //!
+   // TBranch        *b_addtau_byVLooseIsolationMVArun2v1DBoldDMwLT;   //!
+   // TBranch        *b_addtau_byLooseIsolationMVArun2v1DBoldDMwLT;   //!
+   // TBranch        *b_addtau_byMediumIsolationMVArun2v1DBoldDMwLT;   //!
+   // TBranch        *b_addtau_byTightIsolationMVArun2v1DBoldDMwLT;   //!
+   // TBranch        *b_addtau_byVTightIsolationMVArun2v1DBoldDMwLT;   //!
+
+   TBranch        *b_addtau_byVVVLooseIsolationDeepTau2017v2VSjet;
+   TBranch        *b_addtau_byVVLooseIsolationDeepTau2017v2VSjet;
+   TBranch        *b_addtau_byVLooseIsolationDeepTau2017v2VSjet;
+   TBranch        *b_addtau_byLooseIsolationDeepTau2017v2VSjet;
+   TBranch        *b_addtau_byMediumIsolationDeepTau2017v2VSjet;
+   TBranch        *b_addtau_byTightIsolationDeepTau2017v2VSjet;
+   TBranch        *b_addtau_byVTightIsolationDeepTau2017v2VSjet;
+   TBranch        *b_addtau_byVVTightIsolationDeepTau2017v2VSjet;
 //    TBranch        *b_addtau_byVLooseIsolationMVArun2v1DBnewDMwLT;   //!
 //    TBranch        *b_addtau_byLooseIsolationMVArun2v1DBnewDMwLT;   //!
 //    TBranch        *b_addtau_byMediumIsolationMVArun2v1DBnewDMwLT;   //!
@@ -921,15 +988,15 @@ void NtupleClass::Init(TTree *tree)
    addtau_m = 0;
    addtau_q = 0;
 //    addtau_byIsolationMVArun2v1DBnewDMwLTraw = 0;
-   addtau_byCombinedIsolationDeltaBetaCorrRaw3Hits = 0;
-   addtau_byMediumCombinedIsolationDeltaBetaCorr3Hits = 0;
-   addtau_byTightCombinedIsolationDeltaBetaCorr3Hits = 0;
-   addtau_byLooseCombinedIsolationDeltaBetaCorr3Hits = 0;
-   addtau_byVLooseIsolationMVArun2v1DBoldDMwLT = 0;
-   addtau_byLooseIsolationMVArun2v1DBoldDMwLT = 0;
-   addtau_byMediumIsolationMVArun2v1DBoldDMwLT = 0;
-   addtau_byTightIsolationMVArun2v1DBoldDMwLT = 0;
-   addtau_byVTightIsolationMVArun2v1DBoldDMwLT = 0;
+   // addtau_byCombinedIsolationDeltaBetaCorrRaw3Hits = 0;
+   // addtau_byMediumCombinedIsolationDeltaBetaCorr3Hits = 0;
+   // addtau_byTightCombinedIsolationDeltaBetaCorr3Hits = 0;
+   // addtau_byLooseCombinedIsolationDeltaBetaCorr3Hits = 0;
+   // addtau_byVLooseIsolationMVArun2v1DBoldDMwLT = 0;
+   // addtau_byLooseIsolationMVArun2v1DBoldDMwLT = 0;
+   // addtau_byMediumIsolationMVArun2v1DBoldDMwLT = 0;
+   // addtau_byTightIsolationMVArun2v1DBoldDMwLT = 0;
+   // addtau_byVTightIsolationMVArun2v1DBoldDMwLT = 0;
 //    addtau_byVLooseIsolationMVArun2v1DBnewDMwLT = 0;
 //    addtau_byLooseIsolationMVArun2v1DBnewDMwLT = 0;
 //    addtau_byMediumIsolationMVArun2v1DBnewDMwLT = 0;
@@ -941,6 +1008,15 @@ void NtupleClass::Init(TTree *tree)
 //    addtau_NewMVAIDTight = 0;
 //    addtau_NewMVAIDVTight = 0;
 //    addtau_NewMVAIDVVTight = 0;
+   addtau_byVVVLooseIsolationDeepTau2017v2VSjet = 0;
+   addtau_byVVLooseIsolationDeepTau2017v2VSjet = 0;
+   addtau_byVLooseIsolationDeepTau2017v2VSjet = 0;
+   addtau_byLooseIsolationDeepTau2017v2VSjet = 0;
+   addtau_byMediumIsolationDeepTau2017v2VSjet = 0;
+   addtau_byTightIsolationDeepTau2017v2VSjet = 0;
+   addtau_byVTightIsolationDeepTau2017v2VSjet = 0;
+   addtau_byVVTightIsolationDeepTau2017v2VSjet = 0;
+
    addtau_passesTauLepVetos = 0;
    addtau_decayMode = 0;
    addtau_d0 = 0;
@@ -1010,6 +1086,10 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("trg_singlemuon_lowpt", &trg_singlemuon_lowpt, &b_trg_singlemuon_lowpt);
    fChain->SetBranchAddress("trg_singlemuon_24", &trg_singlemuon_24, &b_trg_singlemuon_24);
    fChain->SetBranchAddress("trg_singlemuon_27", &trg_singlemuon_27, &b_trg_singlemuon_27);
+   
+   fChain->SetBranchAddress("trg_singlemu_22", &trg_singlemu_22, &b_trg_singlemu_22);
+   fChain->SetBranchAddress("trg_crossmu_mu19tau20", &trg_crossmu_mu19tau20, &b_trg_crossmu_mu19tau20);
+   
    fChain->SetBranchAddress("trg_crossmuon_mu20tau27", &trg_crossmuon_mu20tau27, &b_trg_crossmuon_mu20tau27);
 //    fChain->SetBranchAddress("trg_mutaucross", &trg_mutaucross, &b_trg_mutaucross);
    fChain->SetBranchAddress("trg_singleelectron_27", &trg_singleelectron_27, &b_trg_singleelectron_27);
@@ -1087,24 +1167,35 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("againstElectronVTightMVA6_1", &againstElectronVTightMVA6_1, &b_againstElectronVTightMVA6_1);
    fChain->SetBranchAddress("againstMuonLoose3_1", &againstMuonLoose3_1, &b_againstMuonLoose3_1);
    fChain->SetBranchAddress("againstMuonTight3_1", &againstMuonTight3_1, &b_againstMuonTight3_1);
-   fChain->SetBranchAddress("byCombinedIsolationDeltaBetaCorrRaw3Hits_1", &byCombinedIsolationDeltaBetaCorrRaw3Hits_1, &b_byCombinedIsolationDeltaBetaCorrRaw3Hits_1);
-   fChain->SetBranchAddress("byLooseCombinedIsolationDeltaBetaCorr3Hits_1", &byLooseCombinedIsolationDeltaBetaCorr3Hits_1, &b_byLooseCombinedIsolationDeltaBetaCorr3Hits_1);
-   fChain->SetBranchAddress("byMediumCombinedIsolationDeltaBetaCorr3Hits_1", &byMediumCombinedIsolationDeltaBetaCorr3Hits_1, &b_byMediumCombinedIsolationDeltaBetaCorr3Hits_1);
-   fChain->SetBranchAddress("byTightCombinedIsolationDeltaBetaCorr3Hits_1", &byTightCombinedIsolationDeltaBetaCorr3Hits_1, &b_byTightCombinedIsolationDeltaBetaCorr3Hits_1);
-   fChain->SetBranchAddress("byIsolationMVA3newDMwoLTraw_1", &byIsolationMVA3newDMwoLTraw_1, &b_byIsolationMVA3newDMwoLTraw_1);
-   fChain->SetBranchAddress("byIsolationMVA3oldDMwoLTraw_1", &byIsolationMVA3oldDMwoLTraw_1, &b_byIsolationMVA3oldDMwoLTraw_1);
-   fChain->SetBranchAddress("byIsolationMVA3newDMwLTraw_1", &byIsolationMVA3newDMwLTraw_1, &b_byIsolationMVA3newDMwLTraw_1);
-   fChain->SetBranchAddress("byIsolationMVA3oldDMwLTraw_1", &byIsolationMVA3oldDMwLTraw_1, &b_byIsolationMVA3oldDMwLTraw_1);
-   fChain->SetBranchAddress("byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1", &byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1, &b_byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1);
-   fChain->SetBranchAddress("byLooseIsolationMVArun2017v2DBoldDMwLT2017_1", &byLooseIsolationMVArun2017v2DBoldDMwLT2017_1, &b_byLooseIsolationMVArun2017v2DBoldDMwLT2017_1);
-   fChain->SetBranchAddress("byMediumIsolationMVArun2017v2DBoldDMwLT2017_1", &byMediumIsolationMVArun2017v2DBoldDMwLT2017_1, &b_byMediumIsolationMVArun2017v2DBoldDMwLT2017_1);
-   fChain->SetBranchAddress("byTightIsolationMVArun2017v2DBoldDMwLT2017_1", &byTightIsolationMVArun2017v2DBoldDMwLT2017_1, &b_byTightIsolationMVArun2017v2DBoldDMwLT2017_1);
-   fChain->SetBranchAddress("byVTightIsolationMVArun2017v2DBoldDMwLT2017_1", &byVTightIsolationMVArun2017v2DBoldDMwLT2017_1, &b_byVTightIsolationMVArun2017v2DBoldDMwLT2017_1);
-   fChain->SetBranchAddress("byVLooseIsolationMVArun2017v1DBoldDMwLT2017_1", &byVLooseIsolationMVArun2017v1DBoldDMwLT2017_1, &b_byVLooseIsolationMVArun2017v1DBoldDMwLT2017_1);
-   fChain->SetBranchAddress("byLooseIsolationMVArun2017v1DBoldDMwLT2017_1", &byLooseIsolationMVArun2017v1DBoldDMwLT2017_1, &b_byLooseIsolationMVArun2017v1DBoldDMwLT2017_1);
-   fChain->SetBranchAddress("byMediumIsolationMVArun2017v1DBoldDMwLT2017_1", &byMediumIsolationMVArun2017v1DBoldDMwLT2017_1, &b_byMediumIsolationMVArun2017v1DBoldDMwLT2017_1);
-   fChain->SetBranchAddress("byTightIsolationMVArun2017v1DBoldDMwLT2017_1", &byTightIsolationMVArun2017v1DBoldDMwLT2017_1, &b_byTightIsolationMVArun2017v1DBoldDMwLT2017_1);
-   fChain->SetBranchAddress("byVTightIsolationMVArun2017v1DBoldDMwLT2017_1", &byVTightIsolationMVArun2017v1DBoldDMwLT2017_1, &b_byVTightIsolationMVArun2017v1DBoldDMwLT2017_1);
+   // fChain->SetBranchAddress("byCombinedIsolationDeltaBetaCorrRaw3Hits_1", &byCombinedIsolationDeltaBetaCorrRaw3Hits_1, &b_byCombinedIsolationDeltaBetaCorrRaw3Hits_1);
+   // fChain->SetBranchAddress("byLooseCombinedIsolationDeltaBetaCorr3Hits_1", &byLooseCombinedIsolationDeltaBetaCorr3Hits_1, &b_byLooseCombinedIsolationDeltaBetaCorr3Hits_1);
+   // fChain->SetBranchAddress("byMediumCombinedIsolationDeltaBetaCorr3Hits_1", &byMediumCombinedIsolationDeltaBetaCorr3Hits_1, &b_byMediumCombinedIsolationDeltaBetaCorr3Hits_1);
+   // fChain->SetBranchAddress("byTightCombinedIsolationDeltaBetaCorr3Hits_1", &byTightCombinedIsolationDeltaBetaCorr3Hits_1, &b_byTightCombinedIsolationDeltaBetaCorr3Hits_1);
+   // fChain->SetBranchAddress("byIsolationMVA3newDMwoLTraw_1", &byIsolationMVA3newDMwoLTraw_1, &b_byIsolationMVA3newDMwoLTraw_1);
+   // fChain->SetBranchAddress("byIsolationMVA3oldDMwoLTraw_1", &byIsolationMVA3oldDMwoLTraw_1, &b_byIsolationMVA3oldDMwoLTraw_1);
+   // fChain->SetBranchAddress("byIsolationMVA3newDMwLTraw_1", &byIsolationMVA3newDMwLTraw_1, &b_byIsolationMVA3newDMwLTraw_1);
+   // fChain->SetBranchAddress("byIsolationMVA3oldDMwLTraw_1", &byIsolationMVA3oldDMwLTraw_1, &b_byIsolationMVA3oldDMwLTraw_1);
+   // fChain->SetBranchAddress("byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1", &byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1, &b_byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1);
+   // fChain->SetBranchAddress("byLooseIsolationMVArun2017v2DBoldDMwLT2017_1", &byLooseIsolationMVArun2017v2DBoldDMwLT2017_1, &b_byLooseIsolationMVArun2017v2DBoldDMwLT2017_1);
+   // fChain->SetBranchAddress("byMediumIsolationMVArun2017v2DBoldDMwLT2017_1", &byMediumIsolationMVArun2017v2DBoldDMwLT2017_1, &b_byMediumIsolationMVArun2017v2DBoldDMwLT2017_1);
+   // fChain->SetBranchAddress("byTightIsolationMVArun2017v2DBoldDMwLT2017_1", &byTightIsolationMVArun2017v2DBoldDMwLT2017_1, &b_byTightIsolationMVArun2017v2DBoldDMwLT2017_1);
+   // fChain->SetBranchAddress("byVTightIsolationMVArun2017v2DBoldDMwLT2017_1", &byVTightIsolationMVArun2017v2DBoldDMwLT2017_1, &b_byVTightIsolationMVArun2017v2DBoldDMwLT2017_1);
+   // fChain->SetBranchAddress("byVLooseIsolationMVArun2017v1DBoldDMwLT2017_1", &byVLooseIsolationMVArun2017v1DBoldDMwLT2017_1, &b_byVLooseIsolationMVArun2017v1DBoldDMwLT2017_1);
+   // fChain->SetBranchAddress("byLooseIsolationMVArun2017v1DBoldDMwLT2017_1", &byLooseIsolationMVArun2017v1DBoldDMwLT2017_1, &b_byLooseIsolationMVArun2017v1DBoldDMwLT2017_1);
+   // fChain->SetBranchAddress("byMediumIsolationMVArun2017v1DBoldDMwLT2017_1", &byMediumIsolationMVArun2017v1DBoldDMwLT2017_1, &b_byMediumIsolationMVArun2017v1DBoldDMwLT2017_1);
+   // fChain->SetBranchAddress("byTightIsolationMVArun2017v1DBoldDMwLT2017_1", &byTightIsolationMVArun2017v1DBoldDMwLT2017_1, &b_byTightIsolationMVArun2017v1DBoldDMwLT2017_1);
+   // fChain->SetBranchAddress("byVTightIsolationMVArun2017v1DBoldDMwLT2017_1", &byVTightIsolationMVArun2017v1DBoldDMwLT2017_1, &b_byVTightIsolationMVArun2017v1DBoldDMwLT2017_1);
+
+   fChain->SetBranchAddress("byVVVLooseIsolationDeepTau2017v2VSjet_1", &byVVVLooseIsolationDeepTau2017v2VSjet_1, &b_byVVVLooseIsolationDeepTau2017v2VSjet_1);
+   fChain->SetBranchAddress("byVVLooseIsolationDeepTau2017v2VSjet_1", &byVVLooseIsolationDeepTau2017v2VSjet_1, &b_byVVLooseIsolationDeepTau2017v2VSjet_1);
+   fChain->SetBranchAddress("byVLooseIsolationDeepTau2017v2VSjet_1", &byVLooseIsolationDeepTau2017v2VSjet_1, &b_byVLooseIsolationDeepTau2017v2VSjet_1);
+   fChain->SetBranchAddress("byLooseIsolationDeepTau2017v2VSjet_1", &byLooseIsolationDeepTau2017v2VSjet_1, &b_byLooseIsolationDeepTau2017v2VSjet_1);
+   fChain->SetBranchAddress("byMediumIsolationDeepTau2017v2VSjet_1", &byMediumIsolationDeepTau2017v2VSjet_1, &b_byMediumIsolationDeepTau2017v2VSjet_1);
+   fChain->SetBranchAddress("byTightIsolationDeepTau2017v2VSjet_1", &byTightIsolationDeepTau2017v2VSjet_1, &b_byTightIsolationDeepTau2017v2VSjet_1);
+   fChain->SetBranchAddress("byVTightIsolationDeepTau2017v2VSjet_1", &byVTightIsolationDeepTau2017v2VSjet_1, &b_byVTightIsolationDeepTau2017v2VSjet_1);
+   fChain->SetBranchAddress("byVVTightIsolationDeepTau2017v2VSjet_1", &byVVTightIsolationDeepTau2017v2VSjet_1, &b_byVVTightIsolationDeepTau2017v2VSjet_1);
+
+
 //    fChain->SetBranchAddress("byVLooseIsolationMVArun2v1DBnewDMwLT_1", &byVLooseIsolationMVArun2v1DBnewDMwLT_1, &b_byVLooseIsolationMVArun2v1DBnewDMwLT_1);
 //    fChain->SetBranchAddress("byLooseIsolationMVArun2v1DBnewDMwLT_1", &byLooseIsolationMVArun2v1DBnewDMwLT_1, &b_byLooseIsolationMVArun2v1DBnewDMwLT_1);
 //    fChain->SetBranchAddress("byMediumIsolationMVArun2v1DBnewDMwLT_1", &byMediumIsolationMVArun2v1DBnewDMwLT_1, &b_byMediumIsolationMVArun2v1DBnewDMwLT_1);
@@ -1121,6 +1212,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("neutralIsoPtSum_1", &neutralIsoPtSum_1, &b_neutralIsoPtSum_1);
    fChain->SetBranchAddress("puCorrPtSum_1", &puCorrPtSum_1, &b_puCorrPtSum_1);
    fChain->SetBranchAddress("decayModeFindingOldDMs_1", &decayModeFindingOldDMs_1, &b_decayModeFindingOldDMs_1);
+   fChain->SetBranchAddress("decayModeFindingNewDMs_1", &decayModeFindingNewDMs_1, &b_decayModeFindingNewDMs_1);
    fChain->SetBranchAddress("decayMode_1", &decayMode_1, &b_decayMode_1);
    fChain->SetBranchAddress("id_e_mva_nt_loose_1", &id_e_mva_nt_loose_1, &b_id_e_mva_nt_loose_1);
    fChain->SetBranchAddress("id_m_loose_1", &id_m_loose_1, &b_id_m_loose_1);
@@ -1150,24 +1242,36 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("againstElectronVTightMVA6_2", &againstElectronVTightMVA6_2, &b_againstElectronVTightMVA6_2);
    fChain->SetBranchAddress("againstMuonLoose3_2", &againstMuonLoose3_2, &b_againstMuonLoose3_2);
    fChain->SetBranchAddress("againstMuonTight3_2", &againstMuonTight3_2, &b_againstMuonTight3_2);
-   fChain->SetBranchAddress("byCombinedIsolationDeltaBetaCorrRaw3Hits_2", &byCombinedIsolationDeltaBetaCorrRaw3Hits_2, &b_byCombinedIsolationDeltaBetaCorrRaw3Hits_2);
-   fChain->SetBranchAddress("byLooseCombinedIsolationDeltaBetaCorr3Hits_2", &byLooseCombinedIsolationDeltaBetaCorr3Hits_2, &b_byLooseCombinedIsolationDeltaBetaCorr3Hits_2);
-   fChain->SetBranchAddress("byMediumCombinedIsolationDeltaBetaCorr3Hits_2", &byMediumCombinedIsolationDeltaBetaCorr3Hits_2, &b_byMediumCombinedIsolationDeltaBetaCorr3Hits_2);
-   fChain->SetBranchAddress("byTightCombinedIsolationDeltaBetaCorr3Hits_2", &byTightCombinedIsolationDeltaBetaCorr3Hits_2, &b_byTightCombinedIsolationDeltaBetaCorr3Hits_2);
-   fChain->SetBranchAddress("byIsolationMVA3newDMwoLTraw_2", &byIsolationMVA3newDMwoLTraw_2, &b_byIsolationMVA3newDMwoLTraw_2);
-   fChain->SetBranchAddress("byIsolationMVA3oldDMwoLTraw_2", &byIsolationMVA3oldDMwoLTraw_2, &b_byIsolationMVA3oldDMwoLTraw_2);
-   fChain->SetBranchAddress("byIsolationMVA3newDMwLTraw_2", &byIsolationMVA3newDMwLTraw_2, &b_byIsolationMVA3newDMwLTraw_2);
-   fChain->SetBranchAddress("byIsolationMVA3oldDMwLTraw_2", &byIsolationMVA3oldDMwLTraw_2, &b_byIsolationMVA3oldDMwLTraw_2);
-   fChain->SetBranchAddress("byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2", &byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2, &b_byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2);
-   fChain->SetBranchAddress("byLooseIsolationMVArun2017v2DBoldDMwLT2017_2", &byLooseIsolationMVArun2017v2DBoldDMwLT2017_2, &b_byLooseIsolationMVArun2017v2DBoldDMwLT2017_2);
-   fChain->SetBranchAddress("byMediumIsolationMVArun2017v2DBoldDMwLT2017_2", &byMediumIsolationMVArun2017v2DBoldDMwLT2017_2, &b_byMediumIsolationMVArun2017v2DBoldDMwLT2017_2);
-   fChain->SetBranchAddress("byTightIsolationMVArun2017v2DBoldDMwLT2017_2", &byTightIsolationMVArun2017v2DBoldDMwLT2017_2, &b_byTightIsolationMVArun2017v2DBoldDMwLT2017_2);
-   fChain->SetBranchAddress("byVTightIsolationMVArun2017v2DBoldDMwLT2017_2", &byVTightIsolationMVArun2017v2DBoldDMwLT2017_2, &b_byVTightIsolationMVArun2017v2DBoldDMwLT2017_2);
-   fChain->SetBranchAddress("byVLooseIsolationMVArun2017v1DBoldDMwLT2017_2", &byVLooseIsolationMVArun2017v1DBoldDMwLT2017_2, &b_byVLooseIsolationMVArun2017v1DBoldDMwLT2017_2);
-   fChain->SetBranchAddress("byLooseIsolationMVArun2017v1DBoldDMwLT2017_2", &byLooseIsolationMVArun2017v1DBoldDMwLT2017_2, &b_byLooseIsolationMVArun2017v1DBoldDMwLT2017_2);
-   fChain->SetBranchAddress("byMediumIsolationMVArun2017v1DBoldDMwLT2017_2", &byMediumIsolationMVArun2017v1DBoldDMwLT2017_2, &b_byMediumIsolationMVArun2017v1DBoldDMwLT2017_2);
-   fChain->SetBranchAddress("byTightIsolationMVArun2017v1DBoldDMwLT2017_2", &byTightIsolationMVArun2017v1DBoldDMwLT2017_2, &b_byTightIsolationMVArun2017v1DBoldDMwLT2017_2);
-   fChain->SetBranchAddress("byVTightIsolationMVArun2017v1DBoldDMwLT2017_2", &byVTightIsolationMVArun2017v1DBoldDMwLT2017_2, &b_byVTightIsolationMVArun2017v1DBoldDMwLT2017_2);
+   // fChain->SetBranchAddress("byCombinedIsolationDeltaBetaCorrRaw3Hits_2", &byCombinedIsolationDeltaBetaCorrRaw3Hits_2, &b_byCombinedIsolationDeltaBetaCorrRaw3Hits_2);
+   // fChain->SetBranchAddress("byLooseCombinedIsolationDeltaBetaCorr3Hits_2", &byLooseCombinedIsolationDeltaBetaCorr3Hits_2, &b_byLooseCombinedIsolationDeltaBetaCorr3Hits_2);
+   // fChain->SetBranchAddress("byMediumCombinedIsolationDeltaBetaCorr3Hits_2", &byMediumCombinedIsolationDeltaBetaCorr3Hits_2, &b_byMediumCombinedIsolationDeltaBetaCorr3Hits_2);
+   // fChain->SetBranchAddress("byTightCombinedIsolationDeltaBetaCorr3Hits_2", &byTightCombinedIsolationDeltaBetaCorr3Hits_2, &b_byTightCombinedIsolationDeltaBetaCorr3Hits_2);
+   // fChain->SetBranchAddress("byIsolationMVA3newDMwoLTraw_2", &byIsolationMVA3newDMwoLTraw_2, &b_byIsolationMVA3newDMwoLTraw_2);
+   // fChain->SetBranchAddress("byIsolationMVA3oldDMwoLTraw_2", &byIsolationMVA3oldDMwoLTraw_2, &b_byIsolationMVA3oldDMwoLTraw_2);
+   // fChain->SetBranchAddress("byIsolationMVA3newDMwLTraw_2", &byIsolationMVA3newDMwLTraw_2, &b_byIsolationMVA3newDMwLTraw_2);
+   // fChain->SetBranchAddress("byIsolationMVA3oldDMwLTraw_2", &byIsolationMVA3oldDMwLTraw_2, &b_byIsolationMVA3oldDMwLTraw_2);
+   // fChain->SetBranchAddress("byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2", &byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2, &b_byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2);
+   // fChain->SetBranchAddress("byLooseIsolationMVArun2017v2DBoldDMwLT2017_2", &byLooseIsolationMVArun2017v2DBoldDMwLT2017_2, &b_byLooseIsolationMVArun2017v2DBoldDMwLT2017_2);
+   // fChain->SetBranchAddress("byMediumIsolationMVArun2017v2DBoldDMwLT2017_2", &byMediumIsolationMVArun2017v2DBoldDMwLT2017_2, &b_byMediumIsolationMVArun2017v2DBoldDMwLT2017_2);
+   // fChain->SetBranchAddress("byTightIsolationMVArun2017v2DBoldDMwLT2017_2", &byTightIsolationMVArun2017v2DBoldDMwLT2017_2, &b_byTightIsolationMVArun2017v2DBoldDMwLT2017_2);
+   // fChain->SetBranchAddress("byVTightIsolationMVArun2017v2DBoldDMwLT2017_2", &byVTightIsolationMVArun2017v2DBoldDMwLT2017_2, &b_byVTightIsolationMVArun2017v2DBoldDMwLT2017_2);
+   // fChain->SetBranchAddress("byVLooseIsolationMVArun2017v1DBoldDMwLT2017_2", &byVLooseIsolationMVArun2017v1DBoldDMwLT2017_2, &b_byVLooseIsolationMVArun2017v1DBoldDMwLT2017_2);
+   // fChain->SetBranchAddress("byLooseIsolationMVArun2017v1DBoldDMwLT2017_2", &byLooseIsolationMVArun2017v1DBoldDMwLT2017_2, &b_byLooseIsolationMVArun2017v1DBoldDMwLT2017_2);
+   // fChain->SetBranchAddress("byMediumIsolationMVArun2017v1DBoldDMwLT2017_2", &byMediumIsolationMVArun2017v1DBoldDMwLT2017_2, &b_byMediumIsolationMVArun2017v1DBoldDMwLT2017_2);
+   // fChain->SetBranchAddress("byTightIsolationMVArun2017v1DBoldDMwLT2017_2", &byTightIsolationMVArun2017v1DBoldDMwLT2017_2, &b_byTightIsolationMVArun2017v1DBoldDMwLT2017_2);
+   // fChain->SetBranchAddress("byVTightIsolationMVArun2017v1DBoldDMwLT2017_2", &byVTightIsolationMVArun2017v1DBoldDMwLT2017_2, &b_byVTightIsolationMVArun2017v1DBoldDMwLT2017_2);
+
+   fChain->SetBranchAddress("byVVVLooseIsolationDeepTau2017v2VSjet_2", &byVVVLooseIsolationDeepTau2017v2VSjet_2, &b_byVVVLooseIsolationDeepTau2017v2VSjet_2);
+   fChain->SetBranchAddress("byVVLooseIsolationDeepTau2017v2VSjet_2", &byVVLooseIsolationDeepTau2017v2VSjet_2, &b_byVVLooseIsolationDeepTau2017v2VSjet_2);
+   fChain->SetBranchAddress("byVLooseIsolationDeepTau2017v2VSjet_2", &byVLooseIsolationDeepTau2017v2VSjet_2, &b_byVLooseIsolationDeepTau2017v2VSjet_2);
+   fChain->SetBranchAddress("byLooseIsolationDeepTau2017v2VSjet_2", &byLooseIsolationDeepTau2017v2VSjet_2, &b_byLooseIsolationDeepTau2017v2VSjet_2);
+   fChain->SetBranchAddress("byMediumIsolationDeepTau2017v2VSjet_2", &byMediumIsolationDeepTau2017v2VSjet_2, &b_byMediumIsolationDeepTau2017v2VSjet_2);
+   fChain->SetBranchAddress("byTightIsolationDeepTau2017v2VSjet_2", &byTightIsolationDeepTau2017v2VSjet_2, &b_byTightIsolationDeepTau2017v2VSjet_2);
+   fChain->SetBranchAddress("byVTightIsolationDeepTau2017v2VSjet_2", &byVTightIsolationDeepTau2017v2VSjet_2, &b_byVTightIsolationDeepTau2017v2VSjet_2);
+   fChain->SetBranchAddress("byVVTightIsolationDeepTau2017v2VSjet_2", &byVVTightIsolationDeepTau2017v2VSjet_2, &b_byVVTightIsolationDeepTau2017v2VSjet_2);
+
+
+
 //    fChain->SetBranchAddress("byVLooseIsolationMVArun2v1DBnewDMwLT_2", &byVLooseIsolationMVArun2v1DBnewDMwLT_2, &b_byVLooseIsolationMVArun2v1DBnewDMwLT_2);
 //    fChain->SetBranchAddress("byLooseIsolationMVArun2v1DBnewDMwLT_2", &byLooseIsolationMVArun2v1DBnewDMwLT_2, &b_byLooseIsolationMVArun2v1DBnewDMwLT_2);
 //    fChain->SetBranchAddress("byMediumIsolationMVArun2v1DBnewDMwLT_2", &byMediumIsolationMVArun2v1DBnewDMwLT_2, &b_byMediumIsolationMVArun2v1DBnewDMwLT_2);
@@ -1184,6 +1288,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("neutralIsoPtSum_2", &neutralIsoPtSum_2, &b_neutralIsoPtSum_2);
    fChain->SetBranchAddress("puCorrPtSum_2", &puCorrPtSum_2, &b_puCorrPtSum_2);
    fChain->SetBranchAddress("decayModeFindingOldDMs_2", &decayModeFindingOldDMs_2, &b_decayModeFindingOldDMs_2);
+   fChain->SetBranchAddress("decayModeFindingNewDMs_2", &decayModeFindingNewDMs_2, &b_decayModeFindingNewDMs_2);
    fChain->SetBranchAddress("decayMode_2", &decayMode_2, &b_decayMode_2);
    fChain->SetBranchAddress("pzetavis", &pzetavis, &b_pzetavis);
    fChain->SetBranchAddress("pzetamiss", &pzetamiss, &b_pzetamiss);
@@ -1238,15 +1343,26 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("addtau_m", &addtau_m, &b_addtau_m);
    fChain->SetBranchAddress("addtau_q", &addtau_q, &b_addtau_q);
 //    fChain->SetBranchAddress("addtau_byIsolationMVArun2v1DBnewDMwLTraw", &addtau_byIsolationMVArun2v1DBnewDMwLTraw, &b_addtau_byIsolationMVArun2v1DBnewDMwLTraw);
-   fChain->SetBranchAddress("addtau_byCombinedIsolationDeltaBetaCorrRaw3Hits", &addtau_byCombinedIsolationDeltaBetaCorrRaw3Hits, &b_addtau_byCombinedIsolationDeltaBetaCorrRaw3Hits);
-   fChain->SetBranchAddress("addtau_byMediumCombinedIsolationDeltaBetaCorr3Hits", &addtau_byMediumCombinedIsolationDeltaBetaCorr3Hits, &b_addtau_byMediumCombinedIsolationDeltaBetaCorr3Hits);
-   fChain->SetBranchAddress("addtau_byTightCombinedIsolationDeltaBetaCorr3Hits", &addtau_byTightCombinedIsolationDeltaBetaCorr3Hits, &b_addtau_byTightCombinedIsolationDeltaBetaCorr3Hits);
-   fChain->SetBranchAddress("addtau_byLooseCombinedIsolationDeltaBetaCorr3Hits", &addtau_byLooseCombinedIsolationDeltaBetaCorr3Hits, &b_addtau_byLooseCombinedIsolationDeltaBetaCorr3Hits);
-   fChain->SetBranchAddress("addtau_byVLooseIsolationMVArun2v1DBoldDMwLT", &addtau_byVLooseIsolationMVArun2v1DBoldDMwLT, &b_addtau_byVLooseIsolationMVArun2v1DBoldDMwLT);
-   fChain->SetBranchAddress("addtau_byLooseIsolationMVArun2v1DBoldDMwLT", &addtau_byLooseIsolationMVArun2v1DBoldDMwLT, &b_addtau_byLooseIsolationMVArun2v1DBoldDMwLT);
-   fChain->SetBranchAddress("addtau_byMediumIsolationMVArun2v1DBoldDMwLT", &addtau_byMediumIsolationMVArun2v1DBoldDMwLT, &b_addtau_byMediumIsolationMVArun2v1DBoldDMwLT);
-   fChain->SetBranchAddress("addtau_byTightIsolationMVArun2v1DBoldDMwLT", &addtau_byTightIsolationMVArun2v1DBoldDMwLT, &b_addtau_byTightIsolationMVArun2v1DBoldDMwLT);
-   fChain->SetBranchAddress("addtau_byVTightIsolationMVArun2v1DBoldDMwLT", &addtau_byVTightIsolationMVArun2v1DBoldDMwLT, &b_addtau_byVTightIsolationMVArun2v1DBoldDMwLT);
+   // fChain->SetBranchAddress("addtau_byCombinedIsolationDeltaBetaCorrRaw3Hits", &addtau_byCombinedIsolationDeltaBetaCorrRaw3Hits, &b_addtau_byCombinedIsolationDeltaBetaCorrRaw3Hits);
+   // fChain->SetBranchAddress("addtau_byMediumCombinedIsolationDeltaBetaCorr3Hits", &addtau_byMediumCombinedIsolationDeltaBetaCorr3Hits, &b_addtau_byMediumCombinedIsolationDeltaBetaCorr3Hits);
+   // fChain->SetBranchAddress("addtau_byTightCombinedIsolationDeltaBetaCorr3Hits", &addtau_byTightCombinedIsolationDeltaBetaCorr3Hits, &b_addtau_byTightCombinedIsolationDeltaBetaCorr3Hits);
+   // fChain->SetBranchAddress("addtau_byLooseCombinedIsolationDeltaBetaCorr3Hits", &addtau_byLooseCombinedIsolationDeltaBetaCorr3Hits, &b_addtau_byLooseCombinedIsolationDeltaBetaCorr3Hits);
+   // fChain->SetBranchAddress("addtau_byVLooseIsolationMVArun2v1DBoldDMwLT", &addtau_byVLooseIsolationMVArun2v1DBoldDMwLT, &b_addtau_byVLooseIsolationMVArun2v1DBoldDMwLT);
+   // fChain->SetBranchAddress("addtau_byLooseIsolationMVArun2v1DBoldDMwLT", &addtau_byLooseIsolationMVArun2v1DBoldDMwLT, &b_addtau_byLooseIsolationMVArun2v1DBoldDMwLT);
+   // fChain->SetBranchAddress("addtau_byMediumIsolationMVArun2v1DBoldDMwLT", &addtau_byMediumIsolationMVArun2v1DBoldDMwLT, &b_addtau_byMediumIsolationMVArun2v1DBoldDMwLT);
+   // fChain->SetBranchAddress("addtau_byTightIsolationMVArun2v1DBoldDMwLT", &addtau_byTightIsolationMVArun2v1DBoldDMwLT, &b_addtau_byTightIsolationMVArun2v1DBoldDMwLT);
+   // fChain->SetBranchAddress("addtau_byVTightIsolationMVArun2v1DBoldDMwLT", &addtau_byVTightIsolationMVArun2v1DBoldDMwLT, &b_addtau_byVTightIsolationMVArun2v1DBoldDMwLT);
+   
+   fChain->SetBranchAddress("addtau_byVVVLooseIsolationDeepTau2017v2VSjet", &addtau_byVVVLooseIsolationDeepTau2017v2VSjet, &b_addtau_byVVVLooseIsolationDeepTau2017v2VSjet);
+   fChain->SetBranchAddress("addtau_byVVLooseIsolationDeepTau2017v2VSjet", &addtau_byVVLooseIsolationDeepTau2017v2VSjet, &b_addtau_byVVLooseIsolationDeepTau2017v2VSjet);
+   fChain->SetBranchAddress("addtau_byVLooseIsolationDeepTau2017v2VSjet", &addtau_byVLooseIsolationDeepTau2017v2VSjet, &b_addtau_byVLooseIsolationDeepTau2017v2VSjet);
+   fChain->SetBranchAddress("addtau_byLooseIsolationDeepTau2017v2VSjet", &addtau_byLooseIsolationDeepTau2017v2VSjet, &b_addtau_byLooseIsolationDeepTau2017v2VSjet);
+   fChain->SetBranchAddress("addtau_byMediumIsolationDeepTau2017v2VSjet", &addtau_byMediumIsolationDeepTau2017v2VSjet, &b_addtau_byMediumIsolationDeepTau2017v2VSjet);
+   fChain->SetBranchAddress("addtau_byTightIsolationDeepTau2017v2VSjet", &addtau_byTightIsolationDeepTau2017v2VSjet, &b_addtau_byTightIsolationDeepTau2017v2VSjet);
+   fChain->SetBranchAddress("addtau_byVTightIsolationDeepTau2017v2VSjet", &addtau_byVTightIsolationDeepTau2017v2VSjet, &b_addtau_byVTightIsolationDeepTau2017v2VSjet);
+   fChain->SetBranchAddress("addtau_byVVTightIsolationDeepTau2017v2VSjet", &addtau_byVVTightIsolationDeepTau2017v2VSjet, &b_addtau_byVVTightIsolationDeepTau2017v2VSjet);
+
+
 //    fChain->SetBranchAddress("addtau_byVLooseIsolationMVArun2v1DBnewDMwLT", &addtau_byVLooseIsolationMVArun2v1DBnewDMwLT, &b_addtau_byVLooseIsolationMVArun2v1DBnewDMwLT);
 //    fChain->SetBranchAddress("addtau_byLooseIsolationMVArun2v1DBnewDMwLT", &addtau_byLooseIsolationMVArun2v1DBnewDMwLT, &b_addtau_byLooseIsolationMVArun2v1DBnewDMwLT);
 //    fChain->SetBranchAddress("addtau_byMediumIsolationMVArun2v1DBnewDMwLT", &addtau_byMediumIsolationMVArun2v1DBnewDMwLT, &b_addtau_byMediumIsolationMVArun2v1DBnewDMwLT);

@@ -42,7 +42,7 @@ class TNtupleAnalyzer{
   double otherLep_pt,otherLep_eta,otherLep_phi,otherLep_m,otherLep_iso;
   int    otherLep_q;
   double lep_pt,lep_eta,lep_phi,lep_m,lep_iso;
-  double lep_vloose,lep_loose,lep_medium;
+  double lep_vvvloose,lep_vvloose,lep_vloose,lep_loose,lep_medium;
   int    lep_q, lep_gen_match;
   int n_iso_lep, n_iso_otherLep;
   int tau_iso_ind;
@@ -73,11 +73,24 @@ class TNtupleAnalyzer{
   //    std::vector<Int_t> *alltau_looseBeta;
   std::vector<Int_t> *alltau_mediumBeta;
   //    std::vector<Int_t> *alltau_tightBeta;
+  std::vector<Int_t> *alltau_vvvlooseMVA;
+  std::vector<Int_t> *alltau_vvlooseMVA;
   std::vector<Int_t> *alltau_vlooseMVA;
   std::vector<Int_t> *alltau_looseMVA;
   std::vector<Int_t> *alltau_mediumMVA;
   std::vector<Int_t> *alltau_tightMVA;
   std::vector<Int_t> *alltau_vtightMVA;
+  std::vector<Int_t> *alltau_vvtightMVA;
+  // DeepTau ID 
+  // std::vector<Int_t> *alltau_vvvlooseDeepTauIDv2VSjet;
+  // std::vector<Int_t> *alltau_vvlooseDeepTauIDv2VSjet;
+  // std::vector<Int_t> *alltau_vlooseDeepTauIDv2VSjet;
+  // std::vector<Int_t> *alltau_looseDeepTauIDv2VSjet;
+  // std::vector<Int_t> *alltau_mediumDeepTauIDv2VSjet;
+  // std::vector<Int_t> *alltau_tightDeepTauIDv2VSjet;
+  // std::vector<Int_t> *alltau_vtightDeepTauIDv2VSjet;
+  // std::vector<Int_t> *alltau_vvtightDeepTauIDv2VSjet;
+
 
   std::vector<Int_t> *alltau_lepVeto;
   std::vector<Int_t> *alltau_gen_match;

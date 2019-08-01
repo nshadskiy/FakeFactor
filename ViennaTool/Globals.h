@@ -49,11 +49,14 @@
 #define _COMPARE2      32
 
 //isolation
-#define _VLOOSE         1
-#define _LOOSE          2
-#define _MEDIUM         4
-#define _TIGHT          8
-#define _VTIGHT        16
+#define _VVVLOOSE         1
+#define _VVLOOSE          2
+#define _VLOOSE           4
+#define _LOOSE            8
+#define _MEDIUM          16
+#define _TIGHT           32
+#define _VTIGHT          64
+#define _VVTIGHT        128
 
 //be very careful to not overlap with other marks -> use category mark extra
 #define _INCL              1

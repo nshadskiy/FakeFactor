@@ -22,30 +22,37 @@ echo doNjetBinning: $njetbinning
 
 sed s/user=\"whoami\"/user=\"$USER\"/g Settings.h >/tmp/Settings$USER.h
 yes | mv /tmp/Settings$USER.h Settings.h
-sed s/user=whoami/user=$USER/g BuildStructure.sh >/tmp/BuildStructure$USER.sh
-yes | mv /tmp/BuildStructure$USER.sh BuildStructure.sh
-sed s/fftype=fftype/fftype=$analysis/g BuildStructure.sh >/tmp/BuildStructure$USER.sh
+sed s/user=user/user=$USER/g BuildStructure_template.sh >/tmp/BuildStructure$USER.sh
+yes | mv /tmp/BuildStructure$USER.sh BuildStructure0.sh
+sed s/fftype=fftype/fftype=$analysis/g BuildStructure0.sh >/tmp/BuildStructure$USER.sh
 yes | mv /tmp/BuildStructure$USER.sh BuildStructure.sh
 yes | rm BuildStructure0.sh
+
 
 ff_tocheck='ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf'
 if [ "$channel" != " kTAU" ]; then ff_tocheck+=' ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf'; fi
 
-#sh BuildStructure.sh
+sh BuildStructure.sh
+
 cd ../
 echo "Compiling the framework... "
 
-# mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
-# mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
-# make -B
-# ./Preselection_EMB
-# mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
-# mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
+if [ $embedding == 1 ]; then
+	echo "Extra turnaround for embedded samples starts"
+	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
+	mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
+	make -B
+	./Preselection_EMB
+	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
+	mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
+fi
+
 make -B
+
 #./Preselection
 
-#./SRHisto  
-#./CRHisto
+./SRHisto  
+# ./CRHisto
 
 # ./steerFF
 # ./fitFakeFactors
@@ -53,13 +60,13 @@ make -B
 # gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
 # cd -
 
-./calcCorrections
-python plotCorrections.py --channel $channel  --doNjetBinning $njetbinning
-./convert_inputs
+# ./calcCorrections
+# python plotCorrections.py --channel $channel  --doNjetBinning $njetbinning
+# ./convert_inputs
 
 
-python cpTDHaftPublic.py --destination $output --channel $channel --doNjetBinning $njetbinning
-echo $output $channel $njetbinning
-python producePublicFakeFactors.py --input $output --channel $channel --njetbinning $njetbinning
+# python cpTDHaftPublic.py --destination $output --channel $channel --doNjetBinning $njetbinning
+# echo $output $channel $njetbinning
+# python producePublicFakeFactors.py --input $output --channel $channel --njetbinning $njetbinning
 
 echo "------ END OF steerAll.sh ---------"
