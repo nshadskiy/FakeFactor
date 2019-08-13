@@ -16,7 +16,6 @@ void Preselection() {
   TString tmp;
 
 
-
   if (num==1||num==0) {
     Analyzer->loadFile(datafile,"TauCheck");
     Analyzer->select(preselection_data,0);
@@ -24,6 +23,10 @@ void Preselection() {
     tmp=preselection_data;
     compressFile(preselection_data);
   }
+
+  std::cout<< "end after data preselection" << std::endl;
+  exit(0);
+
   if (num==2||num==0) {
     Analyzer->loadFile(TTfile,"TauCheck");
     Analyzer->select(preselection_TT,0);

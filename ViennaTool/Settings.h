@@ -5,12 +5,12 @@
 #define kTAU         2
 ///////////////////////////////////////////////////
 #define EMB          0   
-#define selCHAN      kMU 
-const int CHAN     = kMU;
+#define selCHAN      kTAU 
+const int CHAN     = kTAU;
 // FakeFactor_2016_DeepTauIDv2_v0
-const TString analysis      ="FakeFactor_2016_DeepTauIDv2_v0";
-const TString output_folder ="/data/jandrejkovic/FakeRate/SM2018/FakeFactor_2016_DeepTauIDv2_v0";
-const TString ver = "2016_v7"; // first time nanoAODv5 with deepTauIDv2 
+const TString analysis      ="FakeFactor_2016_v1";
+const TString output_folder ="/data/jandrejkovic/FakeRate/SM2018/FakeFactor_2016_v1";
+const TString ver = "2016_v9"; // first time nanoAODv5 with deepTauIDv2 
 
 const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; //obsolete
 ///////////////////////////////////////////////////

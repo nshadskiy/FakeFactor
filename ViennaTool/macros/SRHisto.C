@@ -108,8 +108,6 @@ void SRHisto() {
         if(!DOCUTS)Analyzer->calcBgEstSim( ps.at(i), MT|NO_SR, categoryMode, tmp.ReplaceAll(r1[0], r2[0]) );
         if(DOCUTS) for (unsigned l=0; l<NC; l++){ tmp2=tmp.ReplaceAll(r1[0], r2[0]); Analyzer->calcBgEstSim( ps.at(i), MT|NO_SR, categoryMode, tmp2.ReplaceAll("SR_","SR_cuts_"+c_text[l]+"_"), c_cuts[l]  ); }       
         
-        break; 
-
         if(!DOCUTS)Analyzer->calcBgEstSim( ps.at(i), MVIS, categoryMode, tmp.ReplaceAll(r1[1],r2[1]) );
         if(DOCUTS) for (unsigned l=0; l<NC; l++){ tmp2=tmp.ReplaceAll(r1[1], r2[1]); Analyzer->calcBgEstSim( ps.at(i), MVIS, categoryMode, tmp2.ReplaceAll("SR_","SR_cuts_"+c_text[l]+"_"), c_cuts[l]  ); }
         if(!DOCUTS)Analyzer->calcBgEstSim( ps.at(i), PT, categoryMode, tmp.ReplaceAll(r1[2],r2[2]) );
@@ -128,8 +126,8 @@ void SRHisto() {
       }
       
     }
-    std::cout<< "BREAK" << std::endl;
-    break;
+    
+    
 
 
     if(inclusive_selection){

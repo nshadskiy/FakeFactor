@@ -56,6 +56,7 @@ TString GlobalClass::getWPCutString(const TString isolation, const Int_t mode, c
   std::cout << "useTauIndex: " << useTauIndex << endl;
 
   TString tau_index = "0";
+  //This was changed - FIXME Need to understand - just guess
   if (useTauIndex) {
     tau_index = "tau_iso_ind";
     std::cout<<"set tai_iso_ind"<<std::endl;
@@ -100,6 +101,7 @@ TString GlobalClass::getWPCutString(const TString isolation, const Int_t mode, c
     std::cout << "Error in GlobalClass::getWPCutString():  No valid working point selected, use '_VLOOSE', '_LOOSE', '_MEDIUM', '_TIGHT', '_VTIGHT'! " << std::endl;
     return "0";
   }
+  std::cout<<"s fulfill  "<<s_fulfill<<std::endl;
 
   if     (fail == _VVVLOOSE) s_fail = "(alltau_vvvlooseMVA["+tau_index+"]<0.5)";
   else if(fail == _VVLOOSE)  s_fail = "(alltau_vvlooseMVA["+tau_index+"]<0.5)";
@@ -113,6 +115,9 @@ TString GlobalClass::getWPCutString(const TString isolation, const Int_t mode, c
     std::cout << "Error in GlobalClass::getWPCutString():  No valid working point selected, use '_VLOOSE', '_LOOSE', '_MEDIUM', '_TIGHT', '_VTIGHT', '0'! " << std::endl;
     return "0";
   }
+  std::cout<<"s fail  "<<s_fail<<std::endl;
+
+
   std::cout << "("+s_genmatch + "&&" + s_fulfill + "&&" + s_fail+")" <<std::endl;
   return "("+s_genmatch + "&&" + s_fulfill + "&&" + s_fail+")";
 }

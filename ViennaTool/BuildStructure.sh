@@ -1,6 +1,6 @@
 #!/bin/bash
 user=jandrejkovic
-fftype=FakeFactor_2016_DeepTauIDv2_v0
+fftype=FakeFactor_2016_v1
 
 line=" -------------------------------------------"
 echo "###### START of BuildStructure.sh ######"

@@ -153,6 +153,7 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
   // f2.Close();
 
   TFile f(output,"recreate");
+  std::cout<<"output"<<output<<std::endl;
 
   std::cout << "***************** HISTO STATS ********************" << std::endl;
   std::cout << tightSR->GetEntries() << std::endl;
