@@ -87,10 +87,10 @@ void SRHisto() {
 
     TString tmp,tmp2;
     for (unsigned i=0; i<ps.size(); i++){
-      if (i > 0) {
-        std::cout<<"breaking now"<<std::endl;
-        break;
-      }
+      // if (i > 0) {
+      //   std::cout<<"breaking now"<<std::endl;
+      //   break;
+      // }
       tmp=fl.at(i); //avoid editing fl
       Int_t categoryMode=0;
 
