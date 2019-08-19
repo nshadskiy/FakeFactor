@@ -24,8 +24,8 @@ void Preselection() {
     compressFile(preselection_data);
   }
 
-  std::cout<< "end after data preselection" << std::endl;
-  exit(0);
+  // std::cout<< "end after data preselection" << std::endl;
+  // exit(0);
 
   if (num==2||num==0) {
     Analyzer->loadFile(TTfile,"TauCheck");

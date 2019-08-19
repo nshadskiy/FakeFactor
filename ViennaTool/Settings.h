@@ -8,8 +8,8 @@
 #define selCHAN      kTAU 
 const int CHAN     = kTAU;
 // FakeFactor_2016_DeepTauIDv2_v0
-const TString analysis      ="FakeFactor_2016_v1";
-const TString output_folder ="/data/jandrejkovic/FakeRate/SM2018/FakeFactor_2016_v1";
+const TString analysis      ="FakeFactor_2016_v1_tt_update";
+const TString output_folder ="/data/jandrejkovic/FakeRate/SM2018/FakeFactor_2016_v1_tt_update";
 const TString ver = "2016_v9"; // first time nanoAODv5 with deepTauIDv2 
 
 const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; //obsolete
@@ -65,12 +65,17 @@ const int fit_pT_bins = 1; //use fitted pT bins as input for ff
 // _TIGHT           32
 // _VTIGHT          64
 // _VVTIGHT        128
+// #define _VLOOSE          1
+// #define _LOOSE           2
+// #define _MEDIUM          4
+// #define _TIGHT           8
+// #define _VTIGHT          16
 // A WP condition is met if: (Fulfill && !Fail)
 // settings for tight vs vloose&(!tight):
-const int wpTightFulfill = 32; 
+const int wpTightFulfill = 8; 
 const int wpTightFail    = 0;
 const int wpLooseFulfill = 1;
-const int wpLooseFail    = 32;
+const int wpLooseFail    = 8;
 ///////////////////////////////////////////////////
 //MUTAU Settings
 #if(selCHAN==kMU)

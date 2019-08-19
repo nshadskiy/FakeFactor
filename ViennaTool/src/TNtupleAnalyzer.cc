@@ -48,10 +48,10 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
   for (Int_t jentry=0; jentry<nentries;jentry++){
     if (jentry%100000 == 0) {
       cout << "Event " << jentry << " " << jentry / nentries * 100 << "%" << endl;
-      if (jentry > 0) {
-        std::cout<<"100k events are enough"<<std::endl;
-        break;
-      }
+      // if (jentry > 0) {
+      //   std::cout<<"100k events are enough"<<std::endl;
+      //   break;
+      // }
     }
     event->GetEntry(jentry);
     Int_t ntau=setTreeValues(preselFile, mode); //preselection happens in there now
@@ -85,9 +85,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   if(CHAN==kMU && ((event->flagMETFilter <0.5)|| !((event->trg_singlemu_22 > 0.5)||(event->trg_crossmu_mu19tau20>0.5)) || (event->pt_2<23))) return 0; 
   if(CHAN==kTAU && ( (event->flagMETFilter <0.5) || !( event->trg_doubletau_35 ) )) return 0;
   
-  // FIXME: This needs some changes for 2016:
-  if(CHAN==kEL && !preselectionFile.Contains("preselection_EMB") && ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)) || (event->pt_2<23)))  return 0;
-  if(CHAN==kEL && preselectionFile.Contains("preselection_EMB") &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_32> 0.5)||(event->trg_singleelectron_35 > 0.5)) || (event->pt_2<23)))  return 0; //(event->pt_1>20 && event->pt_1<24) ||
+  if(CHAN==kEL && !preselectionFile.Contains("preselection_EMB") && ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_25_eta2p1 > 0.5)) || (event->pt_2<23)))  return 0;
+  if(CHAN==kEL && preselectionFile.Contains("preselection_EMB") &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_25_eta2p1 > 0.5)) || (event->pt_2<23)))  return 0; //(event->pt_1>20 && event->pt_1<24) ||
   
   
 
@@ -106,16 +105,28 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       weight *= event->weight;
     }
 
+
     if( CHAN == kTAU && !preselectionFile.Contains("preselection_EMB") ){ // CHANGE IF TAU WP CHANGES! https://twiki.cern.ch/twiki/bin/view/CMS/TauIDRecommendation13TeV#Tau_ID_SF_for_CMSSW_9_4_X_or_hig
-        if(event->gen_match_1 == 5 && event->byTightIsolationDeepTau2017v2VSjet_1) weight *= 0.85; //vtight = 0.89, tight = 0.90
-        else if(event->gen_match_1 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_1 ) weight *= 0.85;
-        if(event->gen_match_2 == 5 && event->byTightIsolationDeepTau2017v2VSjet_2) weight *= 0.85;
-        else if(event->gen_match_2 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_2 ) weight *= 0.85;
+        if(event->gen_match_1 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1) weight *= 0.87; //vtight = 0.89, tight = 0.90
+        else if(event->gen_match_1 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 ) weight *= 0.90;
+        if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.87;
+        else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.90;
     }
     if( CHAN != kTAU && !preselectionFile.Contains("preselection_EMB") ){
-      if(event->gen_match_2 == 5 && event->byTightIsolationDeepTau2017v2VSjet_2) weight *= 0.85;
-      else if(event->gen_match_2 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_2 ) weight *= 0.85;
+      if(event->gen_match_2 == 5 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2) weight *= 0.87;
+      else if(event->gen_match_2 == 5 && event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 ) weight *= 0.90;
     }
+
+    // if( CHAN == kTAU && !preselectionFile.Contains("preselection_EMB") ){ // CHANGE IF TAU WP CHANGES! https://twiki.cern.ch/twiki/bin/view/CMS/TauIDRecommendation13TeV#Tau_ID_SF_for_CMSSW_9_4_X_or_hig
+    //     if(event->gen_match_1 == 5 && event->byTightIsolationDeepTau2017v2VSjet_1) weight *= 0.85; //vtight = 0.89, tight = 0.90
+    //     else if(event->gen_match_1 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_1 ) weight *= 0.85;
+    //     if(event->gen_match_2 == 5 && event->byTightIsolationDeepTau2017v2VSjet_2) weight *= 0.85;
+    //     else if(event->gen_match_2 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_2 ) weight *= 0.85;
+    // }
+    // if( CHAN != kTAU && !preselectionFile.Contains("preselection_EMB") ){
+    //   if(event->gen_match_2 == 5 && event->byTightIsolationDeepTau2017v2VSjet_2) weight *= 0.85;
+    //   else if(event->gen_match_2 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_2 ) weight *= 0.85;
+    // }
   }
  
   weight_sf=weight;

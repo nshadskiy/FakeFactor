@@ -73,14 +73,14 @@ class TNtupleAnalyzer{
   //    std::vector<Int_t> *alltau_looseBeta;
   std::vector<Int_t> *alltau_mediumBeta;
   //    std::vector<Int_t> *alltau_tightBeta;
-  std::vector<Int_t> *alltau_vvvlooseMVA;
-  std::vector<Int_t> *alltau_vvlooseMVA;
+  // std::vector<Int_t> *alltau_vvvlooseMVA;
+  // std::vector<Int_t> *alltau_vvlooseMVA;
   std::vector<Int_t> *alltau_vlooseMVA;
   std::vector<Int_t> *alltau_looseMVA;
   std::vector<Int_t> *alltau_mediumMVA;
   std::vector<Int_t> *alltau_tightMVA;
   std::vector<Int_t> *alltau_vtightMVA;
-  std::vector<Int_t> *alltau_vvtightMVA;
+  // std::vector<Int_t> *alltau_vvtightMVA;
   // DeepTau ID 
   // std::vector<Int_t> *alltau_vvvlooseDeepTauIDv2VSjet;
   // std::vector<Int_t> *alltau_vvlooseDeepTauIDv2VSjet;

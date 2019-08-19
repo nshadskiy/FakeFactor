@@ -89,28 +89,28 @@ TString GlobalClass::getWPCutString(const TString isolation, const Int_t mode, c
 
   if (mode & GEN_MATCH) s_genmatch = "(alltau_gen_match["+tau_index+"]=="+to_string(realJet)+")";
   
-  if     (fulfill == _VVVLOOSE) s_fulfill = "(alltau_vvvlooseMVA["+tau_index+"]>0.5)";
-  else if(fulfill == _VVLOOSE)  s_fulfill = "(alltau_vvlooseMVA["+tau_index+"]>0.5)";
-  else if(fulfill == _VLOOSE)  s_fulfill = "(alltau_vlooseMVA["+tau_index+"]>0.5)";
+  // if     (fulfill == _VVVLOOSE) s_fulfill = "(alltau_vvvlooseMVA["+tau_index+"]>0.5)";
+  // else if(fulfill == _VVLOOSE)  s_fulfill = "(alltau_vvlooseMVA["+tau_index+"]>0.5)";
+  if(fulfill == _VLOOSE)  s_fulfill = "(alltau_vlooseMVA["+tau_index+"]>0.5)";
   else if(fulfill == _LOOSE)  s_fulfill = "(alltau_looseMVA["+tau_index+"]>0.5)";
   else if(fulfill == _MEDIUM) s_fulfill = "(alltau_mediumMVA["+tau_index+"]>0.5)";
   else if(fulfill == _TIGHT)  s_fulfill = "(alltau_tightMVA["+tau_index+"]>0.5)";
   else if(fulfill == _VTIGHT) s_fulfill = "(alltau_vtightMVA["+tau_index+"]>0.5)";
-  else if(fulfill == _VVTIGHT) s_fulfill = "(alltau_vvtightMVA["+tau_index+"]>0.5)";
+  // else if(fulfill == _VVTIGHT) s_fulfill = "(alltau_vvtightMVA["+tau_index+"]>0.5)";
   else{
     std::cout << "Error in GlobalClass::getWPCutString():  No valid working point selected, use '_VLOOSE', '_LOOSE', '_MEDIUM', '_TIGHT', '_VTIGHT'! " << std::endl;
     return "0";
   }
   std::cout<<"s fulfill  "<<s_fulfill<<std::endl;
 
-  if     (fail == _VVVLOOSE) s_fail = "(alltau_vvvlooseMVA["+tau_index+"]<0.5)";
-  else if(fail == _VVLOOSE)  s_fail = "(alltau_vvlooseMVA["+tau_index+"]<0.5)";
-  else if(fail == _VLOOSE)  s_fail = "(alltau_vlooseMVA["+tau_index+"]<0.5)";
+  // if     (fail == _VVVLOOSE) s_fail = "(alltau_vvvlooseMVA["+tau_index+"]<0.5)";
+  // else if(fail == _VVLOOSE)  s_fail = "(alltau_vvlooseMVA["+tau_index+"]<0.5)";
+  if(fail == _VLOOSE)  s_fail = "(alltau_vlooseMVA["+tau_index+"]<0.5)";
   else if(fail == _LOOSE)  s_fail = "(alltau_looseMVA["+tau_index+"]<0.5)";
   else if(fail == _MEDIUM) s_fail = "(alltau_mediumMVA["+tau_index+"]<0.5)";
   else if(fail == _TIGHT)  s_fail = "(alltau_tightMVA["+tau_index+"]<0.5)";
   else if(fail == _VTIGHT) s_fail = "(alltau_vtightMVA["+tau_index+"]<0.5)";
-  else if(fail == _VVTIGHT) s_fail = "(alltau_vvtightMVA["+tau_index+"]<0.5)";
+  // else if(fail == _VVTIGHT) s_fail = "(alltau_vvtightMVA["+tau_index+"]<0.5)";
   else if(fail != 0){
     std::cout << "Error in GlobalClass::getWPCutString():  No valid working point selected, use '_VLOOSE', '_LOOSE', '_MEDIUM', '_TIGHT', '_VTIGHT', '0'! " << std::endl;
     return "0";
@@ -130,23 +130,23 @@ Int_t GlobalClass::isLoose(const Int_t mode, const Int_t ind) //default: 0,0
   Int_t c2 = 0;
   Int_t returnValue = 0;
   
-  if      ( wpLooseFulfill == _VVVLOOSE && event_s->alltau_vvvlooseMVA->at(ind) ) c1 = 1;
-  else if ( wpLooseFulfill == _VVLOOSE  && event_s->alltau_vvlooseMVA->at(ind)  ) c1 = 1;
-  else if ( wpLooseFulfill == _VLOOSE  && event_s->alltau_vlooseMVA->at(ind)  ) c1 = 1;
+  // if      ( wpLooseFulfill == _VVVLOOSE && event_s->alltau_vvvlooseMVA->at(ind) ) c1 = 1;
+  // else if ( wpLooseFulfill == _VVLOOSE  && event_s->alltau_vvlooseMVA->at(ind)  ) c1 = 1;
+  if ( wpLooseFulfill == _VLOOSE  && event_s->alltau_vlooseMVA->at(ind)  ) c1 = 1;
   else if ( wpLooseFulfill == _LOOSE  && event_s->alltau_looseMVA->at(ind)  ) c1 = 1;
   else if ( wpLooseFulfill == _MEDIUM && event_s->alltau_mediumMVA->at(ind) ) c1 = 1;
   else if ( wpLooseFulfill == _TIGHT  && event_s->alltau_tightMVA->at(ind)  ) c1 = 1;
   else if ( wpLooseFulfill == _VTIGHT && event_s->alltau_vtightMVA->at(ind) ) c1 = 1;
-  else if ( wpLooseFulfill == _VVTIGHT && event_s->alltau_vvtightMVA->at(ind) ) c1 = 1;
+  // else if ( wpLooseFulfill == _VVTIGHT && event_s->alltau_vvtightMVA->at(ind) ) c1 = 1;
 
-  if      ( wpLooseFail == _VVVLOOSE && !event_s->alltau_vvvlooseMVA->at(ind) ) c2 = 1;
-  else if ( wpLooseFail == _VVLOOSE  && !event_s->alltau_vvlooseMVA->at(ind)  ) c2 = 1;
-  else if ( wpLooseFail == _VLOOSE  && !event_s->alltau_vlooseMVA->at(ind)  ) c2 = 1;
+  // if      ( wpLooseFail == _VVVLOOSE && !event_s->alltau_vvvlooseMVA->at(ind) ) c2 = 1;
+  // else if ( wpLooseFail == _VVLOOSE  && !event_s->alltau_vvlooseMVA->at(ind)  ) c2 = 1;
+  if ( wpLooseFail == _VLOOSE  && !event_s->alltau_vlooseMVA->at(ind)  ) c2 = 1;
   else if ( wpLooseFail == _LOOSE  && !event_s->alltau_looseMVA->at(ind)  ) c2 = 1;
   else if ( wpLooseFail == _MEDIUM && !event_s->alltau_mediumMVA->at(ind) ) c2 = 1;
   else if ( wpLooseFail == _TIGHT  && !event_s->alltau_tightMVA->at(ind)  ) c2 = 1;
   else if ( wpLooseFail == _VTIGHT && !event_s->alltau_vtightMVA->at(ind) ) c2 = 1;
-  else if ( wpLooseFail == _VVTIGHT && !event_s->alltau_vvtightMVA->at(ind) ) c2 = 1;
+  // else if ( wpLooseFail == _VVTIGHT && !event_s->alltau_vvtightMVA->at(ind) ) c2 = 1;
   
   return c1*c2;
 }
@@ -168,23 +168,23 @@ Int_t GlobalClass::isTight(const Int_t mode, const Int_t ind) //default: 0,0
   Int_t c2 = 0;
   Int_t returnValue = 0;
 
-  if      ( wpTightFulfill == _VVVLOOSE && event_s->alltau_vvvlooseMVA->at(ind) ) c1 = 1;
-  else if ( wpTightFulfill == _VVLOOSE  && event_s->alltau_vvlooseMVA->at(ind)  ) c1 = 1;
-  else if ( wpTightFulfill == _VLOOSE  && event_s->alltau_vlooseMVA->at(ind)  ) c1 = 1;
+  // if      ( wpTightFulfill == _VVVLOOSE && event_s->alltau_vvvlooseMVA->at(ind) ) c1 = 1;
+  // else if ( wpTightFulfill == _VVLOOSE  && event_s->alltau_vvlooseMVA->at(ind)  ) c1 = 1;
+  if ( wpTightFulfill == _VLOOSE  && event_s->alltau_vlooseMVA->at(ind)  ) c1 = 1;
   else if ( wpTightFulfill == _LOOSE  && event_s->alltau_looseMVA->at(ind)  ) c1 = 1;
   else if ( wpTightFulfill == _MEDIUM && event_s->alltau_mediumMVA->at(ind) ) c1 = 1;
   else if ( wpTightFulfill == _TIGHT  && event_s->alltau_tightMVA->at(ind)  ) c1 = 1;
   else if ( wpTightFulfill == _VTIGHT && event_s->alltau_vtightMVA->at(ind) ) c1 = 1;
-  else if ( wpTightFulfill == _VVTIGHT && event_s->alltau_vvtightMVA->at(ind) ) c1 = 1;
+  // else if ( wpTightFulfill == _VVTIGHT && event_s->alltau_vvtightMVA->at(ind) ) c1 = 1;
   
-  if      ( wpTightFail == _VVVLOOSE && !event_s->alltau_vvvlooseMVA->at(ind) ) c2 = 1;
-  else if ( wpTightFail == _VVLOOSE  && !event_s->alltau_vvlooseMVA->at(ind)  ) c2 = 1;
-  else if ( wpTightFail == _VLOOSE  && !event_s->alltau_vlooseMVA->at(ind)  ) c2 = 1;
+  // if      ( wpTightFail == _VVVLOOSE && !event_s->alltau_vvvlooseMVA->at(ind) ) c2 = 1;
+  // else if ( wpTightFail == _VVLOOSE  && !event_s->alltau_vvlooseMVA->at(ind)  ) c2 = 1;
+  if ( wpTightFail == _VLOOSE  && !event_s->alltau_vlooseMVA->at(ind)  ) c2 = 1;
   else if ( wpTightFail == _LOOSE  && !event_s->alltau_looseMVA->at(ind)  ) c2 = 1;
   else if ( wpTightFail == _MEDIUM && !event_s->alltau_mediumMVA->at(ind) ) c2 = 1;
   else if ( wpTightFail == _TIGHT  && !event_s->alltau_tightMVA->at(ind)  ) c2 = 1;
   else if ( wpTightFail == _VTIGHT && !event_s->alltau_vtightMVA->at(ind) ) c2 = 1;
-  else if ( wpTightFail == _VVTIGHT && !event_s->alltau_vvtightMVA->at(ind) ) c2 = 1;
+  // else if ( wpTightFail == _VVTIGHT && !event_s->alltau_vvtightMVA->at(ind) ) c2 = 1;
   else if ( wpTightFail == 0) c2 = 1;
   
   return c1*c2;
