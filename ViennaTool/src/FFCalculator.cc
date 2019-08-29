@@ -1316,6 +1316,15 @@ void FFCalculator::getInputs(vector<double>&inputs, Int_t ind)
 void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const TString compare_file, TString ff_output, const TString tight_cat, const Int_t doPlot, const Int_t subtractMC, const Int_t tau_ind){
 
   cout << "Calculating corrections for " << ff_output << endl;
+  cout << "mode: " << mode << endl;
+  cout << "raw ff: " << raw_ff << endl;
+  cout << "compare_file: " << compare_file << endl;
+  cout << "ff_output: " << ff_output << endl;
+  cout << "tight_cat: " << tight_cat << endl;
+  cout << "subtractMC: " << subtractMC << endl; 
+  cout << "tau_ind: " << tau_ind << endl;
+  
+
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
   TString cr_file=compare_file;
   if(mode & JET0 ) cr_file = cr_file.ReplaceAll("_data","_0jet_data");
@@ -2128,6 +2137,7 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   gsk.set_doWidthInBins(1);
   gsk.setWidth(1.);
   Double_t lastBin;
+  // linear fit cut-off
   if(CHAN==kMU) lastBin=150;
   if(CHAN==kEL) lastBin=150;
   gsk.set_lastBinFrom(lastBin);

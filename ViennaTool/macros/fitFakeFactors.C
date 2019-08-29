@@ -67,10 +67,10 @@ void fitFakeFactors(){
           if (CHAN == kMU && modes.at(imode) & _W_JETS && ijet == 0) {
                   cf.set_fitFunc( "landau(0)+pol0(2)" );
                   if( idm == 1) cf.set_fitFunc( "landau(0)+pol1(2)" );
-                  cf.set_histMaxFrac( 140.0/500.0 );
-                  cf.set_smoothFrac(100.0/500.0);
+                  cf.set_histMaxFrac( 200.0/500.0 );
+                  cf.set_smoothFrac(120.0/500.0);
                   // if( idm == 1 && modes.at(imode) ){ cf.set_histMaxFrac( 45.0/500.0 ); cf.set_smoothFrac(30.0/500.0);}
-                  if( idm == 1 && modes.at(imode) ){ cf.set_histMaxFrac( 140.0/500.0 ); cf.set_smoothFrac(110.0/500.0);}
+                  if( idm == 1 && modes.at(imode) ){ cf.set_histMaxFrac( 200.0/500.0 ); cf.set_smoothFrac(120.0/500.0);}
                   cf.set_err_scale( 3.0 );
                   cf.set_err_cl( 0 );
                   cf.set_smoothMode("spline3");              
@@ -80,8 +80,8 @@ void fitFakeFactors(){
                   if( idm == 1) cf.set_fitFunc( "landau(0)+pol2(2)" );
                   cf.set_err_scale( 3.0 );
                   cf.set_err_cl( 0 );
-                  cf.set_histMaxFrac( 125.0/500.0 );
-                  cf.set_smoothFrac(100.0/500.0);
+                  cf.set_histMaxFrac( 200.0/500.0 );
+                  cf.set_smoothFrac(120.0/500.0);
                   cf.set_smoothMode("spline3");              
                   }
           
@@ -99,8 +99,8 @@ void fitFakeFactors(){
                 if( ijet == 0 && idm == 0) cf.set_fitFunc( "landau(0)+pol2(2)" );
                   cf.set_err_scale( 3.0 );
                   cf.set_err_cl( 0 );
-                  if (idm == 0) cf.set_histMaxFrac( 60.0/500.0 );
-                  else  cf.set_histMaxFrac( 60.0/500.0 );
+                  if (idm == 0) cf.set_histMaxFrac( 80.0/500.0 );
+                  else  cf.set_histMaxFrac( 80.0/500.0 );
                   cf.set_smoothFrac(45.0/500);
                   cf.set_smoothMode("spline3");
                   }
@@ -109,9 +109,9 @@ void fitFakeFactors(){
                 if( idm == 1) cf.set_fitFunc( "landau(0)+pol2(2)" );
                   cf.set_err_scale( 3.0 );
                   cf.set_err_cl( 0 );
-                  if (idm == 0) cf.set_histMaxFrac( 170.0/500.0 );
-                  else cf.set_histMaxFrac( 140.0/500.0 );
-                  cf.set_smoothFrac(130.0/500);
+                  if (idm == 0) cf.set_histMaxFrac( 200.0/500.0 );
+                  else cf.set_histMaxFrac( 200.0/500.0 );
+                  cf.set_smoothFrac(150.0/500);
                   cf.set_smoothMode("spline3");
                   }
         ////////////////////////////////////////////////////  

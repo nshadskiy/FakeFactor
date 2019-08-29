@@ -49,14 +49,14 @@
 #define _COMPARE2      32
 
 //isolation
-// #define _VVVLOOSE         1
-// #define _VVLOOSE          2
-// #define _VLOOSE           4
-// #define _LOOSE            8
-// #define _MEDIUM          16
-// #define _TIGHT           32
-// #define _VTIGHT          64
-// #define _VVTIGHT        128
+#define _VVVLOOSE_DNN         1
+#define _VVLOOSE_DNN          2
+#define _VLOOSE_DNN           4
+#define _LOOSE_DNN            8
+#define _MEDIUM_DNN          16
+#define _TIGHT_DNN           32
+#define _VTIGHT_DNN          64
+#define _VVTIGHT_DNN        128
 
 #define _VLOOSE          1
 #define _LOOSE           2

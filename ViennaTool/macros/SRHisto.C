@@ -12,9 +12,9 @@ void SRHisto() {
   std::cout << "***************************************" << std::endl << std::endl;
 
   const Int_t DOCUTS = doCuts;
-  std::cout << "doCuts: " << doCuts << std::endl;
+  // std::cout << "doCuts: " << doCuts << std::endl;
   
-  std::cout << "inclusive_selection: " << inclusive_selection << std::endl;
+  // std::cout << "inclusive_selection: " << inclusive_selection << std::endl;
   if(inclusive_selection){
   
     TSelectionAnalyzer *Analyzer = new TSelectionAnalyzer();
@@ -24,8 +24,8 @@ void SRHisto() {
     std::vector<TString> ps;
     std::vector<TString> fl;
 
-    std::cout << "EMB: " << EMB << std::endl;
-    std::cout << "DOQCD: " << DOQCD << std::endl;
+    // std::cout << "EMB: " << EMB << std::endl;
+    // std::cout << "DOQCD: " << DOQCD << std::endl;
 
     if( EMB ){
       ps.push_back(preselection_data);
@@ -81,29 +81,29 @@ void SRHisto() {
     //  if (DOQCD) fl.push_back(SR_QCD_mt_sim);
 
     Int_t nVARused = nVAR-1; //no muiso is needed here
-    std::cout << "nVARused: " << nVARused << std::endl;
+    // std::cout << "nVARused: " << nVARused << std::endl;
     const TString r1[nVARused]={"_pt","_mt","_mvis"}; //
     const TString r2[nVARused]={ "_mt", "_mvis", "_pt"}; //"_mt2","_lepPt","_mvamet","_met","_eta", "_mttot","_mjj"};
 
     TString tmp,tmp2;
     for (unsigned i=0; i<ps.size(); i++){
-      if (i > 0) {
-        std::cout<<"breaking now"<<std::endl;
-        break;
-      }
+      // if (i > 0) {
+      //   std::cout<<"breaking now"<<std::endl;
+      //   break;
+      // }
       tmp=fl.at(i); //avoid editing fl
       Int_t categoryMode=0;
 
-      std::cout << "CALC_SS_SR: " << CALC_SS_SR << std::endl;
-      std::cout << "doSRHisto: " << doSRHisto << std::endl;
+      // std::cout << "CALC_SS_SR: " << CALC_SS_SR << std::endl;
+      // std::cout << "doSRHisto: " << doSRHisto << std::endl;
 
       if(!CALC_SS_SR && doSRHisto){
-        std::cout << "ps.at(i) " << ps.at(i) << std::endl;
-        std::cout << " MT " <<  MT << std::endl;
-        std::cout << " NO_SR " <<  NO_SR << std::endl;
+        // std::cout << "ps.at(i) " << ps.at(i) << std::endl;
+        // std::cout << " MT " <<  MT << std::endl;
+        // std::cout << " NO_SR " <<  NO_SR << std::endl;
         // std::cout << " MT or NO_SR " <<  MT|NO_SR << std::endl;
-        std::cout << "categoryMode " << categoryMode << std::endl;
-        std::cout << "tmp.ReplaceAll(r1[0], r2[0]) " << tmp.ReplaceAll(r1[0], r2[0]) << std::endl;
+        // std::cout << "categoryMode " << categoryMode << std::endl;
+        // std::cout << "tmp.ReplaceAll(r1[0], r2[0]) " << tmp.ReplaceAll(r1[0], r2[0]) << std::endl;
        
         if(!DOCUTS)Analyzer->calcBgEstSim( ps.at(i), MT|NO_SR, categoryMode, tmp.ReplaceAll(r1[0], r2[0]) );
         if(DOCUTS) for (unsigned l=0; l<NC; l++){ tmp2=tmp.ReplaceAll(r1[0], r2[0]); Analyzer->calcBgEstSim( ps.at(i), MT|NO_SR, categoryMode, tmp2.ReplaceAll("SR_","SR_cuts_"+c_text[l]+"_"), c_cuts[l]  ); }       
