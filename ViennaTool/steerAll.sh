@@ -3,6 +3,8 @@
 # steerAll.sh 1 #skip preselection (any other argument works as well)
 
 # extract channel, whether to use embedding, output directory and analysis name
+
+# this is a comment not a question
 channel=$(grep 'int CHAN' "Settings.h" | awk -F'[=;]' '{print $2}')
 embedding=$(grep '#define EMB' "Settings.h" | awk -F'[B]' '{print $2}')
 output=$(grep 'output_folder' "Settings.h" | awk -F'[=;]' '{print $2}' | tr -d '"')
@@ -49,10 +51,10 @@ fi
 
 make -B
 
-./Preselection
+#./Preselection
 
-./SRHisto  
-./CRHisto
+# ./SRHisto  
+# ./CRHisto
 
 ./steerFF
 ./fitFakeFactors

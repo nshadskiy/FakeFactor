@@ -5,12 +5,12 @@
 #define kTAU         2
 ///////////////////////////////////////////////////
 #define EMB          0   
-#define selCHAN      kTAU 
-const int CHAN     = kTAU;
+#define selCHAN      kEL 
+const int CHAN     = kEL;
 // FakeFactor_2016_DeepTauIDv2_v0
-const TString analysis      ="FakeFactor_2016_v1_tt_update";
-const TString output_folder ="/data/jandrejkovic/FakeRate/SM2018/FakeFactor_2016_v1_tt_update";
-const TString ver = "2016_v9"; // first time nanoAODv5 with deepTauIDv2 
+const TString analysis      ="FakeFactor_2016v12_Tight_VVVLoose";
+const TString output_folder ="/data/jandrejkovic/FakeRate/SM2016/FakeFactor_2016v12_Tight_VVVLoose";
+const TString ver = "2016_v12"; // first time nanoAODv5 with deepTauIDv2 
 
 const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; //obsolete
 ///////////////////////////////////////////////////
@@ -57,25 +57,20 @@ const int doTemplateFitForWeights=0; //template fit for fractions, default: 0
 const int fit_pT_bins = 1; //use fitted pT bins as input for ff
 //////////////////////////////////////////////////
 //Working point definition for deep TauID v2://
-// _VVVLOOSE         1
+// _VVVLOOSE         1 <-
 // _VVLOOSE          2
 // _VLOOSE           4
 // _LOOSE            8
 // _MEDIUM          16
-// _TIGHT           32
+// _TIGHT           32 <-
 // _VTIGHT          64
 // _VVTIGHT        128
-// #define _VLOOSE          1
-// #define _LOOSE           2
-// #define _MEDIUM          4
-// #define _TIGHT           8
-// #define _VTIGHT          16
 // A WP condition is met if: (Fulfill && !Fail)
 // settings for tight vs vloose&(!tight):
-const int wpTightFulfill = 8; 
+const int wpTightFulfill = 32; 
 const int wpTightFail    = 0;
 const int wpLooseFulfill = 1;
-const int wpLooseFail    = 8;
+const int wpLooseFail    = 32;
 ///////////////////////////////////////////////////
 //MUTAU Settings
 #if(selCHAN==kMU)

@@ -1,6 +1,6 @@
 #!/bin/bash
 user=jandrejkovic
-fftype=FakeFactor_2016_v1_tt_update
+fftype=FakeFactor_2016v12_Tight_VVVLoose
 
 line=" -------------------------------------------"
 echo "###### START of BuildStructure.sh ######"
