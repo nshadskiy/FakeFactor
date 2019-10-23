@@ -51,24 +51,24 @@ fi
 
 make -B
 
-#./Preselection
+./Preselection
 
 # ./SRHisto  
 # ./CRHisto
 
-./steerFF
-./fitFakeFactors
-cd ViennaTool/Images/data_$chan
-gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
-cd -
+# ./steerFF
+# ./fitFakeFactors
+# cd ViennaTool/Images/data_$chan
+# gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
+# cd -
 
-./calcCorrections
-python plotCorrections.py --channel $channel  --doNjetBinning $njetbinning
-./convert_inputs
+# ./calcCorrections
+# python plotCorrections.py --channel $channel  --doNjetBinning $njetbinning
+# ./convert_inputs
 
 
-python cpTDHaftPublic.py --destination $output --channel $channel --doNjetBinning $njetbinning
-echo $output $channel $njetbinning
-python producePublicFakeFactors.py --input $output --channel $channel --njetbinning $njetbinning
+# python cpTDHaftPublic.py --destination $output --channel $channel --doNjetBinning $njetbinning
+# echo $output $channel $njetbinning
+# python producePublicFakeFactors.py --input $output --channel $channel --njetbinning $njetbinning
 
 echo "------ END OF steerAll.sh ---------"

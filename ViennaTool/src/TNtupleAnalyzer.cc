@@ -7,7 +7,7 @@ using namespace std;
 
 TNtupleAnalyzer::TNtupleAnalyzer()
 {
-  cout << "Instance of TNtupleAnalyzer" << endl;
+  cout << "Instance of TNtupleAnalyzer created" << endl;
 }
 
 TNtupleAnalyzer::~TNtupleAnalyzer()
@@ -16,6 +16,7 @@ TNtupleAnalyzer::~TNtupleAnalyzer()
 
 void TNtupleAnalyzer::loadFile(TString filename, TString chain)
 {
+  
   tchain = new TChain(chain);
   tchain->Add(filename);
 
@@ -28,10 +29,19 @@ void TNtupleAnalyzer::loadFile(TString filename, TString chain)
   else this->curr_sample="unknown";
   std::cout << "Loading file " << filename << "..." << endl;
   int nev=0;
-  if (chain=="TauCheck"){  event = new NtupleClass(tchain); if (DEBUG) nev=event->fChain->GetEntries(); }
-  else std::cout << "unknown chain!" << std::endl;
-  if (DEBUG) std::cout<<"File: "<<filename<<" loaded" << ", #events: "<< nev << std::endl;
+  if (chain==_NtupleTreeName)
+  {  
+    event = new NtupleClass(tchain); 
+    if (DEBUG) {
+      nev=event->fChain->GetEntries(); 
+      std::cout<<"File: "<<filename<<" loaded \n" << "#events: "<< nev << std::endl;
+    }
+  else{
+    std::cout << "unknown chain!" << std::endl;
+  }
 }
+
+
 
 void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
 {
@@ -46,12 +56,12 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
   cout<<"Producing " << preselFile << " , processing "<<nentries<<" events."<< endl;
   //for (Int_t jentry=0; jentry<10000;jentry++) {
   for (Int_t jentry=0; jentry<nentries;jentry++){
-    if (jentry%100000 == 0) {
+    if (jentry%1000 == 0) {
       cout << "Event " << jentry << " " << jentry / nentries * 100 << "%" << endl;
-      // if (jentry > 0) {
-      //   std::cout<<"100k events are enough"<<std::endl;
-      //   break;
-      // }
+      if (jentry > 0) {
+        std::cout<<"1000 events are enough"<<std::endl;
+        break;
+      }
     }
     event->GetEntry(jentry);
     Int_t ntau=setTreeValues(preselFile, mode); //preselection happens in there now
@@ -138,7 +148,6 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   nbtag=event->nbtag;
   njets=event->njets;
   mjj=event->mjj;
-  mvamet=event->mvamet;
   met=event->met;
   jdeta=event->jdeta;
   njetingap20=event->njetingap20;
@@ -526,17 +535,14 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
         alltau_decay->push_back(m); //distinction between nanoAod/other already made earlier
         
         // alltau_mediumBeta->push_back(event->addtau_byMediumCombinedIsolationDeltaBetaCorr3Hits->at(i)); //TODO -> still used??
-        if(useMVAMET)alltau_mt->push_back(event->mt_1); //mt of lepton and MVAMET
-        else alltau_mt->push_back(event->mt_1); //mt of lepton and PFMET
-        if(useMVAMET)alltau_mt2->push_back(event->addtau_mt->at(i));
-        else alltau_mt2->push_back(event->mt_2);  //no addtaupfmt in addtau collection
+        alltau_mt->push_back(event->mt_1); //mt of lepton and PFMET
+        alltau_mt2->push_back(event->mt_2);  //no addtaupfmt in addtau collection
         if(use_svfit)alltau_svfit->push_back(event->m_sv); //FIXME: no svfit in addtau collection so far
         else alltau_svfit->push_back(0.);
         TLorentzVector leg2; leg2.SetPtEtaPhiM(event->addlepton_p4->at(i).Pt(),event->addlepton_p4->at(i).Eta(),event->addlepton_p4->at(i).Phi(),event->addlepton_p4->at(i).M()); 
         TLorentzVector leg1; leg1.SetPtEtaPhiM(event->pt_1,event->eta_1,event->phi_1,event->m_1); 
         TLorentzVector Emiss;
-        if(useMVAMET) Emiss.SetPtEtaPhiM(event->mvamet,0,event->mvametphi,0);
-        else Emiss.SetPtEtaPhiM(event->met,0,event->metphi,0);
+        Emiss.SetPtEtaPhiM(event->met,0,event->metphi,0);
         alltau_Zpt->push_back( (leg1+leg2+Emiss).Pt() );
         
         dR1=1e6;
@@ -632,17 +638,14 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     alltau_lepVeto->insert(alltau_lepVeto->begin()+tpos,passesTauLepVetos);
     alltau_gen_match->insert(alltau_gen_match->begin()+tpos,event->gen_match_2);
     alltau_mvis->insert(alltau_mvis->begin()+tpos,event->m_vis);
-    if(useMVAMET) alltau_mt->insert(alltau_mt->begin()+tpos,event->mt_1);
-    else alltau_mt->insert(alltau_mt->begin()+tpos,event->mt_1);
-    if(useMVAMET) alltau_mt2->insert(alltau_mt2->begin()+tpos,event->mt_2);
-    else alltau_mt2->insert(alltau_mt2->begin()+tpos,event->mt_2);
+    alltau_mt->insert(alltau_mt->begin()+tpos,event->mt_1);
+    alltau_mt2->insert(alltau_mt2->begin()+tpos,event->mt_2);
     if(use_svfit)alltau_svfit->insert(alltau_svfit->begin()+tpos,event->m_sv);
     else alltau_svfit->insert(alltau_svfit->begin()+tpos,0.);
     TLorentzVector leg2; leg2.SetPtEtaPhiM(event->pt_2,event->eta_2,event->phi_2,event->m_2);
     TLorentzVector leg1; leg1.SetPtEtaPhiM(event->pt_1,event->eta_1,event->phi_1,event->m_1);
     TLorentzVector Emiss;
-    if(useMVAMET) Emiss.SetPtEtaPhiM(event->mvamet,0,event->mvametphi,0);
-    else Emiss.SetPtEtaPhiM(event->met,0,event->metphi,0);
+    Emiss.SetPtEtaPhiM(event->met,0,event->metphi,0);
     alltau_Zpt->insert( alltau_Zpt->begin()+tpos,(leg1+leg2+Emiss).Pt() );
       
     dR1=1e6;
@@ -729,17 +732,14 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       alltau_lepVeto->insert(alltau_lepVeto->begin()+tpos,passesTauLepVetos);
       alltau_gen_match->insert(alltau_gen_match->begin()+tpos,event->gen_match_1);
       alltau_mvis->insert(alltau_mvis->begin()+tpos,event->m_vis);
-      if(useMVAMET)alltau_mt->insert(alltau_mt->begin()+tpos,event->mt_2);
-      else alltau_mt->insert(alltau_mt->begin()+tpos,event->mt_2);
-      if(useMVAMET)alltau_mt2->insert(alltau_mt2->begin()+tpos,event->mt_1);
-      else alltau_mt2->insert(alltau_mt2->begin()+tpos,event->mt_1);
+      alltau_mt->insert(alltau_mt->begin()+tpos,event->mt_2);
+      alltau_mt2->insert(alltau_mt2->begin()+tpos,event->mt_1);
       if(use_svfit)alltau_svfit->insert(alltau_svfit->begin()+tpos,event->m_sv);
       else alltau_svfit->insert(alltau_svfit->begin()+tpos,0.);
       TLorentzVector leg2; leg2.SetPtEtaPhiM(event->pt_2,event->eta_2,event->phi_2,event->m_2);
       TLorentzVector leg1; leg1.SetPtEtaPhiM(event->pt_1,event->eta_1,event->phi_1,event->m_1);
       TLorentzVector Emiss;
-      if(useMVAMET) Emiss.SetPtEtaPhiM(event->mvamet,0,event->mvametphi,0);
-      else Emiss.SetPtEtaPhiM(event->met,0,event->metphi,0);
+      Emiss.SetPtEtaPhiM(event->met,0,event->metphi,0);
       alltau_Zpt->insert( alltau_Zpt->begin()+tpos,(leg1+leg2+Emiss).Pt() );
       
       dR1=1e6;
@@ -918,7 +918,6 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   tree->Branch("mjj",&mjj);
   tree->Branch("jdeta",&jdeta);
   tree->Branch("njetingap20", &njetingap20);
-  tree->Branch("mvamet",&mvamet);
   tree->Branch("met",&met);
   tree->Branch("m_leplep",&m_leplep);
   tree->Branch("lep_dR",&lep_dR);

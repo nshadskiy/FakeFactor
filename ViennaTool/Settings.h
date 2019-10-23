@@ -8,10 +8,11 @@
 #define selCHAN      kEL 
 const int CHAN     = kEL;
 // FakeFactor_2016_DeepTauIDv2_v0
-const TString analysis      ="FakeFactor_2016v12_Tight_VVVLoose";
-const TString output_folder ="/data/jandrejkovic/FakeRate/SM2016/FakeFactor_2016v12_Tight_VVVLoose";
+const TString analysis      ="test";
+const TString output_folder ="/data/jandrejkovic/FakeRate/SM2016/test";
 const TString ver = "2016_v12"; // first time nanoAODv5 with deepTauIDv2 
 
+const TString _NtupleTreeName = "TauCheck"; // name of the TTree in the analysis Ntuple
 const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; //obsolete
 ///////////////////////////////////////////////////
 const TString user="jandrejkovic";    
