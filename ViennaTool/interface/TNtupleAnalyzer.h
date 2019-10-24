@@ -23,7 +23,7 @@ class TNtupleAnalyzer{
   Int_t fitsGenCategory(const Int_t mode);
   Double_t calcDR(const Double_t eta1, const Double_t phi1, const Double_t eta2, const Double_t phi2);
   void initOutfileTree(TTree* tree);
-  
+  void SetNewEventInfo();
   
  private:
   TString curr_sample;
@@ -68,7 +68,6 @@ class TNtupleAnalyzer{
   std::vector<Double_t> *alltau_q;
   std::vector<Int_t> *alltau_decay;
   std::vector<Double_t> *alltau_beta;
-  //    std::vector<Int_t> *alltau_looseBeta;
   std::vector<Int_t> *alltau_mediumBeta;
   //    std::vector<Int_t> *alltau_tightBeta;
   // std::vector<Int_t> *alltau_vvvlooseMVA;
@@ -100,10 +99,7 @@ class TNtupleAnalyzer{
   std::vector<Double_t> *alltau_mt2;
   std::vector<Double_t> *alltau_svfit;
   std::vector<Double_t> *alltau_Zpt;
-  //    Int_t bin,gen_match_1,gen_match_2,mediumBeta,nAdditionalMu,passes3LVeto, passesDLVeto;
-  //    Float_t q_2;
-  //    Int_t gen_match_1,nAdditionalMu,passes3LVeto, passesDLVeto;
-
+  
   // variables used in whole class
   Double_t* pt_cuts_Wjets,*pt_cuts_DY,*pt_cuts_TT,*pt_cuts_QCD,*pt_cuts_QCD_AI;
   Double_t* eta_cuts_Wjets,*eta_cuts_DY,*eta_cuts_TT,*eta_cuts_QCD;

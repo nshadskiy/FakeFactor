@@ -36,6 +36,7 @@ void TNtupleAnalyzer::loadFile(TString filename, TString chain)
       nev=event->fChain->GetEntries(); 
       std::cout<<"File: "<<filename<<" loaded \n" << "#events: "<< nev << std::endl;
     }
+  }
   else{
     std::cout << "unknown chain!" << std::endl;
   }
@@ -46,25 +47,26 @@ void TNtupleAnalyzer::loadFile(TString filename, TString chain)
 void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
 {
   TString preselFile = preselectionFile;
-
-  TFile *fout_file = new TFile(preselFile,"RECREATE");
-  TTree* t_Events=new TTree("Events","Events");
+  TFile * fout_file = new TFile(preselFile,"RECREATE");
+  TTree * t_Events  = new TTree("Events","Events");
   this->initOutfileTree(t_Events);
-  //Commence loop over tree
-  Int_t nentries = Int_t(event->fChain->GetEntries());
-  Int_t pc=0;
-  cout<<"Producing " << preselFile << " , processing "<<nentries<<" events."<< endl;
-  //for (Int_t jentry=0; jentry<10000;jentry++) {
+  //Start loop over tree
+  Double_t nentries = Double_t(event->fChain->GetEntries());
+  Int_t pc=0; // count the number of events that passed the selection
+
+  cout<<"Producing " << preselFile << " , processing "<<Int_t(nentries)<<" events."<< endl;
+  
   for (Int_t jentry=0; jentry<nentries;jentry++){
-    if (jentry%1000 == 0) {
-      cout << "Event " << jentry << " " << jentry / nentries * 100 << "%" << endl;
+    if (jentry%3 == 0) {
+      cout << "Event " << jentry << " is processed: " << jentry / nentries * 100 << "% of total" << endl;
       if (jentry > 0) {
-        std::cout<<"1000 events are enough"<<std::endl;
+        std::cout<<"some events are enough"<<std::endl;
         break;
       }
     }
     event->GetEntry(jentry);
     Int_t ntau=setTreeValues(preselFile, mode); //preselection happens in there now
+
     if (ntau>=1){ 
       t_Events->Fill(); 
       pc++; 
@@ -79,6 +81,7 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
   cout<<pc<<" events passed preselection."<< endl;
   t_Events->Write();
   fout_file->Close();
+
   
 }
 
@@ -88,60 +91,8 @@ void TNtupleAnalyzer::closeFile()
   delete tchain;  
 }
 
-Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t mode, Int_t whichTau)
-{
-  // std::cout<<"setTreeValues"<<std::endl;
-  // Trigger selection + flagMETFilter + kinematic pt_2 cut
-  if(CHAN==kMU && ((event->flagMETFilter <0.5)|| !((event->trg_singlemu_22 > 0.5)||(event->trg_crossmu_mu19tau20>0.5)) || (event->pt_2<23))) return 0; 
-  if(CHAN==kTAU && ( (event->flagMETFilter <0.5) || !( event->trg_doubletau_35 ) )) return 0;
-  
-  if(CHAN==kEL && !preselectionFile.Contains("preselection_EMB") && ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_25_eta2p1 > 0.5)) || (event->pt_2<23)))  return 0;
-  if(CHAN==kEL && preselectionFile.Contains("preselection_EMB") &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_25_eta2p1 > 0.5)) || (event->pt_2<23)))  return 0; //(event->pt_1>20 && event->pt_1<24) ||
-  
-  
 
-
-  TLorentzVector vec1, vec2, vec;
-  //////////////////////////////////////////////////////////////////////////
-  weight=1.;
-  if( !preselectionFile.Contains("preselection_data")){
-    if( !preselectionFile.Contains("preselection_EMB")){
-      weight *= luminosity *  event->puweight * event->stitchedWeight * event->genweight * event->eleTauFakeRateWeight * event->muTauFakeRateWeight * event->idisoweight_1 * event->idisoweight_2;
-      if (CHAN == kTAU) weight *= 1.;//event->sf_DoubleTauTight;
-      else              weight *= event->sf_SingleOrCrossTrigger;
-      if( preselectionFile.Contains("preselection_TT") ) weight *= event->topPtReweightWeightRun2;
-      if( preselectionFile.Contains("preselection_DY") ) weight *= event->zPtReweightWeight;
-    }else{
-      weight *= event->weight;
-    }
-
-
-    if( CHAN == kTAU && !preselectionFile.Contains("preselection_EMB") ){ // CHANGE IF TAU WP CHANGES! https://twiki.cern.ch/twiki/bin/view/CMS/TauIDRecommendation13TeV#Tau_ID_SF_for_CMSSW_9_4_X_or_hig
-        if(event->gen_match_1 == 5 && event->byTightIsolationDeepTau2017v2VSjet_1) weight *= 0.85; //vtight = 0.89, tight = 0.90
-        else if(event->gen_match_1 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_1 ) weight *= 0.85;
-        if(event->gen_match_2 == 5 && event->byTightIsolationDeepTau2017v2VSjet_2) weight *= 0.85;
-        else if(event->gen_match_2 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_2 ) weight *= 0.85;
-    }
-    if( CHAN != kTAU && !preselectionFile.Contains("preselection_EMB") ){
-      if(event->gen_match_2 == 5 && event->byTightIsolationDeepTau2017v2VSjet_2) weight *= 0.85;
-      else if(event->gen_match_2 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_2 ) weight *= 0.85;
-    }
-  }
- 
-  weight_sf=weight;
-  
-  if(CHAN==kTAU && !COINFLIP){
-    weight=weight*0.5;
-    weight_sf=weight_sf*0.5;
-  }
-  
-  if(CHAN==kMU) passesTauLepVetos = ((event->againstMuonTight3_2>0.5) && (event->againstElectronVLooseMVA6_2>0.5));
-  if(CHAN==kEL) passesTauLepVetos = ((event->againstMuonLoose3_2>0.5) && (event->againstElectronTightMVA6_2>0.5));
-  if(CHAN==kTAU)passesTauLepVetos = ((event->againstElectronVLooseMVA6_1>0.5)&&(event->againstElectronVLooseMVA6_2>0.5)&&(event->againstMuonLoose3_1>0.5)&&(event->againstMuonLoose3_2>0.5));
-  passes3LVeto= ((event->extramuon_veto < 0.5) && (event->extraelec_veto < 0.5) && (event->dilepton_veto<0.5));
-  if ( CHAN == kMU  ) passesDLVeto= !(event->dilepton_veto);
-  if ( CHAN == kEL  ) passesDLVeto= !(event->dilepton_veto);
-  if ( CHAN == kTAU ) passesDLVeto= passesTauLepVetos;
+void TNtupleAnalyzer::SetNewEventInfo() {
   
   bpt_1=event->bpt_1;
   bpt_2=event->bpt_2;
@@ -176,8 +127,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   m_otherLep_m->resize(0);
   m_otherLep_iso->resize(0);
   m_otherLep_q->resize(0);
-  int nOtherLep;
 
+  
   m_lep->resize(0);
   m_lep_pt->resize(0);
   m_lep_eta->resize(0);
@@ -185,15 +136,98 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   m_lep_m->resize(0);
   m_lep_iso->resize(0);
   m_lep_q->resize(0);
-  int nLep;
-  
-  // std::cout << "preselectionFile.Contains(preselection_EMB)   " << preselectionFile.Contains("preselection_EMB") << endl;
+ 
+}
 
-  if( !preselectionFile.Contains("preselection_EMB")){ // Embedded Samples have no addlepton vector
-    // std::cout<<"bbbbb11111"<<std::endl;
+Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t mode, Int_t whichTau) // whichTau is default set to 1
+{
+  Int_t evt_ID = event->entry;
+  std::cout << "event " << evt_ID << " entered preselection" << std::endl;
+  /*
+    Trigger selection + flagMETFilter + kinematic pt_2 cut 
+    are applied in the following lines
+  */
+  if(CHAN==kMU &&  ((event->flagMETFilter <0.5) || !((event->trg_singlemu_22 > 0.5) || (event->trg_crossmu_mu19tau20>0.5)) || (event->pt_2<23))) return 0; 
+  if(CHAN==kTAU && ((event->flagMETFilter <0.5) || !( event->trg_doubletau_35 ) )) return 0;
+  if(CHAN==kEL &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_25_eta2p1 > 0.5)) || (event->pt_2<23)))  return 0;
+  std::cout << "event " << evt_ID << " passed trigger selection, MET filter and kinematics" << std::endl;
+  // below old example when embedding was used.
+  // if(CHAN==kEL && preselectionFile.Contains("preselection_EMB") &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_25_eta2p1 > 0.5)) || (event->pt_2<23)))  return 0;
+  //////////////////////////////////////////////////////////////////////////
+  
+
+
+  TLorentzVector vec1, vec2, vec; // This is used later - but no idea for what
+
+  /*
+  Below the weight is defined with applying SFs, Tigger SFs
+  */
+  weight=1.;
+  if( !preselectionFile.Contains("preselection_data")){
+    if( !preselectionFile.Contains("preselection_EMB")){
+      weight *= luminosity *  event->puweight * event->stitchedWeight * event->genweight * event->eleTauFakeRateWeight * event->muTauFakeRateWeight * event->idisoweight_1 * event->idisoweight_2;
+      if (CHAN == kTAU) weight *= 1.;//event->sf_DoubleTauTight;
+      else              weight *= event->sf_SingleOrCrossTrigger;
+      if( preselectionFile.Contains("preselection_TT") ) weight *= event->topPtReweightWeightRun2;
+      if( preselectionFile.Contains("preselection_DY") ) weight *= event->zPtReweightWeight;
+    }else{
+      weight *= event->weight;
+    }
+
+
+    if( CHAN == kTAU && !preselectionFile.Contains("preselection_EMB") ){ // CHANGE IF TAU WP CHANGES! https://twiki.cern.ch/twiki/bin/view/CMS/TauIDRecommendation13TeV#Tau_ID_SF_for_CMSSW_9_4_X_or_hig
+        if(event->gen_match_1 == 5 && event->byTightIsolationDeepTau2017v2VSjet_1) weight *= 0.85; //vtight = 0.89, tight = 0.90
+        else if(event->gen_match_1 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_1 ) weight *= 0.85;
+        if(event->gen_match_2 == 5 && event->byTightIsolationDeepTau2017v2VSjet_2) weight *= 0.85;
+        else if(event->gen_match_2 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_2 ) weight *= 0.85;
+    }
+    if( CHAN != kTAU && !preselectionFile.Contains("preselection_EMB") ){
+      if(event->gen_match_2 == 5 && event->byTightIsolationDeepTau2017v2VSjet_2) weight *= 0.85;
+      else if(event->gen_match_2 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_2 ) weight *= 0.85;
+    }
+  }
+ 
+  weight_sf=weight;
+  
+  if(CHAN==kTAU && !COINFLIP){
+    weight=weight*0.5;
+    weight_sf=weight_sf*0.5;
+  }
+  std::cout << "event has the following weight: "    << weight    << std::endl;
+  std::cout << "event has the following weight_sf: " << weight_sf << std::endl;
+  //////////////////////////////////////////////////////////////////////////
+  
+
+
+  /*  
+    Lepton vetos
+  */
+  if(CHAN==kMU) passesTauLepVetos = ((event->againstMuonTight3_2>0.5) && (event->againstElectronVLooseMVA6_2>0.5));
+  if(CHAN==kEL) passesTauLepVetos = ((event->againstMuonLoose3_2>0.5) && (event->againstElectronTightMVA6_2>0.5));
+  if(CHAN==kTAU)passesTauLepVetos = ((event->againstElectronVLooseMVA6_1>0.5)&&(event->againstElectronVLooseMVA6_2>0.5)&&(event->againstMuonLoose3_1>0.5)&&(event->againstMuonLoose3_2>0.5));
+  passes3LVeto= ((event->extramuon_veto < 0.5) && (event->extraelec_veto < 0.5) && (event->dilepton_veto<0.5));
+  if ( CHAN == kMU  ) passesDLVeto= !(event->dilepton_veto);
+  if ( CHAN == kEL  ) passesDLVeto= !(event->dilepton_veto);
+  if ( CHAN == kTAU ) passesDLVeto= passesTauLepVetos;
+  std::cout << "event passes Tau lepton vetos: "    << passesTauLepVetos    << std::endl;
+  std::cout << "event passes Tau 2-lepton vetos: "  << passesDLVeto       << std::endl;
+  std::cout << "event passes Tau 3-lepton vetos: "    << passes3LVeto    << std::endl;
+  //////////////////////////////////////////////////////////////////////////
+  
+  this->SetNewEventInfo(); // Fills kinematic and other variables for each event new. Vectors get emptied. These variables are private to the TNtupleAnalyzer class -> see the .h file
+  
+  
+  int nLep;
+  int nOtherLep;
+  
+  
+  if( !preselectionFile.Contains("preselection_EMB"))
+  { // Embedded Samples have no addlepton vector
+    
     if ( CHAN == kMU || CHAN == kTAU ){  //for now: in kTAU, fill lep with muons and otherLep with electrons
       if(event->addlepton_p4){ // from new NanoAOD
         for(int i = 0; i < event->addlepton_p4->size(); i++){
+          std::cout << "additional lep no: " << i << std::endl;
           if ( abs(event->addlepton_pdgId->at(i)) == 13) {	// 13 == muon
             m_lep  ->push_back( TLorentzVector(event->addlepton_p4->at(i)) );	
             m_lep_q->push_back( TMath::Sign(1,event->addlepton_pdgId->at(i)) );
@@ -209,36 +243,14 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
         nLep 	  = m_lep->size();
         nOtherLep = m_otherLep->size();
         
-      }else{
-        m_lep_iso=event->addmuon_iso;
-        m_lep_q=event->addmuon_q;
-        nLep=event->nadditionalMu;
-        
-        m_lep = new std::vector<TLorentzVector>(nLep);
-        for(int i = 0; i<nLep; i++){
-          m_lep->at(i).SetPtEtaPhiM( 	event->addmuon_pt->at(i),
-                        event->addmuon_eta->at(i),
-                        event->addmuon_phi->at(i),
-                        event->addmuon_m->at(i));
-        }
-        
-        m_otherLep_iso=event->addele_iso;  
-        m_otherLep_q=event->addele_q;
-        nOtherLep=event->nadditionalEle;
-        
-        m_otherLep = new std::vector<TLorentzVector>(nOtherLep);
-        for(int i = 0; i<nOtherLep; i++){
-          m_otherLep->at(i).SetPtEtaPhiM( event->addele_pt->at(i),
-                          event->addele_eta->at(i),
-                          event->addele_phi->at(i),
-                          event->addele_m->at(i));
-        }
+      }
+      else{
+        std::cout << "\033[1;31m This should not happen - you are using nanoAOD \033[0m" << std::endl;
       }
     } else if ( CHAN == kEL ){
       if(event->addlepton_p4){ // from new NanoAOD 
         
         for(int i = 0; i < event->addlepton_p4->size(); i++){
-
           if ( abs(event->addlepton_pdgId->at(i)) == 11) {	//electron
             m_lep  ->push_back( TLorentzVector(event->addlepton_p4->at(i)) );	
             m_lep_q->push_back( TMath::Sign(1,event->addlepton_pdgId->at(i)) );
@@ -284,6 +296,9 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     nLep = 0;
     nOtherLep = 0;
   }
+
+
+
   std::vector<TLorentzVector> v_otherLep; 
   std::vector<TLorentzVector> v_lep;
   std::vector<double> v_lep_q;  

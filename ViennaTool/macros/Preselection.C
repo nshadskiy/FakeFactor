@@ -40,7 +40,7 @@ void Preselection()
   for (auto entry : myList)
   {
     Analyzer->loadFile(entry.filename,_NtupleTreeName);
-    // Analyzer->select(entry.selection,entry.bitmask);
+    Analyzer->select(entry.selection,entry.bitmask);
     Analyzer->closeFile();
     // compressFile(entry.selection);  
 
