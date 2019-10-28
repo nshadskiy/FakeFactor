@@ -57,7 +57,7 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
   cout<<"Producing " << preselFile << " , processing "<<Int_t(nentries)<<" events."<< endl;
   
   for (Int_t jentry=0; jentry<nentries;jentry++){
-    if (jentry%3 == 0) {
+    if (jentry%10 == 0) {
       cout << "Event " << jentry << " is processed: " << jentry / nentries * 100 << "% of total" << endl;
       if (jentry > 0) {
         std::cout<<"some events are enough"<<std::endl;
@@ -67,7 +67,9 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
     event->GetEntry(jentry);
     Int_t ntau=setTreeValues(preselFile, mode); //preselection happens in there now
 
+
     if (ntau>=1){ 
+      std::cout << "Event ID " << jentry << "passed preselection and is written to root file" << std::endl;
       t_Events->Fill(); 
       pc++; 
     }
@@ -403,16 +405,17 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   float m_tau_eta_cut=TAU_ETA_CUT;
   if ( CHAN == kTAU ){ m_tau_pt_cut=TAU_PT_CUT_TT; m_tau_eta_cut=TAU_ETA_CUT_TT; }
 
-  double dR; int m;
+
+  // some variable definitions
+  double dR; int m; // m == tau decay mode
   Double_t dR1, dR2;
-  
   int loop_end;
   int pdgID;
-  
-  
   int bitmask;
   bool antiEle, antiMu;
-  if( !preselectionFile.Contains("preselection_EMB")){
+
+  if( !preselectionFile.Contains("preselection_EMB")){ 
+
     if ( event->addlepton_p4 ) loop_end = event->addlepton_p4->size();
     else loop_end = event->nadditionalTau;
     
@@ -433,8 +436,13 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
       bitmask=event->addlepton_tauAntiEle->at(i); //add in .h
       antiEle = ( bitmask & 0x8) > 0;
+      std::cout << "Anti-ele Bitmask of tau (" << i << ") in addlepton collection is: " << bitmask << std::endl;
+      std::cout << "antiEle = " << antiEle << std::endl;
+      
       bitmask=event->addlepton_tauAntiMu->at(i); //add in .h
       antiMu  = (bitmask & 0x1 ) > 0;
+      std::cout << "Anti-mu Bitmask of tau (" << i << ") in addlepton collection is: " << bitmask << std::endl;
+      std::cout << "antiMu = " << antiMu << std::endl;
 
       if (antiEle & antiMu == 0) continue;
       
@@ -442,25 +450,17 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       else 					  m=event->addtau_decayMode->at(i);
       
       if ( !( (m>=0&&m<=4)||(m>=10&&m<=14) ) ) continue;
+
+
       dR=this->calcDR( event->eta_1, event->phi_1, event->addlepton_p4->at(i).Eta(), event->addlepton_p4->at(i).Phi() );
       if ( CHAN!=kTAU && dR<0.5 ) continue;
       
       if ( event->addlepton_p4 ){ //nanoAOD
-          // std::cout<<"is nanoAOD"<<std::endl;
-
         
         alltau_pt ->push_back(event->addlepton_p4->at(i).Pt());  
         alltau_eta->push_back(event->addlepton_p4->at(i).Eta());
         alltau_phi->push_back(event->addlepton_p4->at(i).Phi());
         alltau_q  ->push_back(TMath::Sign(1, event->addlepton_pdgId->at(i)));	
-
-        // std::cout<< "event->addlepton_tauID->at(i):   "<<event->addlepton_tauID->at(i)<<std::endl;
-        // std::cout<< "########################++++++++++++++++++++++++++"<<std::endl;
-        // std::cout<< "0x1:   "<<0x1<<std::endl;
-        // std::cout<< "(event->addlepton_tauID->at(i) & 0x1):   "<<(event->addlepton_tauID->at(i) & 0x1)<<std::endl;
-        // std::cout<< "size of alltau_vlooseMVA:   "<<alltau_vlooseMVA->size()<<std::endl;
-        // Int_t dummydummyu = (event->addlepton_tauID->at(i) & 0x1) > 0;
-        // std::cout<< "(event->addlepton_tauID->at(i) & 0x1) greater 0:   "<<dummydummyu<<std::endl;
 
 
         alltau_vvvlooseDNN ->push_back( (event->addlepton_tauID->at(i) & 0x1) > 0 );
@@ -471,32 +471,6 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
         alltau_tightDNN ->push_back( (event->addlepton_tauID->at(i) & 0x20) > 0 );
         alltau_vtightDNN ->push_back( (event->addlepton_tauID->at(i) & 0x40) > 0 );
         alltau_vvtightDNN ->push_back( (event->addlepton_tauID->at(i) & 0x80) > 0 );
-
-        // alltau_vlooseMVA->push_back( (event->addlepton_tauID->at(i) & 0x1) > 0 );
-        // alltau_looseMVA ->push_back( (event->addlepton_tauID->at(i) & 0x2) > 0 );
-        // alltau_mediumMVA->push_back( (event->addlepton_tauID->at(i) & 0x4) > 0 );
-        // alltau_tightMVA ->push_back( (event->addlepton_tauID->at(i) & 0x8) > 0 );
-        // alltau_vtightMVA->push_back( (event->addlepton_tauID->at(i) & 0x10) > 0 );
-        
-        // for (int jj = 0; jj < alltau_vlooseMVA->size(); jj++) {
-        //   std::cout<<alltau_vlooseMVA->at(jj) << "  ";
-        // }
-        // std::cout<<" "<<std::endl;
-
-        // if (i==1) {
-        //   std::cout<<"i "<< i << std::endl;
-        //   std::cout<<"event->addlepton_tauID->at(i) & 0x20) > 0 "<< (event->addlepton_tauID->at(i) & 0x20) << std::endl;
-
-
-        // alltau_vvvlooseMVA->push_back( (event->addlepton_tauID->at(i) & 0x1) > 0 );
-        // alltau_vvlooseMVA->push_back( (event->addlepton_tauID->at(i) & 0x2) > 0 );
-        // alltau_vlooseMVA->push_back( (event->addlepton_tauID->at(i) & 0x4) > 0 );
-        // alltau_looseMVA->push_back( (event->addlepton_tauID->at(i) & 0x8) > 0 );
-        // alltau_mediumMVA->push_back( (event->addlepton_tauID->at(i) & 0x10) > 0 );
-        // alltau_tightMVA->push_back( (event->addlepton_tauID->at(i) & 0x20) > 0 );
-        // alltau_vtightMVA->push_back( (event->addlepton_tauID->at(i) & 0x40) > 0 );
-        // alltau_vvtightMVA->push_back( (event->addlepton_tauID->at(i) & 0x80) > 0 );
-        
        
         bitmask=event->addlepton_tauAntiEle->at(i); //add in .h
         antiEle = ( bitmask & 0x8) > 0;
@@ -507,48 +481,55 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
         alltau_beta->push_back(event->addlepton_tauCombIso->at(i)); 
         alltau_gen_match->push_back(event->addlepton_mc_match->at(i));	
         alltau_mvis->push_back(event->addlepton_mvis->at(i));
-      }else{ // non nanoAOD
-        std::cout<< "You are not using nanoAOD samples !?!" << std::endl;
       }
-        alltau_decay->push_back(m); //distinction between nanoAod/other already made earlier
-        
-        // alltau_mediumBeta->push_back(event->addtau_byMediumCombinedIsolationDeltaBetaCorr3Hits->at(i)); //TODO -> still used??
-        alltau_mt->push_back(event->mt_1); //mt of lepton and PFMET
-        alltau_mt2->push_back(event->mt_2);  //no addtaupfmt in addtau collection
-        if(use_svfit)alltau_svfit->push_back(event->m_sv); //FIXME: no svfit in addtau collection so far
-        else alltau_svfit->push_back(0.);
-        TLorentzVector leg2; leg2.SetPtEtaPhiM(event->addlepton_p4->at(i).Pt(),event->addlepton_p4->at(i).Eta(),event->addlepton_p4->at(i).Phi(),event->addlepton_p4->at(i).M()); 
-        TLorentzVector leg1; leg1.SetPtEtaPhiM(event->pt_1,event->eta_1,event->phi_1,event->m_1); 
-        TLorentzVector Emiss;
-        Emiss.SetPtEtaPhiM(event->met,0,event->metphi,0);
-        alltau_Zpt->push_back( (leg1+leg2+Emiss).Pt() );
-        
-        dR1=1e6;
-        double m_dR1=dR1;
-        for (unsigned iL=0; iL<v_lep_eta_iso.size(); iL++){
-          m_dR1=calcDR( event->addlepton_p4->at(i).Eta(),event->addlepton_p4->at(i).Phi(),v_lep_eta_iso.at(iL),v_lep_phi_iso.at(iL) );
-          if ( dR1>m_dR1 ) dR1=m_dR1;
-        }
-        alltau_dRToLep->push_back( dR1 );
-        
-        dR1=1e6;
-        m_dR1=dR1;
-        for (unsigned iL=0; iL<v_otherLep.size(); iL++){
-          m_dR1=calcDR( event->addlepton_p4->at(i).Eta(),event->addlepton_p4->at(i).Phi(),v_otherLep.at(iL).Eta(),v_otherLep.at(iL).Phi() );  
-          if ( dR1>m_dR1 ) dR1=m_dR1;
-        }
-        alltau_dRToOtherLep->push_back( dR1 );
+      else{
+        std::cout << "\033[1;31m This should not happen - you are using nanoAOD \033[0m" << std::endl;
+      }
 
-        dR1=calcDR(event->addlepton_p4->at(i).Eta(),event->addlepton_p4->at(i).Phi(),event->beta_1,event->bphi_1);
-        dR2=calcDR(event->addlepton_p4->at(i).Eta(),event->addlepton_p4->at(i).Phi(),event->beta_2,event->bphi_2);
-        alltau_dRToB->push_back( min(dR1,dR2) );
+      alltau_decay->push_back(m); //distinction between nanoAod/other already made earlier
+      
+      alltau_mt->push_back(event->mt_1); //mt of lepton and PFMET
+      alltau_mt2->push_back(event->mt_2);  //no addtaupfmt in addtau collection
+      
+      if(use_svfit)alltau_svfit->push_back(event->m_sv); //FIXME: no svfit in addtau collection so far
+      else alltau_svfit->push_back(0.);
+      
+      TLorentzVector leg2; leg2.SetPtEtaPhiM(event->addlepton_p4->at(i).Pt(),event->addlepton_p4->at(i).Eta(),event->addlepton_p4->at(i).Phi(),event->addlepton_p4->at(i).M()); 
+      TLorentzVector leg1; leg1.SetPtEtaPhiM(event->pt_1,event->eta_1,event->phi_1,event->m_1); 
+      
+      TLorentzVector Emiss;
+      Emiss.SetPtEtaPhiM(event->met,0,event->metphi,0);
+      alltau_Zpt->push_back( (leg1+leg2+Emiss).Pt() );
+      
+      dR1=1e6;
+      double m_dR1=dR1;
+      for (unsigned iL=0; iL<v_lep_eta_iso.size(); iL++){
+        m_dR1=calcDR( event->addlepton_p4->at(i).Eta(),event->addlepton_p4->at(i).Phi(),v_lep_eta_iso.at(iL),v_lep_phi_iso.at(iL) );
+        if ( dR1>m_dR1 ) dR1=m_dR1;
+      }
+      alltau_dRToLep->push_back( dR1 );
+      
+      dR1=1e6;
+      m_dR1=dR1;
+      for (unsigned iL=0; iL<v_otherLep.size(); iL++){
+        m_dR1=calcDR( event->addlepton_p4->at(i).Eta(),event->addlepton_p4->at(i).Phi(),v_otherLep.at(iL).Eta(),v_otherLep.at(iL).Phi() );  
+        if ( dR1>m_dR1 ) dR1=m_dR1;
+      }
+      alltau_dRToOtherLep->push_back( dR1 );
+
+
+      dR1=calcDR(event->addlepton_p4->at(i).Eta(),event->addlepton_p4->at(i).Phi(),event->beta_1,event->bphi_1);
+      dR2=calcDR(event->addlepton_p4->at(i).Eta(),event->addlepton_p4->at(i).Phi(),event->beta_2,event->bphi_2);
+      alltau_dRToB->push_back( min(dR1,dR2) );
     }
   }
+
   dR=this->calcDR( event->eta_1, event->phi_1, event->eta_2, event->phi_2 ); //should always be >0.5 ... but to be safe
-  tau_iso_ind=-1;
+  tau_iso_ind=-1; // this is useless I think - it is a private variable inside class and later used and filled?
 
   //for tt: insert both _1 and _2, but in random order (i.e. not iso- or pt-ordered!!); other channels: simply insert _2
   Int_t TT_AS_LEP=1;
+  
   if ( CHAN == kTAU ){
     if(COINFLIP) {
       if ( r3.Uniform(2)>1.0 ) TT_AS_LEP=2; //if uniform random number in (0;2) is >1, then use it as 2nd tau as lep; otherwise 1st. For et/mt, TT_AS_LEP is always =1
@@ -558,9 +539,10 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     }
   }
   
+
+
   float decay=event->decayMode_2;
   int newDMs=event->decayModeFindingNewDMs_2;
-  // std::cout<<"decayModeFindingNewDMs_2: " << newDMs << "using old DMs for testing" << std::endl;
   // TODO: there is no passestaulepvetos in embedded samples!!!
   
   // For DeepTauID ask for newDMs and veto DMs 5 and 6
@@ -574,14 +556,9 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     
     alltau_q->insert(alltau_q->begin()+tpos,event->q_2/abs(event->q_2));
     alltau_decay->insert(alltau_decay->begin()+tpos,decay);
-    // alltau_beta->insert(alltau_beta->begin()+tpos,event->byCombinedIsolationDeltaBetaCorrRaw3Hits_2);
+    
     if(preselectionFile.Contains("preselection_EMB")){
-      // alltau_mediumBeta->insert(alltau_mediumBeta->begin()+tpos,event->byMediumCombinedIsolationDeltaBetaCorr3Hits_2 > 0);
-      // alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 > 0 );
-      // alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_2 > 0 );
-      // alltau_mediumMVA->insert(alltau_mediumMVA->begin()+tpos, event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_2 > 0 );
-      // alltau_tightMVA->insert(alltau_tightMVA->begin()+tpos, event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2 > 0 );
-      // alltau_vtightMVA->insert(alltau_vtightMVA->begin()+tpos, event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_2 > 0 );
+      std::cout << "\033[1;31m WARNING: \033[0m  assignment of DeepTauID  for embedded not implemented yet but you are running in EMB==1 mode -> see Settings.h" << std::endl;
 
       alltau_vvvlooseDNN->insert(alltau_vvvlooseDNN->begin()+tpos, event->byVVVLooseIsolationDeepTau2017v2VSjet_2 > 0);
       alltau_vvlooseDNN->insert(alltau_vvlooseDNN->begin()+tpos, event->byVVLooseIsolationDeepTau2017v2VSjet_2 > 0);
@@ -593,17 +570,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       alltau_vvtightDNN->insert(alltau_vvtightDNN->begin()+tpos, event->byVVTightIsolationDeepTau2017v2VSjet_2 > 0);
     
     }else{
-      // alltau_mediumBeta->insert(alltau_mediumBeta->begin()+tpos,event->byMediumCombinedIsolationDeltaBetaCorr3Hits_2 );
-      // alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 );
-      // alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_2 );
-      // alltau_mediumMVA->insert(alltau_mediumMVA->begin()+tpos, event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_2 );
-      // alltau_tightMVA->insert(alltau_tightMVA->begin()+tpos, event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2 );
-      // alltau_vtightMVA->insert(alltau_vtightMVA->begin()+tpos, event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_2 );
-
-      // std::cout<<"tpos : "<< tpos <<std::endl;
-      // std::cout<<"event->byTightIsolationDeepTau2017v2VSjet_2 : "<< event->byTightIsolationDeepTau2017v2VSjet_2 << std::endl;
+    
       alltau_vvvlooseDNN->insert(alltau_vvvlooseDNN->begin()+tpos, event->byVVVLooseIsolationDeepTau2017v2VSjet_2 );
-      // std::cout<<"after break"<<std::endl;
       alltau_vvlooseDNN->insert(alltau_vvlooseDNN->begin()+tpos, event->byVVLooseIsolationDeepTau2017v2VSjet_2 );
       alltau_vlooseDNN->insert(alltau_vlooseDNN->begin()+tpos, event->byVLooseIsolationDeepTau2017v2VSjet_2 );
       alltau_looseDNN->insert(alltau_looseDNN->begin()+tpos, event->byLooseIsolationDeepTau2017v2VSjet_2 );
@@ -611,15 +579,17 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       alltau_tightDNN->insert(alltau_tightDNN->begin()+tpos, event->byTightIsolationDeepTau2017v2VSjet_2 );
       alltau_vtightDNN->insert(alltau_vtightDNN->begin()+tpos, event->byVTightIsolationDeepTau2017v2VSjet_2 );
       alltau_vvtightDNN->insert(alltau_vvtightDNN->begin()+tpos, event->byVVTightIsolationDeepTau2017v2VSjet_2 );
-      }
+    }
 
     alltau_lepVeto->insert(alltau_lepVeto->begin()+tpos,passesTauLepVetos);
     alltau_gen_match->insert(alltau_gen_match->begin()+tpos,event->gen_match_2);
     alltau_mvis->insert(alltau_mvis->begin()+tpos,event->m_vis);
     alltau_mt->insert(alltau_mt->begin()+tpos,event->mt_1);
     alltau_mt2->insert(alltau_mt2->begin()+tpos,event->mt_2);
+    
     if(use_svfit)alltau_svfit->insert(alltau_svfit->begin()+tpos,event->m_sv);
     else alltau_svfit->insert(alltau_svfit->begin()+tpos,0.);
+    
     TLorentzVector leg2; leg2.SetPtEtaPhiM(event->pt_2,event->eta_2,event->phi_2,event->m_2);
     TLorentzVector leg1; leg1.SetPtEtaPhiM(event->pt_1,event->eta_1,event->phi_1,event->m_1);
     TLorentzVector Emiss;
@@ -668,17 +638,10 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       alltau_phi->insert(alltau_phi->begin()+tpos,event->phi_1);
       alltau_q->insert(alltau_q->begin()+tpos,event->q_1);
       alltau_decay->insert(alltau_decay->begin()+tpos,decay);
-      // alltau_beta->insert(alltau_beta->begin()+tpos,event->byCombinedIsolationDeltaBetaCorrRaw3Hits_1);
-      //  alltau_looseBeta->insert(alltau_looseBeta->begin()+tpos,event->byLooseCombinedIsolationDeltaBetaCorr3Hits_1);
-      //  alltau_tightBeta->insert(alltau_tightBeta->begin()+tpos,event->byTightCombinedIsolationDeltaBetaCorr3Hits_1);
-      if(preselectionFile.Contains("preselection_EMB")){
-        // alltau_mediumBeta->insert(alltau_mediumBeta->begin()+tpos,event->byMediumCombinedIsolationDeltaBetaCorr3Hits_1> 0);
-        // alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 > 0 );
-        // alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_1 > 0);
-        // alltau_mediumMVA->insert(alltau_mediumMVA->begin()+tpos, event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_1 > 0);
-        // alltau_tightMVA->insert(alltau_tightMVA->begin()+tpos, event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1 > 0);
-        // alltau_vtightMVA->insert(alltau_vtightMVA->begin()+tpos, event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_1 > 0);
+      
 
+      if(preselectionFile.Contains("preselection_EMB")){
+      
         // deepTauIDv2
         alltau_vvvlooseDNN->insert(alltau_vvvlooseDNN->begin()+tpos, event->byVVVLooseIsolationDeepTau2017v2VSjet_1 > 0);
         alltau_vvlooseDNN->insert(alltau_vvlooseDNN->begin()+tpos, event->byVVLooseIsolationDeepTau2017v2VSjet_1 > 0);
@@ -690,13 +653,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
         alltau_vvtightDNN->insert(alltau_vvtightDNN->begin()+tpos, event->byVVTightIsolationDeepTau2017v2VSjet_1 > 0);
 
       }else{
-        // alltau_mediumBeta->insert(alltau_mediumBeta->begin()+tpos,event->byMediumCombinedIsolationDeltaBetaCorr3Hits_1 );
-        // alltau_vlooseMVA->insert(alltau_vlooseMVA->begin()+tpos, event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 );
-        // alltau_looseMVA->insert(alltau_looseMVA->begin()+tpos, event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_1 );
-        // alltau_mediumMVA->insert(alltau_mediumMVA->begin()+tpos, event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_1 );
-        // alltau_tightMVA->insert(alltau_tightMVA->begin()+tpos, event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1 );
-        // alltau_vtightMVA->insert(alltau_vtightMVA->begin()+tpos, event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_1 );
-
+      
         // deepTauIDv2
         alltau_vvvlooseDNN->insert(alltau_vvvlooseDNN->begin()+tpos, event->byVVVLooseIsolationDeepTau2017v2VSjet_1 );
         alltau_vvlooseDNN->insert(alltau_vvlooseDNN->begin()+tpos, event->byVVLooseIsolationDeepTau2017v2VSjet_1 );
@@ -723,16 +680,16 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       dR1=1e6;
       double m_dR1=dR1;
       for (unsigned iL=0; iL<v_lep_eta_iso.size(); iL++){
-	m_dR1=calcDR( event->eta_1,event->phi_1,v_lep_eta_iso.at(iL),v_lep_phi_iso.at(iL) );
-	if ( dR1>m_dR1 ) dR1=m_dR1;
+        m_dR1=calcDR( event->eta_1,event->phi_1,v_lep_eta_iso.at(iL),v_lep_phi_iso.at(iL) );
+        if ( dR1>m_dR1 ) dR1=m_dR1;
       }
       alltau_dRToLep->insert(alltau_dRToLep->begin()+tpos , dR1 );
       
       dR1=1e6;
       m_dR1=dR1;
       for (unsigned iL=0; iL<v_otherLep.size(); iL++){
-	m_dR1=calcDR( event->eta_1,event->phi_1,v_otherLep.at(iL).Eta(),v_otherLep.at(iL).Phi() );
-	if ( dR1>m_dR1 ) dR1=m_dR1;
+        m_dR1=calcDR( event->eta_1,event->phi_1,v_otherLep.at(iL).Eta(),v_otherLep.at(iL).Phi() );
+        if ( dR1>m_dR1 ) dR1=m_dR1;
       }
       alltau_dRToOtherLep->insert(alltau_dRToOtherLep->begin()+tpos, dR1 );
       
@@ -744,6 +701,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     }
   }
   
+
+
   //FIXME : what is this good for?
   lep_vvvloose = 0;
   lep_vvloose  = 0;
@@ -769,13 +728,6 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       // lep_loose = ( event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_2 == 1 ) ? 1 : 0;
       // lep_medium = ( event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_2 == 1 ) ? 1 : 0;
 
-      // lep_iso = event->byTightIsolationDeepTau2017v2VSjet_2==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! tight
-      // lep_vvvloose = ( event->byVVVLooseIsolationDeepTau2017v2VSjet_2 == 1 ) ? 1 : 0;
-      // lep_vvloose = ( event->byVVLooseIsolationDeepTau2017v2VSjet_2 == 1 ) ? 1 : 0;
-      // lep_vloose = ( event->byVLooseIsolationDeepTau2017v2VSjet_2 == 1 ) ? 1 : 0;
-      // lep_loose = ( event->byLooseIsolationDeepTau2017v2VSjet_2 == 1 ) ? 1 : 0;
-      // lep_medium = ( event->byMediumIsolationDeepTau2017v2VSjet_2 == 1 ) ? 1 : 0;
-
     } else{
       lep_dR=-99; //needed for mZ in ee/mumu CR; not needed for tautau
       lep_pt=event->pt_1;
@@ -790,12 +742,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       // lep_loose = ( event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_1 == 1 ) ? 1 : 0;
       // lep_medium = ( event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_1 == 1 ) ? 1 : 0;
 
-      // lep_iso = event->byTightIsolationDeepTau2017v2VSjet_1==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! tight
-      // lep_vvvloose = ( event->byVVVLooseIsolationDeepTau2017v2VSjet_1 == 1 ) ? 1 : 0;
-      // lep_vvloose = ( event->byVVLooseIsolationDeepTau2017v2VSjet_1 == 1 ) ? 1 : 0;
-      // lep_vloose = ( event->byVLooseIsolationDeepTau2017v2VSjet_1 == 1 ) ? 1 : 0;
-      // lep_loose = ( event->byLooseIsolationDeepTau2017v2VSjet_1 == 1 ) ? 1 : 0;
-      // lep_medium = ( event->byMediumIsolationDeepTau2017v2VSjet_1 == 1 ) ? 1 : 0;
+    
 
     }
   }
@@ -818,6 +765,10 @@ Int_t TNtupleAnalyzer::fitsGenCategory(const Int_t mode)
 {
   if ( ! alltau_gen_match->size() ) return 0;
   Int_t gm=alltau_gen_match->at(0);
+
+  std::cout << "Mode is " << mode << std::endl;
+  std::cout << "GenMatching is " << gm << std::endl;
+  
   
 //  promptE   =1;
 //  promptMu  =2;
@@ -868,6 +819,7 @@ Int_t TNtupleAnalyzer::fitsGenCategory(const Int_t mode)
     } else if (mode & _QCD) {
       return 1;
     } else {
+      std::cout << "For data this is the case" << std::endl;
       return 1;
     }
   }
@@ -922,15 +874,8 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   tree->Branch("alltau_q",&alltau_q);
   tree->Branch("alltau_decay",&alltau_decay);
   tree->Branch("alltau_beta",&alltau_beta);
-  // tree->Branch("alltau_mediumBeta",&alltau_mediumBeta);
-  // tree->Branch("alltau_vvvlooseMVA",&alltau_vvvlooseMVA);
-  // tree->Branch("alltau_vvlooseMVA",&alltau_vvlooseMVA);
-  // tree->Branch("alltau_vlooseMVA",&alltau_vlooseMVA);
-  // tree->Branch("alltau_looseMVA",&alltau_looseMVA);
-  // tree->Branch("alltau_mediumMVA",&alltau_mediumMVA);
-  // tree->Branch("alltau_tightMVA",&alltau_tightMVA);
-  // tree->Branch("alltau_vtightMVA",&alltau_vtightMVA);
-  // tree->Branch("alltau_vvtightMVA",&alltau_vvtightMVA);
+  
+
   // deepTauIDv2
   tree->Branch("alltau_vvvlooseDNN",&alltau_vvvlooseDNN);
   tree->Branch("alltau_vvlooseDNN",&alltau_vvlooseDNN);

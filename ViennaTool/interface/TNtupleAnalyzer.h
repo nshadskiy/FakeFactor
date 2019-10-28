@@ -19,13 +19,13 @@ class TNtupleAnalyzer{
   void closeFile();
   void select(const TString preselectionFile, const Int_t mode);
   Int_t setTreeValues(const TString preselectionFile, const Int_t mode, const Int_t whichTau=1);
-  Int_t findPos(const Double_t val, const std::vector<Double_t> *v_val);
+  Int_t findPos(const Double_t val, const std::vector<Double_t> *v_val); //never used so far
   Int_t fitsGenCategory(const Int_t mode);
   Double_t calcDR(const Double_t eta1, const Double_t phi1, const Double_t eta2, const Double_t phi2);
   void initOutfileTree(TTree* tree);
   void SetNewEventInfo();
   void ResizeVectors();
-  
+
  private:
   TString curr_sample;
 
@@ -41,7 +41,7 @@ class TNtupleAnalyzer{
   double otherLep_pt,otherLep_eta,otherLep_phi,otherLep_m,otherLep_iso;
   int    otherLep_q;
   double lep_pt,lep_eta,lep_phi,lep_m,lep_iso;
-  double lep_vvvloose,lep_vvloose,lep_vloose,lep_loose,lep_medium;
+  double lep_vvvloose,lep_vvloose,lep_vloose,lep_loose,lep_medium; // only needed for tt channel
   int    lep_q, lep_gen_match;
   int n_iso_lep, n_iso_otherLep;
   int tau_iso_ind;
