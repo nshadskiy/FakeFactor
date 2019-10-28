@@ -1,3 +1,4 @@
+
 #include "ViennaTool/interface/Preselection.h"
 
 void Preselection()
@@ -37,12 +38,14 @@ void Preselection()
   }
 
   TNtupleAnalyzer *Analyzer = new TNtupleAnalyzer();
+  // TNtupleAnalyzer Analyzer; --> Analyzer.loadFile()
+
   for (auto entry : myList)
   {
     Analyzer->loadFile(entry.filename,_NtupleTreeName);
     Analyzer->select(entry.selection,entry.bitmask);
     Analyzer->closeFile();
-    // compressFile(entry.selection);  
+    compressFile(entry.selection);  
 
   }
   delete Analyzer;

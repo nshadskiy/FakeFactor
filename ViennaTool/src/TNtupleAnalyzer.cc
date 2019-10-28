@@ -139,6 +139,37 @@ void TNtupleAnalyzer::SetNewEventInfo() {
  
 }
 
+void TNtupleAnalyzer::ResizeVectors() {
+  alltau_pt->resize(0);
+  alltau_eta->resize(0);
+  alltau_phi->resize(0);
+  alltau_q->resize(0);
+  alltau_decay->resize(0);
+  alltau_beta->resize(0);
+  alltau_mediumBeta->resize(0);
+  
+  alltau_vvvlooseDNN->resize(0);
+  alltau_vvlooseDNN->resize(0);
+  alltau_vlooseDNN->resize(0);
+  alltau_looseDNN->resize(0);
+  alltau_mediumDNN->resize(0);
+  alltau_tightDNN->resize(0);
+  alltau_vtightDNN->resize(0);
+  alltau_vvtightDNN->resize(0);
+  
+  alltau_lepVeto->resize(0);
+  alltau_gen_match->resize(0);
+  alltau_dRToLep->resize(0);
+  alltau_dRToOtherLep->resize(0);
+  alltau_dRToB->resize(0);
+  alltau_mvis->resize(0);
+  alltau_mt->resize(0);
+  alltau_mt2->resize(0);
+  alltau_svfit->resize(0);
+  alltau_Zpt->resize(0);
+
+}
+
 Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t mode, Int_t whichTau) // whichTau is default set to 1
 {
   Int_t evt_ID = event->entry;
@@ -157,7 +188,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   
 
 
-  TLorentzVector vec1, vec2, vec; // This is used later - but no idea for what
+  
 
   /*
   Below the weight is defined with applying SFs, Tigger SFs
@@ -221,8 +252,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   int nOtherLep;
   
   
-  if( !preselectionFile.Contains("preselection_EMB"))
-  { // Embedded Samples have no addlepton vector
+  if( !preselectionFile.Contains("preselection_EMB")) // Embedded Samples have no addlepton vector
+  { 
     
     if ( CHAN == kMU || CHAN == kTAU ){  //for now: in kTAU, fill lep with muons and otherLep with electrons
       if(event->addlepton_p4){ // from new NanoAOD
@@ -252,11 +283,13 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
         
         for(int i = 0; i < event->addlepton_p4->size(); i++){
           if ( abs(event->addlepton_pdgId->at(i)) == 11) {	//electron
+            std::cout << "Found additional electron" << std::endl;
             m_lep  ->push_back( TLorentzVector(event->addlepton_p4->at(i)) );	
             m_lep_q->push_back( TMath::Sign(1,event->addlepton_pdgId->at(i)) );
             m_lep_iso->push_back( event->addlepton_iso->at(i) );
           }
           if ( abs(event->addlepton_pdgId->at(i)) == 13) {	//muon
+            std::cout << "Found additional muon" << std::endl;
             m_otherLep  ->push_back( TLorentzVector(event->addlepton_p4->at(i)) ); 	
             m_otherLep_q->push_back( TMath::Sign(1,event->addlepton_pdgId->at(i)) );
             m_otherLep_iso->push_back( event->addlepton_iso->at(i) );
@@ -267,29 +300,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
         nOtherLep = m_otherLep->size();
 
       }else{
-        m_lep_iso=event->addele_iso;
-        m_lep_q=event->addele_q;
-        nLep=event->nadditionalEle;
-        
-        m_lep = new std::vector<TLorentzVector>(nLep);
-        for(int i = 0; i<nLep; i++){
-          m_lep->at(i).SetPtEtaPhiM(	event->addele_pt->at(i),
-                        event->addele_eta->at(i),
-                        event->addele_phi->at(i),
-                        event->addele_m->at(i));
-        }
-        
-        m_otherLep_iso=event->addmuon_iso;
-        m_otherLep_q=event->addmuon_q;
-        nOtherLep=event->nadditionalMu;
-        
-        m_otherLep = new std::vector<TLorentzVector>(nOtherLep);
-        for(int i = 0; i<nOtherLep; i++){
-          m_otherLep->at(i).SetPtEtaPhiM( event->addmuon_pt->at(i),
-                          event->addmuon_eta->at(i),
-                          event->addmuon_phi->at(i),
-                          event->addmuon_m->at(i));
-        }
+        std::cout << "\033[1;31m This should not happen - you are using nanoAOD \033[0m" << std::endl;
       }
     }
   }else{
@@ -302,12 +313,12 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   std::vector<TLorentzVector> v_otherLep; 
   std::vector<TLorentzVector> v_lep;
   std::vector<double> v_lep_q;  
-  //std::vector<double> v_lep_pt;       std::vector<double> v_lep_eta;      std::vector<double> v_lep_phi;  std::vector<double> v_lep_m; 
   std::vector<double> v_lep_eta_iso;  std::vector<double> v_lep_phi_iso;  // TODO: TLorentzVector lep_iso??
 
   double m_iso=1e6;
+  
   for (int i=0; i<nOtherLep; i++){
-    if (   m_otherLep_iso->at(i)<LEP_ISO_CUT  &&  m_otherLep->at(i).Pt() >LEP_PT_CUT  &&  fabs(m_otherLep->at(i).Eta()) < (TAU_ETA_CUT+0.1)    ){  //TAU eta+0.1 since we want to check overlap with taus!
+    if (   m_otherLep_iso->at(i) < LEP_ISO_CUT  &&  m_otherLep->at(i).Pt() >LEP_PT_CUT  &&  fabs(m_otherLep->at(i).Eta()) < (TAU_ETA_CUT+0.1)    ){  //TAU eta+0.1 since we want to check overlap with taus!
       v_otherLep.push_back( TLorentzVector(m_otherLep->at(i) ));
     }
 
@@ -348,13 +359,15 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     }
 
     //to select m(ll)~m(Z) events
-    if (   m_lep->at(i).Pt()>LEP_PT_CUT  &&  fabs(m_lep->at(i).Eta()) < LEP_ETA_CUT  ){  //TAU eta+0.1 since we want to check overlap with taus!
-	  v_lep.push_back( TLorentzVector(m_lep->at(i)) );
+    if (   m_lep->at(i).Pt()>LEP_PT_CUT  &&  fabs(m_lep->at(i).Eta()) < LEP_ETA_CUT  ){ 
+	    v_lep.push_back( TLorentzVector(m_lep->at(i)) );
       v_lep_q.push_back(   m_lep_q->at(i) );
       if ( m_lep_iso->at(i) < LEP_ISO_CUT ) n_iso_lep++;
     }
 
   }
+  
+  TLorentzVector vec1, vec2, vec; // This is used later - but no idea for what
   
   //select mZ candidate
   for (unsigned i=0; i<v_lep.size(); i++){
@@ -378,64 +391,14 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
         lep2_phi=v_lep.at(j).Phi();
 
         Double_t deltaPhi=TVector2::Phi_mpi_pi( lep1_phi - lep2_phi );
-        mt_leplep=sqrt(2*v_lep.at(i).Pt() *v_lep.at(j).Pt() *(1-TMath::Cos(deltaPhi)));
+        mt_leplep=sqrt(2*v_lep.at(i).Pt() *v_lep.at(j).Pt() *(1-TMath::Cos(deltaPhi))); //transverse mass of the ll candidate closest to the Z-mass
       }
     }
   }
 
-  alltau_pt->resize(0);
-  alltau_eta->resize(0);
-  alltau_phi->resize(0);
-  alltau_q->resize(0);
-  alltau_decay->resize(0);
-  alltau_beta->resize(0);
-  alltau_mediumBeta->resize(0);
-  // alltau_vvvlooseMVA->resize(0);
+  this->ResizeVectors(); // set vector size to zero, i.e. empty them
+
   
-
-  // alltau_vvlooseMVA->resize(0);
-  // alltau_vlooseMVA->resize(0);
-  // std::cout<<"test "<<typeid(alltau_vlooseMVA).name()<<std::endl;
-  // alltau_looseMVA->resize(0);
-  // alltau_mediumMVA->resize(0);
-  // alltau_tightMVA->resize(0);
-  // alltau_vtightMVA->resize(0);
-
-  // std::cout<<"test "<<typeid(alltau_vvvlooseDNN).name()<<std::endl;
-  alltau_vvvlooseDNN->resize(0);
-  // std::cout<<"test passed"<<std::endl; 
-  alltau_vvlooseDNN->resize(0);
-  // std::cout<<"test passed"<<std::endl; 
-  alltau_vlooseDNN->resize(0);
-  // std::cout<<"test passed"<<std::endl; 
-  alltau_looseDNN->resize(0);
-  alltau_mediumDNN->resize(0);
-  alltau_tightDNN->resize(0);
-  alltau_vtightDNN->resize(0);
-  alltau_vvtightDNN->resize(0);
-
-  // alltau_vvtightMVA->resize(0);
-
-  // alltau_vvvlooseDeepTauIDv2VSjet->resize(0);
-  // alltau_vvlooseDeepTauIDv2VSjet->resize(0);
-  // alltau_vlooseDeepTauIDv2VSjet->resize(0);
-  // alltau_looseDeepTauIDv2VSjet->resize(0);
-  // alltau_mediumDeepTauIDv2VSjet->resize(0);
-  // alltau_tightDeepTauIDv2VSjet->resize(0);
-  // alltau_vtightDeepTauIDv2VSjet->resize(0);
-  // alltau_vvtightDeepTauIDv2VSjet->resize(0);
-
-  alltau_lepVeto->resize(0);
-  alltau_gen_match->resize(0);
-  alltau_dRToLep->resize(0);
-  alltau_dRToOtherLep->resize(0);
-  alltau_dRToB->resize(0);
-  alltau_mvis->resize(0);
-  alltau_mt->resize(0);
-  alltau_mt2->resize(0);
-  alltau_svfit->resize(0);
-  alltau_Zpt->resize(0);
-
   float m_tau_pt_cut=TAU_PT_CUT;
   float m_tau_eta_cut=TAU_ETA_CUT;
   if ( CHAN == kTAU ){ m_tau_pt_cut=TAU_PT_CUT_TT; m_tau_eta_cut=TAU_ETA_CUT_TT; }

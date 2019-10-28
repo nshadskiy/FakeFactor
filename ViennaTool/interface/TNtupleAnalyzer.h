@@ -24,6 +24,7 @@ class TNtupleAnalyzer{
   Double_t calcDR(const Double_t eta1, const Double_t phi1, const Double_t eta2, const Double_t phi2);
   void initOutfileTree(TTree* tree);
   void SetNewEventInfo();
+  void ResizeVectors();
   
  private:
   TString curr_sample;

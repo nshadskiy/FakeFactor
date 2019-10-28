@@ -137,13 +137,13 @@ const Double_t LEP_ISO_CUT=0.15;
 const Double_t LEP_ISO_CUT_ET=0.15; //this is only important for signal electron, for all other selections LEP_ISO_CUT is taken
 const Double_t TAU1_ISO_CUT=9; //>9(vtight/tight)
 const Double_t DR_TAU_LEP_CUT=0.4;
-const Double_t TAU_ETA_CUT=2.3;
+const Double_t TAU_ETA_CUT=2.3; // used for m_Z candidate finding in preselection
 const Double_t TAU_PT_CUT=20.;
 const Double_t TAU_ETA_CUT_TT=2.1;
 const Double_t TAU_PT_CUT_TT=40.;
 const Double_t MT_CUT=50; 
 
-const Double_t MZ=91.2;
+const Double_t MZ=91.2; // used in preselection for Z candidate selection
 const Double_t QCD_SS_TO_OS=1.06;
 
 
