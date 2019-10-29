@@ -25,6 +25,7 @@ class TNtupleAnalyzer{
   void initOutfileTree(TTree* tree);
   void SetNewEventInfo();
   void ResizeVectors();
+  void GetWeights(const TString preselectionFile);
 
  private:
   TString curr_sample;

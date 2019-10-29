@@ -42,7 +42,45 @@ void TNtupleAnalyzer::loadFile(TString filename, TString chain)
   }
 }
 
+void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
+  /*
+  Below the weight is defined with applying SFs, Tigger SFs
+  */
+  weight=1.;
+  if( !preselectionFile.Contains("preselection_data")){
+    if( !preselectionFile.Contains("preselection_EMB")){
+      weight *= luminosity *  event->puweight * event->stitchedWeight * event->genweight * event->eleTauFakeRateWeight * event->muTauFakeRateWeight * event->idisoweight_1 * event->idisoweight_2;
+      if (CHAN == kTAU) weight *= 1.;//event->sf_DoubleTauTight;
+      else              weight *= event->sf_SingleOrCrossTrigger;
+      if( preselectionFile.Contains("preselection_TT") ) weight *= event->topPtReweightWeightRun2;
+      if( preselectionFile.Contains("preselection_DY") ) weight *= event->zPtReweightWeight;
+    }else{
+      weight *= event->weight;
+    }
 
+
+    if( CHAN == kTAU && !preselectionFile.Contains("preselection_EMB") ){ // CHANGE IF TAU WP CHANGES! https://twiki.cern.ch/twiki/bin/view/CMS/TauIDRecommendation13TeV#Tau_ID_SF_for_CMSSW_9_4_X_or_hig
+        if(event->gen_match_1 == 5 && event->byTightIsolationDeepTau2017v2VSjet_1) weight *= 0.85; //vtight = 0.89, tight = 0.90
+        else if(event->gen_match_1 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_1 ) weight *= 0.85;
+        if(event->gen_match_2 == 5 && event->byTightIsolationDeepTau2017v2VSjet_2) weight *= 0.85;
+        else if(event->gen_match_2 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_2 ) weight *= 0.85;
+    }
+    if( CHAN != kTAU && !preselectionFile.Contains("preselection_EMB") ){
+      if(event->gen_match_2 == 5 && event->byTightIsolationDeepTau2017v2VSjet_2) weight *= 0.85;
+      else if(event->gen_match_2 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_2 ) weight *= 0.85;
+    }
+  }
+ 
+  weight_sf=weight;
+  
+  if(CHAN==kTAU && !COINFLIP){
+    weight=weight*0.5;
+    weight_sf=weight_sf*0.5;
+  }
+  std::cout << "event has the following weight: "    << weight    << std::endl;
+  std::cout << "event has the following weight_sf: " << weight_sf << std::endl;
+  //////////////////////////////////////////////////////////////////////////
+}
 
 void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
 {
@@ -69,7 +107,8 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
 
 
     if (ntau>=1){ 
-      std::cout << "Event ID " << jentry << "passed preselection and is written to root file" << std::endl;
+      std::cout << "Event ID " << jentry << " passed preselection and is written to root file" << std::endl;
+      this->GetWeights(preselectionFile);
       t_Events->Fill(); 
       pc++; 
     }
@@ -186,67 +225,9 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   std::cout << "event " << evt_ID << " passed trigger selection, MET filter and kinematics" << std::endl;
   // below old example when embedding was used.
   // if(CHAN==kEL && preselectionFile.Contains("preselection_EMB") &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_25_eta2p1 > 0.5)) || (event->pt_2<23)))  return 0;
-  //////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////
   
 
-
-  
-
-  /*
-  Below the weight is defined with applying SFs, Tigger SFs
-  */
-  weight=1.;
-  if( !preselectionFile.Contains("preselection_data")){
-    if( !preselectionFile.Contains("preselection_EMB")){
-      weight *= luminosity *  event->puweight * event->stitchedWeight * event->genweight * event->eleTauFakeRateWeight * event->muTauFakeRateWeight * event->idisoweight_1 * event->idisoweight_2;
-      if (CHAN == kTAU) weight *= 1.;//event->sf_DoubleTauTight;
-      else              weight *= event->sf_SingleOrCrossTrigger;
-      if( preselectionFile.Contains("preselection_TT") ) weight *= event->topPtReweightWeightRun2;
-      if( preselectionFile.Contains("preselection_DY") ) weight *= event->zPtReweightWeight;
-    }else{
-      weight *= event->weight;
-    }
-
-
-    if( CHAN == kTAU && !preselectionFile.Contains("preselection_EMB") ){ // CHANGE IF TAU WP CHANGES! https://twiki.cern.ch/twiki/bin/view/CMS/TauIDRecommendation13TeV#Tau_ID_SF_for_CMSSW_9_4_X_or_hig
-        if(event->gen_match_1 == 5 && event->byTightIsolationDeepTau2017v2VSjet_1) weight *= 0.85; //vtight = 0.89, tight = 0.90
-        else if(event->gen_match_1 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_1 ) weight *= 0.85;
-        if(event->gen_match_2 == 5 && event->byTightIsolationDeepTau2017v2VSjet_2) weight *= 0.85;
-        else if(event->gen_match_2 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_2 ) weight *= 0.85;
-    }
-    if( CHAN != kTAU && !preselectionFile.Contains("preselection_EMB") ){
-      if(event->gen_match_2 == 5 && event->byTightIsolationDeepTau2017v2VSjet_2) weight *= 0.85;
-      else if(event->gen_match_2 == 5 && event->byVVVLooseIsolationDeepTau2017v2VSjet_2 ) weight *= 0.85;
-    }
-  }
- 
-  weight_sf=weight;
-  
-  if(CHAN==kTAU && !COINFLIP){
-    weight=weight*0.5;
-    weight_sf=weight_sf*0.5;
-  }
-  std::cout << "event has the following weight: "    << weight    << std::endl;
-  std::cout << "event has the following weight_sf: " << weight_sf << std::endl;
-  //////////////////////////////////////////////////////////////////////////
-  
-
-
-  /*  
-    Lepton vetos
-  */
-  if(CHAN==kMU) passesTauLepVetos = ((event->againstMuonTight3_2>0.5) && (event->againstElectronVLooseMVA6_2>0.5));
-  if(CHAN==kEL) passesTauLepVetos = ((event->againstMuonLoose3_2>0.5) && (event->againstElectronTightMVA6_2>0.5));
-  if(CHAN==kTAU)passesTauLepVetos = ((event->againstElectronVLooseMVA6_1>0.5)&&(event->againstElectronVLooseMVA6_2>0.5)&&(event->againstMuonLoose3_1>0.5)&&(event->againstMuonLoose3_2>0.5));
-  passes3LVeto= ((event->extramuon_veto < 0.5) && (event->extraelec_veto < 0.5) && (event->dilepton_veto<0.5));
-  if ( CHAN == kMU  ) passesDLVeto= !(event->dilepton_veto);
-  if ( CHAN == kEL  ) passesDLVeto= !(event->dilepton_veto);
-  if ( CHAN == kTAU ) passesDLVeto= passesTauLepVetos;
-  std::cout << "event passes Tau lepton vetos: "    << passesTauLepVetos    << std::endl;
-  std::cout << "event passes Tau 2-lepton vetos: "  << passesDLVeto       << std::endl;
-  std::cout << "event passes Tau 3-lepton vetos: "    << passes3LVeto    << std::endl;
-  //////////////////////////////////////////////////////////////////////////
-  
   this->SetNewEventInfo(); // Fills kinematic and other variables for each event new. Vectors get emptied. These variables are private to the TNtupleAnalyzer class -> see the .h file
   
   
@@ -290,7 +271,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
             m_lep_q->push_back( TMath::Sign(1,event->addlepton_pdgId->at(i)) );
             m_lep_iso->push_back( event->addlepton_iso->at(i) );
           }
-          if ( abs(event->addlepton_pdgId->at(i)) == 13) {	//muon
+          else if ( abs(event->addlepton_pdgId->at(i)) == 13) {	//muon
             std::cout << "Found additional muon" << std::endl;
             m_otherLep  ->push_back( TLorentzVector(event->addlepton_p4->at(i)) ); 	
             m_otherLep_q->push_back( TMath::Sign(1,event->addlepton_pdgId->at(i)) );
@@ -313,14 +294,10 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
 
   std::vector<TLorentzVector> v_otherLep; 
-  std::vector<TLorentzVector> v_lep;
-  std::vector<double> v_lep_q;  
-  std::vector<double> v_lep_eta_iso;  std::vector<double> v_lep_phi_iso;  // TODO: TLorentzVector lep_iso??
-
   double m_iso=1e6;
   
   for (int i=0; i<nOtherLep; i++){
-    if (   m_otherLep_iso->at(i) < LEP_ISO_CUT  &&  m_otherLep->at(i).Pt() >LEP_PT_CUT  &&  fabs(m_otherLep->at(i).Eta()) < (TAU_ETA_CUT+0.1)    ){  //TAU eta+0.1 since we want to check overlap with taus!
+    if (   m_otherLep_iso->at(i) < LEP_ISO_CUT  &&  m_otherLep->at(i).Pt() > LEP_PT_CUT  &&  fabs(m_otherLep->at(i).Eta()) < (TAU_ETA_CUT+0.1)    ){  //TAU eta+0.1 since we want to check overlap with taus!
       v_otherLep.push_back( TLorentzVector(m_otherLep->at(i) ));
     }
 
@@ -337,15 +314,19 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     }
   }
 
-  Double_t lep1_eta=-999, lep1_phi=-999, lep2_eta=-999, lep2_phi=-999;
+  
 
   //for dR calculations
+  std::vector<double> v_lep_eta_iso;  
+  std::vector<double> v_lep_phi_iso;  // TODO: TLorentzVector lep_iso??
   if ( event->iso_1 < LEP_ISO_CUT && event->pt_1 > LEP_PT_CUT && fabs( event->eta_1 ) < (TAU_ETA_CUT+0.1) && CHAN != kTAU ){
     v_lep_eta_iso.push_back( event->eta_1 );
     v_lep_phi_iso.push_back( event->phi_1 );
   }
 
   //to select m(ll)~m(Z) events
+  std::vector<TLorentzVector> v_lep;
+  std::vector<double> v_lep_q;  
   if ( event->pt_1 > LEP_PT_CUT  && fabs( event->eta_1 ) < LEP_ETA_CUT && CHAN != kTAU ){
 	  v_lep.push_back  ( 	 TLorentzVector(event->pt_1, event->eta_1, event->phi_1, event->m_1) );
     v_lep_q.push_back(   event->q_1 );		
@@ -369,9 +350,11 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
   }
   
-  TLorentzVector vec1, vec2, vec; // This is used later - but no idea for what
+  
   
   //select mZ candidate
+  TLorentzVector vec1, vec2, vec; // used for Z candidate selection
+  Double_t lep1_eta=-999, lep1_phi=-999, lep2_eta=-999, lep2_phi=-999;
   for (unsigned i=0; i<v_lep.size(); i++){
     for (unsigned j=i+1; j<v_lep.size(); j++){
       if ( ( v_lep_q.at(i) * v_lep_q.at(j) ) >= 0 ) continue;
@@ -425,7 +408,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       else pdgID = 15;	// to allow every entry in addtau-list
       
       if (abs(pdgID) <= 10 ){
-        cout << "Warning: Detected event with addlepton_pdgID < 10 -> discard event" << endl;
+        cout << "\033[1;31m WARNING: \033[0m Detected event with addlepton_pdgID < 10 -> discard event" << endl;
         return 0;
       }
 
@@ -545,6 +528,23 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   int newDMs=event->decayModeFindingNewDMs_2;
   // TODO: there is no passestaulepvetos in embedded samples!!!
   
+
+  /*  
+    Lepton vetos
+  */
+  if(CHAN==kMU) passesTauLepVetos = ((event->againstMuonTight3_2>0.5) && (event->againstElectronVLooseMVA6_2>0.5));
+  if(CHAN==kEL) passesTauLepVetos = ((event->againstMuonLoose3_2>0.5) && (event->againstElectronTightMVA6_2>0.5));
+  if(CHAN==kTAU)passesTauLepVetos = ((event->againstElectronVLooseMVA6_1>0.5)&&(event->againstElectronVLooseMVA6_2>0.5)&&(event->againstMuonLoose3_1>0.5)&&(event->againstMuonLoose3_2>0.5));
+  passes3LVeto= ((event->extramuon_veto < 0.5) && (event->extraelec_veto < 0.5) && (event->dilepton_veto<0.5));
+  if ( CHAN == kMU  ) passesDLVeto= !(event->dilepton_veto);
+  if ( CHAN == kEL  ) passesDLVeto= !(event->dilepton_veto);
+  if ( CHAN == kTAU ) passesDLVeto= passesTauLepVetos;
+  std::cout << "event passes Tau lepton vetos: "    << passesTauLepVetos    << std::endl;
+  std::cout << "event passes Tau 2-lepton vetos: "  << passesDLVeto       << std::endl;
+  std::cout << "event passes Tau 3-lepton vetos: "    << passes3LVeto    << std::endl;
+  //////////////////////////////////////////////////////////////////////////
+
+
   // For DeepTauID ask for newDMs and veto DMs 5 and 6
   if ( (passesTauLepVetos) && (decay != 5 && decay != 6 ) &&  (newDMs==1) && (dR>0.5) && (event->pt_2 > m_tau_pt_cut ) && (fabs(event->eta_2) < m_tau_eta_cut) && (TT_AS_LEP==1) ){
     
@@ -748,6 +748,13 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   }
 
   if ( !this->fitsGenCategory(mode) ) return 0;
+
+
+
+
+
+
+
   return alltau_pt->size(); //if 0: no tau that passes lep veto and DMF!
 }
 
@@ -886,17 +893,6 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   tree->Branch("alltau_vtightDNN",&alltau_vtightDNN);
   tree->Branch("alltau_vvtightDNN",&alltau_vvtightDNN);
   
-
-
-  // tree->Branch("alltau_vvvlooseDeepTauIDv2VSjet",&alltau_vvvlooseDeepTauIDv2VSjet);
-  // tree->Branch("alltau_vvlooseDeepTauIDv2VSjet",&alltau_vvlooseDeepTauIDv2VSjet);
-  // tree->Branch("alltau_vlooseDeepTauIDv2VSjet",&alltau_vlooseDeepTauIDv2VSjet);
-  // tree->Branch("alltau_looseDeepTauIDv2VSjet",&alltau_looseDeepTauIDv2VSjet);
-  // tree->Branch("alltau_mediumDeepTauIDv2VSjet",&alltau_mediumDeepTauIDv2VSjet);
-  // tree->Branch("alltau_tightDeepTauIDv2VSjet",&alltau_tightDeepTauIDv2VSjet);
-  // tree->Branch("alltau_vtightDeepTauIDv2VSjet",&alltau_vtightDeepTauIDv2VSjet);
-  // tree->Branch("alltau_vvtightDeepTauIDv2VSjet",&alltau_vvtightDeepTauIDv2VSjet);
-
   tree->Branch("alltau_lepVeto",&alltau_lepVeto);
   tree->Branch("alltau_gen_match",&alltau_gen_match);
   tree->Branch("alltau_dRToLep",&alltau_dRToLep);
