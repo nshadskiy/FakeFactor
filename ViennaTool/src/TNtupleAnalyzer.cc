@@ -77,8 +77,10 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
     weight=weight*0.5;
     weight_sf=weight_sf*0.5;
   }
-  std::cout << "event has the following weight: "    << weight    << std::endl;
-  std::cout << "event has the following weight_sf: " << weight_sf << std::endl;
+  if (DEBUG) {
+    std::cout << "event has the following weight: "    << weight    << std::endl;
+    std::cout << "event has the following weight_sf: " << weight_sf << std::endl;
+  }
   //////////////////////////////////////////////////////////////////////////
 }
 
@@ -95,7 +97,7 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
   cout<<"Producing " << preselFile << " , processing "<<Int_t(nentries)<<" events."<< endl;
   
   for (Int_t jentry=0; jentry<nentries;jentry++){
-    if (jentry%10 == 0) {
+    if (jentry%1000 == 0) {
       cout << "Event " << jentry << " is processed: " << jentry / nentries * 100 << "% of total" << endl;
       if (jentry > 0) {
         std::cout<<"some events are enough"<<std::endl;
@@ -120,6 +122,7 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
   }// End loop over all events
   
   cout<<pc<<" events passed preselection."<< endl;
+  cout<<nnn<<" events got skipped"<< endl;
   t_Events->Write();
   fout_file->Close();
 
@@ -214,7 +217,7 @@ void TNtupleAnalyzer::ResizeVectors() {
 Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t mode, Int_t whichTau) // whichTau is default set to 1
 {
   Int_t evt_ID = event->entry;
-  std::cout << "event " << evt_ID << " entered preselection" << std::endl;
+  if (DEBUG) {std::cout << "event " << evt_ID << " entered preselection" << std::endl;}
   /*
     Trigger selection + flagMETFilter + kinematic pt_2 cut 
     are applied in the following lines
@@ -222,10 +225,54 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   if(CHAN==kMU &&  ((event->flagMETFilter <0.5) || !((event->trg_singlemu_22 > 0.5) || (event->trg_crossmu_mu19tau20>0.5)) || (event->pt_2<23))) return 0; 
   if(CHAN==kTAU && ((event->flagMETFilter <0.5) || !( event->trg_doubletau_35 ) )) return 0;
   if(CHAN==kEL &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_25_eta2p1 > 0.5)) || (event->pt_2<23)))  return 0;
-  std::cout << "event " << evt_ID << " passed trigger selection, MET filter and kinematics" << std::endl;
+  if (DEBUG) {std::cout << "event " << evt_ID << " passed trigger selection, MET filter and kinematics" << std::endl;}
   // below old example when embedding was used.
   // if(CHAN==kEL && preselectionFile.Contains("preselection_EMB") &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_25_eta2p1 > 0.5)) || (event->pt_2<23)))  return 0;
   /////////////////////////////////////////////////////////////////////////
+  
+  /*  
+    Lepton vetos
+  */
+  if(CHAN==kMU) passesTauLepVetos = ((event->againstMuonTight3_2>0.5) && (event->againstElectronVLooseMVA6_2>0.5));
+  if(CHAN==kEL) passesTauLepVetos = ((event->againstMuonLoose3_2>0.5) && (event->againstElectronTightMVA6_2>0.5));
+  if(CHAN==kTAU)passesTauLepVetos = ((event->againstElectronVLooseMVA6_1>0.5)&&(event->againstElectronVLooseMVA6_2>0.5)&&(event->againstMuonLoose3_1>0.5)&&(event->againstMuonLoose3_2>0.5));
+  passes3LVeto= ((event->extramuon_veto < 0.5) && (event->extraelec_veto < 0.5) && (event->dilepton_veto<0.5));
+  if ( CHAN == kMU  ) passesDLVeto= !(event->dilepton_veto);
+  if ( CHAN == kEL  ) passesDLVeto= !(event->dilepton_veto);
+  if ( CHAN == kTAU ) passesDLVeto= passesTauLepVetos;
+  if (DEBUG) {
+    std::cout << "event passes Tau lepton vetos: "    << passesTauLepVetos    << std::endl;
+    std::cout << "event passes Tau 2-lepton vetos: "  << passesDLVeto       << std::endl;
+    std::cout << "event passes Tau 3-lepton vetos: "    << passes3LVeto    << std::endl;
+  }
+  //////////////////////////////////////////////////////////////////////////
+
+
+  float m_tau_pt_cut=TAU_PT_CUT;
+  float m_tau_eta_cut=TAU_ETA_CUT;
+  if ( CHAN == kTAU ) { 
+    m_tau_pt_cut=TAU_PT_CUT_TT; 
+    m_tau_eta_cut=TAU_ETA_CUT_TT; 
+  }
+  
+
+
+  float decay=event->decayMode_2;
+  int newDMs=event->decayModeFindingNewDMs_2;
+  if ( !( (passesTauLepVetos) && (decay != 5 && decay != 6 ) && (newDMs==1) && (event->pt_2 > m_tau_pt_cut ) && (fabs(event->eta_2) < m_tau_eta_cut) ) ) {
+    if (CHAN != kTAU) {
+      nnn++;
+      return 0;
+    }
+    else {
+      decay=event->decayMode_1;
+      newDMs=event->decayModeFindingNewDMs_1;
+      if ( !((decay != 5 && decay != 6 ) &&  (newDMs==1) && (event->pt_1 > m_tau_pt_cut ) && ( fabs(event->eta_1) < m_tau_eta_cut )) ){
+        nnn++;
+        return 0;
+      }
+    }
+  }
   
 
   this->SetNewEventInfo(); // Fills kinematic and other variables for each event new. Vectors get emptied. These variables are private to the TNtupleAnalyzer class -> see the .h file
@@ -384,10 +431,6 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   this->ResizeVectors(); // set vector size to zero, i.e. empty them
 
   
-  float m_tau_pt_cut=TAU_PT_CUT;
-  float m_tau_eta_cut=TAU_ETA_CUT;
-  if ( CHAN == kTAU ){ m_tau_pt_cut=TAU_PT_CUT_TT; m_tau_eta_cut=TAU_ETA_CUT_TT; }
-
 
   // some variable definitions
   double dR; int m; // m == tau decay mode
@@ -512,7 +555,6 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
   //for tt: insert both _1 and _2, but in random order (i.e. not iso- or pt-ordered!!); other channels: simply insert _2
   Int_t TT_AS_LEP=1;
-  
   if ( CHAN == kTAU ){
     if(COINFLIP) {
       if ( r3.Uniform(2)>1.0 ) TT_AS_LEP=2; //if uniform random number in (0;2) is >1, then use it as 2nd tau as lep; otherwise 1st. For et/mt, TT_AS_LEP is always =1
@@ -524,25 +566,12 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   
 
 
-  float decay=event->decayMode_2;
-  int newDMs=event->decayModeFindingNewDMs_2;
+  decay=event->decayMode_2;
+  newDMs=event->decayModeFindingNewDMs_2;
   // TODO: there is no passestaulepvetos in embedded samples!!!
   
 
-  /*  
-    Lepton vetos
-  */
-  if(CHAN==kMU) passesTauLepVetos = ((event->againstMuonTight3_2>0.5) && (event->againstElectronVLooseMVA6_2>0.5));
-  if(CHAN==kEL) passesTauLepVetos = ((event->againstMuonLoose3_2>0.5) && (event->againstElectronTightMVA6_2>0.5));
-  if(CHAN==kTAU)passesTauLepVetos = ((event->againstElectronVLooseMVA6_1>0.5)&&(event->againstElectronVLooseMVA6_2>0.5)&&(event->againstMuonLoose3_1>0.5)&&(event->againstMuonLoose3_2>0.5));
-  passes3LVeto= ((event->extramuon_veto < 0.5) && (event->extraelec_veto < 0.5) && (event->dilepton_veto<0.5));
-  if ( CHAN == kMU  ) passesDLVeto= !(event->dilepton_veto);
-  if ( CHAN == kEL  ) passesDLVeto= !(event->dilepton_veto);
-  if ( CHAN == kTAU ) passesDLVeto= passesTauLepVetos;
-  std::cout << "event passes Tau lepton vetos: "    << passesTauLepVetos    << std::endl;
-  std::cout << "event passes Tau 2-lepton vetos: "  << passesDLVeto       << std::endl;
-  std::cout << "event passes Tau 3-lepton vetos: "    << passes3LVeto    << std::endl;
-  //////////////////////////////////////////////////////////////////////////
+  
 
 
   // For DeepTauID ask for newDMs and veto DMs 5 and 6
@@ -559,16 +588,6 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     
     if(preselectionFile.Contains("preselection_EMB")){
       std::cout << "\033[1;31m WARNING: \033[0m  assignment of DeepTauID  for embedded not implemented yet but you are running in EMB==1 mode -> see Settings.h" << std::endl;
-
-      alltau_vvvlooseDNN->insert(alltau_vvvlooseDNN->begin()+tpos, event->byVVVLooseIsolationDeepTau2017v2VSjet_2 > 0);
-      alltau_vvlooseDNN->insert(alltau_vvlooseDNN->begin()+tpos, event->byVVLooseIsolationDeepTau2017v2VSjet_2 > 0);
-      alltau_vlooseDNN->insert(alltau_vlooseDNN->begin()+tpos, event->byVLooseIsolationDeepTau2017v2VSjet_2 > 0);
-      alltau_looseDNN->insert(alltau_looseDNN->begin()+tpos, event->byLooseIsolationDeepTau2017v2VSjet_2 > 0);
-      alltau_mediumDNN->insert(alltau_mediumDNN->begin()+tpos, event->byMediumIsolationDeepTau2017v2VSjet_2 > 0);
-      alltau_tightDNN->insert(alltau_tightDNN->begin()+tpos, event->byTightIsolationDeepTau2017v2VSjet_2 > 0);
-      alltau_vtightDNN->insert(alltau_vtightDNN->begin()+tpos, event->byVTightIsolationDeepTau2017v2VSjet_2 > 0);
-      alltau_vvtightDNN->insert(alltau_vvtightDNN->begin()+tpos, event->byVVTightIsolationDeepTau2017v2VSjet_2 > 0);
-    
     }else{
     
       alltau_vvvlooseDNN->insert(alltau_vvvlooseDNN->begin()+tpos, event->byVVVLooseIsolationDeepTau2017v2VSjet_2 );
@@ -616,6 +635,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     dR2=calcDR(event->eta_2,event->phi_2,event->beta_2,event->bphi_2);
     alltau_dRToB->insert(alltau_dRToB->begin()+tpos, min(dR1,dR2) );
   } else if ( CHAN!=kTAU ){ //if most iso tau is not ok, then do not use event if this flag is set
+    std::cout << "\033[1;31m most isolated tau (leg2) is not ok - go to next event \033[0m" << std::endl;
+    nnn++;
     return 0;
   }
  
@@ -623,11 +644,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   if ( TT_AS_LEP == 2 ){ //only possible for kTAU
 
     float decay=event->decayMode_1;
-
-
     int newDMs=event->decayModeFindingNewDMs_1;
-
-    // std::cout<<"decayModeFindingNewDMs_1: " << newDMs << "used still old DMs because waiting for Ntuples with newDMs" << std::endl;
 
     // For DeepTauID ask for newDMs and veto DMs 5 and 6  
     if ( (passesTauLepVetos) && (decay != 5 && decay != 6 ) &&  (newDMs==1) && (dR>0.5) && (event->pt_1 > m_tau_pt_cut ) && ( fabs(event->eta_1) < m_tau_eta_cut ) ){
@@ -693,7 +710,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       }
       alltau_dRToOtherLep->insert(alltau_dRToOtherLep->begin()+tpos, dR1 );
       
-      dR1=calcDR(event->eta_1,event->phi_1,event->beta_1,event->bphi_1);
+      dR1=this->calcDR(event->eta_1,event->phi_1,event->beta_1,event->bphi_1);
       dR2=calcDR(event->eta_1,event->phi_1,event->beta_2,event->bphi_2);
       alltau_dRToB->insert(alltau_dRToB->begin()+tpos, min(dR1,dR2) );
     } else{
@@ -701,14 +718,6 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     }
   }
   
-
-
-  //FIXME : what is this good for?
-  lep_vvvloose = 0;
-  lep_vvloose  = 0;
-  lep_vloose   = 0;
-  lep_loose    = 0;
-  lep_medium   = 0; 
 
   if ( CHAN == kTAU ){
     //now: take "other tau" (as determined by the random number above) as "lep"
@@ -749,11 +758,12 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
   if ( !this->fitsGenCategory(mode) ) return 0;
 
-
-
-
-
-
+  //FIXME : what is this good for?
+  lep_vvvloose = 0;
+  lep_vvloose  = 0;
+  lep_vloose   = 0;
+  lep_loose    = 0;
+  lep_medium   = 0; 
 
   return alltau_pt->size(); //if 0: no tau that passes lep veto and DMF!
 }

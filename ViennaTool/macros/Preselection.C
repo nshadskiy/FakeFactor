@@ -13,25 +13,25 @@ void Preselection()
 
   myList.push_back(SelectionClass(datafile, preselection_data, 0));
 
-  // myList.push_back(SelectionClass(TTfile, preselection_TT  , 0));
-  // myList.push_back(SelectionClass(TTfile, preselection_TT_T, _TT|_TTAU));
-  // myList.push_back(SelectionClass(TTfile, preselection_TT_J, _TT|_JTAU));
-  // myList.push_back(SelectionClass(TTfile, preselection_TT_L, _TT|_LTAU));
+  myList.push_back(SelectionClass(TTfile, preselection_TT  , 0));
+  myList.push_back(SelectionClass(TTfile, preselection_TT_T, _TT|_TTAU));
+  myList.push_back(SelectionClass(TTfile, preselection_TT_J, _TT|_JTAU));
+  myList.push_back(SelectionClass(TTfile, preselection_TT_L, _TT|_LTAU));
 
-  // myList.push_back(SelectionClass(Wjetsfile, preselection_Wjets, 0));
+  myList.push_back(SelectionClass(Wjetsfile, preselection_Wjets, 0));
 
-  // myList.push_back(SelectionClass(DY_NJfile, preselection_DY   , 0));
-  // myList.push_back(SelectionClass(DY_NJfile, preselection_DY_TT, _DY|_TTAU));
-  // myList.push_back(SelectionClass(DY_NJfile, preselection_DY_J , _DY|_JTAU));
-  // myList.push_back(SelectionClass(DY_NJfile, preselection_DY_L , _DY|_LTAU));
+  myList.push_back(SelectionClass(DY_NJfile, preselection_DY   , 0));
+  myList.push_back(SelectionClass(DY_NJfile, preselection_DY_TT, _DY|_TTAU));
+  myList.push_back(SelectionClass(DY_NJfile, preselection_DY_J , _DY|_JTAU));
+  myList.push_back(SelectionClass(DY_NJfile, preselection_DY_L , _DY|_LTAU));
 
-  // myList.push_back(SelectionClass(VVfile, preselection_VV  , 0));
-  // myList.push_back(SelectionClass(VVfile, preselection_VV_J, _VV|_JTAU));
-  // myList.push_back(SelectionClass(VVfile, preselection_VV_L, _VV|_LTAU));
+  myList.push_back(SelectionClass(VVfile, preselection_VV  , 0));
+  myList.push_back(SelectionClass(VVfile, preselection_VV_J, _VV|_JTAU));
+  myList.push_back(SelectionClass(VVfile, preselection_VV_L, _VV|_LTAU));
   
-  // myList.push_back(SelectionClass(QCDfile, preselection_QCD, _QCD));
+  myList.push_back(SelectionClass(QCDfile, preselection_QCD, _QCD));
 
-  // myList.push_back(SelectionClass(SIGNALfile, preselection_signal, 0));
+  myList.push_back(SelectionClass(SIGNALfile, preselection_signal, 0));
 
   if (EMB) {
     std::cout << "\033[1;31m WARNING: \033[0m  embedded preselection not implemented yet but you are running in EMB==1 mode -> see Settings.h" << std::endl;

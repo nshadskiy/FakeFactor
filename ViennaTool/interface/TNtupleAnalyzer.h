@@ -37,6 +37,7 @@ class TNtupleAnalyzer{
   //    double mtll,mMuMu, dRMu, bpt_1, weight, sf, weight_sf, mu2_iso;//,mu1_eta, mu1_phi, mu2_eta, mu2_phi;
   double mt_leplep,m_leplep, lep_dR, bpt_1, bpt_2, weight, sf, weight_sf, mu2_iso;//,mu1_eta, mu1_phi, mu2_eta, mu2_phi;
   int passes3LVeto, passesDLVeto, passesTauLepVetos, njets, nbtag;
+  int nnn;
   double mjj,jdeta,njetingap20;
   double mvamet; double met;
   double otherLep_pt,otherLep_eta,otherLep_phi,otherLep_m,otherLep_iso;

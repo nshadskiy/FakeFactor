@@ -3,7 +3,7 @@
 cmsrel CMSSW_8_0_25  
 cd CMSSW_8_0_25/src/; cmsenv  
 
-git clone https://github.com/fspreitzer/FakeFactor.git . -b FF2017ML_Embedding  
+git clone https://github.com/jandrejk/FakeFactor.git -b FF2016DeepTauID
 git clone https://github.com/CMS-HTT/Jet2TauFakes.git HTTutilities/Jet2TauFakes  
 cd HTTutilities/Jet2TauFakes  
 git checkout v0.2.1  
@@ -12,18 +12,13 @@ scram b -j 8
 git init  
 
 
-cd ViennaTool/  
-em Settings.h  
-#const TString output_folder ="/afs/hephy.at/user/f/fspreitzer/public/Htautau/FakeRate/SM_ML/20180323";  
-#const TString DC_folder     ="/afs/hephy.at/work/f/fspreitzer/cmssw/ff_test/CMSSW_8_0_25/src/ViennaTool/HTTutilities/Jet2TauFakes/data";  
-#const TString user="fspreitzer";  
-em steerAll.sh  
 
+# Running the code 
 
-#instructions.txt for further instructions
+cd ViennaTool/ 
 
-in Settings.h set doCalcWeights=1 for the first time you run the code :
-//steerFF
-const int doCalcWeights=1; //calc fractions
+sh steerAll.sh 
 
+# Settings 
 
+Settings.h and Globals.h store many user parameters
