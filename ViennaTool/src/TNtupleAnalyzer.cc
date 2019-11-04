@@ -97,15 +97,19 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
   cout<<"Producing " << preselFile << " , processing "<<Int_t(nentries)<<" events."<< endl;
   
   for (Int_t jentry=0; jentry<nentries;jentry++){
-    if (jentry%1000 == 0) {
+    if (DEBUG) {
+      if (jentry > 100) {
+        std::cout<< jentry " events are enough"<<std::endl;
+      break;
+    }
+    else{
+      if (jentry%100000 == 0) {
       cout << "Event " << jentry << " is processed: " << jentry / nentries * 100 << "% of total" << endl;
-      if (DEBUG) {
-        if (jentry > 0) {
-          std::cout<<"some events are enough"<<std::endl;
-          break;
-      }
+      
       }
     }
+
+    
     event->GetEntry(jentry);
     Int_t ntau=setTreeValues(preselFile, mode); //preselection happens in there now
 
