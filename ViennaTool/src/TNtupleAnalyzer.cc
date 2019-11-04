@@ -465,9 +465,10 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
       bitmask=event->addlepton_tauAntiEle->at(i); //add in .h
       antiEle = ( bitmask & 0x8) > 0;
+      if DEBUG {
       std::cout << "Anti-ele Bitmask of tau (" << i << ") in addlepton collection is: " << bitmask << std::endl;
       std::cout << "antiEle = " << antiEle << std::endl;
-      
+      }
       bitmask=event->addlepton_tauAntiMu->at(i); //add in .h
       antiMu  = (bitmask & 0x1 ) > 0;
       if (DEBUG) {
