@@ -99,9 +99,11 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
   for (Int_t jentry=0; jentry<nentries;jentry++){
     if (jentry%1000 == 0) {
       cout << "Event " << jentry << " is processed: " << jentry / nentries * 100 << "% of total" << endl;
-      if (jentry > 0) {
-        std::cout<<"some events are enough"<<std::endl;
-        break;
+      if (DEBUG) {
+        if (jentry > 0) {
+          std::cout<<"some events are enough"<<std::endl;
+          break;
+      }
       }
     }
     event->GetEntry(jentry);
@@ -109,7 +111,7 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
 
 
     if (ntau>=1){ 
-      std::cout << "Event ID " << jentry << " passed preselection and is written to root file" << std::endl;
+      if (DEBUG) { std::cout << "Event ID " << jentry << " passed preselection and is written to root file" << std::endl;}
       this->GetWeights(preselectionFile);
       t_Events->Fill(); 
       pc++; 
@@ -120,9 +122,10 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
       if(ntau>=1){ t_Events->Fill(); pc++; }
     }
   }// End loop over all events
-  
+  if (DEBUG) {
   cout<<pc<<" events passed preselection."<< endl;
   cout<<nnn<<" events got skipped"<< endl;
+  }
   t_Events->Write();
   fout_file->Close();
 
@@ -288,7 +291,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     if ( CHAN == kMU || CHAN == kTAU ){  //for now: in kTAU, fill lep with muons and otherLep with electrons
       if(event->addlepton_p4){ // from new NanoAOD
         for(int i = 0; i < event->addlepton_p4->size(); i++){
-          std::cout << "additional lep no: " << i << std::endl;
+          if (DEBUG) {std::cout << "additional lep no: " << i << std::endl;}
           if ( abs(event->addlepton_pdgId->at(i)) == 13) {	// 13 == muon
             m_lep  ->push_back( TLorentzVector(event->addlepton_p4->at(i)) );	
             m_lep_q->push_back( TMath::Sign(1,event->addlepton_pdgId->at(i)) );
@@ -313,13 +316,13 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
         
         for(int i = 0; i < event->addlepton_p4->size(); i++){
           if ( abs(event->addlepton_pdgId->at(i)) == 11) {	//electron
-            std::cout << "Found additional electron" << std::endl;
+            if (DEBUG) { std::cout << "Found additional electron" << std::endl;}
             m_lep  ->push_back( TLorentzVector(event->addlepton_p4->at(i)) );	
             m_lep_q->push_back( TMath::Sign(1,event->addlepton_pdgId->at(i)) );
             m_lep_iso->push_back( event->addlepton_iso->at(i) );
           }
           else if ( abs(event->addlepton_pdgId->at(i)) == 13) {	//muon
-            std::cout << "Found additional muon" << std::endl;
+            if (DEBUG) { std::cout << "Found additional muon" << std::endl;}
             m_otherLep  ->push_back( TLorentzVector(event->addlepton_p4->at(i)) ); 	
             m_otherLep_q->push_back( TMath::Sign(1,event->addlepton_pdgId->at(i)) );
             m_otherLep_iso->push_back( event->addlepton_iso->at(i) );
@@ -467,9 +470,10 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       
       bitmask=event->addlepton_tauAntiMu->at(i); //add in .h
       antiMu  = (bitmask & 0x1 ) > 0;
+      if (DEBUG) {
       std::cout << "Anti-mu Bitmask of tau (" << i << ") in addlepton collection is: " << bitmask << std::endl;
       std::cout << "antiMu = " << antiMu << std::endl;
-
+      }
       if (antiEle & antiMu == 0) continue;
       
       if( event->addlepton_p4 ) m=event->addlepton_tauDM->at(i); //nanoAOD
@@ -587,7 +591,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     alltau_decay->insert(alltau_decay->begin()+tpos,decay);
     
     if(preselectionFile.Contains("preselection_EMB")){
-      std::cout << "\033[1;31m WARNING: \033[0m  assignment of DeepTauID  for embedded not implemented yet but you are running in EMB==1 mode -> see Settings.h" << std::endl;
+      if (DEBUG) { std::cout << "\033[1;31m WARNING: \033[0m  assignment of DeepTauID  for embedded not implemented yet but you are running in EMB==1 mode -> see Settings.h" << std::endl;}
     }else{
     
       alltau_vvvlooseDNN->insert(alltau_vvvlooseDNN->begin()+tpos, event->byVVVLooseIsolationDeepTau2017v2VSjet_2 );
@@ -782,10 +786,10 @@ Int_t TNtupleAnalyzer::fitsGenCategory(const Int_t mode)
 {
   if ( ! alltau_gen_match->size() ) return 0;
   Int_t gm=alltau_gen_match->at(0);
-
+  if (DEBUG) {
   std::cout << "Mode is " << mode << std::endl;
   std::cout << "GenMatching is " << gm << std::endl;
-  
+  }
   
 //  promptE   =1;
 //  promptMu  =2;
@@ -836,7 +840,6 @@ Int_t TNtupleAnalyzer::fitsGenCategory(const Int_t mode)
     } else if (mode & _QCD) {
       return 1;
     } else {
-      std::cout << "For data this is the case" << std::endl;
       return 1;
     }
   }
