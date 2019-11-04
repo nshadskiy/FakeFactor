@@ -63,8 +63,6 @@ public :
    Float_t         stitchedWeight;
    Float_t         topWeight;
    Float_t         topWeight_run1;
-   Float_t         zPtReweightWeight;
-   Float_t         topPtReweightWeightRun1;
    Float_t         zpt_weight_nom;
    Float_t         zpt_weight_esup;
    Float_t         zpt_weight_esdown;
@@ -86,9 +84,12 @@ public :
    Bool_t           trg_singleelectron_27;
    Bool_t           trg_singleelectron_32;
    Bool_t           trg_singleelectron_35;
+   Int_t           trg_singleelectron_25_eta2p1; 
    Bool_t           trg_singleelectron_lowpt;
    Bool_t           trg_crossele_ele24tau30;
 //    Int_t           trg_singletau;
+   Int_t           trg_singlemu_22; 
+   Int_t           trg_doubletau_35; 
    Bool_t           trg_doubletau;
    Bool_t           trg_doubletau_lowpt;
    Bool_t           trg_doubletau_mediso;
@@ -96,6 +97,7 @@ public :
    Bool_t           trg_doubletau_35_tightiso_tightid;
    Bool_t           trg_doubletau_40_mediso_tightid;
    Bool_t           trg_doubletau_40_tightiso;
+   Int_t           trg_crossmu_mu19tau20;
    Bool_t           trg_doubletau_35_mediso_HPS;
    Bool_t           isEmbedded;
    Float_t         gen_Mll;
@@ -184,6 +186,24 @@ public :
 //    Int_t           byRerunMVAIdVTight_1;
 //    Int_t           byRerunMVAIdVVTight_1;
 //    Float_t         idMVANewDM_1;
+   Int_t           byVVVLooseIsolationDeepTau2017v2VSjet_1;
+   Int_t           byVVLooseIsolationDeepTau2017v2VSjet_1;
+   Int_t           byVLooseIsolationDeepTau2017v2VSjet_1;
+   Int_t           byLooseIsolationDeepTau2017v2VSjet_1;
+   Int_t           byMediumIsolationDeepTau2017v2VSjet_1;
+   Int_t           byTightIsolationDeepTau2017v2VSjet_1;
+   Int_t           byVTightIsolationDeepTau2017v2VSjet_1;
+   Int_t           byVVTightIsolationDeepTau2017v2VSjet_1;
+   Int_t           byVVVLooseIsolationDeepTau2017v2VSjet_2;
+   Int_t           byVVLooseIsolationDeepTau2017v2VSjet_2;
+   Int_t           byVLooseIsolationDeepTau2017v2VSjet_2;
+   Int_t           byLooseIsolationDeepTau2017v2VSjet_2;
+   Int_t           byMediumIsolationDeepTau2017v2VSjet_2;
+   Int_t           byTightIsolationDeepTau2017v2VSjet_2;
+   Int_t           byVTightIsolationDeepTau2017v2VSjet_2;
+   Int_t           byVVTightIsolationDeepTau2017v2VSjet_2;
+   Float_t           decayModeFindingNewDMs_1;
+   Float_t           decayModeFindingNewDMs_2;
    Float_t         chargedIsoPtSum_1;
    Float_t         neutralIsoPtSum_1;
    Float_t         puCorrPtSum_1;
@@ -271,7 +291,13 @@ public :
    Float_t         lep_etacentrality;
    Float_t         sphericity;
    Int_t           nadditionalMu;
-     
+
+   Float_t         topPtReweightWeightRun1;
+   Float_t         topPtReweightWeightRun2;
+   Float_t         eleTauFakeRateWeight;
+   Float_t         muTauFakeRateWeight;
+   Float_t         zPtReweightWeight;
+
    std::vector<TLorentzVector> *addlepton_p4; //added
    std::vector<double>  *addlepton_iso; 	  //added
    std::vector<int> 	*addlepton_pdgId;	  // added
@@ -314,6 +340,14 @@ public :
    std::vector<int>     *addtau_byMediumIsolationMVArun2v1DBoldDMwLT;
    std::vector<int>     *addtau_byTightIsolationMVArun2v1DBoldDMwLT;
    std::vector<int>     *addtau_byVTightIsolationMVArun2v1DBoldDMwLT;
+   std::vector<int>     *addtau_byVVVLooseIsolationDeepTau2017v2VSjet;
+   std::vector<int>     *addtau_byVVLooseIsolationDeepTau2017v2VSjet;
+   std::vector<int>     *addtau_byVLooseIsolationDeepTau2017v2VSjet;
+   std::vector<int>     *addtau_byLooseIsolationDeepTau2017v2VSjet;
+   std::vector<int>     *addtau_byMediumIsolationDeepTau2017v2VSjet;
+   std::vector<int>     *addtau_byTightIsolationDeepTau2017v2VSjet;
+   std::vector<int>     *addtau_byVTightIsolationDeepTau2017v2VSjet;
+   std::vector<int>     *addtau_byVVTightIsolationDeepTau2017v2VSjet;
 //    std::vector<int>     *addtau_byVLooseIsolationMVArun2v1DBnewDMwLT;
 //    std::vector<int>     *addtau_byLooseIsolationMVArun2v1DBnewDMwLT;
 //    std::vector<int>     *addtau_byMediumIsolationMVArun2v1DBnewDMwLT;
@@ -456,8 +490,7 @@ public :
    TBranch        *b_stitchedWeight;   //!
    TBranch        *b_topWeight;   //!
    TBranch        *b_topWeight_run1;   //!
-   TBranch        *b_zPtReweightWeight;   //!
-   TBranch        *b_topPtReweightWeightRun1;   //!
+
    TBranch        *b_zpt_weight_nom;   //!
    TBranch        *b_zpt_weight_esup;   //!
    TBranch        *b_zpt_weight_esdown;   //!
@@ -475,6 +508,8 @@ public :
    TBranch        *b_trg_singlemuon_27;   //!
    TBranch        *b_trg_crossmuon_mu20tau27;   //!
 //    TBranch        *b_trg_mutaucross;   //!
+   TBranch        *b_trg_singleelectron_25_eta2p1;   //!
+
    TBranch        *b_trg_singleelectron;   //!
    TBranch        *b_trg_singleelectron_27;   //!
    TBranch        *b_trg_singleelectron_32;   //!
@@ -483,6 +518,10 @@ public :
    TBranch        *b_trg_crossele_ele24tau30;   //!
 //    TBranch        *b_trg_singletau;   //!
    TBranch        *b_trg_doubletau;   //!
+   TBranch        *b_trg_singlemu_22;   //!
+   TBranch        *b_trg_doubletau_35;   //!
+   TBranch        *b_trg_crossmu_mu19tau20;   //!
+
    TBranch        *b_trg_doubletau_lowpt;   //!
    TBranch        *b_trg_doubletau_mediso;   //!
    TBranch        *b_isEmbedded;   //!
@@ -568,6 +607,28 @@ public :
    TBranch        *b_byMediumIsolationMVArun2017v1DBoldDMwLT2017_1;   //!
    TBranch        *b_byTightIsolationMVArun2017v1DBoldDMwLT2017_1;   //!
    TBranch        *b_byVTightIsolationMVArun2017v1DBoldDMwLT2017_1;   //!
+
+   TBranch        *b_byVVVLooseIsolationDeepTau2017v2VSjet_1;
+   TBranch        *b_byVVLooseIsolationDeepTau2017v2VSjet_1;
+   TBranch        *b_byVLooseIsolationDeepTau2017v2VSjet_1;
+   TBranch        *b_byLooseIsolationDeepTau2017v2VSjet_1;
+   TBranch        *b_byMediumIsolationDeepTau2017v2VSjet_1;
+   TBranch        *b_byTightIsolationDeepTau2017v2VSjet_1;
+   TBranch        *b_byVTightIsolationDeepTau2017v2VSjet_1;
+   TBranch        *b_byVVTightIsolationDeepTau2017v2VSjet_1;
+   TBranch        *b_byVVVLooseIsolationDeepTau2017v2VSjet_2;
+   TBranch        *b_byVVLooseIsolationDeepTau2017v2VSjet_2;
+   TBranch        *b_byVLooseIsolationDeepTau2017v2VSjet_2;
+   TBranch        *b_byLooseIsolationDeepTau2017v2VSjet_2;
+   TBranch        *b_byMediumIsolationDeepTau2017v2VSjet_2;
+   TBranch        *b_byTightIsolationDeepTau2017v2VSjet_2;
+   TBranch        *b_byVTightIsolationDeepTau2017v2VSjet_2;
+   TBranch        *b_byVVTightIsolationDeepTau2017v2VSjet_2;
+
+   TBranch        *b_decayModeFindingNewDMs_1;   //!
+   TBranch        *b_decayModeFindingNewDMs_2;   //!
+
+
 //    TBranch        *b_byVLooseIsolationMVArun2v1DBnewDMwLT_1;   //!
 //    TBranch        *b_byLooseIsolationMVArun2v1DBnewDMwLT_1;   //!
 //    TBranch        *b_byMediumIsolationMVArun2v1DBnewDMwLT_1;   //!
@@ -816,6 +877,12 @@ public :
    TBranch        *b_pt_sv;   //!
 //    TBranch        *b_pt_sv_unc;   //!
 
+   TBranch        *b_topPtReweightWeightRun1;   //!
+   TBranch        *b_topPtReweightWeightRun2;   //!
+   TBranch        *b_eleTauFakeRateWeight;   //!
+   TBranch        *b_muTauFakeRateWeight;   //!
+   TBranch        *b_zPtReweightWeight;   //!
+
    NtupleClass(TTree *tree=0);
    virtual ~NtupleClass();
    virtual Int_t    Cut(Long64_t entry);
@@ -921,6 +988,14 @@ void NtupleClass::Init(TTree *tree)
    addtau_byMediumIsolationMVArun2v1DBoldDMwLT = 0;
    addtau_byTightIsolationMVArun2v1DBoldDMwLT = 0;
    addtau_byVTightIsolationMVArun2v1DBoldDMwLT = 0;
+   addtau_byVVVLooseIsolationDeepTau2017v2VSjet = 0;
+   addtau_byVVLooseIsolationDeepTau2017v2VSjet = 0;
+   addtau_byVLooseIsolationDeepTau2017v2VSjet = 0;
+   addtau_byLooseIsolationDeepTau2017v2VSjet = 0;
+   addtau_byMediumIsolationDeepTau2017v2VSjet = 0;
+   addtau_byTightIsolationDeepTau2017v2VSjet = 0;
+   addtau_byVTightIsolationDeepTau2017v2VSjet = 0;
+   addtau_byVVTightIsolationDeepTau2017v2VSjet = 0;
 //    addtau_byVLooseIsolationMVArun2v1DBnewDMwLT = 0;
 //    addtau_byLooseIsolationMVArun2v1DBnewDMwLT = 0;
 //    addtau_byMediumIsolationMVArun2v1DBnewDMwLT = 0;
@@ -980,8 +1055,12 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("stitchedWeight", &stitchedWeight, &b_stitchedWeight);
    fChain->SetBranchAddress("topWeight", &topWeight, &b_topWeight);
    fChain->SetBranchAddress("topWeight_run1", &topWeight_run1, &b_topWeight_run1);
-   fChain->SetBranchAddress("zPtReweightWeight", &zPtReweightWeight, &b_zPtReweightWeight);
    fChain->SetBranchAddress("topPtReweightWeightRun1", &topPtReweightWeightRun1, &b_topPtReweightWeightRun1);
+   fChain->SetBranchAddress("topPtReweightWeightRun2", &topPtReweightWeightRun2, &b_topPtReweightWeightRun2);
+   fChain->SetBranchAddress("eleTauFakeRateWeight", &eleTauFakeRateWeight, &b_eleTauFakeRateWeight);
+   fChain->SetBranchAddress("muTauFakeRateWeight", &muTauFakeRateWeight, &b_muTauFakeRateWeight);
+   fChain->SetBranchAddress("zPtReweightWeight", &zPtReweightWeight, &b_zPtReweightWeight);
+   
    fChain->SetBranchAddress("zpt_weight_nom", &zpt_weight_nom, &b_zpt_weight_nom);
    fChain->SetBranchAddress("zpt_weight_esup", &zpt_weight_esup, &b_zpt_weight_esup);
    fChain->SetBranchAddress("zpt_weight_esdown", &zpt_weight_esdown, &b_zpt_weight_esdown);
@@ -1006,6 +1085,11 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("trg_crossele_ele24tau30", &trg_crossele_ele24tau30, &b_trg_crossele_ele24tau30);
 //    fChain->SetBranchAddress("trg_singletau", &trg_singletau, &b_trg_singletau);
    fChain->SetBranchAddress("trg_doubletau", &trg_doubletau, &b_trg_doubletau);
+   fChain->SetBranchAddress("trg_singlemuon", &trg_singlemu_22, &b_trg_singlemu_22);
+   fChain->SetBranchAddress("trg_doubletau", &trg_doubletau_35, &b_trg_doubletau_35);
+   fChain->SetBranchAddress("trg_muonelectron", &trg_crossmu_mu19tau20, &b_trg_crossmu_mu19tau20);
+   fChain->SetBranchAddress("trg_singlemuon_24", &trg_singleelectron_25_eta2p1, &b_trg_singleelectron_25_eta2p1);
+
    fChain->SetBranchAddress("trg_doubletau_lowpt", &trg_doubletau_lowpt, &b_trg_doubletau_lowpt);
    fChain->SetBranchAddress("trg_doubletau_mediso", &trg_doubletau_mediso, &b_trg_doubletau_mediso);
    fChain->SetBranchAddress("trg_muonelectron", &trg_muonelectron, &b_trg_muonelectron);
@@ -1013,7 +1097,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("trg_doubletau_35_tightiso_tightid", &trg_doubletau_35_tightiso_tightid, &b_trg_doubletau_35_tightiso_tightid);
    fChain->SetBranchAddress("trg_doubletau_40_mediso_tightid", &trg_doubletau_40_mediso_tightid, &b_trg_doubletau_40_mediso_tightid);
    fChain->SetBranchAddress("trg_doubletau_40_tightiso", &trg_doubletau_40_tightiso, &b_trg_doubletau_40_tightiso);
-   fChain->SetBranchAddress("trg_doubletau_35_mediso_HPS", &trg_doubletau_35_mediso_HPS, &b_trg_doubletau_35_mediso_HPS);
+//    fChain->SetBranchAddress("trg_doubletau_35_mediso_HPS", &trg_doubletau_35_mediso_HPS, &b_trg_doubletau_35_mediso_HPS);
    fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_tight_MVA_1", &crossTriggerDataEfficiencyWeight_tight_MVA_1, &b_crossTriggerDataEfficiencyWeight_tight_MVA_1);
    fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_tight_MVA_2", &crossTriggerDataEfficiencyWeight_tight_MVA_2, &b_crossTriggerDataEfficiencyWeight_tight_MVA_2);
    fChain->SetBranchAddress("crossTriggerMCEfficiencyWeight_tight_MVA_1", &crossTriggerMCEfficiencyWeight_tight_MVA_1, &b_crossTriggerMCEfficiencyWeight_tight_MVA_1);
@@ -1155,6 +1239,27 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("byMediumIsolationMVArun2017v1DBoldDMwLT2017_2", &byMediumIsolationMVArun2017v1DBoldDMwLT2017_2, &b_byMediumIsolationMVArun2017v1DBoldDMwLT2017_2);
    fChain->SetBranchAddress("byTightIsolationMVArun2017v1DBoldDMwLT2017_2", &byTightIsolationMVArun2017v1DBoldDMwLT2017_2, &b_byTightIsolationMVArun2017v1DBoldDMwLT2017_2);
    fChain->SetBranchAddress("byVTightIsolationMVArun2017v1DBoldDMwLT2017_2", &byVTightIsolationMVArun2017v1DBoldDMwLT2017_2, &b_byVTightIsolationMVArun2017v1DBoldDMwLT2017_2);
+   fChain->SetBranchAddress("byVVVLooseIsolationDeepTau2017v2p1VSjet_1", &byVVVLooseIsolationDeepTau2017v2VSjet_1, &b_byVVVLooseIsolationDeepTau2017v2VSjet_1);
+   fChain->SetBranchAddress("byVVLooseIsolationDeepTau2017v2p1VSjet_1", &byVVLooseIsolationDeepTau2017v2VSjet_1, &b_byVVLooseIsolationDeepTau2017v2VSjet_1);
+   fChain->SetBranchAddress("byVLooseIsolationDeepTau2017v2p1VSjet_1", &byVLooseIsolationDeepTau2017v2VSjet_1, &b_byVLooseIsolationDeepTau2017v2VSjet_1);
+   fChain->SetBranchAddress("byLooseIsolationDeepTau2017v2p1VSjet_1", &byLooseIsolationDeepTau2017v2VSjet_1, &b_byLooseIsolationDeepTau2017v2VSjet_1);
+                             
+   fChain->SetBranchAddress("byMediumDeepTau2017v2p1VSjet_1", &byMediumIsolationDeepTau2017v2VSjet_1, &b_byMediumIsolationDeepTau2017v2VSjet_1);
+   fChain->SetBranchAddress("byTightDeepTau2017v2p1VSjet_1", &byTightIsolationDeepTau2017v2VSjet_1, &b_byTightIsolationDeepTau2017v2VSjet_1);
+   fChain->SetBranchAddress("byVTightDeepTau2017v2p1VSjet_1", &byVTightIsolationDeepTau2017v2VSjet_1, &b_byVTightIsolationDeepTau2017v2VSjet_1);
+   fChain->SetBranchAddress("byVVTightDeepTau2017v2p1VSjet_1", &byVVTightIsolationDeepTau2017v2VSjet_1, &b_byVVTightIsolationDeepTau2017v2VSjet_1);
+   fChain->SetBranchAddress("byVVVLooseDeepTau2017v2p1VSjet_2", &byVVVLooseIsolationDeepTau2017v2VSjet_2, &b_byVVVLooseIsolationDeepTau2017v2VSjet_2);
+   fChain->SetBranchAddress("byVVLooseDeepTau2017v2p1VSjet_2", &byVVLooseIsolationDeepTau2017v2VSjet_2, &b_byVVLooseIsolationDeepTau2017v2VSjet_2);
+   fChain->SetBranchAddress("byVLooseDeepTau2017v2p1VSjet_2", &byVLooseIsolationDeepTau2017v2VSjet_2, &b_byVLooseIsolationDeepTau2017v2VSjet_2);
+   fChain->SetBranchAddress("byLooseDeepTau2017v2p1VSjet_2", &byLooseIsolationDeepTau2017v2VSjet_2, &b_byLooseIsolationDeepTau2017v2VSjet_2);
+   fChain->SetBranchAddress("byMediumDeepTau2017v2p1VSjet_2", &byMediumIsolationDeepTau2017v2VSjet_2, &b_byMediumIsolationDeepTau2017v2VSjet_2);
+   fChain->SetBranchAddress("byTightDeepTau2017v2p1VSjet_2", &byTightIsolationDeepTau2017v2VSjet_2, &b_byTightIsolationDeepTau2017v2VSjet_2);
+   fChain->SetBranchAddress("byVTightDeepTau2017v2p1VSjet_2", &byVTightIsolationDeepTau2017v2VSjet_2, &b_byVTightIsolationDeepTau2017v2VSjet_2);
+   fChain->SetBranchAddress("byVVTightDeepTau2017v2p1VSjet_2", &byVVTightIsolationDeepTau2017v2VSjet_2, &b_byVVTightIsolationDeepTau2017v2VSjet_2);
+   fChain->SetBranchAddress("decayModeFindingNewDMs_1", &decayModeFindingNewDMs_1, &b_decayModeFindingNewDMs_1);
+   fChain->SetBranchAddress("decayModeFindingNewDMs_2", &decayModeFindingNewDMs_2, &b_decayModeFindingNewDMs_2);
+
+
 //    fChain->SetBranchAddress("byVLooseIsolationMVArun2v1DBnewDMwLT_2", &byVLooseIsolationMVArun2v1DBnewDMwLT_2, &b_byVLooseIsolationMVArun2v1DBnewDMwLT_2);
 //    fChain->SetBranchAddress("byLooseIsolationMVArun2v1DBnewDMwLT_2", &byLooseIsolationMVArun2v1DBnewDMwLT_2, &b_byLooseIsolationMVArun2v1DBnewDMwLT_2);
 //    fChain->SetBranchAddress("byMediumIsolationMVArun2v1DBnewDMwLT_2", &byMediumIsolationMVArun2v1DBnewDMwLT_2, &b_byMediumIsolationMVArun2v1DBnewDMwLT_2);
