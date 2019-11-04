@@ -29,9 +29,6 @@ void Preselection()
   myList.push_back(SelectionClass(VVfile, preselection_VV_J, _VV|_JTAU));
   myList.push_back(SelectionClass(VVfile, preselection_VV_L, _VV|_LTAU));
   
-  myList.push_back(SelectionClass(QCDfile, preselection_QCD, _QCD));
-
-  myList.push_back(SelectionClass(SIGNALfile, preselection_signal, 0));
 
   if (EMB) {
     std::cout << "\033[1;31m WARNING: \033[0m  embedded preselection not implemented yet but you are running in EMB==1 mode -> see Settings.h" << std::endl;

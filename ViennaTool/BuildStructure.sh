@@ -1,5 +1,5 @@
 #!/bin/bash
-user=jandrej
+user=$USER
 fftype=test
 
 line=" -------------------------------------------"

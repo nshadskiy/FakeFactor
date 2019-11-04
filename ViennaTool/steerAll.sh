@@ -39,17 +39,17 @@ sh BuildStructure.sh
 cd ../
 echo "Compiling the framework... "
 
-# if [ $embedding == 1 ]; then
-# 	echo "Extra turnaround for embedded samples starts"
-# 	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
-# 	mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
-# 	make -B
-# 	./Preselection_EMB
-# 	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
-# 	mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
-# fi
+if [ $embedding == 1 ]; then
+	echo "Extra turnaround for embedded samples starts"
+	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
+	mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
+	make -B -j 12
+	./Preselection_EMB
+	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
+	mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
+fi
 
-make -B
+make -B -j 12
 
 ./Preselection
 
