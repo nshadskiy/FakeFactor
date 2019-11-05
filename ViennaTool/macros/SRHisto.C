@@ -81,46 +81,31 @@ void SRHisto() {
   
   
   Int_t nVARused = nVAR-1; //nVAR = 5 (Globals.h) no muiso is needed here
-  // std::cout << "nVARused: " << nVARused << std::endl;
+  
   const TString r1[nVARused]={"_pt","_mt","_mvis"}; //
   const TString r2[nVARused]={ "_mt", "_mvis", "_pt"}; //"_mt2","_lepPt","_mvamet","_met","_eta", "_mttot","_mjj"};
 
   TString tmp,tmp2;
-  for (unsigned i=0; i<ps.size(); i++){
-    // if (i > 0) {
-    //   std::cout<<"breaking now"<<std::endl;
-    //   break;
-    // }
+  for (unsigned i=0; i<ps.size(); i++){ // loop over all preselection paths to root files
+    
     tmp=fl.at(i); //avoid editing fl
     Int_t categoryMode=0;
 
-    // std::cout << "CALC_SS_SR: " << CALC_SS_SR << std::endl;
-    // std::cout << "doSRHisto: " << doSRHisto << std::endl;
+    std::cout << "preselection file: " << ps.at(i) << std::endl;
+    std::cout << "mode: " << std::endl;
+    Analyzer->calcBgEstSim( ps.at(i), MT|NO_SR, categoryMode, tmp.ReplaceAll(r1[0], r2[0]) ); // MT|NO_SR =  
 
-    if(!CALC_SS_SR && doSRHisto){
-      // std::cout << "ps.at(i) " << ps.at(i) << std::endl;
-      // std::cout << " MT " <<  MT << std::endl;
-      // std::cout << " NO_SR " <<  NO_SR << std::endl;
-      // std::cout << " MT or NO_SR " <<  MT|NO_SR << std::endl;
-      // std::cout << "categoryMode " << categoryMode << std::endl;
-      // std::cout << "tmp.ReplaceAll(r1[0], r2[0]) " << tmp.ReplaceAll(r1[0], r2[0]) << std::endl;
-      
-      Analyzer->calcBgEstSim( ps.at(i), MT|NO_SR, categoryMode, tmp.ReplaceAll(r1[0], r2[0]) );
-      
-      Analyzer->calcBgEstSim( ps.at(i), MVIS, categoryMode, tmp.ReplaceAll(r1[1],r2[1]) );
-      Analyzer->calcBgEstSim( ps.at(i), PT, categoryMode, tmp.ReplaceAll(r1[2],r2[2]) );
-      
-      tmp=fl.at(i); Analyzer->calcBgEstSim( ps.at(i), MVIS|_AI, categoryMode, tmp.ReplaceAll(r2[0], "_mvis_AI") );
-      if(use_svfit){
-        tmp=fl.at(i); Analyzer->calcBgEstSim( ps.at(i), SVFIT, categoryMode, tmp.ReplaceAll(r2[0], "_svfit"));
-      }
-    }
 
-    else if(CALC_SS_SR && doSRHisto){
-      if(CALC_SS_SR ){tmp2=tmp.ReplaceAll(r1[0],r2[0]); tmp2.ReplaceAll( "SR_", "SS_SR_" );     Analyzer->calcBgEstSim( ps.at(i), MT|NO_SR|_SS, categoryMode, tmp2 );}  //QCD SS
-      if(CALC_SS_SR){tmp2=tmp.ReplaceAll(r1[1],r2[1]); tmp2.ReplaceAll( "SR_", "SS_SR_" );     Analyzer->calcBgEstSim( ps.at(i), MVIS|_SS, categoryMode, tmp2 );}  //QCD SS
-      if(CALC_SS_SR){tmp2=tmp.ReplaceAll(r1[2],r2[2]); tmp2.ReplaceAll( "SR_", "SS_SR_" );     Analyzer->calcBgEstSim( ps.at(i),PT|_SS, categoryMode, tmp2 );}  //QCD SS
+
+    Analyzer->calcBgEstSim( ps.at(i), MVIS, categoryMode, tmp.ReplaceAll(r1[1],r2[1]) );
+    Analyzer->calcBgEstSim( ps.at(i), PT, categoryMode, tmp.ReplaceAll(r1[2],r2[2]) );
+    
+    tmp=fl.at(i); Analyzer->calcBgEstSim( ps.at(i), MVIS|_AI, categoryMode, tmp.ReplaceAll(r2[0], "_mvis_AI") );
+    
+    if(use_svfit){
+      tmp=fl.at(i); Analyzer->calcBgEstSim( ps.at(i), SVFIT, categoryMode, tmp.ReplaceAll(r2[0], "_svfit"));
     }
+    
     
   }
   
