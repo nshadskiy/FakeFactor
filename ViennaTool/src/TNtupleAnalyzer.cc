@@ -29,7 +29,7 @@ void TNtupleAnalyzer::loadFile(TString filename, TString chain)
   else this->curr_sample="unknown";
   std::cout << "Loading file " << filename << "..." << endl;
   int nev=0;
-  if (chain==_NtupleTreeName)
+  if (chain==_NtupleTreeName || chain==_NtupleTreeName_KIT)
   {  
     event = new NtupleClass(tchain); 
     if (DEBUG) {
@@ -96,16 +96,17 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
 
   cout<<"Producing " << preselFile << " , processing "<<Int_t(nentries)<<" events."<< endl;
   
+  nnn=0;
   for (Int_t jentry=0; jentry<nentries;jentry++){
     if (DEBUG) {
       if (jentry > 100) {
-        std::cout<< jentry " events are enough"<<std::endl;
-      break;
-    }
+        std::cout << jentry << " events are enough" << std::endl;
+        break;
+      }
+    } 
     else{
       if (jentry%100000 == 0) {
       cout << "Event " << jentry << " is processed: " << jentry / nentries * 100 << "% of total" << endl;
-      
       }
     }
 
@@ -469,7 +470,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
       bitmask=event->addlepton_tauAntiEle->at(i); //add in .h
       antiEle = ( bitmask & 0x8) > 0;
-      if DEBUG {
+      if (DEBUG) {
       std::cout << "Anti-ele Bitmask of tau (" << i << ") in addlepton collection is: " << bitmask << std::endl;
       std::cout << "antiEle = " << antiEle << std::endl;
       }
