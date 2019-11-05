@@ -19,7 +19,7 @@ const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_
 const TString user="jandrej";    
 const Double_t luminosity=35.922; //according to GOLDEN JSON see https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM    
 const int use_svfit = 0; //set to 1 to change input directory name accordingly
-const int DEBUG=1; //set to 1 for additional output
+const int DEBUG=0; //set to 1 for additional output
 ///////////////////////////////////////////////////
 //Out of date
 const int inclusive_selection=1; 
@@ -59,9 +59,9 @@ const int doTemplateFitForWeights=0; //template fit for fractions, default: 0
 const int fit_pT_bins = 1; //use fitted pT bins as input for ff
 //////////////////////////////////////////////////
 //Working point definition for deep TauID v2://
-// _VVVLOOSE         1 <-
+// _VVVLOOSE         1 
 // _VVLOOSE          2
-// _VLOOSE           4
+// _VLOOSE           4 <-
 // _LOOSE            8
 // _MEDIUM          16
 // _TIGHT           32 <-
@@ -71,7 +71,7 @@ const int fit_pT_bins = 1; //use fitted pT bins as input for ff
 // settings for tight vs vloose&(!tight):
 const int wpTightFulfill = 32; 
 const int wpTightFail    = 0;
-const int wpLooseFulfill = 1;
+const int wpLooseFulfill = 4;
 const int wpLooseFail    = 32;
 ///////////////////////////////////////////////////
 //MUTAU Settings
