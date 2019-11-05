@@ -55,7 +55,12 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
       if( preselectionFile.Contains("preselection_TT") ) weight *= event->topPtReweightWeightRun2;
       if( preselectionFile.Contains("preselection_DY") ) weight *= event->zPtReweightWeight;
     }else{
-      weight *= event->weight;
+      if (event->generatorWeight<=1.0) {
+      weight *= event->generatorWeight * event->muonEffTrgWeight * event->embeddedDecayModeWeight * event->muonEffIDWeight_1 * event->muonEffIDWeight_2;
+      }
+      else {
+         weight = 0.0; // Check with new embedded ntuples if this still occurs
+      }
     }
 
 
@@ -118,13 +123,13 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
     if (ntau>=1){ 
       if (DEBUG) { std::cout << "Event ID " << jentry << " passed preselection and is written to root file" << std::endl;}
       this->GetWeights(preselectionFile);
-      t_Events->Fill(); 
+      if (weight>0.0) { t_Events->Fill(); } 
       pc++; 
     }
     if(CHAN==kTAU && !COINFLIP){
       ntau=0;
       ntau=setTreeValues(preselFile, mode, 2);
-      if(ntau>=1){ t_Events->Fill(); pc++; }
+      if(ntau>=1 && weight>0.0){ t_Events->Fill(); pc++; }
     }
   }// End loop over all events
   if (DEBUG) {
@@ -595,20 +600,16 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     
     alltau_q->insert(alltau_q->begin()+tpos,event->q_2/abs(event->q_2));
     alltau_decay->insert(alltau_decay->begin()+tpos,decay);
-    
-    if(preselectionFile.Contains("preselection_EMB")){
-      if (DEBUG) { std::cout << "\033[1;31m WARNING: \033[0m  assignment of DeepTauID  for embedded not implemented yet but you are running in EMB==1 mode -> see Settings.h" << std::endl;}
-    }else{
-    
-      alltau_vvvlooseDNN->insert(alltau_vvvlooseDNN->begin()+tpos, event->byVVVLooseIsolationDeepTau2017v2VSjet_2 );
-      alltau_vvlooseDNN->insert(alltau_vvlooseDNN->begin()+tpos, event->byVVLooseIsolationDeepTau2017v2VSjet_2 );
-      alltau_vlooseDNN->insert(alltau_vlooseDNN->begin()+tpos, event->byVLooseIsolationDeepTau2017v2VSjet_2 );
-      alltau_looseDNN->insert(alltau_looseDNN->begin()+tpos, event->byLooseIsolationDeepTau2017v2VSjet_2 );
-      alltau_mediumDNN->insert(alltau_mediumDNN->begin()+tpos, event->byMediumIsolationDeepTau2017v2VSjet_2 );
-      alltau_tightDNN->insert(alltau_tightDNN->begin()+tpos, event->byTightIsolationDeepTau2017v2VSjet_2 );
-      alltau_vtightDNN->insert(alltau_vtightDNN->begin()+tpos, event->byVTightIsolationDeepTau2017v2VSjet_2 );
-      alltau_vvtightDNN->insert(alltau_vvtightDNN->begin()+tpos, event->byVVTightIsolationDeepTau2017v2VSjet_2 );
-    }
+
+    alltau_vvvlooseDNN->insert(alltau_vvvlooseDNN->begin()+tpos, event->byVVVLooseIsolationDeepTau2017v2VSjet_2 );
+    alltau_vvlooseDNN->insert(alltau_vvlooseDNN->begin()+tpos, event->byVVLooseIsolationDeepTau2017v2VSjet_2 );
+    alltau_vlooseDNN->insert(alltau_vlooseDNN->begin()+tpos, event->byVLooseIsolationDeepTau2017v2VSjet_2 );
+    alltau_looseDNN->insert(alltau_looseDNN->begin()+tpos, event->byLooseIsolationDeepTau2017v2VSjet_2 );
+    alltau_mediumDNN->insert(alltau_mediumDNN->begin()+tpos, event->byMediumIsolationDeepTau2017v2VSjet_2 );
+    alltau_tightDNN->insert(alltau_tightDNN->begin()+tpos, event->byTightIsolationDeepTau2017v2VSjet_2 );
+    alltau_vtightDNN->insert(alltau_vtightDNN->begin()+tpos, event->byVTightIsolationDeepTau2017v2VSjet_2 );
+    alltau_vvtightDNN->insert(alltau_vvtightDNN->begin()+tpos, event->byVVTightIsolationDeepTau2017v2VSjet_2 );
+  
 
     alltau_lepVeto->insert(alltau_lepVeto->begin()+tpos,passesTauLepVetos);
     alltau_gen_match->insert(alltau_gen_match->begin()+tpos,event->gen_match_2);
