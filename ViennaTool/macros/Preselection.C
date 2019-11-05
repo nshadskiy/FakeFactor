@@ -32,6 +32,8 @@ void Preselection()
   
   }
   else if (EMB==1) {
+    myList.push_back(SelectionClass(Wjetsfile, preselection_Wjets, 0)); // This has to be done in order for the merged root file below
+
     myList.push_back(SelectionClass(TTfile, preselection_TT_J_EMB, _TT|_JTAU));
     myList.push_back(SelectionClass(TTfile, preselection_TT_L_EMB, _TT|_LTAU));
 
