@@ -28,6 +28,7 @@ void Preselection()
 
     myList.push_back(SelectionClass(VVfile, preselection_VV  , 0));
     myList.push_back(SelectionClass(VVfile, preselection_VV_J, _VV|_JTAU));
+    myList.push_back(SelectionClass(VVfile, preselection_VV_T, _VV|_TTAU));
     myList.push_back(SelectionClass(VVfile, preselection_VV_L, _VV|_LTAU));
   
   }
