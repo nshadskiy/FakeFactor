@@ -91,6 +91,7 @@ TString GlobalClass::getWPCutString(const TString isolation, const Int_t mode, c
   
   if     (fulfill == _VVVLOOSE_DNN) s_fulfill = "(alltau_vvvlooseDNN["+tau_index+"]>0.5)";
   else if(fulfill == _VVLOOSE_DNN)  s_fulfill = "(alltau_vvlooseDNN["+tau_index+"]>0.5)";
+  else if(fulfill == _VLOOSE_DNN)  s_fulfill = "(alltau_vlooseDNN["+tau_index+"]>0.5)";
   else if(fulfill == _LOOSE_DNN)  s_fulfill = "(alltau_looseDNN["+tau_index+"]>0.5)";
   else if(fulfill == _MEDIUM_DNN) s_fulfill = "(alltau_mediumDNN["+tau_index+"]>0.5)";
   else if(fulfill == _TIGHT_DNN)  s_fulfill = "(alltau_tightDNN["+tau_index+"]>0.5)";
@@ -104,6 +105,7 @@ TString GlobalClass::getWPCutString(const TString isolation, const Int_t mode, c
 
   if     (fail == _VVVLOOSE_DNN) s_fail = "(alltau_vvvlooseDNN["+tau_index+"]<0.5)";
   else if(fail == _VVLOOSE_DNN)  s_fail = "(alltau_vvlooseDNN["+tau_index+"]<0.5)";
+  else if(fail == _VLOOSE_DNN)  s_fail = "(alltau_vlooseDNN["+tau_index+"]<0.5)";
   else if(fail == _LOOSE_DNN)  s_fail = "(alltau_looseDNN["+tau_index+"]<0.5)";
   else if(fail == _MEDIUM_DNN) s_fail = "(alltau_mediumDNN["+tau_index+"]<0.5)";
   else if(fail == _TIGHT_DNN)  s_fail = "(alltau_tightDNN["+tau_index+"]<0.5)";
@@ -130,6 +132,7 @@ Int_t GlobalClass::isLoose(const Int_t mode, const Int_t ind) //default: 0,0
   
   if      ( wpLooseFulfill == _VVVLOOSE_DNN && event_s->alltau_vvvlooseDNN->at(ind) ) c1 = 1;
   else if ( wpLooseFulfill == _VVLOOSE_DNN  && event_s->alltau_vvlooseDNN->at(ind)  ) c1 = 1;
+  else if ( wpLooseFulfill == _VLOOSE_DNN  && event_s->alltau_vlooseDNN->at(ind)  ) c1 = 1;
   else if ( wpLooseFulfill == _LOOSE_DNN  && event_s->alltau_looseDNN->at(ind)  ) c1 = 1;
   else if ( wpLooseFulfill == _MEDIUM_DNN && event_s->alltau_mediumDNN->at(ind) ) c1 = 1;
   else if ( wpLooseFulfill == _TIGHT_DNN  && event_s->alltau_tightDNN->at(ind)  ) c1 = 1;
@@ -138,6 +141,7 @@ Int_t GlobalClass::isLoose(const Int_t mode, const Int_t ind) //default: 0,0
 
   if      ( wpLooseFail == _VVVLOOSE_DNN && !event_s->alltau_vvvlooseDNN->at(ind) ) c2 = 1;
   else if ( wpLooseFail == _VVLOOSE_DNN  && !event_s->alltau_vvlooseDNN->at(ind)  ) c2 = 1;
+  else if ( wpLooseFail == _VLOOSE_DNN && !event_s->alltau_vlooseDNN->at(ind) ) c2 = 1;
   else if ( wpLooseFail == _LOOSE_DNN  && !event_s->alltau_looseDNN->at(ind)  ) c2 = 1;
   else if ( wpLooseFail == _MEDIUM_DNN && !event_s->alltau_mediumDNN->at(ind) ) c2 = 1;
   else if ( wpLooseFail == _TIGHT_DNN  && !event_s->alltau_tightDNN->at(ind)  ) c2 = 1;
@@ -167,6 +171,7 @@ Int_t GlobalClass::isTight(const Int_t mode, const Int_t ind) //default: 0,0
 
   if      ( wpTightFulfill == _VVVLOOSE_DNN && event_s->alltau_vvvlooseDNN->at(ind) ) c1 = 1;
   else if ( wpTightFulfill == _VVLOOSE_DNN  && event_s->alltau_vvlooseDNN->at(ind)  ) c1 = 1;
+  else if ( wpTightFulfill == _VLOOSE_DNN  && event_s->alltau_vlooseDNN->at(ind)  ) c1 = 1;
   else if ( wpTightFulfill == _LOOSE_DNN  && event_s->alltau_looseDNN->at(ind)  ) c1 = 1;
   else if ( wpTightFulfill == _MEDIUM_DNN && event_s->alltau_mediumDNN->at(ind) ) c1 = 1;
   else if ( wpTightFulfill == _TIGHT_DNN  && event_s->alltau_tightDNN->at(ind)  ) c1 = 1;
@@ -175,6 +180,7 @@ Int_t GlobalClass::isTight(const Int_t mode, const Int_t ind) //default: 0,0
   
   if      ( wpTightFail == _VVVLOOSE_DNN && !event_s->alltau_vvvlooseDNN->at(ind) ) c2 = 1;
   else if ( wpTightFail == _VVLOOSE_DNN  && !event_s->alltau_vvlooseDNN->at(ind)  ) c2 = 1;
+  else if ( wpTightFail == _VLOOSE_DNN  && !event_s->alltau_vlooseDNN->at(ind)  ) c2 = 1;
   else if ( wpTightFail == _LOOSE_DNN  && !event_s->alltau_looseDNN->at(ind)  ) c2 = 1;
   else if ( wpTightFail == _MEDIUM_DNN && !event_s->alltau_mediumDNN->at(ind) ) c2 = 1;
   else if ( wpTightFail == _TIGHT_DNN  && !event_s->alltau_tightDNN->at(ind)  ) c2 = 1;
