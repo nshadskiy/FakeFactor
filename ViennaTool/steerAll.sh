@@ -34,27 +34,29 @@ yes | rm BuildStructure0.sh
 ff_tocheck='ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf'
 if [ "$channel" != " kTAU" ]; then ff_tocheck+=' ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf'; fi
 
+
 sh BuildStructure.sh
 
 cd ../
 echo "Compiling the framework... "
 
-if [ $embedding == 1 ]; then
-	echo "Extra turnaround for embedded samples starts"
-	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
-	mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
-	make -B 
-	./Preselection_EMB
-	echo "Switch back and compile again"
-	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
-	mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
-fi
+# if [ $embedding == 1 ]; then
+# 	echo "Extra turnaround for embedded samples starts"
+# 	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
+# 	mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
+# 	make -B 
+# 	./Preselection_EMB
+# 	echo "Switch back and compile again"
+# 	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
+# 	mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
+# fi
 
 make -B 
 
-./Preselection
+echo "skip preselection"
+# ./Preselection
 
-# ./SRHisto  
+./SRHisto  
 # ./CRHisto
 
 # ./steerFF
