@@ -2,9 +2,11 @@
 
 #include <iostream>
 #include <string>
+#include "TString.h"
 
 
 void compressFile(TString fname);
+void createMergedTrees();
 
 class SelectionClass
 {

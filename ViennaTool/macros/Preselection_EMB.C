@@ -1,9 +1,4 @@
-#include "ViennaTool/interface/TNtupleAnalyzer.h"
-
-#include <iostream>
-#include <string>
-
-void compressFile(TString name);
+#include "ViennaTool/interface/Preselection.h"
 
 void Preselection() {
 
@@ -11,16 +6,20 @@ void Preselection() {
   std::cout << "*             Preselection            *" << std::endl;
   std::cout << "***************************************" << std::endl << std::endl;
 
-  std::cout << "Number: " << num << std::endl;
-  TNtupleAnalyzer *Analyzer = new TNtupleAnalyzer();
-  TString tmp;
 
-  if(EMB == 1 && (num==1||num==0)){
-    Analyzer->loadFile(EMBfile,_NtupleTreeName); 
-    Analyzer->select(preselection_EMB,_DY|_TTAU); //_DY only set so it gets checked in TNtupleAnalyzer::fitsGenCategory() 
+  std::vector<SelectionClass> myList;
+
+  myList.push_back(SelectionClass(EMBfile, preselection_EMB, _DY|_TTAU));
+
+  TNtupleAnalyzer *Analyzer = new TNtupleAnalyzer();
+
+  for (auto entry : myList)
+  {
+    Analyzer->loadFile(entry.filename,_NtupleTreeName_KIT);
+    Analyzer->select(entry.selection,entry.bitmask);
     Analyzer->closeFile();
-    tmp=preselection_EMB;
-    compressFile(preselection_EMB);
+    compressFile(entry.selection);  
+
   }
     
   delete Analyzer;

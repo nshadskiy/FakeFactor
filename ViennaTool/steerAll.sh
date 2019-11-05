@@ -43,13 +43,14 @@ if [ $embedding == 1 ]; then
 	echo "Extra turnaround for embedded samples starts"
 	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
 	mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
-	make -B -j 12
+	make -B 
 	./Preselection_EMB
+	echo "Switch back and compile again"
 	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
 	mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
 fi
 
-make -B -j 12
+make -B 
 
 ./Preselection
 
