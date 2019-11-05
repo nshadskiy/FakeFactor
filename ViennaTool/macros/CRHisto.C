@@ -48,7 +48,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
       for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt
         for (int is=0; is<nSA; is++){ //loop over samples
           presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root";
-          if((EMB==1 && ( presel_file.Contains("DY_J") || presel_file.Contains("DY_L") || presel_file.Contains("TT_J") || presel_file.Contains("DY_L") || presel_file.Contains("VV_J") || presel_file.Contains("VV_L") )) ){
+          if((EMB==1 && ( presel_file.Contains("DY_J") || presel_file.Contains("DY_L") || presel_file.Contains("TT_J")  || presel_file.Contains("TT_L") || presel_file.Contains("VV_J") || presel_file.Contains("VV_L") )) ){
             presel_file = presel_file.ReplaceAll(".root", "_EMB.root");
           }
           Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root"  );
@@ -77,7 +77,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
     for (int ic=3; ic<nCR; ic++){ //loop over CRs
       for (int is=0; is<nSA; is++){ //loop over samples
         presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root"; 
-        if((EMB==1 && ( presel_file.Contains("DY_J") || presel_file.Contains("DY_L") || presel_file.Contains("TT_J") || presel_file.Contains("DY_L") || presel_file.Contains("VV_J") || presel_file.Contains("VV_L") )) ){
+        if((EMB==1 && ( presel_file.Contains("DY_J") || presel_file.Contains("DY_L") || presel_file.Contains("TT_J")  || presel_file.Contains("TT_L") || presel_file.Contains("VV_J") || presel_file.Contains("VV_L") )) ){
             presel_file = presel_file.ReplaceAll(".root", "_EMB.root");
         }
         Analyzer->getCRHisto(presel_file, icr[ic]|LEPPT , path_sim+s_CR+"_"+scr[ic]+"_lepPt_"+ssa[is]+".root"  );
@@ -101,7 +101,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
       for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
         for (int is=0; is<nSA; is++){ //loop over samples
           presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root";
-          if((EMB==1 && ( presel_file.Contains("DY_J") || presel_file.Contains("DY_L") || presel_file.Contains("TT_J") || presel_file.Contains("DY_L") || presel_file.Contains("VV_J") || presel_file.Contains("VV_L") )) ){
+          if((EMB==1 && ( presel_file.Contains("DY_J") || presel_file.Contains("DY_L") || presel_file.Contains("TT_J")  || presel_file.Contains("TT_L") || presel_file.Contains("VV_J") || presel_file.Contains("VV_L") )) ){
             presel_file = presel_file.ReplaceAll(".root", "_EMB.root");
           }
           Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_"+ssa[is]+".root"  );
@@ -131,7 +131,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
       for (int ic=3; ic<nCR; ic++){ //loop over CRs
         for (int is=0; is<nSA; is++){ //loop over samples
           presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root";
-          if((EMB==1 && ( presel_file.Contains("DY_J") || presel_file.Contains("DY_L") || presel_file.Contains("TT_J") || presel_file.Contains("DY_L") || presel_file.Contains("VV_J") || presel_file.Contains("VV_L") )) ){
+          if((EMB==1 && ( presel_file.Contains("DY_J") || presel_file.Contains("DY_L") || presel_file.Contains("TT_J")  || presel_file.Contains("TT_L") || presel_file.Contains("VV_J") || presel_file.Contains("VV_L") )) ){
             presel_file = presel_file.ReplaceAll(".root", "_EMB.root");
           }
           Analyzer->getCRHisto(presel_file, LEPPT|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_"+ssa[is]+".root"  );
@@ -154,7 +154,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
       for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
         for (int is=0; is<nSA; is++){ //loop over samples
           presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root";
-          if((EMB==1 && ( presel_file.Contains("DY_J") || presel_file.Contains("DY_L") || presel_file.Contains("TT_J") || presel_file.Contains("DY_L") || presel_file.Contains("VV_J") || presel_file.Contains("VV_L") )) ){
+          if((EMB==1 && ( presel_file.Contains("DY_J") || presel_file.Contains("DY_L") || presel_file.Contains("TT_J")  || presel_file.Contains("TT_L") || presel_file.Contains("VV_J") || presel_file.Contains("VV_L") )) ){
             presel_file = presel_file.ReplaceAll(".root", "_EMB.root");
           }
           Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_"+ssa[is]+".root"  );
