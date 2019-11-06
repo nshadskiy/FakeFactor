@@ -1,6 +1,6 @@
 #!/bin/bash
 user=$USER
-fftype=test
+fftype=test_wip
 
 line=" -------------------------------------------"
 echo "###### START of BuildStructure.sh ######"
@@ -12,20 +12,20 @@ echo $line
 
 echo "Buidling folder structure"
 
-if [ -d "/home/$user/$fftype/preselection" ]; then
-    if [ ! -d "/home/$user/$fftype/preselection/mt" ]; then
-        mkdir -p /home/$user/$fftype/preselection/mt
+if [ -d "/ceph/$user/$fftype/preselection" ]; then
+    if [ ! -d "/ceph/$user/$fftype/preselection/mt" ]; then
+        mkdir -p /ceph/$user/$fftype/preselection/mt
     fi
-    if [ ! -d "/home/$user/$fftype/preselection/et" ]; then
-        mkdir -p /home/$user/$fftype/preselection/et
+    if [ ! -d "/ceph/$user/$fftype/preselection/et" ]; then
+        mkdir -p /ceph/$user/$fftype/preselection/et
     fi
-    if [ ! -d "/home/$user/$fftype/preselection/tt" ]; then
-        mkdir -p /home/$user/$fftype/preselection/tt
+    if [ ! -d "/ceph/$user/$fftype/preselection/tt" ]; then
+        mkdir -p /ceph/$user/$fftype/preselection/tt
     fi
 else
-    mkdir -p /home/$user/$fftype/preselection/mt
-    mkdir -p /home/$user/$fftype/preselection/et
-    mkdir -p /home/$user/$fftype/preselection/tt
+    mkdir -p /ceph/$user/$fftype/preselection/mt
+    mkdir -p /ceph/$user/$fftype/preselection/et
+    mkdir -p /ceph/$user/$fftype/preselection/tt
 fi
 mkdir -p /home/$user/$fftype/preselection/mt
 

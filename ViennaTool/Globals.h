@@ -120,7 +120,7 @@ const TString s_tight        ="tight";
 
 
 //Output directories
-const TString path_presel        = "/home/"+user+"/"+analysis+"/preselection/"+s_chan[CHAN]+"/";
+const TString path_presel        = "/ceph/"+user+"/"+analysis+"/preselection/"+s_chan[CHAN]+"/";
 const TString path_ff            = "ViennaTool/fakefactor/";
 const TString path_ff_data       = path_ff+"data_"+s_chan[CHAN]+"/";
 const TString path_ff_mc         = path_ff+"mc_"+s_chan[CHAN]+"/";
@@ -169,7 +169,7 @@ const TString preselection_MCsum         = path_presel+"preselection_"+s_MCsum+s
 const TString preselection_MCsum_woQCD   = path_presel+"preselection_woQCD"+s_MCsum+s_doubleCount[COINFLIP]+".root";
 const TString preselection_QCD           = path_presel+"preselection_QCD"+s_doubleCount[COINFLIP]+".root"; // delete
 const TString preselection_QCD_Pt        = path_presel+"preselection_QCD_Pt"+s_doubleCount[COINFLIP]+".root"; //delete
-const TString preselection_signal        = path_presel+"preselection_signal"+s_doubleCount[COINFLIP]+".root";
+const TString preselection_signal        = path_presel+"preselection_signal"+s_doubleCount[COINFLIP]+".root"; //delete
 const TString preselection_DY_TT         = path_presel+"preselection_DY_TT"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_TT_T          = path_presel+"preselection_TT_T"+s_doubleCount[COINFLIP]+".root";
 const TString preselection_VV_T          = path_presel+"preselection_VV_T"+s_doubleCount[COINFLIP]+".root";
