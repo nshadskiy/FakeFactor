@@ -318,17 +318,14 @@ void fitFakeFactors(){
           l.SetNDC();l1.SetNDC();l2.SetNDC();
           l.SetTextFont(42);l1.SetTextFont(42);l2.SetTextFont(42);
           //l.SetTextFont(102);
-          TString bkg=""; {if(modes.at(imode) & _QCD) bkg+="QCD"; else if(modes.at(imode) & _W_JETS) bkg+="W+jets"; else if(modes.at(imode) & _TT) bkg+="TT";}
-          TString decayMode=""; {if(idm==0) decayMode+="1-prong"; else decayMode+="3-prong";}
+          TString bkg=""; {if(modes.at(imode) & _QCD) bkg+="QCD"; else if(modes.at(imode) & _W_JETS) bkg+="W+jets"; else if(modes.at(imode) & _TT) bkg+="TT";} 
           TString jetMode=""; { if(modes.at(imode) & _TT ) jetMode+="#geq 0jet"; else if(ijet==0) jetMode+="0jet"; else jetMode+="#geq1jet";}
           TString channel=""; { if(CHAN == kMU) channel+="#mu^{}#tau_{h}"; else if(CHAN == kEL) channel+="e#tau_{h}"; else channel+="#tau_{h}#tau_{h}";}
           //{if(modes.at(imode) & _QCD) channel+=" QCD multijet"; else if(modes.at(imode) & _W_JETS) channel+=" W+jets"; else if(modes.at(imode) & _TT) channel+=" t#bar{t}";}
-          /*if(idm==0) l.DrawLatex(0.52,0.8,"FFs "+bkg);
-          else l.DrawLatex(0.52,0.8,"FFs "+bkg);
-          if(idm==0) l1.DrawLatex(0.52,0.7,decayMode+", "+jetMode);
-          else l1.DrawLatex(0.52,0.7,decayMode+", "+jetMode);*/
-          if(idm==0) l1.DrawLatex(0.19,0.915,channel+" "+decayMode+", "+jetMode);
-          else l1.DrawLatex(0.19,0.915,channel+" "+decayMode+", "+jetMode);
+          //if(idm==0) l.DrawLatex(0.52,0.8,"FFs "+bkg);
+          //else l.DrawLatex(0.52,0.8,"FFs "+bkg);
+          if(idm==0) l1.DrawLatex(0.19,0.915,channel+" "+jetMode);
+          else l1.DrawLatex(0.19,0.915,channel+" "+jetMode);
           //l2.DrawLatex(0.16,0.85,channel);
 
           TLatex cms1 = TLatex( 0.19, 0.838, "CMS" );
