@@ -54,10 +54,13 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
       else              weight *= event->sf_SingleOrCrossTrigger;
       if( preselectionFile.Contains("preselection_TT") ) weight *= event->topPtReweightWeightRun2;
       if( preselectionFile.Contains("preselection_DY") ) weight *= event->zPtReweightWeight;
-    }else {
-      weight *= 0.0; 
-      std::cout << "\033[1;31m ERROR: \033[0m The wrong TNtupleAnalyzer was compiled - program thinks it is in embedded mode" << std::endl;
-      exit(0);
+    }else{
+      if (event->generatorWeight<=1.0) {
+      weight *= event->generatorWeight * event->muonEffTrgWeight * event->embeddedDecayModeWeight * event->muonEffIDWeight_1 * event->muonEffIDWeight_2;
+      }
+      else {
+         weight = 0.0; // Check with new embedded ntuples if this still occurs
+      }
     }
 
 
