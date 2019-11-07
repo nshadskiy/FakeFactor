@@ -27,7 +27,7 @@ else
     mkdir -p /ceph/$user/$fftype/preselection/et
     mkdir -p /ceph/$user/$fftype/preselection/tt
 fi
-mkdir -p /home/$user/$fftype/preselection/mt
+mkdir -p /ceph/$user/$fftype/preselection/mt
 
 if [ -d "sim" ]; then
     if [ ! -d "sim/mt" ]; then
