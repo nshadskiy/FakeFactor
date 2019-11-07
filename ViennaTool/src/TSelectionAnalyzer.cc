@@ -43,6 +43,10 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
     looseSR = new TH1D("hh_l_pt","Loose events in SR"+suff,nbins_pt,hist_min_pt,hist_max_pt);
     // allSR   = new TH1D("hh_a_pt",  "All events in SR"+suff,nbins_pt,hist_min_pt,hist_max_pt);
   }
+  else if (mode & ETA2) {
+    tightSR = new TH1D("hh_t_eta","Tight events in SR"+suff,nbins_eta,hist_min_eta,hist_max_eta);
+    looseSR = new TH1D("hh_l_eta","Loose events in SR"+suff,nbins_eta,hist_min_eta,hist_max_eta);
+  }
   else if (mode & SVFIT) {                                      
     tightSR = new TH1D("hh_t_svfit","Tight events in SR"+suff,nbins_svfit,hist_min_svfit,hist_max_svfit);
     looseSR = new TH1D("hh_l_svfit","Loose events in SR"+suff,nbins_svfit,hist_min_svfit,hist_max_svfit);
@@ -70,6 +74,7 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
   if (mode & MVIS) {      s_selval = "alltau_mvis[tau_iso_ind]"; s_histoname = "mvis";  }
   else if (mode & PT)   { s_selval = "alltau_pt[tau_iso_ind]";   s_histoname = "pt";    }
   else if (mode & MT) {   s_selval = "alltau_mt[tau_iso_ind]";   s_histoname = "mt";    }
+  else if (mode & ETA2) {   s_selval = "alltau_eta[tau_iso_ind]";   s_histoname = "eta";    }
   else if (mode & LEPPT) {s_selval = "lep_pt";         s_histoname = "lepPt"; }
   else if (mode & SVFIT) {s_selval = "alltau_svfit[tau_iso_ind]"; s_histoname = "svfit"; }
 
@@ -112,37 +117,37 @@ void TSelectionAnalyzer::getCRHisto(TString preselection,Int_t mode,TString outp
 
   std::cout << "In TSelectionanalyzer::getCRHisto , producing " << output << std::endl;
   const Int_t FI=1;
-  TH1D* tightCR,*looseCR,*tightSR_alt,*allCR;
+  TH1D* tightCR,*looseCR,*allCR;
   // TH1D* tightCR_TEST,*looseCR_TEST,*tightSR_alt_TEST,*allCR_TEST;
 
   if (mode & MT) {
     tightCR = new TH1D("hh_t_mt","",FI*nbins_mt,hist_min_mt,hist_max_mt);
     looseCR = new TH1D("hh_l_mt","",FI*nbins_mt,hist_min_mt,hist_max_mt);
-    tightSR_alt = new TH1D("hh_t_alt_mt","",FI*nbins_mt,hist_min_mt,hist_max_mt);
     allCR   = new TH1D("hh_a_mt","",FI*nbins_mt,hist_min_mt,hist_max_mt);
   }
   else if (mode & MVIS) {
     tightCR = new TH1D("hh_t_mvis","",w_mvis_n,w_mvis_v);
     looseCR = new TH1D("hh_l_mvis","",w_mvis_n,w_mvis_v);
-    tightSR_alt = new TH1D("hh_t_alt_mvis","",w_mvis_n,w_mvis_v);
     allCR   = new TH1D("hh_a_mvis","",w_mvis_n,w_mvis_v);
   }
   else if (mode & PT) {
     tightCR = new TH1D("hh_t_pt","",FI*nbins_pt,hist_min_pt,hist_max_pt);
     looseCR = new TH1D("hh_l_pt","",FI*nbins_pt,hist_min_pt,hist_max_pt);
-    tightSR_alt = new TH1D("hh_t_alt_pt","",FI*nbins_pt,hist_min_pt,hist_max_pt);
     allCR   = new TH1D("hh_a_pt","",FI*nbins_pt,hist_min_pt,hist_max_pt);
+  }
+  else if (mode & ETA2) {
+    tightCR = new TH1D("hh_t_eta","",FI*nbins_eta,hist_min_eta,hist_max_eta);
+    looseCR = new TH1D("hh_l_eta","",FI*nbins_eta,hist_min_eta,hist_max_eta);
+    allCR   = new TH1D("hh_a_eta","",FI*nbins_eta,hist_min_eta,hist_max_eta);
   }
   else if (mode & MUISO) {
     tightCR = new TH1D("hh_t_muiso","",w_muiso_n,w_muiso_v);
     looseCR = new TH1D("hh_l_muiso","",w_muiso_n,w_muiso_v);
-    tightSR_alt = new TH1D("hh_t_alt_muiso","",w_muiso_n,w_muiso_v);
     allCR   = new TH1D("hh_a_muiso","",w_muiso_n,w_muiso_v);
   }
   else if (mode & LEPPT) {
     tightCR = new TH1D("hh_t_lepPt","",FI*nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
     looseCR = new TH1D("hh_l_lepPt","",FI*nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
-    tightSR_alt = new TH1D("hh_t_alt_lepPt","",FI*nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
     allCR   = new TH1D("hh_a_lepPt","",FI*nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
   }
   else {
@@ -159,6 +164,7 @@ void TSelectionAnalyzer::getCRHisto(TString preselection,Int_t mode,TString outp
   else if (mode & MUISO) {s_selval = "lep_iso";        s_histoname = "muiso"; }
   else if (mode & PT)   { s_selval = "alltau_pt[0]";   s_histoname = "pt";    }
   else if (mode & MT) {   s_selval = "alltau_mt[0]";   s_histoname = "mt";    }
+  else if (mode & ETA2) {   s_selval = "alltau_eta[0]";   s_histoname = "eta";    }
   else if (mode & LEPPT) {s_selval = "lep_pt";         s_histoname = "lepPt"; }
 
   auto start = std::chrono::system_clock::now();
@@ -207,10 +213,6 @@ void TSelectionAnalyzer::getCRHisto(TString preselection,Int_t mode,TString outp
         cl++;
         looseCR->Fill(fillVal,event_s->weight_sf); 
       }
-      if (this->isTight_alt()) {
-        ct_alt++;
-        tightSR_alt->Fill(fillVal,event_s->weight_sf); 
-      }
     }
   }
   end  = std::chrono::system_clock::now();
@@ -220,38 +222,14 @@ void TSelectionAnalyzer::getCRHisto(TString preselection,Int_t mode,TString outp
 
   if (DEBUG) std::cout<<cl<<" loose"<< std::endl;
   if (DEBUG) std::cout<<ct<<" tight"<< std::endl;
-  if (DEBUG) std::cout<<ct_alt<<" tight alt"<<std::endl;
-
-  // for( int i = 0; i < tightCR->GetNbinsX(); i++){
-  //   if( abs(allCR->GetBinContent(i) - allCR_TEST->GetBinContent(i)) > 0 ){
-  //     cout << "WARNING: all: " << allCR->GetBinContent(i) << " " << allCR_TEST->GetBinContent(i) << endl;
-  //   }
-  //   if( abs(tightCR->GetBinContent(i) - tightCR_TEST->GetBinContent(i)) > 0 ){
-  //     cout << "WARNING: tight: " << tightCR->GetBinContent(i) << " " << tightCR_TEST->GetBinContent(i) << endl;
-  //   }
-  //   if( abs(looseCR->GetBinContent(i) - looseCR_TEST->GetBinContent(i)) > 0 ){
-  //     cout << "WARNING: loose: " << looseCR->GetBinContent(i) << " " << looseCR_TEST->GetBinContent(i) << endl;
-  //   }
-  //   if( abs(tightSR_alt->GetBinContent(i) - tightSR_alt_TEST->GetBinContent(i)) > 0 ){
-  //     cout << "WARNING: tight: " << tightSR_alt->GetBinContent(i) << " " << tightSR_alt_TEST->GetBinContent(i) << endl;
-  //   }
-    
-  // }
-
-  // TFile f2(output+"test.root","recreate");
-  // tightCR_TEST->Write();
-  // looseCR_TEST->Write();
-  // allCR_TEST->Write();
-  // f2.Close();
-
+  
   TFile f1(output,"recreate");
   tightCR->Write();
   looseCR->Write();
-  tightSR_alt->Write();
   allCR->Write();
   f1.Close();
 
-  delete tightCR;delete looseCR;delete tightSR_alt;delete allCR;
+  delete tightCR;delete looseCR;delete allCR;
   // delete tightCR_TEST;delete looseCR_TEST;delete tightSR_alt_TEST;delete allCR_TEST;
   delete event_s;delete tchain;
 }
