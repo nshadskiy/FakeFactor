@@ -542,6 +542,7 @@ const Int_t nbins_lepPt=20;  const Double_t hist_min_lepPt=20.; const Double_t h
 const Int_t nbins_mt=25;     const Double_t hist_min_mt=0.;     const Double_t hist_max_mt=250.;
 const Int_t nbins_mvis=25;   const Double_t hist_min_mvis=0.;   const Double_t hist_max_mvis=250.;
 const Int_t nbins_pt=25;     const Double_t hist_min_pt=20.;    const Double_t hist_max_pt=100.;
+const Int_t nbins_eta=20;    const Double_t hist_min_eta=-3.5;  const Double_t hist_max_eta=3.5;
 
 //binning constants: weight
 const Double_t w_mt_v[]={0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250};
