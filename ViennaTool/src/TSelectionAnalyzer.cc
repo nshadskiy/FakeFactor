@@ -19,39 +19,39 @@ TSelectionAnalyzer::~TSelectionAnalyzer()
 
 void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mode,const Int_t categoryMode,const TString output, const Int_t cuts)
 {
-  TH1D *tightSR,*looseSR,*allSR;
+  TH1D *tightSR,*looseSR;//,*allSR;
   TString suff=""; 
   if (mode & _SS ) suff=" (SS) ";
 
   if (mode & MT) {
     tightSR =     new TH1D("hh_t_mt","Tight events in SR"+suff,nbins_mt,hist_min_mt,hist_max_mt);
     looseSR =     new TH1D("hh_l_mt","Loose events in SR"+suff,nbins_mt,hist_min_mt,hist_max_mt);
-    allSR   =     new TH1D("hh_a_mt",  "All events in SR"+suff,nbins_mt,hist_min_mt,hist_max_mt);
+    // allSR   =     new TH1D("hh_a_mt",  "All events in SR"+suff,nbins_mt,hist_min_mt,hist_max_mt);
   }
   else if (mode & MVIS && mode & _AI) {
     tightSR = new TH1D("hh_t_mvis","Tight events in SR"+suff,w_mvis_n,w_mvis_v);
     looseSR = new TH1D("hh_l_mvis","Loose events in SR"+suff,w_mvis_n,w_mvis_v);
-    allSR   = new TH1D("hh_a_mvis",  "All events in SR"+suff,w_mvis_n,w_mvis_v);
+    // allSR   = new TH1D("hh_a_mvis",  "All events in SR"+suff,w_mvis_n,w_mvis_v);
   }
   else if (mode & MVIS) {
     tightSR = new TH1D("hh_t_mvis","Tight events in SR"+suff,nbins_mvis,hist_min_mvis,hist_max_mvis);
     looseSR = new TH1D("hh_l_mvis","Loose events in SR"+suff,nbins_mvis,hist_min_mvis,hist_max_mvis);
-    allSR   = new TH1D("hh_a_mvis",  "All events in SR"+suff,nbins_mvis,hist_min_mvis,hist_max_mvis);
+    // allSR   = new TH1D("hh_a_mvis",  "All events in SR"+suff,nbins_mvis,hist_min_mvis,hist_max_mvis);
   }
   else if (mode & PT) {
     tightSR = new TH1D("hh_t_pt","Tight events in SR"+suff,nbins_pt,hist_min_pt,hist_max_pt);
     looseSR = new TH1D("hh_l_pt","Loose events in SR"+suff,nbins_pt,hist_min_pt,hist_max_pt);
-    allSR   = new TH1D("hh_a_pt",  "All events in SR"+suff,nbins_pt,hist_min_pt,hist_max_pt);
+    // allSR   = new TH1D("hh_a_pt",  "All events in SR"+suff,nbins_pt,hist_min_pt,hist_max_pt);
   }
   else if (mode & SVFIT) {                                      
     tightSR = new TH1D("hh_t_svfit","Tight events in SR"+suff,nbins_svfit,hist_min_svfit,hist_max_svfit);
     looseSR = new TH1D("hh_l_svfit","Loose events in SR"+suff,nbins_svfit,hist_min_svfit,hist_max_svfit);
-    allSR   = new TH1D("hh_a_svfit",  "All events in SR"+suff,nbins_svfit,hist_min_svfit,hist_max_svfit);
+    // allSR   = new TH1D("hh_a_svfit",  "All events in SR"+suff,nbins_svfit,hist_min_svfit,hist_max_svfit);
   }
   else if (mode & LEPPT) {                                      
     tightSR = new TH1D("hh_t_lepPt","Tight events in SR"+suff,nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
     looseSR = new TH1D("hh_l_lepPt","Loose events in SR"+suff,nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
-    allSR   = new TH1D("hh_a_lepPt",  "All events in SR"+suff,nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+    // allSR   = new TH1D("hh_a_lepPt",  "All events in SR"+suff,nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
   }
   
   else {
@@ -73,8 +73,8 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
   else if (mode & LEPPT) {s_selval = "lep_pt";         s_histoname = "lepPt"; }
   else if (mode & SVFIT) {s_selval = "alltau_svfit[tau_iso_ind]"; s_histoname = "svfit"; }
 
-  event_s->fChain->Draw(s_selval + ">>hh_a_"+s_histoname+"", "weight_sf * "+cutstring, "goff");
-   if ( DEBUG ) cout << "hh_a_"<<s_histoname << " DONE " << endl;
+  // event_s->fChain->Draw(s_selval + ">>hh_a_"+s_histoname+"", "weight_sf * "+cutstring, "goff");
+  //  if ( DEBUG ) cout << "hh_a_"<<s_histoname << " DONE " << endl;
   event_s->fChain->Draw(s_selval + ">>hh_t_"+s_histoname+"", "weight_sf * "+cutstring + "*" + this->getWPCutString("tight"), "goff");
    if ( DEBUG ) cout << "hh_t_"<<s_histoname << " DONE " << endl;
   event_s->fChain->Draw(s_selval + ">>hh_l_"+s_histoname+"", "weight_sf * "+cutstring + "*" + this->getWPCutString("loose"), "goff");
@@ -91,15 +91,16 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
     std::cout << "***************** SR HISTO STATS ********************" << std::endl;
     std::cout << "No of events passing tight criteria: " << tightSR->GetEntries() << std::endl;
     std::cout << "No of events passing loose criteria: " << looseSR->GetEntries() << std::endl;
-    std::cout << "No of events in SR: " << allSR->GetEntries() << std::endl;
+    // std::cout << "No of events in SR: " << allSR->GetEntries() << std::endl;
   }
 
   tightSR->Write();
   looseSR->Write();
-  allSR->Write();
+  // allSR->Write();
   f.Close();
 
-  delete tightSR;delete looseSR;delete allSR;
+  delete tightSR;delete looseSR;
+  // delete allSR;
   delete tchain;delete event_s;
 }
 
