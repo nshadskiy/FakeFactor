@@ -84,6 +84,7 @@ void SRHisto() {
   
   const TString r1[nVARused]={"_pt","_mt","_mvis"}; //
   const TString r2[nVARused]={ "_mt", "_mvis", "_pt"}; //"_mt2","_lepPt","_mvamet","_met","_eta", "_mttot","_mjj"};
+  const TString discrim_var[nVAR] = {"_mt", "_mvis", "_pt","_eta"};
 
   TString tmp,tmp2;
   for (unsigned i=0; i<ps.size(); i++){ // loop over all preselection paths to root files
@@ -92,90 +93,103 @@ void SRHisto() {
     Int_t categoryMode=0;
 
     std::cout << "preselection file: " << ps.at(i) << std::endl;
-    std::cout << "mode: " << std::endl;
-    Analyzer->calcBgEstSim( ps.at(i), MT|NO_SR, categoryMode, tmp.ReplaceAll(r1[0], r2[0]) ); // MT|NO_SR =  
-
-
-
+    
+    Analyzer->calcBgEstSim( ps.at(i), MT|NO_SR, categoryMode, tmp.ReplaceAll(r1[0], r2[0]) ); // MT|NO_SR =   
     Analyzer->calcBgEstSim( ps.at(i), MVIS, categoryMode, tmp.ReplaceAll(r1[1],r2[1]) );
     Analyzer->calcBgEstSim( ps.at(i), PT, categoryMode, tmp.ReplaceAll(r1[2],r2[2]) );
     
-    tmp=fl.at(i); Analyzer->calcBgEstSim( ps.at(i), MVIS|_AI, categoryMode, tmp.ReplaceAll(r2[0], "_mvis_AI") );
+    tmp=fl.at(i); 
+    Analyzer->calcBgEstSim( ps.at(i), MVIS|_AI, categoryMode, tmp.ReplaceAll(r2[0], "_mvis_AI") );
     
     if(use_svfit){
-      tmp=fl.at(i); Analyzer->calcBgEstSim( ps.at(i), SVFIT, categoryMode, tmp.ReplaceAll(r2[0], "_svfit"));
+      tmp=fl.at(i); 
+      Analyzer->calcBgEstSim( ps.at(i), SVFIT, categoryMode, tmp.ReplaceAll(r2[0], "_svfit"));
     }
     
+    
+  }
+  delete Analyzer;
+  
+   
+  TString modes[] = {"l","t"};
+  Int_t nmodes = sizeof(modes) / sizeof(*modes);
+  Int_t n_discrim_var = sizeof(discrim_var) / sizeof(*discrim_var);
+  
+  
+  int nSA; // number of samples
+  nSA=nSAMPLES; // depends on EMB or nonEMB
+  const TString *ssa=vsuff;
+  
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  //Get AI mvis histos with MC subtracted for the moment they are only computed for mvis
+  for (int iv=0; iv<n_discrim_var; iv++){ //loop over the discriminating variables
+    if (iv != 1) { // select only mvis for the moment
+      continue;
+    }
+
+    TFile outfile ( path_sim+s_SR+"_data"+discrim_var[iv]+"_AI_MCsubtracted.root","RECREATE"  );
+    cout << "WRITING: " << path_sim+s_SR+"_data"+discrim_var[iv]+"_AI_MCsubtracted.root" << " from input file:" << endl;
+    cout << path_sim+s_SR+"_data"+discrim_var[iv]+"_AI.root" << endl;
+    TFile infile( path_sim+s_SR+"_data"+discrim_var[iv]+"_AI.root"  );
+    
+    if(infile.IsZombie() ){
+      cout << "\033[1;36m INFO: \033[0m"+path_sim+s_SR+"_data"+discrim_var[iv]+"_AI.root" << " not available" << endl; 
+      break;
+    }
+    
+    for(int imode=0; imode<nmodes; imode++){
+      TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+"_mvis");
+      TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_mvis_MCsubtracted"); outhist->Add(inhist,-1);
+      for (int is=0; is<nSA; is++){ //loop over samples
+        if(ssa[is]=="QCD") continue;
+        cout << "WRITING: " << path_sim+s_SR+"_"+ssa[is]+discrim_var[iv]+"_AI.root" << endl;
+        TFile tmp(path_sim+s_SR+"_"+ssa[is]+discrim_var[iv]+"_AI.root"  );
+        if(tmp.IsZombie() ){cout << path_sim+s_SR+"_"+ssa[is]+discrim_var[iv]+"_AI.root" << " not available"<<  endl; continue;}
+        TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+discrim_var[iv]);
+        
+        outhist->Add(tmphist);
+        tmp.Close();
+      }
+      outfile.cd();
+      inhist->Write();
+      outhist->Write();
+    }
+    infile.Close();outfile.Close();
     
   }
   
-   
-  TString modes[] = {"l","t","t_alt"};
-  Int_t nmodes = 3;
-  int nSA; if(useVV){nSA=nSAMPLES;}else{nSA=nSAMPLES-4;} //signal sample is also subtracted
-  const TString *ssa=vsuff;
-  //////////////////////////////////////////////////////////////////////////////////////////////////////
-  //Get AI mvis histos with MC subtracted
-  if(!DOMC){
-    for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
-      TFile outfile ( path_sim+s_SR+"_data"+r2[iv]+"_AI_MCsubtracted.root","RECREATE"  );
-      cout << "WRITING: " << path_sim+s_SR+"_data"+r2[iv]+"_AI_MCsubtracted.root" << endl;
-      TFile infile( path_sim+s_SR+"_data"+r2[iv]+"_AI.root"  );
-      if(infile.IsZombie() ){cout << path_sim+s_SR+"_data"+r2[iv]+"_AI.root" << " not available" << endl; break;}
-      for(int imode=0; imode<nmodes; imode++){
-        TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+"_mvis");
-        TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_mvis_MCsubtracted"); outhist->Add(inhist,-1);
-        for (int is=0; is<nSA; is++){ //loop over samples
-          if(ssa[is]=="QCD") continue;
-          cout << "WRITING: " << path_sim+s_SR+"_"+ssa[is]+r2[iv]+"_AI.root" << endl;
-          TFile tmp(path_sim+s_SR+"_"+ssa[is]+r2[iv]+"_AI.root"  );
-          if(tmp.IsZombie() ){cout << path_sim+s_SR+"_"+ssa[is]+r2[iv]+"_AI.root" << " not available"<<  endl; continue;}
-          TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+r2[iv]);
-          /*for(int i=1; i<tmphist->GetNbinsX();i++){
-            tmphist->SetBinContent( i, tmphist->GetBinContent(i)*0.9 );
-            }*/
-          outhist->Add(tmphist);
-          tmp.Close();
-        }
-        outfile.cd();
-        inhist->Write();
-        outhist->Write();
-      }
-      infile.Close();outfile.Close();
-    }
-  }
   
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   //Get all histos with MC subtracted
-  if(!DOMC){
-    nVARused=3;
-    for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt
-      TFile outfile ( path_sim+s_SR+"_data"+r2[iv]+"_MCsubtracted.root","RECREATE"  );
-      TFile infile( path_sim+s_SR+"_data"+r2[iv]+".root"  );
-      if(infile.IsZombie() ){cout << path_sim+s_SR+"_data"+r2[iv]+".root" << " not available" << endl; break;}
-      for(int imode=0; imode<nmodes; imode++){
-        TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+r2[iv]);
-        TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+r2[iv]+"MCsubtracted"); outhist->Add(inhist,-1);
-        for (int is=0; is<nSA; is++){ //loop over samples
-          if(ssa[is]=="QCD") continue;
-          TFile tmp(path_sim+s_SR+"_"+ssa[is]+r2[iv]+".root"  );
-          if(tmp.IsZombie() ){cout << path_sim+s_SR+"_"+ssa[is]+r2[iv]+".root" << " not available"<<  endl; continue;}
-          TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+r2[iv]);
-          outhist->Add(tmphist);
-          tmp.Close();
-        }
-        outfile.cd();
-        inhist->Write();
-        outhist->Write();
+  nVARused=3;
+  for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt
+    std::cout<<r2[iv]<<std::endl;
+    TFile outfile ( path_sim+s_SR+"_data"+r2[iv]+"_MCsubtracted.root","RECREATE"  );
+    TFile infile( path_sim+s_SR+"_data"+r2[iv]+".root"  );
+    if(infile.IsZombie() ){cout << path_sim+s_SR+"_data"+r2[iv]+".root" << " not available" << endl; break;}
+    for(int imode=0; imode<nmodes; imode++){
+      TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+r2[iv]);
+      TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+r2[iv]+"MCsubtracted"); outhist->Add(inhist,-1);
+      for (int is=0; is<nSA; is++){ //loop over samples
+        if(ssa[is]=="QCD") continue;
+        TFile tmp(path_sim+s_SR+"_"+ssa[is]+r2[iv]+".root"  );
+        if(tmp.IsZombie() ){cout << path_sim+s_SR+"_"+ssa[is]+r2[iv]+".root" << " not available"<<  endl; continue;}
+        TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+r2[iv]);
+        outhist->Add(tmphist);
+        tmp.Close();
       }
-      infile.Close();outfile.Close();
+      outfile.cd();
+      inhist->Write();
+      outhist->Write();
     }
+    infile.Close();outfile.Close();
   }
+  
     
     
   
       
-  delete Analyzer;
+  
 
 
   

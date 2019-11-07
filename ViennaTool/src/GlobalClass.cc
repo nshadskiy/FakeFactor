@@ -67,11 +67,6 @@ TString GlobalClass::getWPCutString(const TString isolation, const Int_t mode, c
   TString s_fulfill = "1";
   TString s_fail = "1";
   
-  std::cout << "isolation " << isolation << endl;
-  std::cout << "isolation " << wpTightFulfill << endl;
-  std::cout << "isolation " << wpTightFail << endl;
-  std::cout << "isolation " << wpLooseFulfill << endl;
-  std::cout << "isolation " << wpLooseFail << endl;
 
   if( isolation == "tight"){
     fulfill = wpTightFulfill;
@@ -79,9 +74,6 @@ TString GlobalClass::getWPCutString(const TString isolation, const Int_t mode, c
   }else if( isolation == "loose"){
     fulfill = wpLooseFulfill;
     fail = wpLooseFail;
-  }else if( isolation == "tight_alt"){
-    fulfill = _MEDIUM_DNN;
-    fail = _TIGHT_DNN;
   }else{
     std::cout << "Error in GlobalClass::getWPCutString():  No valid isolation mode selected, use 'tight' or 'loose'! " << std::endl;
     return "0";
@@ -250,9 +242,12 @@ Int_t GlobalClass::isInSR(const Int_t mode, const Int_t ind)
 TString GlobalClass::getSRCutString(const Int_t mode, const Int_t categoryMode){
 
   Double_t isolation; Double_t antiIso_min; Double_t antiIso_max;
+  
   if(CHAN==kMU) isolation=LEP_ISO_CUT;
   if(CHAN==kEL) isolation=LEP_ISO_CUT_ET;
-  antiIso_min=isolation; antiIso_max=isolation+0.1;
+  
+  antiIso_min=isolation; 
+  antiIso_max=isolation+0.1;
   
   TString s_genmatch, s_jetmode, s_mode = "";
 
