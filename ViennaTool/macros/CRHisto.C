@@ -7,7 +7,6 @@
 using namespace std;
 
 void CRHisto(int doCalc, int nCR, int nQU) {
-
   std::cout << std::endl << "***************************************" << std::endl;
   std::cout << "*             CRHisto                 *" << std::endl;
   std::cout << "***************************************" << std::endl << std::endl;
@@ -41,7 +40,6 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   TString presel_file = "";
 
   if(doCRHisto){
-    
     for (int ic=0; ic<nCR; ic++){ //loop over CRs
       if ( !doCalc ) break;
       // nVAR is set to 3, one has to increase the number if muiso or zpt or any other variable is required
@@ -183,7 +181,6 @@ void CRHisto(int doCalc, int nCR, int nQU) {
     //get Wjet SS histos for corrections
     Analyzer->getCRHisto(preselection_Wjets, MVIS|_W_JETS|_SS , path_sim+s_CR+"_Wjets_mvis_Wjets_SS_SR.root"  );
     Analyzer->getCRHisto(preselection_Wjets, MT|NO_SR|_W_JETS|_SS , path_sim+s_CR+"_Wjets_mt_Wjets_SS_SR.root"  );
-    
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //get QCD AI lepPT MC subtracted CRs
     TString modes[] = {"l","t","t_alt"};
@@ -269,7 +266,6 @@ void CRHisto(int doCalc, int nCR, int nQU) {
         }
       }
     }
-    
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //get general data-MC CRs
     if(!DOMC){
@@ -284,6 +280,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
             for(int imode=0; imode<nmodes; imode++){
               TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+"_"+tvarCR[iv]);
               TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+tvarCR[iv]+"_MCsubtracted"); outhist->Add(inhist,-1);
+              TH1D* dataminusMC = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+tvarCR[iv]+"_dataminusMC");
               for (int is=0; is<nSA; is++){ //loop over samples
                 if(scr[ic] == ssa[is]) continue;
                 // cout << "SUBTRACTING: " << path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root" << endl;
@@ -303,11 +300,16 @@ void CRHisto(int doCalc, int nCR, int nQU) {
                   }
                 }
                 outhist->Add(tmphist);
+                dataminusMC->Add(tmphist,-1);
                 tmp.Close();
+              }
+              for (int nBin=0;nBin<=dataminusMC->GetNbinsX();++nBin) {
+                if (dataminusMC->GetBinContent(nBin)<0.0){ dataminusMC->SetBinContent(nBin, 0.0);}
               }
               outfile.cd();
               inhist->Write();
               outhist->Write();
+              dataminusMC->Write();
             }
             infile.Close();outfile.Close();
           }
@@ -350,7 +352,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
     for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt, muiso
       for (int iq=0; iq<nQU; iq++){ //loop over loose/tight
         std::vector<TString> cr; 
-        for (int is=0; is<nSA; is++){ cr.push_back(path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root");}
+        for (int is=0; is<nSA; is++){ cr.push_back(path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root"); }
         cout << path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_data.root" << " " << squ[iq] << " " <<  scr[ic] << " " << m_path_img+s_CR+"_"+scr[ic]+"_"+squ[iq]+"_"+tvarCR[iv] << " " << tvarCR_l[iv]  << endl;
         Analyzer->plotCR(cr, ty, path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_data.root", squ[iq], scr[ic]    , m_path_img+s_CR+"_"+scr[ic]+"_"+squ[iq]+"_"+tvarCR[iv], tvarCR_l[iv] ); 
       }
@@ -388,7 +390,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   cr.clear();
 
   //end of plots
-
+  
   delete Analyzer;
 
   

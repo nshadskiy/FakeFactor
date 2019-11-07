@@ -56,7 +56,7 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
       if( preselectionFile.Contains("preselection_DY") ) weight *= event->zPtReweightWeight;
     }else{
       if (event->generatorWeight<=1.0) {
-      weight *= event->generatorWeight * event->muonEffTrgWeight * event->embeddedDecayModeWeight * event->muonEffIDWeight_1 * event->muonEffIDWeight_2;
+      weight *= 0.95 * event->generatorWeight * event->muonEffTrgWeight * event->embeddedDecayModeWeight * event->muonEffIDWeight_1 * event->muonEffIDWeight_2 * event->idWeight_1 * event->isoWeight_1;
       }
       else {
          weight = 0.0; // Check with new embedded ntuples if this still occurs
