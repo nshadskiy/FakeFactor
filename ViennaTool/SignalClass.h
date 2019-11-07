@@ -37,7 +37,6 @@ public :
    Int_t           nbtag;
    Double_t        mjj;
    Double_t        jdeta;
-   Double_t        mvamet;
    Double_t        met;
    Double_t        m_leplep;
    Double_t        lep_dR;
@@ -62,7 +61,6 @@ public :
    std::vector<double>  *alltau_q;
    std::vector<int>     *alltau_decay;
    std::vector<double>  *alltau_beta;
-   std::vector<int>     *alltau_mediumBeta;
    // std::vector<int>     *alltau_vlooseMVA;
    // std::vector<int>     *alltau_looseMVA;
    // std::vector<int>     *alltau_vvlooseMVA;
@@ -108,7 +106,6 @@ public :
    TBranch        *b_njetingap20;   //!
    TBranch        *b_nbtag;   //!
    TBranch        *b_mjj;   //!
-   TBranch        *b_mvamet;   //!
    TBranch        *b_met;   //!
    TBranch        *b_jdeta;   //!
    TBranch        *b_m_leplep;   //!
@@ -134,7 +131,6 @@ public :
    TBranch        *b_alltau_q;   //!
    TBranch        *b_alltau_decay;   //!
    TBranch        *b_alltau_beta;   //!
-   TBranch        *b_alltau_mediumBeta;   //!
    // TBranch        *b_alltau_vvvlooseMVA;   //!
    // TBranch        *b_alltau_vvlooseMVA;   //!
    // TBranch        *b_alltau_vlooseMVA;   //!
@@ -238,7 +234,6 @@ void SignalClass::Init(TTree *tree)
    alltau_q = 0;
    alltau_decay = 0;
    alltau_beta = 0;
-   alltau_mediumBeta = 0;
    // alltau_vvvlooseMVA = 0;
    // alltau_vvlooseMVA = 0;
    // alltau_vlooseMVA = 0;
@@ -286,7 +281,6 @@ void SignalClass::Init(TTree *tree)
    fChain->SetBranchAddress("nbtag", &nbtag, &b_nbtag);
    fChain->SetBranchAddress("njetingap20", &njetingap20, &b_njetingap20);
    fChain->SetBranchAddress("mjj", &mjj, &b_mjj);
-   fChain->SetBranchAddress("mvamet", &mvamet, &b_mvamet);
    fChain->SetBranchAddress("met", &met, &b_met);
    fChain->SetBranchAddress("jdeta", &jdeta, &b_jdeta);
    fChain->SetBranchAddress("m_leplep", &m_leplep, &b_m_leplep);
@@ -312,7 +306,6 @@ void SignalClass::Init(TTree *tree)
    fChain->SetBranchAddress("alltau_q", &alltau_q, &b_alltau_q);
    fChain->SetBranchAddress("alltau_decay", &alltau_decay, &b_alltau_decay);
    fChain->SetBranchAddress("alltau_beta", &alltau_beta, &b_alltau_beta);
-   fChain->SetBranchAddress("alltau_mediumBeta", &alltau_mediumBeta, &b_alltau_mediumBeta);
    // fChain->SetBranchAddress("alltau_vvvlooseMVA", &alltau_vvvlooseMVA, &b_alltau_vvvlooseMVA);
    // fChain->SetBranchAddress("alltau_vvlooseMVA", &alltau_vvlooseMVA, &b_alltau_vvlooseMVA);
    // fChain->SetBranchAddress("alltau_vlooseMVA", &alltau_vlooseMVA, &b_alltau_vlooseMVA);
