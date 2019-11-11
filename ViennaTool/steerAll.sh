@@ -56,7 +56,7 @@ if [ $embedding == 1 ] || [ $ntuples == "KIT" ]; then
  	mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
  	mv ViennaTool/src/TNtupleAnalyzer.cc ViennaTool/src/TNtupleAnalyzer_NonEMB.cc
 	mv ViennaTool/src/TNtupleAnalyzer_EMB.cc ViennaTool/src/TNtupleAnalyzer.cc
- 	make -B =j 4
+ 	make -B -j 4
     if [ $ntuples != "KIT" ]; then
         ./Preselection_KIT
     else
