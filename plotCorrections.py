@@ -201,8 +201,8 @@ if __name__ == '__main__':
           ############################################################
           cms2.Draw()
           #cms2b.Draw()
-          canvas.Print( 'ViennaTool/Images/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'.png' )
-          canvas.Print( 'ViennaTool/Images/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'.pdf' )
+          canvas.Print( 'ViennaTool/Images_EMB/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'.png' )
+          canvas.Print( 'ViennaTool/Images_EMB/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'.pdf' )
           #canvas.Print( 'tt/' + el['file'] + '.root')
 
 
