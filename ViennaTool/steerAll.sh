@@ -11,6 +11,14 @@ output=$(grep 'output_folder' "Settings.h" | awk -F'[=;]' '{print $2}' | tr -d '
 analysis=$(grep 'analysis' "Settings.h" | awk -F'[=;]' '{print $2}' | tr -d '"')
 njetbinning=$(grep 'doNJetBinning' "Settings.h" | awk -F'[=;]' '{print $2}' )
 
+do_presel=$1 # 0 or 1 (default)
+ntuples=$2 # Use "KIT" to process KIT ntuples, otherwise Vienna is assumed
+
+if [ -z "$do_presel" ]; then
+    do_presel=1
+fi
+
+
 if [ "$channel" == " kEL" ];  then chan="et"; fi
 if [ "$channel" == " kMU" ];  then chan="mt"; fi
 if [ "$channel" == " kTAU" ]; then chan="tt"; fi
@@ -21,6 +29,7 @@ echo Embedding: $embedding
 echo User: $USER	
 echo Name: $analysis
 echo doNjetBinning: $njetbinning
+echo NTuples: $ntuples
 
 sed s/user=\"whoami\"/user=\"$USER\"/g Settings.h >/tmp/Settings$USER.h
 yes | mv /tmp/Settings$USER.h Settings.h
@@ -40,45 +49,54 @@ sh BuildStructure.sh
 cd ../
 echo "Compiling the framework... "
 
-if [ $embedding == 1 ]; then
-	echo "Extra turnaround for embedded samples starts"
-	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
-	mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
-
-	mv ViennaTool/src/TNtupleAnalyzer.cc ViennaTool/src/TNtupleAnalyzer_NonEMB.cc
+if [ $embedding == 1 ] || [ $ntuples == "KIT" ]; then
+	if [ $do_presel == 1 ]; then
+ 	echo "Extra turnaround for embedded samples starts"
+ 	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
+ 	mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
+ 	mv ViennaTool/src/TNtupleAnalyzer.cc ViennaTool/src/TNtupleAnalyzer_NonEMB.cc
 	mv ViennaTool/src/TNtupleAnalyzer_EMB.cc ViennaTool/src/TNtupleAnalyzer.cc
-
-
-	make -B 
-	./Preselection_EMB
-	echo "Switch back and compile again"
-	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
-	mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
-
-	mv ViennaTool/src/TNtupleAnalyzer.cc ViennaTool/src/TNtupleAnalyzer_EMB.cc
-	mv ViennaTool/src/TNtupleAnalyzer_NonEMB.cc ViennaTool/src/TNtupleAnalyzer.cc
+ 	make -B -j 4
+    if [ $ntuples != "KIT" ]; then
+        ./Preselection_KIT
+    else
+        for process in DY EMB Data VV TT WJets
+        do
+     	    ./Preselection_KIT $process &
+        done
+    fi
+    wait
+ 	echo "Switch back and compile again"
+ 	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
+ 	mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
+ 	mv ViennaTool/src/TNtupleAnalyzer.cc ViennaTool/src/TNtupleAnalyzer_EMB.cc
+ 	mv ViennaTool/src/TNtupleAnalyzer_NonEMB.cc ViennaTool/src/TNtupleAnalyzer.cc
+	fi
 fi
 
-make -B 
+make -B -j 4
 
-./Preselection
+if [ $ntuples != "KIT" ] && [ $do_presel == 1 ]; then
+    ./Preselection 
+fi
 
-# ./SRHisto  
-# ./CRHisto
+./SRHisto &
+./CRHisto &
+wait
 
-# ./steerFF
-# ./fitFakeFactors
-# cd ViennaTool/Images_EMB/data_$chan
-# gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
-# cd -
+./steerFF
+./fitFakeFactors
+cd ViennaTool/Images_EMB/data_$chan
+gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
+cd -
 
-# ./calcCorrections
-# python plotCorrections.py --channel $channel  --doNjetBinning $njetbinning
-# ./convert_inputs
+./calcCorrections
+python plotCorrections.py --channel $channel  --doNjetBinning $njetbinning
+./convert_inputs
 
 
-# python cpTDHaftPublic.py --destination $output --channel $channel --doNjetBinning $njetbinning
-# echo $output $channel $njetbinning
-# python producePublicFakeFactors.py --input $output --channel $channel --njetbinning $njetbinning
+python cpTDHaftPublic.py --destination $output --channel $channel --doNjetBinning $njetbinning
+echo $output $channel $njetbinning
+python producePublicFakeFactors.py --input $output --channel $channel --njetbinning $njetbinning
 
 echo "------ END OF steerAll.sh ---------"

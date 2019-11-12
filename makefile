@@ -3,7 +3,7 @@ INCDIR=.
 ROOTINC=$(shell root-config --incdir)
 ROOTLIB=$(shell root-config --libs)
 
-all: NtupleClass.o SignalClass.o GlobalClass.o TNtupleAnalyzer.o TSelectionAnalyzer.o PlotterClass.o GaussianKernelSmoother.o FFCalculator.o CustomFit.o test fitFakeFactors Preselection Preselection_EMB SRHisto CRHisto steerFF convert_inputs calcCorrections
+all: NtupleClass.o SignalClass.o GlobalClass.o TNtupleAnalyzer.o TSelectionAnalyzer.o PlotterClass.o GaussianKernelSmoother.o FFCalculator.o CustomFit.o test fitFakeFactors Preselection Preselection_EMB Preselection_KIT SRHisto CRHisto steerFF convert_inputs calcCorrections
 
 %.o: ViennaTool/%.C
 	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -fpic -c $<
@@ -19,6 +19,9 @@ Preselection: ViennaTool/macros/Preselection.C
 
 Preselection_EMB: ViennaTool/macros/Preselection_EMB.C
 	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ NtupleClass.o TNtupleAnalyzer.o ViennaTool/macros/Preselection_EMB.C
+
+Preselection_KIT: ViennaTool/macros/Preselection_KIT.C
+	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ NtupleClass.o TNtupleAnalyzer.o ViennaTool/macros/Preselection_KIT.C
 
 SRHisto: ViennaTool/macros/SRHisto.C
 	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ SignalClass.o GlobalClass.o PlotterClass.o TSelectionAnalyzer.o ViennaTool/macros/SRHisto.C

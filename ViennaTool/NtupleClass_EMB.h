@@ -35,6 +35,7 @@ public :
    Float_t         puweight;
    Float_t         xsec;
    Float_t         genNEventsWeight;
+   Float_t         genbosonmass;
    Float_t         generatorWeight;
    Float_t         muonEffTrgWeight;
    Float_t         muonEffIDWeight_1;
@@ -63,6 +64,14 @@ public :
    Float_t         trk_sf;
    Float_t         effweight;
    Float_t         stitchedWeight;
+
+   Float_t         numberGeneratedEventsWeight;
+   Float_t         crossSectionPerEventWeight;
+   Float_t         trackWeight_1;
+   Float_t        singleTriggerMCEfficiencyWeightKIT_1;
+   Float_t        singleTriggerDataEfficiencyWeightKIT_1;
+    
+
    Float_t         topWeight;
    Float_t         topWeight_run1;
    Float_t         zpt_weight_nom;
@@ -416,6 +425,7 @@ public :
    Float_t         jdphi;
    Int_t           nbtag;
    Int_t           njets;
+   Int_t           npartons;
 //    Int_t           njetsUp;
 //    Int_t           njetsDown;
    Int_t           njetspt20;
@@ -468,6 +478,7 @@ public :
    TBranch        *b_puweight;   //!
    TBranch        *b_xsec;
    TBranch        *b_genNEventsWeight;
+   TBranch        *b_genbosonmass;
    TBranch        *b_generatorWeight;
    TBranch        *b_muonEffTrgWeight;
    TBranch        *b_muonEffIDWeight_1;
@@ -495,6 +506,13 @@ public :
    TBranch        *b_stitchedWeight;   //!
    TBranch        *b_topWeight;   //!
    TBranch        *b_topWeight_run1;   //!
+
+
+   TBranch         *b_numberGeneratedEventsWeight;
+   TBranch         *b_crossSectionPerEventWeight;
+   TBranch         *b_trackWeight_1;
+   TBranch        *b_singleTriggerMCEfficiencyWeightKIT_1;
+   TBranch        *b_singleTriggerDataEfficiencyWeightKIT_1;
 
    TBranch        *b_zpt_weight_nom;   //!
    TBranch        *b_zpt_weight_esup;   //!
@@ -841,6 +859,7 @@ public :
    TBranch        *b_dijetphi;   //!
    TBranch        *b_jdphi;   //!
    TBranch        *b_nbtag;   //!
+   TBranch        *b_npartons;   //!
    TBranch        *b_njets;   //!
 //    TBranch        *b_njetsUp;   //!
 //    TBranch        *b_njetsDown;   //!
@@ -1036,6 +1055,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("puweight", &puweight, &b_puweight);
    fChain->SetBranchAddress("xsec", &xsec, &b_xsec);
    fChain->SetBranchAddress("genNEventsWeight", &genNEventsWeight, &b_genNEventsWeight);
+   fChain->SetBranchAddress("genbosonmass", &genbosonmass, &b_genbosonmass);
    fChain->SetBranchAddress("generatorWeight", &generatorWeight, &b_generatorWeight);
    fChain->SetBranchAddress("muonEffTrgWeight", &muonEffTrgWeight, &b_muonEffTrgWeight);
    fChain->SetBranchAddress("muonEffIDWeight_1", &muonEffIDWeight_1, &b_muonEffIDWeight_1);
@@ -1064,7 +1084,14 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("topWeight_run1", &topWeight_run1, &b_topWeight_run1);
    fChain->SetBranchAddress("topPtReweightWeightRun1", &topPtReweightWeightRun1, &b_topPtReweightWeightRun1);
    fChain->SetBranchAddress("topPtReweightWeightRun2", &topPtReweightWeightRun2, &b_topPtReweightWeightRun2);
+   fChain->SetBranchAddress("numberGeneratedEventsWeight", &numberGeneratedEventsWeight, &b_singleTriggerDataEfficiencyWeightKIT_1);
+   fChain->SetBranchAddress("crossSectionPerEventWeight", &crossSectionPerEventWeight, &b_singleTriggerMCEfficiencyWeightKIT_1);
+   fChain->SetBranchAddress("trackWeight_1", &trackWeight_1, &b_trackWeight_1);
+   fChain->SetBranchAddress("singleTriggerMCEfficiencyWeightKIT_1", &singleTriggerMCEfficiencyWeightKIT_1, &b_crossSectionPerEventWeight);
+   fChain->SetBranchAddress("singleTriggerDataEfficiencyWeightKIT_1", &singleTriggerDataEfficiencyWeightKIT_1, &b_numberGeneratedEventsWeight);
+
    fChain->SetBranchAddress("eleTauFakeRateWeight", &eleTauFakeRateWeight, &b_eleTauFakeRateWeight);
+
    fChain->SetBranchAddress("muTauFakeRateWeight", &muTauFakeRateWeight, &b_muTauFakeRateWeight);
    fChain->SetBranchAddress("zPtReweightWeight", &zPtReweightWeight, &b_zPtReweightWeight);
    
@@ -1412,6 +1439,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("jdphi", &jdphi, &b_jdphi);
    fChain->SetBranchAddress("nbtag", &nbtag, &b_nbtag);
    fChain->SetBranchAddress("njets", &njets, &b_njets);
+   fChain->SetBranchAddress("npartons", &npartons, &b_npartons);
 //    fChain->SetBranchAddress("njetsUp", &njetsUp, &b_njetsUp);
 //    fChain->SetBranchAddress("njetsDown", &njetsDown, &b_njetsDown);
    fChain->SetBranchAddress("njetspt20", &njetspt20, &b_njetspt20);
