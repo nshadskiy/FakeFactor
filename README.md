@@ -22,3 +22,17 @@ sh steerAll.sh
 # Settings 
 
 Settings.h and Globals.h store many user parameters
+
+# Calculate Fractions for the FF
+
+* The file `ViennaTool/createFractions/CutObject/config/default_cuts.json` defines the cuts for the application region (`-ANTIISO-`). Also other aliases like Trigger, Lepton vetoes are defined there.
+* The file `ViennaTool/createFractions/Fractions/fractions_input.py` stores the paths to the Ntuples. Each entry gets a new era tag, e.g. `2016_KIT_emb`
+* Inside `ViennaTool/createFractions/Fractions/Fractions.py` one can define the binning of the variable(s) w.r.t. which the fractions are computed.
+
+## Running the fraction calculation
+
+cd ViennaTool/createFractions/Fractions/Fractions.py
+
+python Fractions.py -e ERA 
+
+use the -v for plotting the fractions (this options skips the calculation) or use -p to compute and plot the fractions in one go.
