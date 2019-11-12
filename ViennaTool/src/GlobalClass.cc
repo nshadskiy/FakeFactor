@@ -93,8 +93,7 @@ TString GlobalClass::getWPCutString(const TString isolation, const Int_t mode, c
     std::cout << "Error in GlobalClass::getWPCutString():  No valid working point selected, use '_VLOOSE', '_LOOSE', '_MEDIUM', '_TIGHT', '_VTIGHT'! " << std::endl;
     return "0";
   }
-  std::cout<<"s fulfill  "<<s_fulfill<<std::endl;
-
+  
   if     (fail == _VVVLOOSE_DNN) s_fail = "(alltau_vvvlooseDNN["+tau_index+"]<0.5)";
   else if(fail == _VVLOOSE_DNN)  s_fail = "(alltau_vvlooseDNN["+tau_index+"]<0.5)";
   else if(fail == _VLOOSE_DNN)  s_fail = "(alltau_vlooseDNN["+tau_index+"]<0.5)";
@@ -107,10 +106,11 @@ TString GlobalClass::getWPCutString(const TString isolation, const Int_t mode, c
     std::cout << "Error in GlobalClass::getWPCutString():  No valid working point selected, use '_VLOOSE', '_LOOSE', '_MEDIUM', '_TIGHT', '_VTIGHT', '0'! " << std::endl;
     return "0";
   }
-  std::cout<<"s fail  "<<s_fail<<std::endl;
+  
 
-
-  std::cout << "("+s_genmatch + "&&" + s_fulfill + "&&" + s_fail+")" <<std::endl;
+  if (DEBUG) {
+    std::cout << "Returning the following WP cut string: " << "("+s_genmatch + "&&" + s_fulfill + "&&" + s_fail+")" <<std::endl;
+  }
   return "("+s_genmatch + "&&" + s_fulfill + "&&" + s_fail+")";
 }
 
