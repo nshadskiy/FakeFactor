@@ -145,33 +145,31 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   TString presel_file = "";
   
   
-  if (false) { //skip for the moment
-    for (int ic=0; ic<nCR; ic++){ //loop over CRs - Wjets, DY, TT, QCD 
-      for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt, muiso
-        CallCRHisto_creation (Analyzer, ivar[iv], icr[ic], scr[ic], tvarCR[iv]);      
-      }
+  for (int ic=0; ic<nCR; ic++){ //loop over CRs - Wjets, DY, TT, QCD 
+    for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt, muiso
+      CallCRHisto_creation (Analyzer, ivar[iv], icr[ic], scr[ic], tvarCR[iv]);      
     }
+  }
 
-    //pick only QCD control region - produces ViennaTool/sim/channel/CR_QCD_lepPt_*.root but not the MCsubtracted one
-    CallCRHisto_creation(Analyzer, 0, _QCD|LEPPT, s_QCD, "lepPt" );
+  //pick only QCD control region - produces ViennaTool/sim/channel/CR_QCD_lepPt_*.root but not the MCsubtracted one
+  CallCRHisto_creation(Analyzer, 0, _QCD|LEPPT, s_QCD, "lepPt" );
+  
+  
+  //get AI CR histogramms for QCD mvis nonclosure
+  CallCRHisto_creation(Analyzer, MVIS, _QCD|_AI, s_QCD, s_mvis+"_AI" );
+  
+  if(CHAN==kTAU){
+    CallCRHisto_creation(Analyzer, 0, LEPPT|_QCD|_AI|JET0, s_QCD, "_lepPt_AI" );
+  }
+  
+  //get SS Wjet histogramms for SS mvis Wjets closure
+  CallCRHisto_creation(Analyzer, MVIS, _W_JETS|_AI, s_Wjets, s_mvis+"_SS" );
     
-    
-    //get AI CR histogramms for QCD mvis nonclosure
-    CallCRHisto_creation(Analyzer, MVIS, _QCD|_AI, s_QCD, s_mvis+"_AI" );
-    
-    if(CHAN==kTAU){
-      CallCRHisto_creation(Analyzer, 0, LEPPT|_QCD|_AI|JET0, s_QCD, "_lepPt_AI" );
-    }
-    
-    //get SS Wjet histogramms for SS mvis Wjets closure
-    CallCRHisto_creation(Analyzer, MVIS, _W_JETS|_AI, s_Wjets, s_mvis+"_SS" );
-      
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //get Wjet SS histos for corrections
-    Analyzer->getCRHisto(preselection_Wjets, MVIS|_W_JETS|_SS , path_sim+s_CR+"_Wjets_mvis_Wjets_SS_SR.root"  );
-    Analyzer->getCRHisto(preselection_Wjets, MT|NO_SR|_W_JETS|_SS , path_sim+s_CR+"_Wjets_mt_Wjets_SS_SR.root"  );
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  }    
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //get Wjet SS histos for corrections
+  Analyzer->getCRHisto(preselection_Wjets, MVIS|_W_JETS|_SS , path_sim+s_CR+"_Wjets_mvis_Wjets_SS_SR.root"  );
+  Analyzer->getCRHisto(preselection_Wjets, MT|NO_SR|_W_JETS|_SS , path_sim+s_CR+"_Wjets_mt_Wjets_SS_SR.root"  );
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 // void CallCRHisto_creation (TSelectionAnalyzer* Analyzer, int variable_bitcode, int CR_bitcode, TString control_region, TString variable_name) {
