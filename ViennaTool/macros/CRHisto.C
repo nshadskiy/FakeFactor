@@ -6,16 +6,116 @@
 
 using namespace std;
 
+// void CallCRHisto_creation (TSelectionAnalyzer* Analyzer ) {
+void CallCRHisto_creation (TSelectionAnalyzer* Analyzer, int variable_bitcode, int CR_bitcode, TString control_region, TString variable_name) {
+  int nSA = nSAMPLES;
+  const TString *ssa=vsuff;
+  TString presel_file;
+  TString current_sample;
+
+  TString CF = COINFLIP==1 ? "" : "_DC"; // coinflip is =1 for mutau and etau channels. It is =0 for tautau
+  
+
+  for (unsigned int is=0; is<=nSA; is++){ //loop over samples
+      
+    presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root";
+    current_sample = ssa[is];
+    
+    //if emb mode is used switch to the correct preselection file
+    if((EMB==1 && ( presel_file.Contains("DY_J") || presel_file.Contains("DY_L") || presel_file.Contains("TT_J")  || presel_file.Contains("TT_L") || presel_file.Contains("VV_J") || presel_file.Contains("VV_L") )) ){
+      presel_file = presel_file.ReplaceAll(".root", "_EMB.root");
+    }
+    if (is == nSA) {
+      presel_file = preselection_data;
+      current_sample = "data";
+    }
+    if(DEBUG) {std::cout<<"using preselection file: "<<presel_file<<std::endl;}
+
+    
+    Analyzer->getCRHisto(presel_file, variable_bitcode|CR_bitcode , path_sim+s_CR+"_"+control_region+"_"+variable_name+"_"+current_sample+".root"  );
+    if( doNJetBinning ){
+      Analyzer->getCRHisto(presel_file, variable_bitcode|CR_bitcode|JET0 , path_sim+s_CR+"_"+control_region+"_"+variable_name+"_0jet_"+current_sample+".root"  );
+      Analyzer->getCRHisto(presel_file, variable_bitcode|CR_bitcode|JET1 , path_sim+s_CR+"_"+control_region+"_"+variable_name+"_1jet_"+current_sample+".root"  );
+    }
+    
+  }
+
+}
+
+
+void ProduceMCsubtractedHistos (TString control_region, TString variable_name, TString AI_extension, TString Njet_extension, int variable_mask ) {
+  TString modes[] = {"l","t"};
+  Int_t nmodes = 2;
+  const TString *ssa=vsuff;
+  int nSA = nSAMPLES;
+
+  TString input_filename  = path_sim+s_CR+"_"+control_region+"_"+variable_name+Njet_extension+"_data.root";
+  TString output_filename = path_sim+s_CR+"_"+control_region+"_"+variable_name+Njet_extension+"_data_MCsubtracted.root";
+
+  if (DEBUG) {std::cout << "loading: " << input_filename << " and creating file: " << output_filename << std::endl; }
+
+
+  TFile outfile ( output_filename,"RECREATE"  );
+  TFile infile( input_filename );
+  
+  for(int imode=0; imode<nmodes; imode++) {
+    TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+"_"+variable_name);
+    TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+variable_name+"_MCsubtracted"); 
+    outhist->Add(inhist,-1);
+    TH1D* dataminusMC = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+variable_name+"_dataminusMC"); 
+
+    for (int is=0; is<nSA; is++){ //loop over samples
+      if(control_region == ssa[is]) continue;
+      TFile tmp(path_sim+s_CR+"_"+control_region+"_"+variable_name+Njet_extension+"_"+ssa[is]+".root"  );
+      TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+"_"+variable_name);
+
+      if(variable_mask & MUISO){
+        for(int i=1; i<tmphist->GetNbinsX();i++){
+          if( tmphist->GetBinContent(i) > inhist->GetBinContent(i) ){
+            tmphist->SetBinContent(i,0);
+            tmphist->SetBinError(i,0);
+          }
+          if(tmphist->GetBinContent(i) > 3){
+            Double_t err1=tmphist->GetBinError(i)/tmphist->GetBinContent(i);
+            Double_t err2=0.25;
+            tmphist->SetBinError( i,TMath::Sqrt(TMath::Power(err1,2)+TMath::Power(err2,2))*tmphist->GetBinContent(i) );
+          }
+        }
+      }
+
+      outhist->Add(tmphist);
+      dataminusMC->Add(tmphist,-1);
+
+      tmp.Close();
+    }
+    for (int nBin=0;nBin<=dataminusMC->GetNbinsX();++nBin) {
+      if (dataminusMC->GetBinContent(nBin)<0.0){ dataminusMC->SetBinContent(nBin, 0.0);}
+    }
+
+    outfile.cd();
+    inhist->Write();
+    outhist->Write();
+    dataminusMC->Write();
+  }
+  infile.Close();
+  outfile.Close();
+}
+
 void CRHisto(int doCalc, int nCR, int nQU) {
   std::cout << std::endl << "***************************************" << std::endl;
   std::cout << "*             CRHisto                 *" << std::endl;
   std::cout << "***************************************" << std::endl << std::endl;
 
+
+  std::cout << "doCalc: " << doCalc << std::endl;
+  std::cout << "nCR: " << nCR << std::endl;
+  std::cout << "nQU: " << nQU << std::endl;
+  
+
   TSelectionAnalyzer* Analyzer = new TSelectionAnalyzer();
   Analyzer->init();
 
   TString m_preselection_data=preselection_data;
-  if(DOMC) m_preselection_data=preselection_MCsum;
   TString m_path_img=path_img_data;
 
   const int nVARused = nVARCR; //mt,mvis,pt,muiso
@@ -26,334 +126,105 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   
   
   std::vector<TString> sjet; 
-  if( doNJetBinning ) {sjet.push_back(""); sjet.push_back("_0jet"); sjet.push_back("_1jet"); }
-  else sjet.push_back("");
+  if( doNJetBinning ) {
+    sjet.push_back(""); 
+    sjet.push_back("_0jet"); 
+    sjet.push_back("_1jet");
+  }
+  else {
+    sjet.push_back("");
+  }
 
-
-  int nSA; if(useVV){nSA=nSAMPLES;}else{nSA=nSAMPLES-3;}
+  int nSA = nSAMPLES;
   const TString *ssa=vsuff;
 
-  const TString squ[nQU]=    {s_loose, s_tight, s_tight_alt};
+  const TString squ[nQU]=    {s_loose, s_tight};
 
-  TString CF = COINFLIP==1 ? "" : "_DC";
+  TString CF = COINFLIP==1 ? "" : "_DC"; // coinflip is =1 for mutau and etau channels. It is =0 for tautau
 
   TString presel_file = "";
+  
+  
+  if (false) { //skip for the moment
+    for (int ic=0; ic<nCR; ic++){ //loop over CRs - Wjets, DY, TT, QCD 
+      for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt, muiso
+        CallCRHisto_creation (Analyzer, ivar[iv], icr[ic], scr[ic], tvarCR[iv]);      
+      }
+    }
 
-  if(doCRHisto){
-    for (int ic=0; ic<nCR; ic++){ //loop over CRs
-      if ( !doCalc ) break;
-      // nVAR is set to 3, one has to increase the number if muiso or zpt or any other variable is required
-      for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt
-        for (int is=0; is<nSA; is++){ //loop over samples
-          presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root";
-          if((EMB==1 && ( presel_file.Contains("DY_J") || presel_file.Contains("DY_L") || presel_file.Contains("TT_J")  || presel_file.Contains("TT_L") || presel_file.Contains("VV_J") || presel_file.Contains("VV_L") )) ){
-            presel_file = presel_file.ReplaceAll(".root", "_EMB.root");
-          }
-          Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root"  );
-          if( doNJetBinning ){
-            Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_0jet_"+ssa[is]+".root"  );
-            Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_1jet_"+ssa[is]+".root"  );
-          }
-        }
-        if(!DOMC) {
-          Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_data.root"  );
-          if( doNJetBinning ){
-            Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_0jet_data.root"  );
-            Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_1jet_data.root"  );
-          }
-        }
-        else {
-          Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_MCsum.root"  );
-          if( doNJetBinning ){
-            Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_0jet_MCsum.root"  );
-            Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_1jet_MCsum.root"  );
-          }
-        }
-      }
-    }
+    //pick only QCD control region - produces ViennaTool/sim/channel/CR_QCD_lepPt_*.root but not the MCsubtracted one
+    CallCRHisto_creation(Analyzer, 0, _QCD|LEPPT, s_QCD, "lepPt" );
     
-    for (int ic=3; ic<nCR; ic++){ //loop over CRs
-      for (int is=0; is<nSA; is++){ //loop over samples
-        presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root"; 
-        if((EMB==1 && ( presel_file.Contains("DY_J") || presel_file.Contains("DY_L") || presel_file.Contains("TT_J")  || presel_file.Contains("TT_L") || presel_file.Contains("VV_J") || presel_file.Contains("VV_L") )) ){
-            presel_file = presel_file.ReplaceAll(".root", "_EMB.root");
-        }
-        Analyzer->getCRHisto(presel_file, icr[ic]|LEPPT , path_sim+s_CR+"_"+scr[ic]+"_lepPt_"+ssa[is]+".root"  );
-        if( doNJetBinning ){
-          Analyzer->getCRHisto(presel_file, icr[ic]|LEPPT|JET0 , path_sim+s_CR+"_"+scr[ic]+"_lepPt_0jet_"+ssa[is]+".root"  );
-          Analyzer->getCRHisto(presel_file, icr[ic]|LEPPT|JET1 , path_sim+s_CR+"_"+scr[ic]+"_lepPt_1jet_"+ssa[is]+".root"  );
-        }
-      }
-      if(!DOMC) {
-        Analyzer->getCRHisto(  m_preselection_data                           , icr[ic]|LEPPT , path_sim+s_CR+"_"+scr[ic]+"_lepPt_data.root"  );
-        if( doNJetBinning ){
-          Analyzer->getCRHisto(  m_preselection_data                           , icr[ic]|LEPPT|JET0 , path_sim+s_CR+"_"+scr[ic]+"_lepPt_0jet_data.root"  );
-          Analyzer->getCRHisto(  m_preselection_data                           , icr[ic]|LEPPT|JET1 , path_sim+s_CR+"_"+scr[ic]+"_lepPt_1jet_data.root"  );
-        }
-      }
-    }
     
     //get AI CR histogramms for QCD mvis nonclosure
-    for (int ic=3; ic<nCR; ic++){ //loop over CRs
-      if ( !doCalc ) break;
-      for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
-        for (int is=0; is<nSA; is++){ //loop over samples
-          presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root";
-          if((EMB==1 && ( presel_file.Contains("DY_J") || presel_file.Contains("DY_L") || presel_file.Contains("TT_J")  || presel_file.Contains("TT_L") || presel_file.Contains("VV_J") || presel_file.Contains("VV_L") )) ){
-            presel_file = presel_file.ReplaceAll(".root", "_EMB.root");
-          }
-          Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_"+ssa[is]+".root"  );
-          if( doNJetBinning ){
-            Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_0jet_"+ssa[is]+".root"  );
-            Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_1jet_"+ssa[is]+".root"  );
-          }
-        }
-        if(!DOMC){ 
-         Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_data.root"  );
-         if( doNJetBinning ){
-           Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_0jet_data.root"  );
-           Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_1jet_data.root"  );
-         }
-        }else{
-         Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_MCsum.root"  );
-         if( doNJetBinning ){
-          Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_0jet_MCsum.root"  );
-          Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_1jet_MCsum.root"  );
-         }
-        }
-      }
-    }
+    CallCRHisto_creation(Analyzer, MVIS, _QCD|_AI, s_QCD, s_mvis+"_AI" );
     
-    //get AI CR histogramms for QCD mvis nonclosure
     if(CHAN==kTAU){
-      for (int ic=3; ic<nCR; ic++){ //loop over CRs
-        for (int is=0; is<nSA; is++){ //loop over samples
-          presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root";
-          if((EMB==1 && ( presel_file.Contains("DY_J") || presel_file.Contains("DY_L") || presel_file.Contains("TT_J")  || presel_file.Contains("TT_L") || presel_file.Contains("VV_J") || presel_file.Contains("VV_L") )) ){
-            presel_file = presel_file.ReplaceAll(".root", "_EMB.root");
-          }
-          Analyzer->getCRHisto(presel_file, LEPPT|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_"+ssa[is]+".root"  );
-          if( doNJetBinning ){
-            Analyzer->getCRHisto(presel_file, LEPPT|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_0jet_"+ssa[is]+".root"  );
-            Analyzer->getCRHisto(presel_file, LEPPT|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_1jet_"+ssa[is]+".root"  );
-          }
-        }
-        if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , LEPPT|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_data.root"  );
-        if( doNJetBinning ){
-          if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , LEPPT|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_0jet_data.root"  );
-          if(!DOMC) Analyzer->getCRHisto(  m_preselection_data                           , LEPPT|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_1jet_data.root"  );
-        }
-      }
+      CallCRHisto_creation(Analyzer, 0, LEPPT|_QCD|_AI|JET0, s_QCD, "_lepPt_AI" );
     }
     
     //get SS Wjet histogramms for SS mvis Wjets closure
-    for (int ic=0; ic<1; ic++){ //loop over CRs
-      if ( !doCalc ) break;
-      for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
-        for (int is=0; is<nSA; is++){ //loop over samples
-          presel_file = path_presel+s_preselection+"_"+ssa[is]+CF+".root";
-          if((EMB==1 && ( presel_file.Contains("DY_J") || presel_file.Contains("DY_L") || presel_file.Contains("TT_J")  || presel_file.Contains("TT_L") || presel_file.Contains("VV_J") || presel_file.Contains("VV_L") )) ){
-            presel_file = presel_file.ReplaceAll(".root", "_EMB.root");
-          }
-          Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_"+ssa[is]+".root"  );
-          if( doNJetBinning ){
-            Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_0jet_"+ssa[is]+".root"  );
-            Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_1jet_"+ssa[is]+".root"  );
-          }
-        }
-        if(!DOMC){
-         Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_data.root"  );
-         if( doNJetBinning ){
-           Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_0jet_data.root"  );
-          Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_1jet_data.root"  );
-         }
-        }else{
-         Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_MCsum.root"  );
-         if( doNJetBinning ){
-          Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET0 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_0jet_MCsum.root"  );
-          Analyzer->getCRHisto(  m_preselection_data                           , ivar[iv]|icr[ic]|_AI|JET1 , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_1jet_MCsum.root"  );
-         }
-        }
-      }
-    }
-    
+    CallCRHisto_creation(Analyzer, MVIS, _W_JETS|_AI, s_Wjets, s_mvis+"_SS" );
+      
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //get Wjet SS histos for corrections
     Analyzer->getCRHisto(preselection_Wjets, MVIS|_W_JETS|_SS , path_sim+s_CR+"_Wjets_mvis_Wjets_SS_SR.root"  );
     Analyzer->getCRHisto(preselection_Wjets, MT|NO_SR|_W_JETS|_SS , path_sim+s_CR+"_Wjets_mt_Wjets_SS_SR.root"  );
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //get QCD AI lepPT MC subtracted CRs
-    TString modes[] = {"l","t","t_alt"};
-    Int_t nmodes = 3;
-    if(!DOMC){
-      for (int ic=3; ic<nCR; ic++){ //loop over CRs
-        for (int ij=0; ij<=2*(doNJetBinning); ij++){ //loop over inclusive, 0jet, 1jet //TODO
-          TFile outfile ( path_sim+s_CR+"_"+scr[ic]+"_lepPt"+sjet[ij]+"_data_MCsubtracted.root","RECREATE"  );
-          TFile infile( path_sim+s_CR+"_"+scr[ic]+"_lepPt"+sjet[ij]+"_data.root"  );
-          for(int imode=0; imode<nmodes; imode++){
-            TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+"_lepPt");
-            TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_lepPt_MCsubtracted"); outhist->Add(inhist,-1);
-            for (int is=0; is<nSA; is++){ //loop over samples
-              if(scr[ic] == ssa[is]) continue;
-              TFile tmp(path_sim+s_CR+"_"+scr[ic]+"_lepPt"+sjet[ij]+"_"+ssa[is]+".root"  );
-              TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+"_lepPt");
-              outhist->Add(tmphist);
-              tmp.Close();
-            }
-            outfile.cd();
-            inhist->Write();
-            outhist->Write();
-          }
-          infile.Close();outfile.Close();
-       }
-      }
-    }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //get QCD AI MC subtracted CRs
-    if(!DOMC){
-      for (int ic=3; ic<nCR; ic++){ //loop over CRs
-        if ( !doCalc ) break;
-        for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
-          for (int ij=0; ij<=2*(doNJetBinning); ij++){ //loop over inclusive, 0jet, 1jet //TODO
-          
-            TFile outfile ( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI"+sjet[ij]+"_data_MCsubtracted.root","RECREATE"  );
-            TFile infile( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI"+sjet[ij]+"_data.root"  );
-            for(int imode=0; imode<nmodes; imode++){
-              TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+"_"+tvarCR[iv]);
-              TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+tvarCR[iv]+"_MCsubtracted"); outhist->Add(inhist,-1);
-              for (int is=0; is<nSA; is++){ //loop over samples
-                if(scr[ic] == ssa[is]) continue;
-                TFile tmp(path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI"+sjet[ij]+"_"+ssa[is]+".root"  );
-                TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+"_"+tvarCR[iv]);
-                outhist->Add(tmphist);
-                tmp.Close();
-              }
-              outfile.cd();
-              inhist->Write();
-              outhist->Write();
-            }
-            infile.Close();outfile.Close();
-          }
-        }
-      }
-    }
-    
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //get Wjets SS MC subtracted CRs
-    if(!DOMC){
-      for (int ic=0; ic<1; ic++){ //loop over CRs
-        if ( !doCalc ) break;
-        for (int iv=1; iv<2; iv++){ //loop over mt, mvis, pt
-         for (int ij=0; ij<=2*(doNJetBinning); ij++){ //loop over inclusive, 0jet, 1jet
-            TFile outfile ( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS"+sjet[ij]+"_data_MCsubtracted.root","RECREATE"  );
-            TFile infile( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS"+sjet[ij]+"_data.root"  );
-            for(int imode=0; imode<nmodes; imode++){
-              TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+"_"+tvarCR[iv]);
-              TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+tvarCR[iv]+"_MCsubtracted"); outhist->Add(inhist,-1);
-              for (int is=0; is<nSA; is++){ //loop over samples
-                if(scr[ic] == ssa[is]) continue;
-                TFile tmp(path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS"+sjet[ij]+"_"+ssa[is]+".root"  );
-                TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+"_"+tvarCR[iv]);
-                outhist->Add(tmphist);
-                tmp.Close();
-              }
-              outfile.cd();
-              inhist->Write();
-              outhist->Write();
-            }
-            infile.Close();outfile.Close();
-          }
-        }
-      }
-    }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //get general data-MC CRs
-    if(!DOMC){
-      for (int ic=0; ic<nCR; ic++){ //loop over CRs
-        if ( !doCalc ) break;
-        // nVAR is set to 3, one has to increase the number if muiso or zpt or any other variable is required
-        for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt
-          for (int ij=0; ij<=2*(doNJetBinning); ij++){ //loop over inclusive, 0jet, 1jet
-            TFile outfile ( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+sjet[ij]+"_data_MCsubtracted.root","RECREATE"  );
-            // cout << "CREATING: " << path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+sjet[ij]+"_data_MCsubtracted.root" << endl;
-            TFile infile( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+sjet[ij]+"_data.root"  );
-            for(int imode=0; imode<nmodes; imode++){
-              TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+"_"+tvarCR[iv]);
-              TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+tvarCR[iv]+"_MCsubtracted"); outhist->Add(inhist,-1);
-              TH1D* dataminusMC = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+tvarCR[iv]+"_dataminusMC");
-              for (int is=0; is<nSA; is++){ //loop over samples
-                if(scr[ic] == ssa[is]) continue;
-                // cout << "SUBTRACTING: " << path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root" << endl;
-                TFile tmp(path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+sjet[ij]+"_"+ssa[is]+".root"  );
-                TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+"_"+tvarCR[iv]);
-                if(ivar[iv] & MUISO){
-                  for(int i=1; i<tmphist->GetNbinsX();i++){
-                    if( tmphist->GetBinContent(i) > inhist->GetBinContent(i) ){
-                      tmphist->SetBinContent(i,0);
-                      tmphist->SetBinError(i,0);
-                    }
-                    if(tmphist->GetBinContent(i) > 3){
-                      Double_t err1=tmphist->GetBinError(i)/tmphist->GetBinContent(i);
-                      Double_t err2=0.25;
-                      tmphist->SetBinError( i,TMath::Sqrt(TMath::Power(err1,2)+TMath::Power(err2,2))*tmphist->GetBinContent(i) );
-                    }
-                  }
-                }
-                outhist->Add(tmphist);
-                dataminusMC->Add(tmphist,-1);
-                tmp.Close();
-              }
-              for (int nBin=0;nBin<=dataminusMC->GetNbinsX();++nBin) {
-                if (dataminusMC->GetBinContent(nBin)<0.0){ dataminusMC->SetBinContent(nBin, 0.0);}
-              }
-              outfile.cd();
-              inhist->Write();
-              outhist->Write();
-              dataminusMC->Write();
-            }
-            infile.Close();outfile.Close();
-          }
-        }
-      }
-    }
-    else{
-      for (int ic=0; ic<nCR; ic++){ //loop over CRs
-        if ( !doCalc ) break;
-        for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt
-          TFile outfile ( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_MCsum_MCsubtracted.root","RECREATE"  );
-          TFile infile( path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_MCsum.root"  );
-          for(int imode=0; imode<nmodes; imode++){
-            TH1D* inhist = (TH1D*)infile.Get("hh_"+modes[imode]+"_"+tvarCR[iv]);
-            TH1D* outhist = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+tvarCR[iv]+"_MCsubtracted"); outhist->Add(inhist,-1);
-            for (int is=0; is<nSA; is++){ //loop over samples
-              if(scr[ic] == ssa[is]) continue;
-              TFile tmp(path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root"  );
-              TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+"_"+tvarCR[iv]);
-              outhist->Add(tmphist);
-              tmp.Close();
-            }
-            outfile.cd();
-            inhist->Write();
-            outhist->Write();
-          }
-          infile.Close();outfile.Close();
-        }
-      }
-    }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  } //doCRHisto
+  }    
+
+
+// void CallCRHisto_creation (TSelectionAnalyzer* Analyzer, int variable_bitcode, int CR_bitcode, TString control_region, TString variable_name) {
+  // Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root"  );
+  // Analyzer->getCRHisto(presel_file, icr[ic]|LEPPT    , path_sim+s_CR+"_"+scr[ic]+"_lepPt_"         +ssa[is]+".root"  );
+  // Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_"+ssa[is]+".root"  );
+  // Analyzer->getCRHisto(presel_file, LEPPT|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_"+ssa[is]+".root"  );
+  // Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_"+ssa[is]+".root"  );
   
-  cout << "Now producing CR plots..." << endl;
+  // const int ivar[4]={MT|NO_SR,MVIS,PT,MUISO};
+  // const int icr[nCR]=        {_W_JETS , _DY  , _TT  , _QCD};
+  // const TString scr[nCR]=    {s_Wjets, s_DY , s_TT , s_QCD};
+  // const TString tvarCR[nVARCR]={s_mt,s_mvis,s_pt,s_muiso}; defined in globals.h
+
 
   
-  std::vector<TString> ty; for (int it=0; it<nSA; it++) ty.push_back(vsuff[it]);
+  
+  TString modes[] = {"l","t"};
+  Int_t nmodes = 2;
+  
+  
+  for (int ij=0; ij<=2*(doNJetBinning); ij++){ //loop over inclusive, 0jet, 1jet //Check if Njet binning is implemented
+    ProduceMCsubtractedHistos(s_QCD  ,"lepPt",""   ,sjet[ij],0); //get QCD      lepPT MC subtracted CRs
+    ProduceMCsubtractedHistos(s_QCD  ,s_mvis ,"_AI",sjet[ij],0); //get QCD   AI mvis  MC subtracted CRs
+    ProduceMCsubtractedHistos(s_Wjets,s_mvis ,"_SS",sjet[ij],0); //get Wjets SS mvis  MC subtracted CRs
+ 
+  }
+
+  for (int ic=0; ic<nCR; ic++){ //loop over CRs - Wjets, DY, TT and QCD
+    for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt, muiso
+      for (int ij=0; ij<=2*(doNJetBinning); ij++){ //loop over inclusive, 0jet, 1jet
+        ProduceMCsubtractedHistos(scr[ic],tvarCR[iv],"",sjet[ij],ivar[iv]);
+      }
+    }
+  }
+  
+
+  if(DEBUG) {std::cout << "Producing CR plots ..." << std::endl;}
+
+  
+  std::vector<TString> ty; 
+  for (int it=0; it<nSA; it++) {
+    ty.push_back(vsuff[it]);
+  }
 
   for (int ic=0; ic<nCR; ic++){ //loop over CRs
     for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt, muiso
       for (int iq=0; iq<nQU; iq++){ //loop over loose/tight
         std::vector<TString> cr; 
         for (int is=0; is<nSA; is++){ cr.push_back(path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root"); }
-        cout << path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_data.root" << " " << squ[iq] << " " <<  scr[ic] << " " << m_path_img+s_CR+"_"+scr[ic]+"_"+squ[iq]+"_"+tvarCR[iv] << " " << tvarCR_l[iv]  << endl;
+        if(DEBUG) {
+          cout << path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_data.root" << " " << squ[iq] << " " <<  scr[ic] << " " << m_path_img+s_CR+"_"+scr[ic]+"_"+squ[iq]+"_"+tvarCR[iv] << " " << tvarCR_l[iv]  << endl;
+        }
         Analyzer->plotCR(cr, ty, path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_data.root", squ[iq], scr[ic]    , m_path_img+s_CR+"_"+scr[ic]+"_"+squ[iq]+"_"+tvarCR[iv], tvarCR_l[iv] ); 
       }
     }
