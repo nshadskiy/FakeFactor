@@ -64,7 +64,7 @@ public :
    Float_t         trk_sf;
    Float_t         effweight;
    Float_t         stitchedWeight;
-
+   
    Float_t         numberGeneratedEventsWeight;
    Float_t         crossSectionPerEventWeight;
    Float_t         trackWeight_1;
@@ -85,31 +85,15 @@ public :
    Float_t         zpt_weight_statpt40down;
    Float_t         zpt_weight_statpt80up;
    Float_t         zpt_weight_statpt80down;
-   Bool_t           trg_singlemuon;
-   Bool_t           trg_singlemuon_lowpt;
-   Bool_t           trg_singlemuon_24;
-   Bool_t           trg_singlemuon_27;
-   Bool_t           trg_crossmuon_mu20tau27;
+   Int_t           trg_singlemuon;
+   Int_t           trg_mutaucross;
 //    Int_t           trg_mutaucross;
-   Bool_t           trg_singleelectron;
-   Bool_t           trg_singleelectron_27;
-   Bool_t           trg_singleelectron_32;
-   Bool_t           trg_singleelectron_35;
-   Int_t           trg_singleelectron_25_eta2p1; 
-   Bool_t           trg_singleelectron_lowpt;
+   Int_t           trg_singleelectron;
    Bool_t           trg_crossele_ele24tau30;
 //    Int_t           trg_singletau;
    Int_t           trg_singlemu_22; 
-   Int_t           trg_doubletau_35; 
-   Bool_t           trg_doubletau;
-   Bool_t           trg_doubletau_lowpt;
-   Bool_t           trg_doubletau_mediso;
+   Int_t           trg_doubletau;
    Bool_t           trg_muonelectron;
-   Bool_t           trg_doubletau_35_tightiso_tightid;
-   Bool_t           trg_doubletau_40_mediso_tightid;
-   Bool_t           trg_doubletau_40_tightiso;
-   Int_t           trg_crossmu_mu19tau20;
-   Bool_t           trg_doubletau_35_mediso_HPS;
    Bool_t           isEmbedded;
    Float_t         gen_Mll;
    Float_t         genpX;
@@ -167,6 +151,18 @@ public :
    Float_t           againstElectronVTightMVA6_1;
    Float_t           againstMuonLoose3_1;
    Float_t           againstMuonTight3_1;
+   Float_t         byVLooseDeepTau2017v2p1VSe_1;
+   Float_t         byVLooseDeepTau2017v2p1VSe_2;
+   Float_t         byVLooseDeepTau2017v2p1VSmu_1;
+   Float_t         byVLooseDeepTau2017v2p1VSmu_2;
+   Float_t         byLooseDeepTau2017v2p1VSe_1;
+   Float_t         byLooseDeepTau2017v2p1VSe_2;
+   Float_t         byLooseDeepTau2017v2p1VSmu_1;
+   Float_t         byLooseDeepTau2017v2p1VSmu_2;
+   Float_t         byTightDeepTau2017v2p1VSe_1;
+   Float_t         byTightDeepTau2017v2p1VSe_2;
+   Float_t         byTightDeepTau2017v2p1VSmu_1;
+   Float_t         byTightDeepTau2017v2p1VSmu_2;
    Float_t         byCombinedIsolationDeltaBetaCorrRaw3Hits_1;
    Int_t           byLooseCombinedIsolationDeltaBetaCorr3Hits_1;
    Int_t           byMediumCombinedIsolationDeltaBetaCorr3Hits_1;
@@ -526,31 +522,13 @@ public :
    TBranch        *b_zpt_weight_statpt80up;   //!
    TBranch        *b_zpt_weight_statpt80down;   //!
    TBranch        *b_trg_singlemuon;   //!
-   TBranch        *b_trg_singlemuon_lowpt;   //!
-   TBranch        *b_trg_singlemuon_24;   //!
-   TBranch        *b_trg_singlemuon_27;   //!
-   TBranch        *b_trg_crossmuon_mu20tau27;   //!
-//    TBranch        *b_trg_mutaucross;   //!
-   TBranch        *b_trg_singleelectron_25_eta2p1;   //!
-
+   TBranch        *b_trg_mutaucross;   //!
    TBranch        *b_trg_singleelectron;   //!
-   TBranch        *b_trg_singleelectron_27;   //!
-   TBranch        *b_trg_singleelectron_32;   //!
-   TBranch        *b_trg_singleelectron_35;   //!
-   TBranch        *b_trg_singleelectron_lowpt;   //!
    TBranch        *b_trg_crossele_ele24tau30;   //!
-//    TBranch        *b_trg_singletau;   //!
    TBranch        *b_trg_doubletau;   //!
    TBranch        *b_trg_singlemu_22;   //!
-   TBranch        *b_trg_doubletau_35;   //!
-   TBranch        *b_trg_crossmu_mu19tau20;   //!
 
-   TBranch        *b_trg_doubletau_lowpt;   //!
-   TBranch        *b_trg_doubletau_mediso;   //!
    TBranch        *b_isEmbedded;   //!
-   TBranch        *b_trg_doubletau_35_tightiso_tightid;   //!
-   TBranch        *b_trg_doubletau_40_mediso_tightid;   //!
-   TBranch        *b_trg_doubletau_40_tightiso;   //!
    TBranch        *b_trg_muonelectron;   //!
    TBranch        *b_crossTriggerDataEfficiencyWeight_tight_MVA_1;   //!
    TBranch        *b_crossTriggerDataEfficiencyWeight_tight_MVA_2;   //!
@@ -612,6 +590,18 @@ public :
    TBranch        *b_againstElectronVTightMVA6_1;   //!
    TBranch        *b_againstMuonLoose3_1;   //!
    TBranch        *b_againstMuonTight3_1;   //!
+   TBranch        *b_byVLooseDeepTau2017v2p1VSe_1;
+   TBranch        *b_byVLooseDeepTau2017v2p1VSe_2;
+   TBranch        *b_byVLooseDeepTau2017v2p1VSmu_1;
+   TBranch        *b_byVLooseDeepTau2017v2p1VSmu_2;
+   TBranch        *b_byLooseDeepTau2017v2p1VSe_1;
+   TBranch        *b_byLooseDeepTau2017v2p1VSe_2;
+   TBranch        *b_byLooseDeepTau2017v2p1VSmu_1;
+   TBranch        *b_byLooseDeepTau2017v2p1VSmu_2;
+   TBranch        *b_byTightDeepTau2017v2p1VSe_1;
+   TBranch        *b_byTightDeepTau2017v2p1VSe_2;
+   TBranch        *b_byTightDeepTau2017v2p1VSmu_1;
+   TBranch        *b_byTightDeepTau2017v2p1VSmu_2;
    TBranch        *b_byCombinedIsolationDeltaBetaCorrRaw3Hits_1;   //!
    TBranch        *b_byLooseCombinedIsolationDeltaBetaCorr3Hits_1;   //!
    TBranch        *b_byMediumCombinedIsolationDeltaBetaCorr3Hits_1;   //!
@@ -1107,31 +1097,12 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("zpt_weight_statpt80up", &zpt_weight_statpt80up, &b_zpt_weight_statpt80up);
    fChain->SetBranchAddress("zpt_weight_statpt80down", &zpt_weight_statpt80down, &b_zpt_weight_statpt80down);
    fChain->SetBranchAddress("trg_singlemuon", &trg_singlemuon, &b_trg_singlemuon);
-   fChain->SetBranchAddress("trg_singlemuon_lowpt", &trg_singlemuon_lowpt, &b_trg_singlemuon_lowpt);
-   fChain->SetBranchAddress("trg_singlemuon_24", &trg_singlemuon_24, &b_trg_singlemuon_24);
-   fChain->SetBranchAddress("trg_singlemuon_27", &trg_singlemuon_27, &b_trg_singlemuon_27);
-   fChain->SetBranchAddress("trg_crossmuon_mu20tau27", &trg_crossmuon_mu20tau27, &b_trg_crossmuon_mu20tau27);
-//    fChain->SetBranchAddress("trg_mutaucross", &trg_mutaucross, &b_trg_mutaucross);
-   fChain->SetBranchAddress("trg_singleelectron_27", &trg_singleelectron_27, &b_trg_singleelectron_27);
-   fChain->SetBranchAddress("trg_singleelectron_32", &trg_singleelectron_32, &b_trg_singleelectron_32);
-   fChain->SetBranchAddress("trg_singleelectron_35", &trg_singleelectron_35, &b_trg_singleelectron_35);
-   fChain->SetBranchAddress("trg_singleelectron_lowpt", &trg_singleelectron_lowpt, &b_trg_singleelectron_lowpt);
+   fChain->SetBranchAddress("trg_mutaucross", &trg_mutaucross, &b_trg_mutaucross);
+   fChain->SetBranchAddress("trg_singleelectron", &trg_singleelectron, &b_trg_singleelectron);
    fChain->SetBranchAddress("trg_crossele_ele24tau30", &trg_crossele_ele24tau30, &b_trg_crossele_ele24tau30);
-//    fChain->SetBranchAddress("trg_singletau", &trg_singletau, &b_trg_singletau);
    fChain->SetBranchAddress("trg_doubletau", &trg_doubletau, &b_trg_doubletau);
-   fChain->SetBranchAddress("trg_singlemuon", &trg_singlemu_22, &b_trg_singlemu_22);
-   fChain->SetBranchAddress("trg_doubletau", &trg_doubletau_35, &b_trg_doubletau_35);
-   fChain->SetBranchAddress("trg_muonelectron", &trg_crossmu_mu19tau20, &b_trg_crossmu_mu19tau20);
-   fChain->SetBranchAddress("trg_singlemuon_24", &trg_singleelectron_25_eta2p1, &b_trg_singleelectron_25_eta2p1);
-
-   fChain->SetBranchAddress("trg_doubletau_lowpt", &trg_doubletau_lowpt, &b_trg_doubletau_lowpt);
-   fChain->SetBranchAddress("trg_doubletau_mediso", &trg_doubletau_mediso, &b_trg_doubletau_mediso);
    fChain->SetBranchAddress("trg_muonelectron", &trg_muonelectron, &b_trg_muonelectron);
    fChain->SetBranchAddress("isEmbedded", &isEmbedded, &b_isEmbedded);
-   fChain->SetBranchAddress("trg_doubletau_35_tightiso_tightid", &trg_doubletau_35_tightiso_tightid, &b_trg_doubletau_35_tightiso_tightid);
-   fChain->SetBranchAddress("trg_doubletau_40_mediso_tightid", &trg_doubletau_40_mediso_tightid, &b_trg_doubletau_40_mediso_tightid);
-   fChain->SetBranchAddress("trg_doubletau_40_tightiso", &trg_doubletau_40_tightiso, &b_trg_doubletau_40_tightiso);
-//    fChain->SetBranchAddress("trg_doubletau_35_mediso_HPS", &trg_doubletau_35_mediso_HPS, &b_trg_doubletau_35_mediso_HPS);
    fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_tight_MVA_1", &crossTriggerDataEfficiencyWeight_tight_MVA_1, &b_crossTriggerDataEfficiencyWeight_tight_MVA_1);
    fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_tight_MVA_2", &crossTriggerDataEfficiencyWeight_tight_MVA_2, &b_crossTriggerDataEfficiencyWeight_tight_MVA_2);
    fChain->SetBranchAddress("crossTriggerMCEfficiencyWeight_tight_MVA_1", &crossTriggerMCEfficiencyWeight_tight_MVA_1, &b_crossTriggerMCEfficiencyWeight_tight_MVA_1);
@@ -1192,6 +1163,18 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("againstElectronVTightMVA6_1", &againstElectronVTightMVA6_1, &b_againstElectronVTightMVA6_1);
    fChain->SetBranchAddress("againstMuonLoose3_1", &againstMuonLoose3_1, &b_againstMuonLoose3_1);
    fChain->SetBranchAddress("againstMuonTight3_1", &againstMuonTight3_1, &b_againstMuonTight3_1);
+   fChain->SetBranchAddress("byVLooseDeepTau2017v2p1VSe_1", &byVLooseDeepTau2017v2p1VSe_1, &b_byVLooseDeepTau2017v2p1VSe_1);
+   fChain->SetBranchAddress("byVLooseDeepTau2017v2p1VSe_2", &byVLooseDeepTau2017v2p1VSe_2, &b_byVLooseDeepTau2017v2p1VSe_2);
+   fChain->SetBranchAddress("byVLooseDeepTau2017v2p1VSmu_1", &byVLooseDeepTau2017v2p1VSmu_1, &b_byVLooseDeepTau2017v2p1VSmu_1);
+   fChain->SetBranchAddress("byVLooseDeepTau2017v2p1VSmu_2", &byVLooseDeepTau2017v2p1VSmu_2, &b_byVLooseDeepTau2017v2p1VSmu_2);
+   fChain->SetBranchAddress("byLooseDeepTau2017v2p1VSe_1", &byLooseDeepTau2017v2p1VSe_1, &b_byLooseDeepTau2017v2p1VSe_1);
+   fChain->SetBranchAddress("byLooseDeepTau2017v2p1VSe_2", &byLooseDeepTau2017v2p1VSe_2, &b_byLooseDeepTau2017v2p1VSe_2);
+   fChain->SetBranchAddress("byLooseDeepTau2017v2p1VSmu_1", &byLooseDeepTau2017v2p1VSmu_1, &b_byLooseDeepTau2017v2p1VSmu_1);
+   fChain->SetBranchAddress("byLooseDeepTau2017v2p1VSmu_2", &byLooseDeepTau2017v2p1VSmu_2, &b_byLooseDeepTau2017v2p1VSmu_2);
+   fChain->SetBranchAddress("byTightDeepTau2017v2p1VSe_1", &byTightDeepTau2017v2p1VSe_1, &b_byTightDeepTau2017v2p1VSe_1);
+   fChain->SetBranchAddress("byTightDeepTau2017v2p1VSe_2", &byTightDeepTau2017v2p1VSe_2, &b_byTightDeepTau2017v2p1VSe_2);
+   fChain->SetBranchAddress("byTightDeepTau2017v2p1VSmu_1", &byTightDeepTau2017v2p1VSmu_1, &b_byTightDeepTau2017v2p1VSmu_1);
+   fChain->SetBranchAddress("byTightDeepTau2017v2p1VSmu_2", &byTightDeepTau2017v2p1VSmu_2, &b_byTightDeepTau2017v2p1VSmu_2);   
    fChain->SetBranchAddress("byCombinedIsolationDeltaBetaCorrRaw3Hits_1", &byCombinedIsolationDeltaBetaCorrRaw3Hits_1, &b_byCombinedIsolationDeltaBetaCorrRaw3Hits_1);
    fChain->SetBranchAddress("byLooseCombinedIsolationDeltaBetaCorr3Hits_1", &byLooseCombinedIsolationDeltaBetaCorr3Hits_1, &b_byLooseCombinedIsolationDeltaBetaCorr3Hits_1);
    fChain->SetBranchAddress("byMediumCombinedIsolationDeltaBetaCorr3Hits_1", &byMediumCombinedIsolationDeltaBetaCorr3Hits_1, &b_byMediumCombinedIsolationDeltaBetaCorr3Hits_1);

@@ -52,7 +52,7 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
     if( !preselectionFile.Contains("preselection_EMB")){
       float trgWeight = 1.;
       if ((event->singleTriggerDataEfficiencyWeightKIT_1 / event->singleTriggerMCEfficiencyWeightKIT_1) < 2.0) {trgWeight = (event->singleTriggerDataEfficiencyWeightKIT_1 / event->singleTriggerMCEfficiencyWeightKIT_1);}
-      weight *= 1000.0*luminosity *  event->puweight * event->eleTauFakeRateWeight * event->muTauFakeRateWeight * event->idWeight_1  *  event->isoWeight_1  * event->trackWeight_1 * trgWeight;
+      weight *= 1000.0*luminosity *  event->puweight * event->muTauFakeRateWeight * event->idWeight_1  *  event->isoWeight_1  * event->trackWeight_1 * trgWeight;
       // if (CHAN == kTAU) weight *= 1.;//event->sf_DoubleTauTight;
       // else              weight *= event->sf_SingleOrCrossTrigger;
       if( preselectionFile.Contains("preselection_TT") ) weight *= event->topPtReweightWeightRun2;
@@ -270,9 +270,9 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     Trigger selection + flagMETFilter + kinematic pt_2 cut 
     are applied in the following lines
   */
-  if(CHAN==kMU &&  ((event->flagMETFilter <0.5) || !((event->trg_singlemu_22 > 0.5) || (event->trg_crossmu_mu19tau20>0.5)) || (event->pt_2<23))) return 0; 
-  if(CHAN==kTAU && ((event->flagMETFilter <0.5) || !( event->trg_doubletau_35 ) )) return 0;
-  if(CHAN==kEL &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_25_eta2p1 > 0.5)) || (event->pt_2<23)))  return 0;
+  if(CHAN==kMU &&  ((event->flagMETFilter <0.5) || !((event->trg_singlemuon > 0.5) || (event->trg_mutaucross>0.5)) || (event->pt_2<23))) return 0; 
+  if(CHAN==kTAU && ((event->flagMETFilter <0.5) || !( event->trg_doubletau ) )) return 0;
+  if(CHAN==kEL &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron > 0.5)) || (event->pt_2<23)))  return 0;
   if (DEBUG) {std::cout << "event " << evt_ID << " passed trigger selection, MET filter and kinematics" << std::endl;}
   // below old example when embedding was used.
   // if(CHAN==kEL && preselectionFile.Contains("preselection") &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_25_eta2p1 > 0.5)) || (event->pt_2<23)))  return 0;
@@ -281,9 +281,9 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   /*  
     Lepton vetos
   */
-  if(CHAN==kMU) passesTauLepVetos = ((event->againstMuonTight3_2>0.5) && (event->againstElectronVLooseMVA6_2>0.5));
-  if(CHAN==kEL) passesTauLepVetos = ((event->againstMuonLoose3_2>0.5) && (event->againstElectronTightMVA6_2>0.5));
-  if(CHAN==kTAU)passesTauLepVetos = ((event->againstElectronVLooseMVA6_1>0.5)&&(event->againstElectronVLooseMVA6_2>0.5)&&(event->againstMuonLoose3_1>0.5)&&(event->againstMuonLoose3_2>0.5));
+  if(CHAN==kMU) passesTauLepVetos = ((event->byTightDeepTau2017v2p1VSmu_2>0.5) && (event->byVLooseDeepTau2017v2p1VSe_2>0.5));
+  if(CHAN==kEL) passesTauLepVetos = ((event->byLooseDeepTau2017v2p1VSmu_2>0.5) && (event->byTightDeepTau2017v2p1VSe_2>0.5));
+  if(CHAN==kTAU)passesTauLepVetos = ((event->byVLooseDeepTau2017v2p1VSe_1>0.5)&&(event->byVLooseDeepTau2017v2p1VSe_2>0.5)&&(event->byLooseDeepTau2017v2p1VSmu_1>0.5)&&(event->byLooseDeepTau2017v2p1VSmu_2>0.5));
   passes3LVeto= ((event->extramuon_veto < 0.5) && (event->extraelec_veto < 0.5) && (event->dilepton_veto<0.5));
   if ( CHAN == kMU  ) passesDLVeto= !(event->dilepton_veto);
   if ( CHAN == kEL  ) passesDLVeto= !(event->dilepton_veto);
