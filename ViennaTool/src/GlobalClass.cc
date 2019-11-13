@@ -109,9 +109,9 @@ TString GlobalClass::getWPCutString(const TString isolation, const Int_t mode, c
   
 
   if (DEBUG) {
-    std::cout << "Returning the following WP cut string: " << "("+s_genmatch + "&&" + s_fulfill + "&&" + s_fail+")" <<std::endl;
+    std::cout << "Returning the following WP cut string: " << "("+s_genmatch + "*" + s_fulfill + "*" + s_fail+")" <<std::endl;
   }
-  return "("+s_genmatch + "&&" + s_fulfill + "&&" + s_fail+")";
+  return "("+s_genmatch + "*" + s_fulfill + "*" + s_fail+")";
 }
 
 Int_t GlobalClass::isLoose(const Int_t mode, const Int_t ind) //default: 0,0
@@ -295,49 +295,49 @@ TString GlobalClass::getCRCutString(const Int_t mode){
   antiIso_min=isolation; antiIso_max=isolation+0.1;
 
   
-  if( mode & GEN_MATCH ) s_genmatch = " && (alltau_gen_match[tau_iso_ind] == 6) ";
+  if( mode & GEN_MATCH ) s_genmatch = " * (alltau_gen_match[tau_iso_ind] == 6) ";
   
-  if(mode & JET0) s_jetmode = " && (njets == 0) ";
-  else if(mode & JET1) s_jetmode = " && (njets > 0) ";
+  if(mode & JET0) s_jetmode = " * (njets == 0) ";
+  else if(mode & JET1) s_jetmode = " * (njets > 0) ";
 
   if( mode & _DY ){
-    s_mode = "(lep_iso < "+to_string(isolation)+")&&(alltau_dRToLep[0] > "+to_string(DR_TAU_LEP_CUT)+")&&(m_leplep > 70)&&(m_leplep < 110)";
+    s_mode = "(lep_iso < "+to_string(isolation)+")*(alltau_dRToLep[0] > "+to_string(DR_TAU_LEP_CUT)+")*(m_leplep > 70)*(m_leplep < 110)";
   }
   else if( mode & _TT ){
-    s_mode = "(n_iso_lep >= 1)&&(n_iso_otherLep >= 1)&&(alltau_dRToLep[0] > "+to_string(DR_TAU_LEP_CUT)+")&&(alltau_dRToOtherLep[0] > "+to_string(DR_TAU_LEP_CUT)+")&&(njets>1)&&(bpt_1>=20)";
+    s_mode = "(n_iso_lep >= 1)*(event_s->n_iso_otherLep >= 1 )*(alltau_dRToLep[0] > "+to_string(DR_TAU_LEP_CUT)+")*(alltau_dRToOtherLep[0] > "+to_string(DR_TAU_LEP_CUT)+")*(njets>1)*(bpt_1>=20)";
   }
   else if( mode & _W_JETS){
-    s_mode = "(passesDLVeto > 0.5) && (passes3LVeto > 0.5) && (bpt_1 < 20)";
-    if( !(mode & NO_SR) ) s_mode += " && (alltau_mt[0] > 70)";
-    if( CHAN == kTAU ) s_mode += " && (lep_iso > "+to_string(TAU1_ISO_CUT)+")";
-    else s_mode += " && (lep_iso < "+to_string(isolation)+")";
-    if( CALC_SS_SR ) s_mode += "&& (lep_q*alltau_q[0]>0.0)";
-    else s_mode += "&& (lep_q*alltau_q[0]<0.0)";
+    s_mode = "(passesDLVeto > 0.5) * (passes3LVeto > 0.5) * (bpt_1 < 20)";
+    if( !(mode & NO_SR) ) s_mode += " * (alltau_mt[0] > 70)";
+    if( CHAN == kTAU ) s_mode += " * (lep_iso > "+to_string(TAU1_ISO_CUT)+")";
+    else s_mode += " * (lep_iso < "+to_string(isolation)+")";
+    if( CALC_SS_SR ) s_mode += "* (lep_q*alltau_q[0]>0.0)";
+    else s_mode += "* (lep_q*alltau_q[0]<0.0)";
   }
   else if( mode & _QCD ){
     if( CHAN == kTAU ){
       if( mode & SR ){
-        s_mode = "(lep_iso > "+to_string(TAU1_ISO_CUT)+")&&(lep_q*alltau_q[0]<0.0)";
+        s_mode = "(lep_iso > "+to_string(TAU1_ISO_CUT)+")*(lep_q*alltau_q[0]<0.0)";
       }else{
         if( mode & _AI){
           s_mode = "(lep_iso < "+to_string(TAU1_ISO_CUT)+")";
         }else{
           s_mode = "(lep_iso > "+to_string(TAU1_ISO_CUT)+")";
         }
-        s_mode += " && (lep_q*alltau_q[0]>0.0) && (passesDLVeto > 0.5) && (passes3LVeto > 0.5)";
+        s_mode += " * (lep_q*alltau_q[0]>0.0) * (passesDLVeto > 0.5) * (passes3LVeto > 0.5)";
       }
     }else{
       s_mode = "(alltau_mt[0] < 40)";
-      s_mode += " && (lep_q * alltau_q[0] >= 0) && (passesDLVeto > 0.5) && (passes3LVeto > 0.5) ";
-      if( !CALC_SS_SR && !(mode & _AI) ){
-        if( !(mode & MUISO) ) s_mode += " && (lep_iso > "+to_string(lep_iso_min)+") && (lep_iso < "+to_string(lep_iso_max)+") ";
+      s_mode += " * (lep_q * alltau_q[0] >= 0) * (passesDLVeto > 0.5) * (passes3LVeto > 0.5) ";
+      if( !CALC_SS_SR * !(mode & _AI) ){
+        if( !(mode & MUISO) ) s_mode += " * (lep_iso > "+to_string(lep_iso_min)+") * (lep_iso < "+to_string(lep_iso_max)+") ";
       }
       else if( CALC_SS_SR ){
-        s_mode += " && (lep_q * alltau_q[0] < 0)";
-        if( !(mode & MUISO) ) s_mode += " && (lep_iso > "+to_string(antiIso_min)+") && (lep_iso < "+to_string(antiIso_max)+") ";
+        s_mode += " * (lep_q * alltau_q[0] < 0)";
+        if( !(mode & MUISO) ) s_mode += " * (lep_iso > "+to_string(antiIso_min)+") * (lep_iso < "+to_string(antiIso_max)+") ";
       }
       else if( mode & _AI ){
-        s_mode += " && (lep_iso > "+to_string(antiIso_min)+") && (lep_iso < "+to_string(antiIso_max)+")";
+        s_mode += " * (lep_iso > "+to_string(antiIso_min)+") * (lep_iso < "+to_string(antiIso_max)+")";
       }
     
     }
