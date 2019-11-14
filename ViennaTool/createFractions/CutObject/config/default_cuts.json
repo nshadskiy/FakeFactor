@@ -2,9 +2,9 @@
 	"-SS-":"q_1 * q_2 > 0",
 	"-OS-":"q_1 * q_2 < 0",
 	"-VETO-":{
-		"mt":"((extramuon_veto < 0.5) && (dilepton_veto<0.5) && (againstMuonTight3_2>0.5) && (againstElectronVLooseMVA6_2>0.5))",
-		"et":"((extraelec_veto < 0.5) && (dilepton_veto<0.5) && (againstMuonLoose3_2>0.5) && (againstElectronTightMVA6_2>0.5))",
-		"tt":"((extramuon_veto < 0.5) && (extraelec_veto < 0.5) && (dilepton_veto<0.5) && (againstMuonLoose3_1>0.5) && (againstElectronVLooseMVA6_1>0.5) && (againstMuonLoose3_2>0.5) && (againstElectronVLooseMVA6_2>0.5))"
+		"mt":"((extramuon_veto < 0.5) && (dilepton_veto<0.5) && (byTightDeepTau2017v2p1VSmu_2>0.5) && (byVLooseDeepTau2017v2p1VSe_2>0.5))",
+		"et":"((extraelec_veto < 0.5) && (dilepton_veto<0.5) && (byLooseDeepTau2017v2p1VSmu_2>0.5) && (byTightDeepTau2017v2p1VSe_2>0.5))",
+		"tt":"((extramuon_veto < 0.5) && (extraelec_veto < 0.5) && (dilepton_veto<0.5) && (byVLooseDeepTau2017v2p1VSe_1>0.5) && (byVLooseDeepTau2017v2p1VSe_2>0.5) && (byLooseDeepTau2017v2p1VSmu_1>0.5) && (byLooseDeepTau2017v2p1VSmu_2>0.5))"
 	},
 	"-MT-":{
 		"mt":"mt_1 < 50",
