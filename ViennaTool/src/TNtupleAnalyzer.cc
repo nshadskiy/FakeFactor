@@ -243,9 +243,9 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   /*  
     Lepton vetos
   */
-  if(CHAN==kMU) passesTauLepVetos = ((event->againstMuonTight3_2>0.5) && (event->againstElectronVLooseMVA6_2>0.5));
-  if(CHAN==kEL) passesTauLepVetos = ((event->againstMuonLoose3_2>0.5) && (event->againstElectronTightMVA6_2>0.5));
-  if(CHAN==kTAU)passesTauLepVetos = ((event->againstElectronVLooseMVA6_1>0.5)&&(event->againstElectronVLooseMVA6_2>0.5)&&(event->againstMuonLoose3_1>0.5)&&(event->againstMuonLoose3_2>0.5));
+  if(CHAN==kMU) passesTauLepVetos = ((event->byTightDeepTau2017v2p1VSmu_2>0.5) && (event->byVLooseDeepTau2017v2p1VSe_2>0.5));
+  if(CHAN==kEL) passesTauLepVetos = ((event->byLooseDeepTau2017v2p1VSmu_2>0.5) && (event->byTightDeepTau2017v2p1VSe_2>0.5));
+  if(CHAN==kTAU)passesTauLepVetos = ((event->byVLooseDeepTau2017v2p1VSe_1>0.5)&&(event->byVLooseDeepTau2017v2p1VSe_2>0.5)&&(event->byLooseDeepTau2017v2p1VSmu_1>0.5)&&(event->byLooseDeepTau2017v2p1VSmu_2>0.5));
   passes3LVeto= ((event->extramuon_veto < 0.5) && (event->extraelec_veto < 0.5) && (event->dilepton_veto<0.5));
   if ( CHAN == kMU  ) passesDLVeto= !(event->dilepton_veto);
   if ( CHAN == kEL  ) passesDLVeto= !(event->dilepton_veto);
