@@ -94,8 +94,6 @@ public :
    Int_t           trg_singleelectron_32;
    Int_t           trg_singleelectron_27;
    Int_t           trg_crossele_ele24tau30;
-
-   Bool_t           trg_crossele_ele24tau30;
 //    Int_t           trg_singletau;
    Int_t           trg_doubletau_35_tightiso_tightid;
    Int_t           trg_doubletau_40_mediso_tightid;
@@ -538,7 +536,7 @@ public :
     TBranch        *b_trg_crossele_ele24tau30;
     TBranch        *b_trg_doubletau_35_tightiso_tightid;
     TBranch        *b_trg_doubletau_40_mediso_tightid;
-    TBranch        *b_trg_doubletau_40_tightiso
+    TBranch        *b_trg_doubletau_40_tightiso;
 
    TBranch        *b_isEmbedded;   //!
    TBranch        *b_trg_muonelectron;   //!
