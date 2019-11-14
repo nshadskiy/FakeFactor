@@ -91,8 +91,11 @@ def main():
             # binned_in = ["predicted_prob","njets"]; binning = [ (6,array("d",[0.125, 0.3, 0.4, 0.5, 0.6, 0.7, 1.0])) , (3, array("d",[-0.5,1.5,2.5,15]) )  ]
             # binned_in = ["m_vis","njets"];          binning = [ (11,array("d",[0,50,80,100,110,120,130,150,170,200,250,1000])) , (3, array("d",[-0.5,1.5,2.5,15]) )  ]
             binned_in = ["m_vis", "njets"];
-            binning = [(30, 0, 300),
+            # binning = [(30, 0, 300),
+            #            (3, array("d", [-0.5,0.5,1.5,15]))]
+            binning = [(14, array("d", [0,15,30,45,60,75,90,105,120,140,160,200,225,250,300])),
                        (3, array("d", [-0.5,0.5,1.5,15]))]
+            
         else:
             bin_var = Var(args.var)
             binned_in = [args.var, "njets"]
