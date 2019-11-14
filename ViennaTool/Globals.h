@@ -132,7 +132,7 @@ const TString path_img_mc        = path_img+"mc_"+s_chan[CHAN]+"/";
 const TString path_img_mc_woQCD  = path_img+"mc_woQCD_"+s_chan[CHAN]+"/";
 
 //Input directories
-const TString indir = "/ceph/jandrej/"+ver+"/";
+const TString indir = "/ceph/jbechtel/"+ver+"/";
 const TString datafile   = indir + s_chan[CHAN] + "-NOMINAL_ntuple_Data.root";
 const TString EMBfile    = indir + s_chan[CHAN] + "-NOMINAL_ntuple_EMB.root";
 const TString DY_NJfile  = indir + s_chan[CHAN] + "-NOMINAL_ntuple_DY.root";
