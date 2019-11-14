@@ -70,10 +70,10 @@ void fitFakeFactors(){
           if (CHAN == kMU && modes.at(imode) & _W_JETS && ijet == 0) {
                   cf.set_fitFunc( "pol1(0)" );
                   if( idm == 1) cf.set_fitFunc( "pol1(0)" );
-                  cf.set_histMaxFrac( 200.0/500.0 );
-                  cf.set_smoothFrac(120.0/500.0);
+                  cf.set_histMaxFrac( 80.0/500.0 );
+                  cf.set_smoothFrac(80.0/500.0);
                   // if( idm == 1 && modes.at(imode) ){ cf.set_histMaxFrac( 45.0/500.0 ); cf.set_smoothFrac(30.0/500.0);}
-                  if( idm == 1 && modes.at(imode) ){ cf.set_histMaxFrac( 200.0/500.0 ); cf.set_smoothFrac(120.0/500.0);}
+                  if( idm == 1 && modes.at(imode) ){ cf.set_histMaxFrac( 80.0/500.0 ); cf.set_smoothFrac(80.0/500.0);}
                   cf.set_err_scale( 3.0 );
                   cf.set_err_cl( 0 );
                   cf.set_smoothMode("spline3");              
@@ -92,15 +92,15 @@ void fitFakeFactors(){
                   cf.set_fitFunc( "pol1(0)" );
                   cf.set_err_scale( 3.0 );
                   cf.set_err_cl( 0 );
-                  cf.set_histMaxFrac( 200.0/500.0 );
-                  cf.set_smoothFrac(120.0/500.0);
+                  cf.set_histMaxFrac( 80.0/500.0 );
+                  cf.set_smoothFrac(80.0/500.0);
                   cf.set_smoothMode("spline3");              
                   }
           else if (CHAN == kMU && modes.at(imode) & _QCD && modes.at(imode) & _AI && ijet == 0) {
                   cf.set_fitFunc( "pol2(0)" );
                   cf.set_err_scale( 3.0 );
                   cf.set_err_cl( 0 );
-                  cf.set_histMaxFrac( 100./500.0 );
+                  cf.set_histMaxFrac( 80./500.0 );
                   cf.set_smoothFrac( 60./500.0);
                   cf.set_smoothMode("spline3");              
                   }          
@@ -109,9 +109,9 @@ void fitFakeFactors(){
                 if( ijet == 0 && idm == 0) cf.set_fitFunc( "pol1(0)" );
                   cf.set_err_scale( 3.0 );
                   cf.set_err_cl( 0 );
-                  if (idm == 0) cf.set_histMaxFrac( 200.0/500.0 );
-                  else  cf.set_histMaxFrac( 200.0/500.0 );
-                  cf.set_smoothFrac(120.0/500.0);
+                  if (idm == 0) cf.set_histMaxFrac( 80.0/500.0 );
+                  else  cf.set_histMaxFrac( 80.0/500.0 );
+                  cf.set_smoothFrac(80.0/500.0);
                   cf.set_smoothMode("spline3");
                   }
           else if (CHAN == kMU && modes.at(imode) & _TT) {
@@ -129,10 +129,10 @@ void fitFakeFactors(){
                 if( ijet == 0 )cf.set_fitFunc( "pol1(0)" );
                 else     	     cf.set_fitFunc( "pol1(0)" );
                 cf.set_err_scale( 3.0 );
-                if( ijet == 0 ) {cf.set_histMaxFrac( 200.0/500.0 );  cf.set_smoothFrac(120.0/500.0);}
-                else            {cf.set_histMaxFrac( 200.0/500.0 );  cf.set_smoothFrac(120.0/500.0);}
-                if( idm == 1 && ijet == 0){ cf.set_histMaxFrac( 52.0/500.0 ); cf.set_smoothFrac(120.0/500.0);}
-                if( idm == 1 && ijet == 1){ cf.set_histMaxFrac( 70.0/500.0 ); cf.set_smoothFrac(120.0/500.0);}
+                if( ijet == 0 ) {cf.set_histMaxFrac( 80.0/500.0 );  cf.set_smoothFrac(60.0/500.0);}
+                else            {cf.set_histMaxFrac( 80.0/500.0 );  cf.set_smoothFrac(60.0/500.0);}
+                if( idm == 1 && ijet == 0){ cf.set_histMaxFrac( 80.0/500.0 ); cf.set_smoothFrac(60.0/500.0);}
+                if( idm == 1 && ijet == 1){ cf.set_histMaxFrac( 80.0/500.0 ); cf.set_smoothFrac(60.0/500.0);}
                 cf.set_err_cl( 0 );          
                 cf.set_smoothMode("spline3");
             }              
@@ -141,9 +141,9 @@ void fitFakeFactors(){
                 if( ijet == 0 && idm == 0) cf.set_fitFunc( "pol1(0)" );  
                 cf.set_err_scale( 3.0 );
                 cf.set_err_cl( 0 );         
-                if( ijet == 0 ) {cf.set_histMaxFrac( 200.0/500.0 );  cf.set_smoothFrac(120.0/500.0);}
-                else            {cf.set_histMaxFrac( 200.0/500.0 );  cf.set_smoothFrac(120.0/500.0);}
-                if( ijet == 0 && idm == 0) cf.set_histMaxFrac( 200.0/500.0 );  cf.set_smoothFrac(120.0/500.0);
+                if( ijet == 0 ) {cf.set_histMaxFrac( 80.0/500.0 );  cf.set_smoothFrac(60.0/500.0);}
+                else            {cf.set_histMaxFrac( 80.0/500.0 );  cf.set_smoothFrac(60.0/500.0);}
+                if( ijet == 0 && idm == 0) cf.set_histMaxFrac( 80.0/500.0 );  cf.set_smoothFrac(60.0/500.0);
                 cf.set_smoothMode("spline3");     
             }
           else if( CHAN==kEL && modes.at(imode) & _TT ){
@@ -158,24 +158,24 @@ void fitFakeFactors(){
               cf.set_fitFunc( "pol1(0)" );
               cf.set_err_scale( 3.0 );
               cf.set_err_cl( 0 );
-                    cf.set_histMaxFrac( 200.0/500.0 );
-                    cf.set_smoothFrac(120.0/500.0);
+                    cf.set_histMaxFrac( 80.0/500.0 );
+                    cf.set_smoothFrac(60.0/500.0);
                     cf.set_smoothMode("spline3");              
                 }
           else if( CHAN==kEL && modes.at(imode) & _W_JETS && ijet == 0){
               cf.set_fitFunc( "pol1(0)" );  
               cf.set_err_scale( 3.0 );
               cf.set_err_cl( 0 );
-                    cf.set_histMaxFrac( 200.0/500.0 );
-                    cf.set_smoothFrac(120.0/500.0);
+                    cf.set_histMaxFrac( 80.0/500.0 );
+                    cf.set_smoothFrac(60.0/500.0);
                     cf.set_smoothMode("spline3");              
                 }
           else if( CHAN==kEL && modes.at(imode) & _W_JETS ){
               cf.set_fitFunc( "pol1(0)" );
               cf.set_err_scale( 3.0 );
               cf.set_err_cl( 0 );
-                    cf.set_histMaxFrac( 200.0/500.0 );
-                    cf.set_smoothFrac(120.0/500.0);
+                    cf.set_histMaxFrac( 80.0/500.0 );
+                    cf.set_smoothFrac(60.0/500.0);
                     cf.set_smoothMode("spline3");              
                 }
             //////////////////////////////////////////////
@@ -187,14 +187,14 @@ void fitFakeFactors(){
               // if      (ijet == 0 && idm == 1) cf.set_histMaxFrac( 0.35 );
               // else if (ijet == 1 && idm == 1) cf.set_histMaxFrac( 0.35 );
               // if ( modes.at(imode) & _AI  ) 
-              if(modes.at(imode) & _AI) cf.set_histMaxFrac( 200.0/500.0 ); 
+              if(modes.at(imode) & _AI) cf.set_histMaxFrac( 80.0/500.0 ); 
               else{
-                if( ijet == 0) cf.set_histMaxFrac( 200.0/500.0 ); 
-                else cf.set_histMaxFrac( 200.0/500.0 ); 
+                if( ijet == 0) cf.set_histMaxFrac( 80.0/500.0 ); 
+                else cf.set_histMaxFrac( 80.0/500.0 ); 
               } 
-              if( idm == 1 ) cf.set_histMaxFrac( 200.0/500.0 ); 
-              if( idm == 1 && ijet == 0) cf.set_histMaxFrac( 200.0/500.0 ); 
-              cf.set_smoothFrac(120.0/500.0);
+              if( idm == 1 ) cf.set_histMaxFrac( 80.0/500.0 ); 
+              if( idm == 1 && ijet == 0) cf.set_histMaxFrac( 80.0/500.0 ); 
+              cf.set_smoothFrac(60.0/500.0);
               // else if ( ijet == 0) {cf.set_histMaxFrac( 0.26 );  cf.set_smoothFrac(0.2);}
               // else if ( ijet == 1) {cf.set_histMaxFrac( 0.2 );  cf.set_smoothFrac(0.18);}
               
@@ -358,7 +358,7 @@ void fitFakeFactors(){
           cms3.SetTextSize(0.05);
           cms3.SetTextFont(52);
           
-          TLatex infoRight = TLatex( 0.665, 0.915, "41.5 fb^{-1} (13 TeV)" );
+          TLatex infoRight = TLatex( 0.665, 0.915, "35.9 fb^{-1} (13 TeV)" );
           infoRight.SetNDC();
           infoRight.SetTextFont(42);
           infoRight.SetTextSize(0.03);
