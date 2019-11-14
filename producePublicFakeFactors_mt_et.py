@@ -46,7 +46,7 @@ for x in range(0,len(categories)):
     
     qcd_os = Node(
         name='ff_qcd_os',
-        formula='{isocorr_qcd}*{mviscorr_qcd}*{ff_raw_qcd}*{OSSS_corr_qcd}', # SS -> OS correction = 1.23
+        formula='{isocorr_qcd}*{mviscorr_qcd}*{ff_raw_qcd}', #*{OSSS_corr_qcd}', # SS -> OS correction = 1.23
         #formula='{isocorr_qcd}*{mviscorr_qcd}*{ff_raw_qcd}',
         leaves=[
             Leaf(
@@ -67,12 +67,12 @@ for x in range(0,len(categories)):
                 object='QCD_SS_Data_FFSSMuMediumData_isomu_correction',
                 vars=['mu_iso']
             ),
-            Leaf(
-                name='OSSS_corr_qcd',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_OSSS{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
-                object='QCD_SS_Data_FFSSMuMediumData_OSSS_correction',
-                vars=['mvis']
-            )
+            # Leaf(
+            #     name='OSSS_corr_qcd',
+            #     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_OSSS{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+            #     object='QCD_SS_Data_FFSSMuMediumData_OSSS_correction',
+            #     vars=['mvis']
+            # )
         ]
     )
 
