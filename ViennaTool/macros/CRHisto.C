@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include "TStyle.h"
+#include <thread>
 
 using namespace std;
 
@@ -49,8 +50,8 @@ void ProduceMCsubtractedHistos (TString control_region, TString variable_name, T
   const TString *ssa=vsuff;
   int nSA = nSAMPLES;
 
-  TString input_filename  = path_sim+s_CR+"_"+control_region+"_"+variable_name+Njet_extension+"_data.root";
-  TString output_filename = path_sim+s_CR+"_"+control_region+"_"+variable_name+Njet_extension+"_data_MCsubtracted.root";
+  TString input_filename  = path_sim+s_CR+"_"+control_region+"_"+variable_name+AI_extension+Njet_extension+"_data.root";
+  TString output_filename = path_sim+s_CR+"_"+control_region+"_"+variable_name+AI_extension+Njet_extension+"_data_MCsubtracted.root";
 
   if (DEBUG) {std::cout << "loading: " << input_filename << " and creating file: " << output_filename << std::endl; }
 
@@ -66,7 +67,7 @@ void ProduceMCsubtractedHistos (TString control_region, TString variable_name, T
 
     for (int is=0; is<nSA; is++){ //loop over samples
       if(control_region == ssa[is]) continue;
-      TFile tmp(path_sim+s_CR+"_"+control_region+"_"+variable_name+Njet_extension+"_"+ssa[is]+".root"  );
+      TFile tmp(path_sim+s_CR+"_"+control_region+"_"+variable_name+AI_extension+Njet_extension+"_"+ssa[is]+".root"  );
       TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+"_"+variable_name);
 
       if(variable_mask & MUISO){
@@ -143,13 +144,15 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   TString CF = COINFLIP==1 ? "" : "_DC"; // coinflip is =1 for mutau and etau channels. It is =0 for tautau
 
   TString presel_file = "";
-  
-  
+
   for (int ic=0; ic<nCR; ic++){ //loop over CRs - Wjets, DY, TT, QCD 
     for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt, muiso
-      CallCRHisto_creation (Analyzer, ivar[iv], icr[ic], scr[ic], tvarCR[iv]);      
+      CallCRHisto_creation (Analyzer, ivar[iv], icr[ic], scr[ic], tvarCR[iv]);     
     }
   }
+
+
+
 
   //pick only QCD control region - produces ViennaTool/sim/channel/CR_QCD_lepPt_*.root but not the MCsubtracted one
   CallCRHisto_creation(Analyzer, 0, _QCD|LEPPT, s_QCD, "lepPt" );
@@ -184,18 +187,13 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   // const TString scr[nCR]=    {s_Wjets, s_DY , s_TT , s_QCD};
   // const TString tvarCR[nVARCR]={s_mt,s_mvis,s_pt,s_muiso}; defined in globals.h
 
-
-  
-  
   TString modes[] = {"l","t"};
   Int_t nmodes = 2;
-  
   
   for (int ij=0; ij<=2*(doNJetBinning); ij++){ //loop over inclusive, 0jet, 1jet //Check if Njet binning is implemented
     ProduceMCsubtractedHistos(s_QCD  ,"lepPt",""   ,sjet[ij],0); //get QCD      lepPT MC subtracted CRs
     ProduceMCsubtractedHistos(s_QCD  ,s_mvis ,"_AI",sjet[ij],0); //get QCD   AI mvis  MC subtracted CRs
     ProduceMCsubtractedHistos(s_Wjets,s_mvis ,"_SS",sjet[ij],0); //get Wjets SS mvis  MC subtracted CRs
- 
   }
 
   for (int ic=0; ic<nCR; ic++){ //loop over CRs - Wjets, DY, TT and QCD
