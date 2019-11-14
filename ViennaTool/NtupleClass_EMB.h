@@ -97,7 +97,7 @@ public :
 //    Int_t           trg_singletau;
    Int_t           trg_doubletau_35_tightiso_tightid;
    Int_t           trg_doubletau_40_mediso_tightid;
-   Int_t           trg_doubletau_40_tightiso
+   Int_t           trg_doubletau_40_tightiso;
    Bool_t           trg_muonelectron;
    Bool_t           isEmbedded;
    Float_t         gen_Mll;

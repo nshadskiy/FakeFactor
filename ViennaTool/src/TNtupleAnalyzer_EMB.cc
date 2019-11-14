@@ -60,7 +60,7 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
 
       float stitchingWeight = 1.;
       if( preselectionFile.Contains("preselection_DY") ) {
-        stitchingWeight = ((event->genbosonmass >= 50.0)*6.3654e-05*((event->npartons == 0 || event->npartons >= 5)*1.0 + (event->npartons == 1)*0.1743 + (event->npartons == 2)*0.3556 + (event->npartons == 3)*0.2273 + (npartons == 4)*0.2104) + (event->genbosonmass < 50.0)*event->numberGeneratedEventsWeight*event->crossSectionPerEventWeight);
+        stitchingWeight = ((event->genbosonmass >= 50.0)*6.3654e-05*((event->npartons == 0 || event->npartons >= 5)*1.0 + (event->npartons == 1)*0.1743 + (event->npartons == 2)*0.3556 + (event->npartons == 3)*0.2273 + (event->npartons == 4)*0.2104) + (event->genbosonmass < 50.0)*event->numberGeneratedEventsWeight*event->crossSectionPerEventWeight);
         if (stitchingWeight < 1e-12) {
           std::cout << "Stitching weight of zero!" << std::endl;
           exit(1);
@@ -283,7 +283,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     are applied in the following lines
   */
   if(CHAN==kMU &&  ((event->flagMETFilter <0.5) || !((event->trg_singlemuon_24 > 0.5) || (event->trg_singlemuon_27>0.5)) || (event->pt_2<23))) return 0; 
-  if(CHAN==kTAU && ((event->flagMETFilter <0.5) || !(( event->trg_doubletau_35_tightiso_tightid > 0.5 ) || ( event->trg_doubletau_40_mediso_tightid > 0.5 ) || ( event->trg_doubletau_40_tightiso > 0.5 ) )) return 0;
+  if(CHAN==kTAU && ((event->flagMETFilter <0.5) || !(( event->trg_doubletau_35_tightiso_tightid > 0.5 ) || ( event->trg_doubletau_40_mediso_tightid > 0.5 ) || ( event->trg_doubletau_40_tightiso > 0.5 ) ))) return 0;
   if(CHAN==kEL &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_35 > 0.5) || (event->trg_singleelectron_32 > 0.5) || (event->trg_singleelectron_27 > 0.5)) || (event->pt_2<23)))  return 0;
   if (DEBUG) {std::cout << "event " << evt_ID << " passed trigger selection, MET filter and kinematics" << std::endl;}
   // below old example when embedding was used.
