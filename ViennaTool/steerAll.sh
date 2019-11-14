@@ -66,6 +66,9 @@ if [ $embedding == 1 ] || [ $ntuples == "KIT" ]; then
         done
     fi
     wait
+    cp ${output}/preselection/${chan}/preselection_TT_J_EMB.root ${output}/preselection/${chan}/preselection_TT_J.root
+    cp ${output}/preselection/${chan}/preselection_TT_J_DC_EMB.root ${output}/preselection/${chan}/preselection_TT_J_DC.root
+
  	echo "Switch back and compile again"
  	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
  	mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h

@@ -9,7 +9,7 @@
 const int CHAN     = kMU;
 // FakeFactor_2016_DeepTauIDv2_v0
 const TString analysis      ="2017_ff";
-const TString output_folder ="/home/jbechtel/2017_ff";
+const TString output_folder ="/ceph/jbechtel/2017_ff";
 const TString ver = "2017_v14"; // first time nanoAODv5 with deepTauIDv2 
 
 const TString _NtupleTreeName = "TauCheck"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
