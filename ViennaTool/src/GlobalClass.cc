@@ -53,7 +53,7 @@ void GlobalClass::init()
 
 TString GlobalClass::getWPCutString(const TString isolation, const Int_t mode, const Int_t useTauIndex){
   
-  std::cout << "useTauIndex: " << useTauIndex << endl;
+  //std::cout << "useTauIndex: " << useTauIndex << endl;
 
   TString tau_index = "0";
   //This was changed - FIXME Need to understand - just guess
@@ -304,7 +304,7 @@ TString GlobalClass::getCRCutString(const Int_t mode){
     s_mode = "(lep_iso < "+to_string(isolation)+")*(alltau_dRToLep[0] > "+to_string(DR_TAU_LEP_CUT)+")*(m_leplep > 70)*(m_leplep < 110)";
   }
   else if( mode & _TT ){
-    s_mode = "(n_iso_lep >= 1)*(event_s->n_iso_otherLep >= 1 )*(alltau_dRToLep[0] > "+to_string(DR_TAU_LEP_CUT)+")*(alltau_dRToOtherLep[0] > "+to_string(DR_TAU_LEP_CUT)+")*(njets>1)*(bpt_1>=20)";
+    s_mode = "(n_iso_lep >= 1)*(passes3LVeto < 0.5 )*(alltau_dRToLep[0] > "+to_string(DR_TAU_LEP_CUT)+")*(alltau_dRToOtherLep[0] > "+to_string(DR_TAU_LEP_CUT)+")*(njets>1)*(bpt_1>=20)";
   }
   else if( mode & _W_JETS){
     s_mode = "(passesDLVeto > 0.5) * (passes3LVeto > 0.5) * (bpt_1 < 20)";
@@ -409,9 +409,8 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
 	   //OLD	   event_s->otherLep_pt>10                  &&
 	   //OLD	   event_s->otherLep_iso<LEP_ISO_CUT          &&
 	   //OLD	   event_s->lep_iso<LEP_ISO_CUT          &&
-	   //TRY	   ( event_s->n_iso_lep + event_s->n_iso_otherLep ) >= 2     &&
 	   event_s->n_iso_lep >= 1                             &&
-	   event_s->n_iso_otherLep >= 1                             &&
+	   event_s->passes3LVeto < 0.5                          &&
 	   event_s->alltau_dRToLep->at(ind) > DR_TAU_LEP_CUT    &&
 	   event_s->alltau_dRToOtherLep->at(ind) > DR_TAU_LEP_CUT    &&
 	   event_s->njets>1               &&
