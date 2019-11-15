@@ -282,13 +282,16 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     Trigger selection + flagMETFilter + kinematic pt_2 cut 
     are applied in the following lines
   */
+<<<<<<< HEAD
   if(CHAN==kMU &&  ((event->flagMETFilter <0.5) || !((event->trg_singlemuon_24 > 0.5) || (event->trg_singlemuon_27>0.5)) || (event->pt_2<23))) return 0; 
   if(CHAN==kTAU && ((event->flagMETFilter <0.5) || !(( event->trg_doubletau_35_tightiso_tightid > 0.5 ) || ( event->trg_doubletau_40_mediso_tightid > 0.5 ) || ( event->trg_doubletau_40_tightiso > 0.5 ) ))) return 0;
   if(CHAN==kEL &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_35 > 0.5) || (event->trg_singleelectron_32 > 0.5) || (event->trg_singleelectron_27 > 0.5)) || (event->pt_2<23)))  return 0;
+=======
+  if(CHAN==kMU &&  ((event->flagMETFilter <0.5) || !((event->trg_singlemuon > 0.5) || (event->trg_mutaucross>0.5)))) return 0; 
+  if(CHAN==kTAU && ((event->flagMETFilter <0.5) || !( event->trg_doubletau ) )) return 0;
+  if(CHAN==kEL &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron > 0.5))))  return 0;
+>>>>>>> b578691... Fix lep iso for tt channel to Deep Tau, some cleanup
   if (DEBUG) {std::cout << "event " << evt_ID << " passed trigger selection, MET filter and kinematics" << std::endl;}
-  // below old example when embedding was used.
-  // if(CHAN==kEL && preselectionFile.Contains("preselection") &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_25_eta2p1 > 0.5)) || (event->pt_2<23)))  return 0;
-  /////////////////////////////////////////////////////////////////////////
   
   /*  
     Lepton vetos
@@ -497,120 +500,6 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
   Double_t dR1, dR2;
   int loop_end;
   int pdgID;
-  int bitmask;
-  bool antiEle, antiMu;
-
-  if( !preselectionFile.Contains("preselection")){ 
-
-    if ( event->addlepton_p4 ) loop_end = event->addlepton_p4->size();
-    else loop_end = event->nadditionalTau;
-    
-
-    for (int i=0; i<loop_end; i++){ 
-      if ( event->addlepton_p4 ) pdgID = event->addlepton_pdgId->at(i);	//to get only taus in nanoAOD file
-      else pdgID = 15;	// to allow every entry in addtau-list
-      
-      if (abs(pdgID) <= 10 ){
-        cout << "\033[1;31m WARNING: \033[0m Detected event with addlepton_pdgID < 10 -> discard event" << endl;
-        return 0;
-      }
-
-      if (abs(pdgID) != 15) continue; //discard non-taus
-
-      if ( ! (event->addlepton_p4->at(i).Pt() > m_tau_pt_cut ) ) continue;
-      if ( ! ( fabs(event->addlepton_p4->at(i).Eta()) < m_tau_eta_cut ) ) continue;
-
-      bitmask=event->addlepton_tauAntiEle->at(i); //add in .h
-      antiEle = ( bitmask & 0x8) > 0;
-      if (DEBUG) {
-      std::cout << "Anti-ele Bitmask of tau (" << i << ") in addlepton collection is: " << bitmask << std::endl;
-      std::cout << "antiEle = " << antiEle << std::endl;
-      }
-      bitmask=event->addlepton_tauAntiMu->at(i); //add in .h
-      antiMu  = (bitmask & 0x1 ) > 0;
-      if (DEBUG) {
-      std::cout << "Anti-mu Bitmask of tau (" << i << ") in addlepton collection is: " << bitmask << std::endl;
-      std::cout << "antiMu = " << antiMu << std::endl;
-      }
-      if (antiEle & antiMu == 0) continue;
-      
-      if( event->addlepton_p4 ) m=event->addlepton_tauDM->at(i); //nanoAOD
-      else 					  m=event->addtau_decayMode->at(i);
-      
-      if ( !( (m>=0&&m<=4)||(m>=10&&m<=14) ) ) continue;
-
-
-      dR=this->calcDR( event->eta_1, event->phi_1, event->addlepton_p4->at(i).Eta(), event->addlepton_p4->at(i).Phi() );
-      if ( CHAN!=kTAU && dR<0.5 ) continue;
-      
-      if ( event->addlepton_p4 ){ //nanoAOD
-        
-        alltau_pt ->push_back(event->addlepton_p4->at(i).Pt());  
-        alltau_eta->push_back(event->addlepton_p4->at(i).Eta());
-        alltau_phi->push_back(event->addlepton_p4->at(i).Phi());
-        alltau_q  ->push_back(TMath::Sign(1, event->addlepton_pdgId->at(i)));	
-
-
-        alltau_vvvlooseDNN ->push_back( (event->addlepton_tauID->at(i) & 0x1) > 0 );
-        alltau_vvlooseDNN ->push_back( (event->addlepton_tauID->at(i) & 0x2) > 0 );
-        alltau_vlooseDNN ->push_back( (event->addlepton_tauID->at(i) & 0x4) > 0 );
-        alltau_looseDNN ->push_back( (event->addlepton_tauID->at(i) & 0x8) > 0 );
-        alltau_mediumDNN ->push_back( (event->addlepton_tauID->at(i) & 0x10) > 0 );
-        alltau_tightDNN ->push_back( (event->addlepton_tauID->at(i) & 0x20) > 0 );
-        alltau_vtightDNN ->push_back( (event->addlepton_tauID->at(i) & 0x40) > 0 );
-        alltau_vvtightDNN ->push_back( (event->addlepton_tauID->at(i) & 0x80) > 0 );
-       
-        bitmask=event->addlepton_tauAntiEle->at(i); //add in .h
-        antiEle = ( bitmask & 0x8) > 0;
-        bitmask=event->addlepton_tauAntiMu->at(i); //add in .h
-        antiMu  = (bitmask & 0x1 ) > 0;
-        alltau_lepVeto->push_back( antiEle & antiMu  );
-        
-        alltau_beta->push_back(event->addlepton_tauCombIso->at(i)); 
-        alltau_gen_match->push_back(event->addlepton_mc_match->at(i));	
-        alltau_mvis->push_back(event->addlepton_mvis->at(i));
-      }
-      else{
-        std::cout << "\033[1;31m This should not happen - you are using nanoAOD \033[0m" << std::endl;
-      }
-
-      alltau_decay->push_back(m); //distinction between nanoAod/other already made earlier
-      
-      alltau_mt->push_back(event->mt_1); //mt of lepton and PFMET
-      alltau_mt2->push_back(event->mt_2);  //no addtaupfmt in addtau collection
-      
-      if(use_svfit)alltau_svfit->push_back(event->m_sv); //FIXME: no svfit in addtau collection so far
-      else alltau_svfit->push_back(0.);
-      
-      TLorentzVector leg2; leg2.SetPtEtaPhiM(event->addlepton_p4->at(i).Pt(),event->addlepton_p4->at(i).Eta(),event->addlepton_p4->at(i).Phi(),event->addlepton_p4->at(i).M()); 
-      TLorentzVector leg1; leg1.SetPtEtaPhiM(event->pt_1,event->eta_1,event->phi_1,event->m_1); 
-      
-      TLorentzVector Emiss;
-      Emiss.SetPtEtaPhiM(event->met,0,event->metphi,0);
-      alltau_Zpt->push_back( (leg1+leg2+Emiss).Pt() );
-      
-      dR1=1e6;
-      double m_dR1=dR1;
-      for (unsigned iL=0; iL<v_lep_eta_iso.size(); iL++){
-        m_dR1=calcDR( event->addlepton_p4->at(i).Eta(),event->addlepton_p4->at(i).Phi(),v_lep_eta_iso.at(iL),v_lep_phi_iso.at(iL) );
-        if ( dR1>m_dR1 ) dR1=m_dR1;
-      }
-      alltau_dRToLep->push_back( dR1 );
-      
-      dR1=1e6;
-      m_dR1=dR1;
-      for (unsigned iL=0; iL<v_otherLep.size(); iL++){
-        m_dR1=calcDR( event->addlepton_p4->at(i).Eta(),event->addlepton_p4->at(i).Phi(),v_otherLep.at(iL).Eta(),v_otherLep.at(iL).Phi() );  
-        if ( dR1>m_dR1 ) dR1=m_dR1;
-      }
-      alltau_dRToOtherLep->push_back( dR1 );
-
-
-      dR1=calcDR(event->addlepton_p4->at(i).Eta(),event->addlepton_p4->at(i).Phi(),event->beta_1,event->bphi_1);
-      dR2=calcDR(event->addlepton_p4->at(i).Eta(),event->addlepton_p4->at(i).Phi(),event->beta_2,event->bphi_2);
-      alltau_dRToB->push_back( min(dR1,dR2) );
-    }
-  }
 
   dR=this->calcDR( event->eta_1, event->phi_1, event->eta_2, event->phi_2 ); //should always be >0.5 ... but to be safe
   tau_iso_ind=-1; // this is useless I think - it is a private variable inside class and later used and filled?
@@ -790,7 +679,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       // lep_iso = event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_2==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! vtight
       
       // 
-      lep_iso = event->byTightIsolationMVArun2017v2DBoldDMwLT2017_2==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! tight
+      lep_iso = event->byTightIsolationDeepTau2017v2VSjet_2==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! tight
       // lep_vloose = ( event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_2 == 1 ) ? 1 : 0;
       // lep_loose = ( event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_2 == 1 ) ? 1 : 0;
       // lep_medium = ( event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_2 == 1 ) ? 1 : 0;
@@ -804,7 +693,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       // lep_iso = ( (calcVTightFF==1 && event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_1==1) || (calcVTightFF==0 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1==1) )  ? 10 : 0;
       // lep_iso = (event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_1==0 && event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1==1) ? 10 : 0;  //CHANGE IF TAU WP CHANGES! tight & !vtight
       // lep_iso = event->byVTightIsolationMVArun2017v2DBoldDMwLT2017_1==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! vtight
-      lep_iso = event->byTightIsolationMVArun2017v2DBoldDMwLT2017_1==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! tight
+      lep_iso = event->byTightIsolationDeepTau2017v2VSjet_1==1 ? 10 : 0;  //CHANGE IF TAU WP CHANGES! tight
       // lep_vloose = ( event->byVLooseIsolationMVArun2017v2DBoldDMwLT2017_1 == 1 ) ? 1 : 0;
       // lep_loose = ( event->byLooseIsolationMVArun2017v2DBoldDMwLT2017_1 == 1 ) ? 1 : 0;
       // lep_medium = ( event->byMediumIsolationMVArun2017v2DBoldDMwLT2017_1 == 1 ) ? 1 : 0;
