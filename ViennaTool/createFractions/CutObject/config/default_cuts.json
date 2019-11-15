@@ -37,9 +37,9 @@
 		"tt":"(byTightDeepTau2017v2p1VSjet_1 > 0.5 && byVLooseDeepTau2017v2p1VSjet_2 > 0.5 && byTightDeepTau2017v2p1VSjet_2 < 0.5)"
 	},
 	"-TRIG-":{
-		"mt":"( (trg_singlemuon && pt_1 > 23 && pt_2 > 30) || (trg_mutaucross && pt_1 <= 23 && pt_2 > 30) )",
-		"et":"trg_singleelectron",
-		"tt":"trg_doubletau"
+		"mt":"( (trg_singlemuon_24 || trg_singlemuon_27) || (pt_2<23) )",
+		"et":"( (trg_singleelectron_35 || trg_singleelectron_32 || trg_singleelectron_27) || (pt_2<23) )",
+		"tt":"( ( trg_doubletau_35_tightiso_tightid  ||  trg_doubletau_40_mediso_tightid || trg_doubletau_40_tightiso ) )"
 	},
 	"-GENLEP-":{
 		"mt":"(gen_match_2 < 5)",
