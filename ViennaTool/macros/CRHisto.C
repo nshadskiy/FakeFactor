@@ -162,7 +162,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   CallCRHisto_creation(Analyzer, MVIS, _QCD|_AI, s_QCD, s_mvis+"_AI" );
   
   if(CHAN==kTAU){
-    CallCRHisto_creation(Analyzer, 0, LEPPT|_QCD|_AI|JET0, s_QCD, "_lepPt_AI" );
+    CallCRHisto_creation(Analyzer, 0, LEPPT|_QCD|_AI|JET0, s_QCD, "lepPt_AI" );
   }
   
   //get SS Wjet histogramms for SS mvis Wjets closure
