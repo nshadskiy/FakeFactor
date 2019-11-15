@@ -18,6 +18,7 @@ FFCalculator::FFCalculator(//Int_t N_p_Wjets,Int_t N_p_DY,Int_t N_p_TT,Int_t N_p
                            const Double_t Mt_cuts_Wjets[],const Double_t Mt_cuts_DY[],const Double_t Mt_cuts_TT[],const Double_t Mt_cuts_QCD[],
                            const Int_t Njet_cuts_Wjets[],const Int_t Njet_cuts_DY[],const Int_t Njet_cuts_TT_SR[],const Int_t Njet_cuts_TT_CR[],const Int_t Njet_cuts_QCD[])
 {
+  std::cout<<"FF Calculator initialzed" <<std::endl;
   if (DEBUG) cout<<"Analyzer created."<<std::endl;
   //Initialise constants
   n_p_Wjets=N_p_Wjets;
