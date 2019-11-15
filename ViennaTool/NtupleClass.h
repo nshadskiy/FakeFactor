@@ -131,6 +131,22 @@ public :
    Int_t           byTightIsolationDeepTau2017v2VSjet_1;
    Int_t           byVTightIsolationDeepTau2017v2VSjet_1;
    Int_t           byVVTightIsolationDeepTau2017v2VSjet_1;
+
+   Int_t           byVVVLooseDeepTau2017v2p1VSe_1;
+   Int_t           byVVLooseDeepTau2017v2p1VSe_1;
+   Int_t           byVLooseDeepTau2017v2p1VSe_1;
+   Int_t           byLooseDeepTau2017v2p1VSe_1;
+   Int_t           byMediumDeepTau2017v2p1VSe_1;
+   Int_t           byTightDeepTau2017v2p1VSe_1;
+   Int_t           byVTightDeepTau2017v2p1VSe_1;
+   Int_t           byVVTightDeepTau2017v2p1VSe_1;
+
+   Int_t           byVLooseDeepTau2017v2p1VSmu_1;
+   Int_t           byLooseDeepTau2017v2p1VSmu_1;
+   Int_t           byMediumDeepTau2017v2p1VSmu_1;
+   Int_t           byTightDeepTau2017v2p1VSmu_1;
+   
+
 //    Int_t           byVLooseIsolationMVArun2v1DBnewDMwLT_1;
 //    Int_t           byLooseIsolationMVArun2v1DBnewDMwLT_1;
 //    Int_t           byMediumIsolationMVArun2v1DBnewDMwLT_1;
@@ -194,6 +210,20 @@ public :
    Int_t           byTightIsolationDeepTau2017v2VSjet_2;
    Int_t           byVTightIsolationDeepTau2017v2VSjet_2;
    Int_t           byVVTightIsolationDeepTau2017v2VSjet_2;
+
+   Int_t           byVVVLooseDeepTau2017v2p1VSe_2;
+   Int_t           byVVLooseDeepTau2017v2p1VSe_2;
+   Int_t           byVLooseDeepTau2017v2p1VSe_2;
+   Int_t           byLooseDeepTau2017v2p1VSe_2;
+   Int_t           byMediumDeepTau2017v2p1VSe_2;
+   Int_t           byTightDeepTau2017v2p1VSe_2;
+   Int_t           byVTightDeepTau2017v2p1VSe_2;
+   Int_t           byVVTightDeepTau2017v2p1VSe_2;
+
+   Int_t           byVLooseDeepTau2017v2p1VSmu_2;
+   Int_t           byLooseDeepTau2017v2p1VSmu_2;
+   Int_t           byMediumDeepTau2017v2p1VSmu_2;
+   Int_t           byTightDeepTau2017v2p1VSmu_2;
 //    Int_t           byVLooseIsolationMVArun2v1DBnewDMwLT_2;
 //    Int_t           byLooseIsolationMVArun2v1DBnewDMwLT_2;
 //    Int_t           byMediumIsolationMVArun2v1DBnewDMwLT_2;
@@ -451,7 +481,6 @@ public :
    TBranch        *b_byTightIsolationMVArun2017v2DBoldDMwLT2017_1;   //!
    TBranch        *b_byVTightIsolationMVArun2017v2DBoldDMwLT2017_1;   //!
    
-
    TBranch        *b_byVVVLooseIsolationDeepTau2017v2VSjet_1;
    TBranch        *b_byVVLooseIsolationDeepTau2017v2VSjet_1;
    TBranch        *b_byVLooseIsolationDeepTau2017v2VSjet_1;
@@ -460,6 +489,22 @@ public :
    TBranch        *b_byTightIsolationDeepTau2017v2VSjet_1;
    TBranch        *b_byVTightIsolationDeepTau2017v2VSjet_1;
    TBranch        *b_byVVTightIsolationDeepTau2017v2VSjet_1;
+
+   TBranch        *b_byVVVLooseDeepTau2017v2p1VSe_1;
+   TBranch        *b_byVVLooseDeepTau2017v2p1VSe_1;
+   TBranch        *b_byVLooseDeepTau2017v2p1VSe_1;
+   TBranch        *b_byLooseDeepTau2017v2p1VSe_1;
+   TBranch        *b_byMediumDeepTau2017v2p1VSe_1;
+   TBranch        *b_byTightDeepTau2017v2p1VSe_1;
+   TBranch        *b_byVTightDeepTau2017v2p1VSe_1;
+   TBranch        *b_byVVTightDeepTau2017v2p1VSe_1;
+
+   TBranch        *b_byVLooseDeepTau2017v2p1VSmu_1;
+   TBranch        *b_byLooseDeepTau2017v2p1VSmu_1;
+   TBranch        *b_byMediumDeepTau2017v2p1VSmu_1;
+   TBranch        *b_byTightDeepTau2017v2p1VSmu_1;
+
+   
 
 //    TBranch        *b_byVLooseIsolationMVArun2v1DBnewDMwLT_1;   //!
 //    TBranch        *b_byLooseIsolationMVArun2v1DBnewDMwLT_1;   //!
@@ -525,6 +570,20 @@ public :
    TBranch        *b_byTightIsolationDeepTau2017v2VSjet_2;
    TBranch        *b_byVTightIsolationDeepTau2017v2VSjet_2;
    TBranch        *b_byVVTightIsolationDeepTau2017v2VSjet_2;
+
+   TBranch        *b_byVVVLooseDeepTau2017v2p1VSe_2;
+   TBranch        *b_byVVLooseDeepTau2017v2p1VSe_2;
+   TBranch        *b_byVLooseDeepTau2017v2p1VSe_2;
+   TBranch        *b_byLooseDeepTau2017v2p1VSe_2;
+   TBranch        *b_byMediumDeepTau2017v2p1VSe_2;
+   TBranch        *b_byTightDeepTau2017v2p1VSe_2;
+   TBranch        *b_byVTightDeepTau2017v2p1VSe_2;
+   TBranch        *b_byVVTightDeepTau2017v2p1VSe_2;
+
+   TBranch        *b_byVLooseDeepTau2017v2p1VSmu_2;
+   TBranch        *b_byLooseDeepTau2017v2p1VSmu_2;
+   TBranch        *b_byMediumDeepTau2017v2p1VSmu_2;
+   TBranch        *b_byTightDeepTau2017v2p1VSmu_2;
 
 
    TBranch        *b_chargedIsoPtSum_2;   //!
@@ -892,6 +951,20 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("byVTightIsolationDeepTau2017v2VSjet_1", &byVTightIsolationDeepTau2017v2VSjet_1, &b_byVTightIsolationDeepTau2017v2VSjet_1);
    fChain->SetBranchAddress("byVVTightIsolationDeepTau2017v2VSjet_1", &byVVTightIsolationDeepTau2017v2VSjet_1, &b_byVVTightIsolationDeepTau2017v2VSjet_1);
 
+   fChain->SetBranchAddress("byVVVLooseDeepTau2017v2p1VSe_1", &byVVVLooseDeepTau2017v2p1VSe_1, &b_byVVVLooseDeepTau2017v2p1VSe_1);
+   fChain->SetBranchAddress("byVVLooseDeepTau2017v2p1VSe_1", &byVVLooseDeepTau2017v2p1VSe_1, &b_byVVLooseDeepTau2017v2p1VSe_1);
+   fChain->SetBranchAddress("byVLooseDeepTau2017v2p1VSe_1", &byVLooseDeepTau2017v2p1VSe_1, &b_byVLooseDeepTau2017v2p1VSe_1);
+   fChain->SetBranchAddress("byLooseDeepTau2017v2p1VSe_1", &byLooseDeepTau2017v2p1VSe_1, &b_byLooseDeepTau2017v2p1VSe_1);
+   fChain->SetBranchAddress("byMediumDeepTau2017v2p1VSe_1", &byMediumDeepTau2017v2p1VSe_1, &b_byMediumDeepTau2017v2p1VSe_1);
+   fChain->SetBranchAddress("byTightDeepTau2017v2p1VSe_1", &byTightDeepTau2017v2p1VSe_1, &b_byTightDeepTau2017v2p1VSe_1);
+   fChain->SetBranchAddress("byVTightDeepTau2017v2p1VSe_1", &byVTightDeepTau2017v2p1VSe_1, &b_byVTightDeepTau2017v2p1VSe_1);
+   fChain->SetBranchAddress("byVVTightDeepTau2017v2p1VSe_1", &byVVTightDeepTau2017v2p1VSe_1, &b_byVVTightDeepTau2017v2p1VSe_1);
+
+   fChain->SetBranchAddress("byVLooseDeepTau2017v2p1VSmu_1", &byVLooseDeepTau2017v2p1VSmu_1, &b_byVLooseDeepTau2017v2p1VSmu_1);
+   fChain->SetBranchAddress("byLooseDeepTau2017v2p1VSmu_1", &byLooseDeepTau2017v2p1VSmu_1, &b_byLooseDeepTau2017v2p1VSmu_1);
+   fChain->SetBranchAddress("byMediumDeepTau2017v2p1VSmu_1", &byMediumDeepTau2017v2p1VSmu_1, &b_byMediumDeepTau2017v2p1VSmu_1);
+   fChain->SetBranchAddress("byTightDeepTau2017v2p1VSmu_1", &byTightDeepTau2017v2p1VSmu_1, &b_byTightDeepTau2017v2p1VSmu_1);
+   
 
 //    fChain->SetBranchAddress("byVLooseIsolationMVArun2v1DBnewDMwLT_1", &byVLooseIsolationMVArun2v1DBnewDMwLT_1, &b_byVLooseIsolationMVArun2v1DBnewDMwLT_1);
 //    fChain->SetBranchAddress("byLooseIsolationMVArun2v1DBnewDMwLT_1", &byLooseIsolationMVArun2v1DBnewDMwLT_1, &b_byLooseIsolationMVArun2v1DBnewDMwLT_1);
@@ -957,6 +1030,19 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("byVTightIsolationDeepTau2017v2VSjet_2", &byVTightIsolationDeepTau2017v2VSjet_2, &b_byVTightIsolationDeepTau2017v2VSjet_2);
    fChain->SetBranchAddress("byVVTightIsolationDeepTau2017v2VSjet_2", &byVVTightIsolationDeepTau2017v2VSjet_2, &b_byVVTightIsolationDeepTau2017v2VSjet_2);
 
+   fChain->SetBranchAddress("byVVVLooseDeepTau2017v2p1VSe_2", &byVVVLooseDeepTau2017v2p1VSe_2, &b_byVVVLooseDeepTau2017v2p1VSe_2);
+   fChain->SetBranchAddress("byVVLooseDeepTau2017v2p1VSe_2", &byVVLooseDeepTau2017v2p1VSe_2, &b_byVVLooseDeepTau2017v2p1VSe_2);
+   fChain->SetBranchAddress("byVLooseDeepTau2017v2p1VSe_2", &byVLooseDeepTau2017v2p1VSe_2, &b_byVLooseDeepTau2017v2p1VSe_2);
+   fChain->SetBranchAddress("byLooseDeepTau2017v2p1VSe_2", &byLooseDeepTau2017v2p1VSe_2, &b_byLooseDeepTau2017v2p1VSe_2);
+   fChain->SetBranchAddress("byMediumDeepTau2017v2p1VSe_2", &byMediumDeepTau2017v2p1VSe_2, &b_byMediumDeepTau2017v2p1VSe_2);
+   fChain->SetBranchAddress("byTightDeepTau2017v2p1VSe_2", &byTightDeepTau2017v2p1VSe_2, &b_byTightDeepTau2017v2p1VSe_2);
+   fChain->SetBranchAddress("byVTightDeepTau2017v2p1VSe_2", &byVTightDeepTau2017v2p1VSe_2, &b_byVTightDeepTau2017v2p1VSe_2);
+   fChain->SetBranchAddress("byVVTightDeepTau2017v2p1VSe_2", &byVVTightDeepTau2017v2p1VSe_2, &b_byVVTightDeepTau2017v2p1VSe_2);
+
+   fChain->SetBranchAddress("byVLooseDeepTau2017v2p1VSmu_2", &byVLooseDeepTau2017v2p1VSmu_2, &b_byVLooseDeepTau2017v2p1VSmu_2);
+   fChain->SetBranchAddress("byLooseDeepTau2017v2p1VSmu_2", &byLooseDeepTau2017v2p1VSmu_2, &b_byLooseDeepTau2017v2p1VSmu_2);
+   fChain->SetBranchAddress("byMediumDeepTau2017v2p1VSmu_2", &byMediumDeepTau2017v2p1VSmu_2, &b_byMediumDeepTau2017v2p1VSmu_2);
+   fChain->SetBranchAddress("byTightDeepTau2017v2p1VSmu_2", &byTightDeepTau2017v2p1VSmu_2, &b_byTightDeepTau2017v2p1VSmu_2);
 
 
 //    fChain->SetBranchAddress("byVLooseIsolationMVArun2v1DBnewDMwLT_2", &byVLooseIsolationMVArun2v1DBnewDMwLT_2, &b_byVLooseIsolationMVArun2v1DBnewDMwLT_2);
