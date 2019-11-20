@@ -34,7 +34,7 @@ for category in categories:
     
     qcd_os = Node(
         name='ff_qcd_os',
-        formula='{mviscorr_qcd}*{ptcorr_qcd}*{OSSS_corr_qcd}*{ff_raw_qcd}', 
+        formula='{mviscorr_qcd}*{ptcorr_qcd}*{ff_raw_qcd}', 
         leaves=[
             Leaf(
                 name='ff_raw_qcd',
@@ -53,13 +53,13 @@ for category in categories:
                 file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_PT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction',
                 vars=['tau2_pt']
-            ),
-            Leaf(
-                name='OSSS_corr_qcd',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_OSSS{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
-                object='QCD_SS_Data_FFSSMuMediumData_OSSS_correction',
-                vars=['mvis']
             )
+            #Leaf(
+            #    name='OSSS_corr_qcd',
+            #    file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_OSSS{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+            #    object='QCD_SS_Data_FFSSMuMediumData_OSSS_correction',
+            #    vars=['mvis']
+            #)
         ]
     )
     w = Node(
