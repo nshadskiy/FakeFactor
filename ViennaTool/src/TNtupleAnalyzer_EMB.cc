@@ -282,15 +282,9 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     Trigger selection + flagMETFilter + kinematic pt_2 cut 
     are applied in the following lines
   */
-<<<<<<< HEAD
   if(CHAN==kMU &&  ((event->flagMETFilter <0.5) || !((event->trg_singlemuon_24 > 0.5) || (event->trg_singlemuon_27>0.5)) || (event->pt_2<23))) return 0; 
   if(CHAN==kTAU && ((event->flagMETFilter <0.5) || !(( event->trg_doubletau_35_tightiso_tightid > 0.5 ) || ( event->trg_doubletau_40_mediso_tightid > 0.5 ) || ( event->trg_doubletau_40_tightiso > 0.5 ) ))) return 0;
   if(CHAN==kEL &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_35 > 0.5) || (event->trg_singleelectron_32 > 0.5) || (event->trg_singleelectron_27 > 0.5)) || (event->pt_2<23)))  return 0;
-=======
-  if(CHAN==kMU &&  ((event->flagMETFilter <0.5) || !((event->trg_singlemuon > 0.5) || (event->trg_mutaucross>0.5)))) return 0; 
-  if(CHAN==kTAU && ((event->flagMETFilter <0.5) || !( event->trg_doubletau ) )) return 0;
-  if(CHAN==kEL &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron > 0.5))))  return 0;
->>>>>>> b578691... Fix lep iso for tt channel to Deep Tau, some cleanup
   if (DEBUG) {std::cout << "event " << evt_ID << " passed trigger selection, MET filter and kinematics" << std::endl;}
   
   /*  
