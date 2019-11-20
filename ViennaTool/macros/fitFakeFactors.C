@@ -71,9 +71,8 @@ void fitFakeFactors(){
                   cf.set_fitFunc( "pol1(0)" );
                   if( idm == 1) cf.set_fitFunc( "pol1(0)" );
                   cf.set_histMaxFrac( 80.0/500.0 );
-                  cf.set_smoothFrac(80.0/500.0);
-                  // if( idm == 1 && modes.at(imode) ){ cf.set_histMaxFrac( 45.0/500.0 ); cf.set_smoothFrac(30.0/500.0);}
-                  if( idm == 1 && modes.at(imode) ){ cf.set_histMaxFrac( 80.0/500.0 ); cf.set_smoothFrac(80.0/500.0);}
+                  cf.set_smoothFrac(60.0/500.0);
+                  if( idm == 1 && modes.at(imode) ){ cf.set_histMaxFrac( 80.0/500.0 ); cf.set_smoothFrac(60.0/500.0);}
                   cf.set_err_scale( 3.0 );
                   cf.set_err_cl( 0 );
                   cf.set_smoothMode("spline3");              
@@ -84,7 +83,7 @@ void fitFakeFactors(){
                   cf.set_err_scale( 3.0 );
                   cf.set_err_cl( 0 );
                   cf.set_histMaxFrac( 100.0/500.0 );
-                  cf.set_smoothFrac(80.0/500.0);
+                  cf.set_smoothFrac(60.0/500.0);
                   cf.set_smoothMode("spline3");              
                   }
           
@@ -93,7 +92,7 @@ void fitFakeFactors(){
                   cf.set_err_scale( 3.0 );
                   cf.set_err_cl( 0 );
                   cf.set_histMaxFrac( 80.0/500.0 );
-                  cf.set_smoothFrac(80.0/500.0);
+                  cf.set_smoothFrac(60.0/500.0);
                   cf.set_smoothMode("spline3");              
                   }
           else if (CHAN == kMU && modes.at(imode) & _QCD && modes.at(imode) & _AI && ijet == 0) {
@@ -111,7 +110,7 @@ void fitFakeFactors(){
                   cf.set_err_cl( 0 );
                   if (idm == 0) cf.set_histMaxFrac( 80.0/500.0 );
                   else  cf.set_histMaxFrac( 80.0/500.0 );
-                  cf.set_smoothFrac(80.0/500.0);
+                  cf.set_smoothFrac(60.0/500.0);
                   cf.set_smoothMode("spline3");
                   }
           else if (CHAN == kMU && modes.at(imode) & _TT) {
