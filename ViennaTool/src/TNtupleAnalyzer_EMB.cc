@@ -284,9 +284,35 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     Trigger selection + flagMETFilter + kinematic pt_2 cut 
     are applied in the following lines
   */
-  if(CHAN==kMU &&  ((event->flagMETFilter <0.5) || !((event->trg_singlemuon > 0.5) || (event->trg_mutaucross>0.5)))) return 0; 
-  if(CHAN==kTAU && ((event->flagMETFilter <0.5) || !( event->trg_doubletau ) )) return 0;
-  if(CHAN==kEL &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron > 0.5))))  return 0;
+
+  bool isMC, isData, isEMB;
+  if( preselectionFile.Contains("preselection_data")) {
+    if (DEBUG) {std::cout << "dealing with data events" << std::endl;}
+    isData = true;
+    isMC   = false;
+    isEMB  = false;
+  }
+  else if ( preselectionFile.Contains("preselection_EMB")){
+    if (DEBUG) {std::cout << "dealing with embedded events" << std::endl;}
+    isData = false;
+    isMC   = false;
+    isEMB  = true;
+  }
+  else {
+    if (DEBUG) {std::cout << "dealing with MC events" << std::endl;}
+    isData = false;
+    isMC   = true;
+    isEMB  = false;
+  }
+
+  if(CHAN==kMU && ((event->flagMETFilter <0.5) || !( ((event->trg_singlemuon_27 > 0.5) || (event->trg_singlemuon_24 > 0.5) ) || (event->pt_1 < 25 && (event->trg_crossmuon_mu20tau27_hps > 0.5 || event->trg_crossmuon_mu20tau27 >0.5)) )) return 0; 
+
+  // The following 3 trigger possibilities are connected in an or for the tt channel in 2018
+  // trg_l1 = ( (isData && event->run>=317509) || (isMC || isEMB) ) && ( event->trg_doubletau_35_mediso_hps > 0.5)
+  // trg_l2 = (isData && (event->run<317509)) && ( event->trg_doubletau_35_tightiso_tightid > 0.5)
+  // trg_l3 = (event->trg_doubletau_40_mediso_tightid > 0.5) || (event->trg_doubletau_40_tightiso > 0.5)
+  if(CHAN==kTAU && ((event->flagMETFilter <0.5) || !( (( (isData && event->run>=317509) || (isMC || isEMB) ) && ( event->trg_doubletau_35_mediso_hps > 0.5)) || ((isData && (event->run<317509)) && ( event->trg_doubletau_35_tightiso_tightid > 0.5)) || ((event->trg_doubletau_40_mediso_tightid > 0.5) || (event->trg_doubletau_40_tightiso > 0.5)) )   )) return 0;
+  if(CHAN==kEL &&  ((event->flagMETFilter <0.5) || ! ( ((event->trg_singleelectron_35 > 0.5) || (event->trg_singleelectron_32 > 0.5) || (event->pt_1>25 && event->pt_1<33 && event->pt_2>35 && (event->trg_crossele_ele24tau30_hps > 0.5 || event->trg_crossele_ele24tau30 > 0.5))) ))  return 0;
   if (DEBUG) {std::cout << "event " << evt_ID << " passed trigger selection, MET filter and kinematics" << std::endl;}
   
   /*  
