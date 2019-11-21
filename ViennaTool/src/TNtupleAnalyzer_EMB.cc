@@ -59,8 +59,8 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
       if( preselectionFile.Contains("preselection_DY") || preselectionFile.Contains("preselection_Wjets") ) weight *= event->zPtReweightWeight;
 
       float stitchingWeight = 1.;
-      if( preselectionFile.Contains("preselection_DY") ) {
-        stitchingWeight = ((event->genbosonmass >= 50.0) * 4.255812e-05*((event->npartons == 0 || event->npartons >= 5)*1.0+(event->npartons == 1)*0.32123574062076404+(event->npartons == 2)*0.3314444833963529+(event->npartons == 3)*0.3389929050626262+(event->npartons == 4)*0.2785338687268455) + (event->genbosonmass < 50.0)*(event->numberGeneratedEventsWeight * event->crossSectionPerEventWeight));
+      if( preselectionFile.Contains("preselection_DY") ) {  
+        stitchingWeight = ((event->genbosonmass >= 50.0)*0.00005754202*((event->npartons == 0 || event->npartons >= 5)*1.0 + (event->npartons == 1)*0.194267667208 + (event->npartons == 2)*0.21727746547 + (event->npartons == 3)*0.26760465744 + (event->npartons == 4)*0.294078683662) + (event->genbosonmass < 50.0)*event->numberGeneratedEventsWeight*event->crossSectionPerEventWeight);
         if (stitchingWeight < 1e-12) {
           std::cout << "Stitching weight of zero!" << std::endl;
           exit(1);
@@ -68,7 +68,7 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
         weight *= stitchingWeight;
       }
       else if( preselectionFile.Contains("preselection_VV") ) {
-        stitchingWeight = (1.252790591041545e-07*(abs(event->crossSectionPerEventWeight - 63.21) < 0.01) + 5.029933132068942e-07*(abs(event->crossSectionPerEventWeight - 10.32) < 0.01) + 2.501519047441559e-07*(abs(event->crossSectionPerEventWeight - 22.82) < 0.01) + event->numberGeneratedEventsWeight*(abs(event->crossSectionPerEventWeight - 63.21) > 0.01 && abs(event->crossSectionPerEventWeight - 10.32) > 0.01 && abs(event->crossSectionPerEventWeight - 22.82) > 0.01));
+        stitchingWeight = (118.7*(abs(event->crossSectionPerEventWeight - 63.21) < 0.01) + event->crossSectionPerEventWeight*(abs(event->crossSectionPerEventWeight - 63.21) > 0.01));
         if (stitchingWeight < 1e-12) {
           std::cout << "Stitching weight of zero!" << std::endl;
           exit(1);
@@ -76,7 +76,7 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
         weight *= stitchingWeight;  
       }      
      else if( preselectionFile.Contains("preselection_Wjets") ) {
-        stitchingWeight = ((0.00070788321*((event->npartons <= 0 || event->npartons >= 5)*1.0 + (event->npartons == 1)*0.2691615837248596 + (event->npartons == 2)*0.1532341436287767 + (event->npartons == 3)*0.03960756033932645 + (event->npartons == 4)*0.03969970742404736)) * (event->genbosonmass>=0.0) + event->numberGeneratedEventsWeight * event->crossSectionPerEventWeight * (event->genbosonmass<0.0));
+        stitchingWeight = ((0.00092600048*((event->npartons <= 0 || event->npartons >= 5)*1.0 + (event->npartons == 1)*0.1647043928 + (event->npartons == 2)*0.128547226623 + (event->npartons == 3)*0.0767138313139 + (event->npartons == 4)*0.0631529545476)) * (event->genbosonmass>=0.0) + event->numberGeneratedEventsWeight * event->crossSectionPerEventWeight * (event->genbosonmass<0.0));    
         if (stitchingWeight < 1e-12) {
           std::cout << "Stitching weight of zero!" << std::endl;
           exit(1);
@@ -304,15 +304,21 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     isMC   = true;
     isEMB  = false;
   }
-
-  if(CHAN==kMU && ((event->flagMETFilter <0.5) || !( ((event->trg_singlemuon_27 > 0.5) || (event->trg_singlemuon_24 > 0.5) ) || (event->pt_1 < 25 && (event->trg_crossmuon_mu20tau27_hps > 0.5 || event->trg_crossmuon_mu20tau27 >0.5)) )) return 0; 
+  // trg1 = ( (trg_singlemuon_27 == 1) || (trg_singlemuon_24 == 1) ) 
+  // trg2 = ( pt_1 < 25 && (trg_crossmuon_mu20tau27_hps == 1 || trg_crossmuon_mu20tau27 == 1) )
+  // trg1 || trg2 
+  if( CHAN==kMU && ( (event->flagMETFilter <0.5) || !( ( (event->trg_singlemuon_27 > 0.5) || (event->trg_singlemuon_24 > 0.5) ) || ( event->pt_1 < 25 && (event->trg_crossmuon_mu20tau27_hps > 0.5 || event->trg_crossmuon_mu20tau27 > 0.5) ) ) )) return 0; 
 
   // The following 3 trigger possibilities are connected in an or for the tt channel in 2018
   // trg_l1 = ( (isData && event->run>=317509) || (isMC || isEMB) ) && ( event->trg_doubletau_35_mediso_hps > 0.5)
   // trg_l2 = (isData && (event->run<317509)) && ( event->trg_doubletau_35_tightiso_tightid > 0.5)
   // trg_l3 = (event->trg_doubletau_40_mediso_tightid > 0.5) || (event->trg_doubletau_40_tightiso > 0.5)
   if(CHAN==kTAU && ((event->flagMETFilter <0.5) || !( (( (isData && event->run>=317509) || (isMC || isEMB) ) && ( event->trg_doubletau_35_mediso_hps > 0.5)) || ((isData && (event->run<317509)) && ( event->trg_doubletau_35_tightiso_tightid > 0.5)) || ((event->trg_doubletau_40_mediso_tightid > 0.5) || (event->trg_doubletau_40_tightiso > 0.5)) )   )) return 0;
-  if(CHAN==kEL &&  ((event->flagMETFilter <0.5) || ! ( ((event->trg_singleelectron_35 > 0.5) || (event->trg_singleelectron_32 > 0.5) || (event->pt_1>25 && event->pt_1<33 && event->pt_2>35 && (event->trg_crossele_ele24tau30_hps > 0.5 || event->trg_crossele_ele24tau30 > 0.5))) ))  return 0;
+  
+  // trg1 = ( (event->trg_singleelectron_35 > 0.5) || (event->trg_singleelectron_32 > 0.5) ) 
+  // trg2 = ( event->pt_1>25 && event->pt_1<33 && event->pt_2>35 && (event->trg_crossele_ele24tau30_hps > 0.5 || event->trg_crossele_ele24tau30 > 0.5) ) 
+  // trg = trg1 || trg2 
+  if(CHAN==kEL &&  ( (event->flagMETFilter <0.5) || !( ( (event->trg_singleelectron_35 > 0.5) || (event->trg_singleelectron_32 > 0.5) ) || ( event->pt_1>25 && event->pt_1<33 && event->pt_2>35 && (event->trg_crossele_ele24tau30_hps > 0.5 || event->trg_crossele_ele24tau30 > 0.5) )  )  ) )  return 0;
   if (DEBUG) {std::cout << "event " << evt_ID << " passed trigger selection, MET filter and kinematics" << std::endl;}
   
   /*  

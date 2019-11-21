@@ -85,6 +85,21 @@ public :
    Float_t         zpt_weight_statpt40down;
    Float_t         zpt_weight_statpt80up;
    Float_t         zpt_weight_statpt80down;
+
+   // 2018 Triggers
+   Int_t           trg_singlemuon_24;
+   Int_t           trg_crossmuon_mu20tau27_hps;
+   Int_t           trg_crossmuon_mu20tau27;
+   Int_t           trg_doubletau_35_mediso_hps;
+   Int_t           trg_doubletau_35_tightiso_tightid;
+   Int_t           trg_doubletau_40_mediso_tightid;
+   Int_t           trg_doubletau_40_tightiso;
+   Int_t           trg_singleelectron_35;
+   Int_t           trg_singleelectron_32;
+   Int_t           trg_crossele_ele24tau30_hps;
+   Int_t           trg_singlemuon_27;
+
+
    Int_t           trg_singlemuon;
    Int_t           trg_mutaucross;
 //    Int_t           trg_mutaucross;
@@ -527,6 +542,19 @@ public :
    TBranch        *b_trg_crossele_ele24tau30;   //!
    TBranch        *b_trg_doubletau;   //!
    TBranch        *b_trg_singlemu_22;   //!
+
+
+   TBranch        *b_trg_singlemuon_24;
+   TBranch        *b_trg_crossmuon_mu20tau27_hps;
+   TBranch        *b_trg_crossmuon_mu20tau27;
+   TBranch        *b_trg_doubletau_35_mediso_hps;
+   TBranch        *b_trg_doubletau_35_tightiso_tightid;
+   TBranch        *b_trg_doubletau_40_mediso_tightid;
+   TBranch        *b_trg_doubletau_40_tightiso;
+   TBranch        *b_trg_singleelectron_35;
+   TBranch        *b_trg_singleelectron_32;
+   TBranch        *b_trg_crossele_ele24tau30_hps;
+   TBranch        *b_trg_singlemuon_27;
 
    TBranch        *b_isEmbedded;   //!
    TBranch        *b_trg_muonelectron;   //!
@@ -1102,6 +1130,21 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("trg_crossele_ele24tau30", &trg_crossele_ele24tau30, &b_trg_crossele_ele24tau30);
    fChain->SetBranchAddress("trg_doubletau", &trg_doubletau, &b_trg_doubletau);
    fChain->SetBranchAddress("trg_muonelectron", &trg_muonelectron, &b_trg_muonelectron);
+
+
+   fChain->SetBranchAddress("trg_singlemuon_24", &trg_singlemuon_24, &b_trg_singlemuon_24);
+   fChain->SetBranchAddress("trg_crossmuon_mu20tau27_hps", &trg_crossmuon_mu20tau27_hps, &b_trg_crossmuon_mu20tau27_hps);
+   fChain->SetBranchAddress("trg_crossmuon_mu20tau27", &trg_crossmuon_mu20tau27, &b_trg_crossmuon_mu20tau27);
+   fChain->SetBranchAddress("trg_doubletau_35_mediso_hps", &trg_doubletau_35_mediso_hps, &b_trg_doubletau_35_mediso_hps);
+   fChain->SetBranchAddress("trg_doubletau_35_tightiso_tightid", &trg_doubletau_35_tightiso_tightid, &b_trg_doubletau_35_tightiso_tightid);
+   fChain->SetBranchAddress("trg_doubletau_40_mediso_tightid", &trg_doubletau_40_mediso_tightid, &b_trg_doubletau_40_mediso_tightid);
+   fChain->SetBranchAddress("trg_doubletau_40_tightiso", &trg_doubletau_40_tightiso, &b_trg_doubletau_40_tightiso);
+   fChain->SetBranchAddress("trg_singleelectron_35", &trg_singleelectron_35, &b_trg_singleelectron_35);
+   fChain->SetBranchAddress("trg_singleelectron_32", &trg_singleelectron_32, &b_trg_singleelectron_32);
+   fChain->SetBranchAddress("trg_crossele_ele24tau30_hps", &trg_crossele_ele24tau30_hps, &b_trg_crossele_ele24tau30_hps);
+   fChain->SetBranchAddress("trg_singlemuon_27", &trg_singlemuon_27, &b_trg_singlemuon_27);
+  
+
    fChain->SetBranchAddress("isEmbedded", &isEmbedded, &b_isEmbedded);
    fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_tight_MVA_1", &crossTriggerDataEfficiencyWeight_tight_MVA_1, &b_crossTriggerDataEfficiencyWeight_tight_MVA_1);
    fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_tight_MVA_2", &crossTriggerDataEfficiencyWeight_tight_MVA_2, &b_crossTriggerDataEfficiencyWeight_tight_MVA_2);
