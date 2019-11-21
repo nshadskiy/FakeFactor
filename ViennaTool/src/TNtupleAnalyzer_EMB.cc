@@ -67,14 +67,14 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
         }
         weight *= stitchingWeight;
       }
-      else if( preselectionFile.Contains("preselection_VV") ) {
-        stitchingWeight = (118.7*(abs(event->crossSectionPerEventWeight - 63.21) < 0.01) + event->crossSectionPerEventWeight*(abs(event->crossSectionPerEventWeight - 63.21) > 0.01));
-        if (stitchingWeight < 1e-12) {
-          std::cout << "Stitching weight of zero!" << std::endl;
-          exit(1);
-        }
-        weight *= stitchingWeight;  
-      }      
+      // else if( preselectionFile.Contains("preselection_VV") ) {
+      //   stitchingWeight = (118.7*(abs(event->crossSectionPerEventWeight - 63.21) < 0.01) + event->crossSectionPerEventWeight*(abs(event->crossSectionPerEventWeight - 63.21) > 0.01));
+      //   if (stitchingWeight < 1e-12) {
+      //     std::cout << "Stitching weight of zero!" << std::endl;
+      //     exit(1);
+      //   }
+      //   weight *= stitchingWeight;  
+      // }      
      else if( preselectionFile.Contains("preselection_Wjets") ) {
         stitchingWeight = ((0.00092600048*((event->npartons <= 0 || event->npartons >= 5)*1.0 + (event->npartons == 1)*0.1647043928 + (event->npartons == 2)*0.128547226623 + (event->npartons == 3)*0.0767138313139 + (event->npartons == 4)*0.0631529545476)) * (event->genbosonmass>=0.0) + event->numberGeneratedEventsWeight * event->crossSectionPerEventWeight * (event->genbosonmass<0.0));    
         if (stitchingWeight < 1e-12) {
@@ -159,7 +159,7 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
       }
     } 
     else{
-      if (jentry%50000 == 0) {
+      if (jentry%500000 == 0) {
       cout << "Event " << jentry << " is processed: " << jentry / nentries * 100 << "% of total" << endl;
       }
     }
