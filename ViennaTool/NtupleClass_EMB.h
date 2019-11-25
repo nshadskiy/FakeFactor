@@ -70,7 +70,9 @@ public :
    Float_t         trackWeight_1;
    Float_t        singleTriggerMCEfficiencyWeightKIT_1;
    Float_t        singleTriggerDataEfficiencyWeightKIT_1;
-    
+   Float_t        singleTriggerEmbeddedEfficiencyWeightKIT_1;
+   Float_t        crossTriggerMCEfficiencyWeight_1;
+   Float_t        crossTriggerDataEfficiencyWeight_1;
 
    Float_t         topWeight;
    Float_t         topWeight_run1;
@@ -298,9 +300,10 @@ public :
    Float_t         lep_etacentrality;
    Float_t         sphericity;
    Int_t           nadditionalMu;
-
+   Float_t         topPtReweightWeight;
    Float_t         topPtReweightWeightRun1;
    Float_t         topPtReweightWeightRun2;
+   Float_t         prefiringweight;
    Float_t         eleTauFakeRateWeight;
    Float_t         muTauFakeRateWeight;
    Float_t         zPtReweightWeight;
@@ -509,6 +512,9 @@ public :
    TBranch         *b_trackWeight_1;
    TBranch        *b_singleTriggerMCEfficiencyWeightKIT_1;
    TBranch        *b_singleTriggerDataEfficiencyWeightKIT_1;
+   TBranch        *b_singleTriggerEmbeddedEfficiencyWeightKIT_1;
+   TBranch        *b_crossTriggerMCEfficiencyWeight_1;
+   TBranch        *b_crossTriggerDataEfficiencyWeight_1;
 
    TBranch        *b_zpt_weight_nom;   //!
    TBranch        *b_zpt_weight_esup;   //!
@@ -890,9 +896,10 @@ public :
 //    TBranch        *b_mt_sv_unc;   //!
    TBranch        *b_pt_sv;   //!
 //    TBranch        *b_pt_sv_unc;   //!
-
+   TBranch        *b_topPtReweightWeight;   //!
    TBranch        *b_topPtReweightWeightRun1;   //!
    TBranch        *b_topPtReweightWeightRun2;   //!
+   TBranch        *b_prefiringweight;
    TBranch        *b_eleTauFakeRateWeight;   //!
    TBranch        *b_muTauFakeRateWeight;   //!
    TBranch        *b_zPtReweightWeight;   //!
@@ -1072,13 +1079,20 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("stitchedWeight", &stitchedWeight, &b_stitchedWeight);
    fChain->SetBranchAddress("topWeight", &topWeight, &b_topWeight);
    fChain->SetBranchAddress("topWeight_run1", &topWeight_run1, &b_topWeight_run1);
+   fChain->SetBranchAddress("topPtReweightWeight", &topPtReweightWeight, &b_topPtReweightWeight);
    fChain->SetBranchAddress("topPtReweightWeightRun1", &topPtReweightWeightRun1, &b_topPtReweightWeightRun1);
    fChain->SetBranchAddress("topPtReweightWeightRun2", &topPtReweightWeightRun2, &b_topPtReweightWeightRun2);
-   fChain->SetBranchAddress("numberGeneratedEventsWeight", &numberGeneratedEventsWeight, &b_singleTriggerDataEfficiencyWeightKIT_1);
-   fChain->SetBranchAddress("crossSectionPerEventWeight", &crossSectionPerEventWeight, &b_singleTriggerMCEfficiencyWeightKIT_1);
+   fChain->SetBranchAddress("prefiringweight", &prefiringweight, &b_prefiringweight);
+   fChain->SetBranchAddress("numberGeneratedEventsWeight", &numberGeneratedEventsWeight, &b_numberGeneratedEventsWeight);
+   fChain->SetBranchAddress("crossSectionPerEventWeight", &crossSectionPerEventWeight, &b_crossSectionPerEventWeight);
    fChain->SetBranchAddress("trackWeight_1", &trackWeight_1, &b_trackWeight_1);
-   fChain->SetBranchAddress("singleTriggerMCEfficiencyWeightKIT_1", &singleTriggerMCEfficiencyWeightKIT_1, &b_crossSectionPerEventWeight);
-   fChain->SetBranchAddress("singleTriggerDataEfficiencyWeightKIT_1", &singleTriggerDataEfficiencyWeightKIT_1, &b_numberGeneratedEventsWeight);
+   fChain->SetBranchAddress("singleTriggerMCEfficiencyWeightKIT_1", &singleTriggerMCEfficiencyWeightKIT_1, &b_singleTriggerMCEfficiencyWeightKIT_1);
+   fChain->SetBranchAddress("singleTriggerDataEfficiencyWeightKIT_1", &singleTriggerDataEfficiencyWeightKIT_1, &b_singleTriggerDataEfficiencyWeightKIT_1);
+   fChain->SetBranchAddress("singleTriggerEmbeddedEfficiencyWeightKIT_1", &singleTriggerEmbeddedEfficiencyWeightKIT_1, &b_singleTriggerEmbeddedEfficiencyWeightKIT_1);
+   fChain->SetBranchAddress("singleTriggerEmbeddedEfficiencyWeightKIT_1", &singleTriggerEmbeddedEfficiencyWeightKIT_1, &b_singleTriggerEmbeddedEfficiencyWeightKIT_1);
+   fChain->SetBranchAddress("crossTriggerMCEfficiencyWeight_1", &crossTriggerMCEfficiencyWeight_1, &b_crossTriggerMCEfficiencyWeight_1);
+   fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_1", &crossTriggerDataEfficiencyWeight_1, &b_crossTriggerDataEfficiencyWeight_1);
+
 
    fChain->SetBranchAddress("eleTauFakeRateWeight", &eleTauFakeRateWeight, &b_eleTauFakeRateWeight);
 

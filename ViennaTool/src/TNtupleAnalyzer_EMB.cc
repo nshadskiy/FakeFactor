@@ -51,11 +51,19 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
   if( !preselectionFile.Contains("preselection_data")){
     if( !preselectionFile.Contains("preselection_EMB")){
       float trgWeight = 1.;
-      if ((event->singleTriggerDataEfficiencyWeightKIT_1 / event->singleTriggerMCEfficiencyWeightKIT_1) < 2.0) {trgWeight = (event->singleTriggerDataEfficiencyWeightKIT_1 / event->singleTriggerMCEfficiencyWeightKIT_1);}
-      weight *= 1000.0*luminosity *  event->puweight * event->muTauFakeRateWeight * event->idWeight_1  *  event->isoWeight_1  * event->trackWeight_1 * trgWeight;
+      if ((event->pt_1 < 23) && event->trg_mutaucross>0.5) {
+        trgWeight = event->crossTriggerDataEfficiencyWeight_1/event->crossTriggerMCEfficiencyWeight_1;
+      }
+      else if ((event->trg_singlemuon)>0.5) {
+        trgWeight = event->singleTriggerDataEfficiencyWeightKIT_1/event->singleTriggerMCEfficiencyWeightKIT_1;
+      }
+      if (trgWeight>10.0) {
+        trgWeight = 1.0;
+      }
+      weight *= 1000.0*luminosity *  event->puweight * event->generatorWeight * event->muTauFakeRateWeight * event->idWeight_1  *  event->isoWeight_1  * event->trackWeight_1 * event->prefiringweight * trgWeight;
       // if (CHAN == kTAU) weight *= 1.;//event->sf_DoubleTauTight;
       // else              weight *= event->sf_SingleOrCrossTrigger;
-      if( preselectionFile.Contains("preselection_TT") ) weight *= event->topPtReweightWeightRun2;
+      if( preselectionFile.Contains("preselection_TT") ) weight *= event->topPtReweightWeight;
       if( preselectionFile.Contains("preselection_DY") || preselectionFile.Contains("preselection_Wjets") ) weight *= event->zPtReweightWeight;
 
       float stitchingWeight = 1.;
@@ -68,7 +76,7 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
         weight *= stitchingWeight;
       }
       else if( preselectionFile.Contains("preselection_VV") ) {
-        stitchingWeight = (1.252790591041545e-07*(abs(event->crossSectionPerEventWeight - 63.21) < 0.01) + 5.029933132068942e-07*(abs(event->crossSectionPerEventWeight - 10.32) < 0.01) + 2.501519047441559e-07*(abs(event->crossSectionPerEventWeight - 22.82) < 0.01) + event->numberGeneratedEventsWeight*(abs(event->crossSectionPerEventWeight - 63.21) > 0.01 && abs(event->crossSectionPerEventWeight - 10.32) > 0.01 && abs(event->crossSectionPerEventWeight - 22.82) > 0.01));
+        stitchingWeight = event->crossSectionPerEventWeight*(1.252790591041545e-07*(abs(event->crossSectionPerEventWeight - 118.7) < 0.01) + 5.029933132068942e-07*(abs(event->crossSectionPerEventWeight - 12.14) < 0.01) + 2.501519047441559e-07*(abs(event->crossSectionPerEventWeight - 22.82) < 0.01) + event->numberGeneratedEventsWeight*(abs(event->crossSectionPerEventWeight - 118.7) > 0.01 && abs(event->crossSectionPerEventWeight - 12.14) > 0.01 && abs(event->crossSectionPerEventWeight - 22.82) > 0.01));
         if (stitchingWeight < 1e-12) {
           std::cout << "Stitching weight of zero!" << std::endl;
           exit(1);
@@ -81,15 +89,25 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
           std::cout << "Stitching weight of zero!" << std::endl;
           exit(1);
         }
-        weight *= stitchingWeight;       
+        weight *= 0.95 * stitchingWeight;       
      }
       else{
         weight *= event->numberGeneratedEventsWeight * event->crossSectionPerEventWeight;
       }
 
     }else{
+      float trgWeight = 1.;
+      if ((event->pt_1 < 23) && event->trg_mutaucross>0.5) {
+        trgWeight = event->crossTriggerDataEfficiencyWeight_1/event->crossTriggerMCEfficiencyWeight_1;
+      }
+      else if ((event->trg_singlemuon)>0.5) {
+        trgWeight = event->singleTriggerDataEfficiencyWeightKIT_1/event->singleTriggerMCEfficiencyWeightKIT_1;
+      }
+      if (trgWeight>10.0) {
+        trgWeight = 1.0;
+      }
       if (event->generatorWeight<=1.0) {
-      weight *= 0.95 * event->generatorWeight * event->muonEffTrgWeight * event->embeddedDecayModeWeight * event->muonEffIDWeight_1 * event->muonEffIDWeight_2 * event->idWeight_1 * event->isoWeight_1;
+      weight *= 0.95 * event->generatorWeight * event->muonEffTrgWeight * event->embeddedDecayModeWeight * event->muonEffIDWeight_1 * event->muonEffIDWeight_2 * event->idWeight_1 * event->isoWeight_1 * trgWeight;
       // float extra_iso_weight = 1.0;
       // if (event->iso_1>0.15) { extra_iso_weight = 0.7; }
       // weight *= extra_iso_weight;
@@ -284,7 +302,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     Trigger selection + flagMETFilter + kinematic pt_2 cut 
     are applied in the following lines
   */
-  if(CHAN==kMU &&  ((event->flagMETFilter <0.5) || !((event->trg_singlemuon > 0.5) || (event->trg_mutaucross>0.5)))) return 0; 
+  if(CHAN==kMU &&  ((event->flagMETFilter <0.5) || !((event->trg_singlemuon > 0.5) || (event->pt_1<23 && event->trg_mutaucross>0.5)))) return 0; 
   if(CHAN==kTAU && ((event->flagMETFilter <0.5) || !( event->trg_doubletau ) )) return 0;
   if(CHAN==kEL &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron > 0.5))))  return 0;
   if (DEBUG) {std::cout << "event " << evt_ID << " passed trigger selection, MET filter and kinematics" << std::endl;}
