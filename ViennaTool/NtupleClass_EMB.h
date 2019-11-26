@@ -44,6 +44,9 @@ public :
    Float_t         embeddedDecayModeWeight;
    Float_t         idWeight_1;
    Float_t         isoWeight_1;
+   Float_t         idWeight_2;
+   Float_t         isoWeight_2;
+   Float_t         eleRecoWeight_1;
    Float_t         reco_sf;
    Float_t         singleTriggerSFLeg1;
    Float_t         xTriggerSFLeg1;
@@ -68,6 +71,7 @@ public :
    Float_t         numberGeneratedEventsWeight;
    Float_t         crossSectionPerEventWeight;
    Float_t         trackWeight_1;
+   Float_t         trackWeight_2;
    Float_t        singleTriggerMCEfficiencyWeightKIT_1;
    Float_t        singleTriggerDataEfficiencyWeightKIT_1;
    Float_t        singleTriggerEmbeddedEfficiencyWeightKIT_1;
@@ -487,6 +491,9 @@ public :
    TBranch        *b_embeddedDecayModeWeight;
    TBranch        *b_idWeight_1;
    TBranch        *b_isoWeight_1;
+   TBranch        *b_idWeight_2;
+   TBranch        *b_isoWeight_2;
+   TBranch        *b_eleRecoWeight_1;   
    TBranch        *b_reco_sf;
    TBranch        *b_singleTriggerSFLeg1;
    TBranch        *b_xTriggerSFLeg1;
@@ -510,6 +517,8 @@ public :
    TBranch         *b_numberGeneratedEventsWeight;
    TBranch         *b_crossSectionPerEventWeight;
    TBranch         *b_trackWeight_1;
+   TBranch         *b_trackWeight_2;
+
    TBranch        *b_singleTriggerMCEfficiencyWeightKIT_1;
    TBranch        *b_singleTriggerDataEfficiencyWeightKIT_1;
    TBranch        *b_singleTriggerEmbeddedEfficiencyWeightKIT_1;
@@ -1061,6 +1070,9 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("embeddedDecayModeWeight", &embeddedDecayModeWeight, &b_embeddedDecayModeWeight);
    fChain->SetBranchAddress("idWeight_1", &idWeight_1, &b_idWeight_1);
    fChain->SetBranchAddress("isoWeight_1", &isoWeight_1, &b_isoWeight_1);
+   fChain->SetBranchAddress("idWeight_2", &idWeight_2, &b_idWeight_2);
+   fChain->SetBranchAddress("isoWeight_2", &isoWeight_2, &b_isoWeight_2);
+   fChain->SetBranchAddress("eleRecoWeight_1", &eleRecoWeight_1, &b_eleRecoWeight_1);
    fChain->SetBranchAddress("reco_sf", &reco_sf, &b_reco_sf);
    fChain->SetBranchAddress("singleTriggerSFLeg1", &singleTriggerSFLeg1, &b_singleTriggerSFLeg1);
    fChain->SetBranchAddress("xTriggerSFLeg1", &xTriggerSFLeg1, &b_xTriggerSFLeg1);
@@ -1086,6 +1098,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("numberGeneratedEventsWeight", &numberGeneratedEventsWeight, &b_numberGeneratedEventsWeight);
    fChain->SetBranchAddress("crossSectionPerEventWeight", &crossSectionPerEventWeight, &b_crossSectionPerEventWeight);
    fChain->SetBranchAddress("trackWeight_1", &trackWeight_1, &b_trackWeight_1);
+   fChain->SetBranchAddress("trackWeight_2", &trackWeight_2, &b_trackWeight_2);
    fChain->SetBranchAddress("singleTriggerMCEfficiencyWeightKIT_1", &singleTriggerMCEfficiencyWeightKIT_1, &b_singleTriggerMCEfficiencyWeightKIT_1);
    fChain->SetBranchAddress("singleTriggerDataEfficiencyWeightKIT_1", &singleTriggerDataEfficiencyWeightKIT_1, &b_singleTriggerDataEfficiencyWeightKIT_1);
    fChain->SetBranchAddress("singleTriggerEmbeddedEfficiencyWeightKIT_1", &singleTriggerEmbeddedEfficiencyWeightKIT_1, &b_singleTriggerEmbeddedEfficiencyWeightKIT_1);

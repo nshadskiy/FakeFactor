@@ -60,7 +60,7 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
       if (trgWeight>10.0) {
         trgWeight = 1.0;
       }
-      weight *= 1000.0*luminosity *  event->puweight * event->generatorWeight * event->muTauFakeRateWeight * event->idWeight_1  *  event->isoWeight_1  * event->trackWeight_1 * event->prefiringweight * trgWeight;
+      weight *= 1000.0*luminosity *  event->puweight * event->generatorWeight * event->muTauFakeRateWeight * event->idWeight_1 * event->idWeight_2 *  event->isoWeight_1  * event->isoWeight_2 * event->trackWeight_1 * event->trackWeight_2 * event->prefiringweight * trgWeight;
       // if (CHAN == kTAU) weight *= 1.;//event->sf_DoubleTauTight;
       // else              weight *= event->sf_SingleOrCrossTrigger;
       if( preselectionFile.Contains("preselection_TT") ) weight *= event->topPtReweightWeight;
@@ -94,17 +94,26 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
       else{
         weight *= event->numberGeneratedEventsWeight * event->crossSectionPerEventWeight;
       }
+      if (CHAN==kEL) {
+        weight *= event->eleRecoWeight_1;
+      }
 
     }else{
       float trgWeight = 1.;
-      if ((event->pt_1 < 23) && event->trg_mutaucross>0.5) {
-        trgWeight = event->crossTriggerDataEfficiencyWeight_1/event->crossTriggerMCEfficiencyWeight_1;
+      if( CHAN != kTAU ) {
+        if ((event->pt_1 < 23) && event->trg_mutaucross>0.5) {
+          trgWeight = event->crossTriggerDataEfficiencyWeight_1/event->crossTriggerMCEfficiencyWeight_1;
+        }
+        else if ((event->trg_singlemuon)>0.5) {
+          trgWeight = event->singleTriggerDataEfficiencyWeightKIT_1/event->singleTriggerMCEfficiencyWeightKIT_1;
+        }
+        if (trgWeight>10.0) {
+          trgWeight = 1.0;
+        }
       }
-      else if ((event->trg_singlemuon)>0.5) {
-        trgWeight = event->singleTriggerDataEfficiencyWeightKIT_1/event->singleTriggerMCEfficiencyWeightKIT_1;
-      }
-      if (trgWeight>10.0) {
-        trgWeight = 1.0;
+      else {
+        if (event->pt_1<50){ trgWeight *= 0.85;  }
+        if (event->pt_2<50){ trgWeight *= 0.85;  }
       }
       if (event->generatorWeight<=1.0) {
       weight *= 0.95 * event->generatorWeight * event->muonEffTrgWeight * event->embeddedDecayModeWeight * event->muonEffIDWeight_1 * event->muonEffIDWeight_2 * event->idWeight_1 * event->isoWeight_1 * trgWeight;
@@ -303,8 +312,8 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     are applied in the following lines
   */
   if(CHAN==kMU &&  ((event->flagMETFilter <0.5) || !((event->trg_singlemuon > 0.5) || (event->pt_1<23 && event->trg_mutaucross>0.5)))) return 0; 
-  if(CHAN==kTAU && ((event->flagMETFilter <0.5) || !( event->trg_doubletau ) )) return 0;
-  if(CHAN==kEL &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron > 0.5))))  return 0;
+  if(CHAN==kTAU && ((event->flagMETFilter <0.5) || !( (event->trg_doubletau>0.5) && (event->pt_1>40) && (event->pt_2>40)) )) return 0;
+  if(CHAN==kEL &&  ((event->flagMETFilter <0.5) || !(((event->trg_singleelectron > 0.5) && (event->pt_1>26) && (event->pt_2>30)))))  return 0;
   if (DEBUG) {std::cout << "event " << evt_ID << " passed trigger selection, MET filter and kinematics" << std::endl;}
   
   /*  
@@ -394,7 +403,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
 
   //to select m(ll)~m(Z) events
   std::vector<TLorentzVector> v_lep;
-  std::vector<double> v_lep_q;  
+  std::vector<double> v_lep_q;
   if ( event->pt_1 > LEP_PT_CUT  && fabs( event->eta_1 ) < LEP_ETA_CUT && CHAN != kTAU ){
 	  v_lep.push_back  ( 	 TLorentzVector(event->pt_1, event->eta_1, event->phi_1, event->m_1) );
     v_lep_q.push_back(   event->q_1 );		
@@ -415,10 +424,7 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       v_lep_q.push_back(   m_lep_q->at(i) );
       if ( m_lep_iso->at(i) < LEP_ISO_CUT ) n_iso_lep++;
     }
-
   }
-  
-  
   
   //select mZ candidate
   TLorentzVector vec1, vec2, vec; // used for Z candidate selection
@@ -717,15 +723,15 @@ Int_t TNtupleAnalyzer::fitsGenCategory(const Int_t mode)
     } else if (mode & _DY && mode & _JTAU) { // DY_J
       if (gm_1==leptonRealJet || gm_2==realJet) return 1;
     } else if (mode & _DY && mode & _LTAU) { // DY_L
-      if ( !(gm_1 == leptonfromTau && gm_2 == 5)  && (gm_2!=realJet)  ) return 1;
+      if ( !(gm_1 == leptonfromTau && gm_2 == 5)  && !(gm_1==leptonRealJet || gm_2==realJet)  ) return 1;
     }  else if (mode & _TT && mode & _JTAU) { // TT_J
       if (gm_1==leptonRealJet || gm_2==realJet) return 1;
     } else if (mode & _TT && mode & _LTAU) { // TT_L
-      if ( !(gm_1 == leptonfromTau && gm_2 == 5)  && (gm_2!=realJet)  ) return 1;
+      if ( !(gm_1 == leptonfromTau && gm_2 == 5)  && !(gm_1==leptonRealJet || gm_2==realJet)  ) return 1;
     } else if (mode & _VV && mode & _JTAU) { // VV_J
       if (gm_1==leptonRealJet || gm_2==realJet) return 1;
     } else if (mode & _VV && mode & _LTAU) { // VV_L
-      if ( !(gm_1 == leptonfromTau && gm_2 == 5)  && (gm_2!=realJet)  ) return 1;
+      if ( !(gm_1 == leptonfromTau && gm_2 == 5)  && !(gm_1==leptonRealJet || gm_2==realJet)  ) return 1;
     } else if (mode & _QCD) {
       return 1;
     } else {

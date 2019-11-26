@@ -17,7 +17,7 @@ const TString _NtupleTreeName_KIT = "mt_nominal/ntuple"; // name of the TTree in
 const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; //obsolete
 ///////////////////////////////////////////////////
 const TString user="jandrej";    
-const Double_t luminosity=35.922; //according to GOLDEN JSON see https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM    
+const Double_t luminosity=35.87; //according to GOLDEN JSON see https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM    
 const int use_svfit = 0; //set to 1 to change input directory name accordingly
 const int DEBUG=0; //set to 1 for additional output
 ///////////////////////////////////////////////////
