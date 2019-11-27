@@ -61,12 +61,6 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
         trgWeight = 1.0;
       }
       weight *= 1000.0*luminosity *  event->puweight * event->generatorWeight * event->muTauFakeRateWeight * event->idWeight_1 * event->idWeight_2 *  event->isoWeight_1  * event->isoWeight_2 * event->trackWeight_1 * event->trackWeight_2 * event->prefiringweight * trgWeight;
-<<<<<<< Updated upstream
-      // if (CHAN == kTAU) weight *= 1.;//event->sf_DoubleTauTight;
-      // else              weight *= event->sf_SingleOrCrossTrigger;
-=======
-
->>>>>>> Stashed changes
       if( preselectionFile.Contains("preselection_TT") ) weight *= event->topPtReweightWeight;
       if( preselectionFile.Contains("preselection_DY") || preselectionFile.Contains("preselection_Wjets") ) weight *= event->zPtReweightWeight;
 
