@@ -51,7 +51,17 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
   if( !preselectionFile.Contains("preselection_data")){
     if( !preselectionFile.Contains("preselection_EMB")){
       float trgWeight = 1.;
-      if ((event->singleTriggerDataEfficiencyWeightKIT_1 / event->singleTriggerMCEfficiencyWeightKIT_1) < 2.0) {trgWeight = (event->singleTriggerDataEfficiencyWeightKIT_1 / event->singleTriggerMCEfficiencyWeightKIT_1);}
+      if (CHAN == kMU) {
+        trgWeight *= (event->crossTriggerMCWeight_1*(event->crossTriggerMCWeight_1<10 && event->crossTriggerMCWeight_1>0.1)+(event->crossTriggerMCWeight_1>10 || event->crossTriggerMCWeight_1<0.1))*(event->pt_1<25) + (event->trigger_24_27_Weight_1*(event->pt_1>25));
+      }
+      else if (CHAN == kEL)
+      {
+        trgWeight *= (event->crossTriggerMCWeight_1*(event->crossTriggerMCWeight_1<10)+(event->crossTriggerMCWeight_1>10))*(event->pt_1<33)+((event->pt_1>=33)*event->trigger_32_35_Weight_1);
+      }
+      else if (CHAN == kTAU)
+      {
+        trgWeight *= ((((event->byTightDeepTau2017v2p1VSjet_1<0.5 && event->byVLooseDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerDataEfficiencyWeight_vloose_DeepTau_1 + (event->byTightDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerDataEfficiencyWeight_tight_DeepTau_1)*((event->byTightDeepTau2017v2p1VSjet_2<0.5 && event->byVLooseDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerDataEfficiencyWeight_vloose_DeepTau_2 + (event->byTightDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerDataEfficiencyWeight_tight_DeepTau_2))/(((event->byTightDeepTau2017v2p1VSjet_1<0.5 && event->byVLooseDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 + (event->byTightDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerMCEfficiencyWeight_tight_DeepTau_1)*((event->byTightDeepTau2017v2p1VSjet_2<0.5 && event->byVLooseDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerMCEfficiencyWeight_vloose_DeepTau_2 + (event->byTightDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerMCEfficiencyWeight_tight_DeepTau_2)));
+      }
       weight *= 1000.0*luminosity *  event->puweight * event->muTauFakeRateWeight * event->idWeight_1  *  event->isoWeight_1  * event->trackWeight_1 * trgWeight;
       // if (CHAN == kTAU) weight *= 1.;//event->sf_DoubleTauTight;
       // else              weight *= event->sf_SingleOrCrossTrigger;
@@ -67,14 +77,6 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
         }
         weight *= stitchingWeight;
       }
-      // else if( preselectionFile.Contains("preselection_VV") ) {
-      //   stitchingWeight = (118.7*(abs(event->crossSectionPerEventWeight - 63.21) < 0.01) + event->crossSectionPerEventWeight*(abs(event->crossSectionPerEventWeight - 63.21) > 0.01));
-      //   if (stitchingWeight < 1e-12) {
-      //     std::cout << "Stitching weight of zero!" << std::endl;
-      //     exit(1);
-      //   }
-      //   weight *= stitchingWeight;  
-      // }      
      else if( preselectionFile.Contains("preselection_Wjets") ) {
         stitchingWeight = ((0.00092600048*((event->npartons <= 0 || event->npartons >= 5)*1.0 + (event->npartons == 1)*0.1647043928 + (event->npartons == 2)*0.128547226623 + (event->npartons == 3)*0.0767138313139 + (event->npartons == 4)*0.0631529545476)) * (event->genbosonmass>=0.0) + event->numberGeneratedEventsWeight * event->crossSectionPerEventWeight * (event->genbosonmass<0.0));    
         if (stitchingWeight < 1e-12) {
@@ -88,8 +90,20 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
       }
 
     }else{
+      float trgWeight = 1.;
+      if (CHAN == kMU) {
+        trgWeight *= ((event->pt_1>=25)*(event->trigger_24_27_Weight_1)+(event->pt_1<25)*(event->crossTriggerDataEfficiencyWeight_tight_DeepTau_2/event->crossTriggerEMBEfficiencyWeight_tight_DeepTau_2)*event->crossTriggerEmbeddedWeight_1);
+      }
+      else if (CHAN == kEL)
+      {
+        trgWeight *= (event->crossTriggerEmbeddedWeight_1*(event->crossTriggerDataEfficiencyWeight_tight_DeepTau_2/event->crossTriggerEMBEfficiencyWeight_tight_DeepTau_2)*(event->pt_1<33)+(event->pt_1>=33)*event->trigger_32_35_Weight_1);
+      }
+      else if (CHAN == kTAU)
+      {
+        trgWeight *= ((((event->byTightDeepTau2017v2p1VSjet_1<0.5 && event->byVLooseDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerDataEfficiencyWeight_vloose_DeepTau_1 + (event->byTightDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerDataEfficiencyWeight_tight_DeepTau_1)*((event->byTightDeepTau2017v2p1VSjet_2<0.5 && event->byVLooseDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerDataEfficiencyWeight_vloose_DeepTau_2 + (event->byTightDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerDataEfficiencyWeight_tight_DeepTau_2))/(((event->byTightDeepTau2017v2p1VSjet_1<0.5 && event->byVLooseDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1 + (event->byTightDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerEMBEfficiencyWeight_tight_DeepTau_1)*((event->byTightDeepTau2017v2p1VSjet_2<0.5 && event->byVLooseDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerEMBEfficiencyWeight_vloose_DeepTau_2 + (event->byTightDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerEMBEfficiencyWeight_tight_DeepTau_2)));
+      }
       if (event->generatorWeight<=1.0) {
-      weight *= 0.95 * event->generatorWeight * event->muonEffTrgWeight * event->embeddedDecayModeWeight * event->muonEffIDWeight_1 * event->muonEffIDWeight_2 * event->idWeight_1 * event->isoWeight_1;
+      weight *= event->generatorWeight * event->muonEffTrgWeight * event->embeddedDecayModeWeight * event->muonEffIDWeight_1 * event->muonEffIDWeight_2 * event->idWeight_1 * event->isoWeight_1 * trgWeight;
       // float extra_iso_weight = 1.0;
       // if (event->iso_1>0.15) { extra_iso_weight = 0.7; }
       // weight *= extra_iso_weight;
@@ -102,26 +116,26 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
 
     if( CHAN == kTAU ){ // CHANGE IF TAU WP CHANGES! https://twiki.cern.ch/twiki/bin/view/CMS/TauIDRecommendation13TeV#Tau_ID_SF_for_CMSSW_9_4_X_or_hig
         if (!preselectionFile.Contains("preselection_EMB")) {
-          if(event->gen_match_1 == 5 && event->byTightDeepTau2017v2p1VSjet_1) weight *= 0.87; //vtight = 0.89, tight = 0.90
-          else if(event->gen_match_1 == 5 && event->byVLooseDeepTau2017v2p1VSjet_1 ) weight *= 0.87;
-          if(event->gen_match_2 == 5 && event->byTightDeepTau2017v2p1VSjet_2) weight *= 0.87;
-          else if(event->gen_match_2 == 5 && event->byVLooseDeepTau2017v2p1VSjet_2 ) weight *= 0.87;
+          if(event->gen_match_1 == 5 && event->byTightDeepTau2017v2p1VSjet_1) weight *= 0.90; //vtight = 0.89, tight = 0.90
+          else if(event->gen_match_1 == 5 && event->byVLooseDeepTau2017v2p1VSjet_1 ) weight *= 0.90;
+          if(event->gen_match_2 == 5 && event->byTightDeepTau2017v2p1VSjet_2) weight *= 0.90;
+          else if(event->gen_match_2 == 5 && event->byVLooseDeepTau2017v2p1VSjet_2 ) weight *= 0.90;
         }
         else {
           if(event->gen_match_1 == 5 && event->byTightDeepTau2017v2p1VSjet_1) weight *= 0.95; //vtight = 0.89, tight = 0.90
-          else if(event->gen_match_1 == 5 && event->byVLooseDeepTau2017v2p1VSjet_1 ) weight *= 0.95;
-          if(event->gen_match_2 == 5 && event->byTightDeepTau2017v2p1VSjet_2) weight *= 0.95;
-          else if(event->gen_match_2 == 5 && event->byVLooseDeepTau2017v2p1VSjet_2 ) weight *= 0.95;
+          else if(event->gen_match_1 == 5 && event->byVLooseDeepTau2017v2p1VSjet_1 ) weight *= 0.97;
+          if(event->gen_match_2 == 5 && event->byTightDeepTau2017v2p1VSjet_2) weight *= 0.97;
+          else if(event->gen_match_2 == 5 && event->byVLooseDeepTau2017v2p1VSjet_2 ) weight *= 0.97;
         }
     }
     if( CHAN != kTAU ){
       if (!preselectionFile.Contains("preselection_EMB")) {
-        if(event->gen_match_2 == 5 && event->byTightDeepTau2017v2p1VSjet_2) weight *= 0.87;
-        else if(event->gen_match_2 == 5 && event->byVLooseDeepTau2017v2p1VSjet_2 ) weight *= 0.87;
+        if(event->gen_match_2 == 5 && event->byTightDeepTau2017v2p1VSjet_2) weight *= 0.90;
+        else if(event->gen_match_2 == 5 && event->byVLooseDeepTau2017v2p1VSjet_2 ) weight *= 0.90;
       }
       else{
-        if(event->gen_match_2 == 5 && event->byTightDeepTau2017v2p1VSjet_2) weight *= 0.95;
-        else if(event->gen_match_2 == 5 && event->byVLooseDeepTau2017v2p1VSjet_2 ) weight *= 0.95;        
+        if(event->gen_match_2 == 5 && event->byTightDeepTau2017v2p1VSjet_2) weight *= 0.97;
+        else if(event->gen_match_2 == 5 && event->byVLooseDeepTau2017v2p1VSjet_2 ) weight *= 0.97;        
       }
     }
   }
@@ -159,7 +173,7 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
       }
     } 
     else{
-      if (jentry%500000 == 0) {
+      if (jentry%50000 == 0) {
       cout << "Event " << jentry << " is processed: " << jentry / nentries * 100 << "% of total" << endl;
       }
     }
