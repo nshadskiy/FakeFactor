@@ -90,7 +90,7 @@ void calcCorrections() {
   else cout << "FIXME: Reasonable corrections for MC closure if enough statistics" << endl;
   if(CHAN!=kTAU){
     cout << "Calculating TT corrections" << endl;
-    Analyzer->loadFile(preselection_TT_J,"Events");
+    Analyzer->loadFile(preselection_TT_J_EMB,"Events");
     Analyzer->calc_nonclosure(_TT|SR,                            p+FF_TT_J_only_SR_fitted,               SR_TT_J_mvis_sim, p+FF_corr_TT_MC_noGen_nonclosure, "", 0, 0);
     //Analyzer->calc_nonclosure(_TT|SR,                            p+FF_TT_J_only_SR_fitted,               SR_TT_J_mvis_sim, p+FF_corr_TT_MC_noGen_nonclosure, "_alt", 0, 0);
     //...done
