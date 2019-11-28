@@ -51,7 +51,29 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
   if( !preselectionFile.Contains("preselection_data")){
     if( !preselectionFile.Contains("preselection_EMB")){
       float trgWeight = 1.;
-      if ((event->singleTriggerDataEfficiencyWeightKIT_1 / event->singleTriggerMCEfficiencyWeightKIT_1) < 2.0) {trgWeight = (event->singleTriggerDataEfficiencyWeightKIT_1 / event->singleTriggerMCEfficiencyWeightKIT_1);}
+      if( CHAN == kMU ) {   
+        if ((event->pt_1 < 25)) {
+          trgWeight *= (event->crossTriggerDataEfficiencyWeight_1/event->crossTriggerMCEfficiencyWeight_1)*(event->crossTriggerDataEfficiencyWeight_tight_DeepTau_2/event->crossTriggerMCEfficiencyWeight_tight_DeepTau_2);
+        }
+        else {
+          trgWeight *= (event->singleTriggerDataEfficiencyWeightKIT_1/event->singleTriggerMCEfficiencyWeightKIT_1);
+        }  
+      }
+      else if( CHAN == kEL ) {
+        if (event->pt_1 < 28) {
+          trgWeight *= (event->crossTriggerDataEfficiencyWeight_1/event->crossTriggerMCEfficiencyWeight_1)*(event->crossTriggerDataEfficiencyWeight_tight_DeepTau_2/event->crossTriggerMCEfficiencyWeight_tight_DeepTau_2);
+        }  
+        else {
+          trgWeight *= (event->singleTriggerDataEfficiencyWeightKIT_1/event->singleTriggerMCEfficiencyWeightKIT_1);
+        }  
+      }
+      else if (CHAN == kTAU)
+      {
+        trgWeight *= ((((event->byTightDeepTau2017v2p1VSjet_1<0.5 && event->byVLooseDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerDataEfficiencyWeight_vloose_DeepTau_1 + (event->byTightDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerDataEfficiencyWeight_tight_DeepTau_1)*((event->byTightDeepTau2017v2p1VSjet_2<0.5 && event->byVLooseDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerDataEfficiencyWeight_vloose_DeepTau_2 + (event->byTightDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerDataEfficiencyWeight_tight_DeepTau_2))/(((event->byTightDeepTau2017v2p1VSjet_1<0.5 && event->byVLooseDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 + (event->byTightDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerMCEfficiencyWeight_tight_DeepTau_1)*((event->byTightDeepTau2017v2p1VSjet_2<0.5 && event->byVLooseDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerMCEfficiencyWeight_vloose_DeepTau_2 + (event->byTightDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerMCEfficiencyWeight_tight_DeepTau_2)));
+      }
+      if (trgWeight>2.0) {
+        trgWeight = 1.0;  
+      }
       weight *= 1000.0*luminosity *  event->puweight * event->muTauFakeRateWeight * event->eleTauFakeRateWeight * event->idWeight_1  *  event->isoWeight_1  * event->trackWeight_1 * trgWeight;
       // if (CHAN == kTAU) weight *= 1.;//event->sf_DoubleTauTight;
       // else              weight *= event->sf_SingleOrCrossTrigger;
@@ -81,16 +103,31 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
 
     }else{
       float trgWeight = 1.0;
-      if ( CHAN == kTAU ) {
-        trgWeight *= (0.18321*(event->pt_1>=30 && event->pt_1<35) + 0.53906*(event->pt_1>=35 && event->pt_1<40) + 0.63658*(event->pt_1>=40 && event->pt_1<45) + 0.73152*(event->pt_1>=45 && event->pt_1<50) + 0.79002*(event->pt_1>=50 && event->pt_1<60) + 0.84666*(event->pt_1>=60 && event->pt_1<80) + 0.84919*(event->pt_1>=80 && event->pt_1<100) + 0.86819*(event->pt_1>=100 && event->pt_1<150) + 0.88206*(event->pt_1>=150 && event->pt_1<200) + (event->pt_1>=200));
-        trgWeight *= (0.18321*(event->pt_2>=30 && event->pt_2<35) + 0.53906*(event->pt_2>=35 && event->pt_2<40) + 0.63658*(event->pt_2>=40 && event->pt_2<45) + 0.73152*(event->pt_2>=45 && event->pt_2<50) + 0.79002*(event->pt_2>=50 && event->pt_2<60) + 0.84666*(event->pt_2>=60 && event->pt_2<80) + 0.84919*(event->pt_2>=80 && event->pt_2<100) + 0.86819*(event->pt_2>=100 && event->pt_2<150) + 0.88206*(event->pt_2>=150 && event->pt_2<200) + (event->pt_2>=200));
+      if( CHAN == kMU ) {   
+        if ((event->pt_1 < 25)) {
+          trgWeight *= (event->crossTriggerDataEfficiencyWeight_1/event->crossTriggerEMBEfficiencyWeight_1)*(event->crossTriggerDataEfficiencyWeight_tight_DeepTau_2/event->crossTriggerEMBEfficiencyWeight_tight_DeepTau_2);
+        }
+        else {
+          trgWeight *= (event->trigger_27_32_35_Weight_1);
+        }  
       }
-      weight *= trgWeight;
+      else if( CHAN == kEL ) {
+        if (event->pt_1 < 28) {
+          trgWeight *= (event->crossTriggerDataEfficiencyWeight_1*event->crossTriggerDataEfficiencyWeight_tight_DeepTau_2*(abs(event->eta_1)>=1.5)+event->crossTriggerEmbeddedWeight_1*(event->crossTriggerDataEfficiencyWeight_tight_DeepTau_2/event->crossTriggerEMBEfficiencyWeight_tight_DeepTau_2)*(abs(event->eta_1)<1.5));
+        }
+        else {
+          trgWeight *= (event->trigger_27_32_35_Weight_1*(abs(event->eta_1) < 1.5) + event->singleTriggerDataEfficiencyWeightKIT_1*(abs(event->eta_1)>=1.5));
+        }
+      }
+      else if (CHAN == kTAU)
+      {
+        trgWeight *= ((((event->byTightDeepTau2017v2p1VSjet_1<0.5 && event->byVLooseDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerDataEfficiencyWeight_vloose_DeepTau_1 + (event->byTightDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerDataEfficiencyWeight_tight_DeepTau_1)*((event->byTightDeepTau2017v2p1VSjet_2<0.5 && event->byVLooseDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerDataEfficiencyWeight_vloose_DeepTau_2 + (event->byTightDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerDataEfficiencyWeight_tight_DeepTau_2))/(((event->byTightDeepTau2017v2p1VSjet_1<0.5 && event->byVLooseDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1 + (event->byTightDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerEMBEfficiencyWeight_tight_DeepTau_1)*((event->byTightDeepTau2017v2p1VSjet_2<0.5 && event->byVLooseDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerEMBEfficiencyWeight_vloose_DeepTau_2 + (event->byTightDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerEMBEfficiencyWeight_tight_DeepTau_2)));
+      }
+      if (trgWeight>2.0) {
+        trgWeight = 1.0;  
+      }
       if (event->generatorWeight<=1.0) {
-      weight *= 0.95 * event->generatorWeight * event->muonEffTrgWeight * event->embeddedDecayModeWeight * event->muonEffIDWeight_1 * event->muonEffIDWeight_2 * event->idWeight_1 * event->isoWeight_1;
-      // float extra_iso_weight = 1.0;
-      // if (event->iso_1>0.15) { extra_iso_weight = 0.7; }
-      // weight *= extra_iso_weight;
+      weight *= event->generatorWeight * event->muonEffTrgWeight * event->embeddedDecayModeWeight * event->muonEffIDWeight_1 * event->muonEffIDWeight_2 * event->idWeight_1 * event->isoWeight_1 * trgWeight;
       }
       else {
          weight = 0.0; // Check with new embedded ntuples if this still occurs
@@ -282,9 +319,9 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
     Trigger selection + flagMETFilter + kinematic pt_2 cut 
     are applied in the following lines
   */
-  if(CHAN==kMU &&  ((event->flagMETFilter <0.5) || !((event->trg_singlemuon_24 > 0.5) || (event->trg_singlemuon_27>0.5)) || (event->pt_2<23))) return 0; 
-  if(CHAN==kTAU && ((event->flagMETFilter <0.5) || !(( event->trg_doubletau_35_tightiso_tightid > 0.5 ) || ( event->trg_doubletau_40_mediso_tightid > 0.5 ) || ( event->trg_doubletau_40_tightiso > 0.5 ) ))) return 0;
-  if(CHAN==kEL &&  ((event->flagMETFilter <0.5) || !((event->trg_singleelectron_35 > 0.5) || (event->trg_singleelectron_32 > 0.5) || (event->trg_singleelectron_27 > 0.5)) || (event->pt_2<23)))  return 0;
+  if(CHAN==kMU &&  ((event->flagMETFilter <0.5) || (event->pt_2<30) || !(((event->trg_singlemuon_27 == 1) || (event->trg_singlemuon_24 == 1) || (event->pt_1 < 25 && event->trg_crossmuon_mu20tau27 == 1))))) return 0; 
+  if(CHAN==kTAU && ((event->flagMETFilter <0.5) || !((event->trg_doubletau_35_tightiso_tightid == 1) || (event->trg_doubletau_40_mediso_tightid == 1) || (event->trg_doubletau_40_tightiso == 1)))) return 0;
+  if(CHAN==kEL &&  ((event->flagMETFilter <0.5) || !(event->pt_2>30 && event->pt_1 > 25 && (((event->trg_singleelectron_35 == 1) || (event->trg_singleelectron_32 == 1) || ((event->trg_singleelectron_27 == 1))) || (abs(event->eta_1)>1.5 && event->isEmbedded)) || (event->pt_1>25 && event->pt_1<28 && event->pt_2>35 && ((event->isEmbedded && (abs(event->eta_1)>1.5)) || (event->trg_crossele_ele24tau30 == 1))))))  return 0;
   if (DEBUG) {std::cout << "event " << evt_ID << " passed trigger selection, MET filter and kinematics" << std::endl;}
   
   /*  
@@ -537,32 +574,17 @@ Int_t TNtupleAnalyzer::setTreeValues(const TString preselectionFile, const Int_t
       alltau_phi->insert(alltau_phi->begin()+tpos,event->phi_1);
       alltau_q->insert(alltau_q->begin()+tpos,event->q_1);
       alltau_decay->insert(alltau_decay->begin()+tpos,decay);
-      
+  
+      // deepTauIDv2
+      alltau_vvvlooseDNN->insert(alltau_vvvlooseDNN->begin()+tpos, event->byVVVLooseDeepTau2017v2p1VSjet_1 );
+      alltau_vvlooseDNN->insert(alltau_vvlooseDNN->begin()+tpos, event->byVVLooseDeepTau2017v2p1VSjet_1 );
+      alltau_vlooseDNN->insert(alltau_vlooseDNN->begin()+tpos, event->byVLooseDeepTau2017v2p1VSjet_1 );
+      alltau_looseDNN->insert(alltau_looseDNN->begin()+tpos, event->byLooseDeepTau2017v2p1VSjet_1 );
+      alltau_mediumDNN->insert(alltau_mediumDNN->begin()+tpos, event->byMediumDeepTau2017v2p1VSjet_1 );
+      alltau_tightDNN->insert(alltau_tightDNN->begin()+tpos, event->byTightDeepTau2017v2p1VSjet_1 );
+      alltau_vtightDNN->insert(alltau_vtightDNN->begin()+tpos, event->byVTightDeepTau2017v2p1VSjet_1 );
+      alltau_vvtightDNN->insert(alltau_vvtightDNN->begin()+tpos, event->byVVTightDeepTau2017v2p1VSjet_1 );
 
-      if(preselectionFile.Contains("preselection")){
-      
-        // deepTauIDv2
-        alltau_vvvlooseDNN->insert(alltau_vvvlooseDNN->begin()+tpos, event->byVVVLooseDeepTau2017v2p1VSjet_1 > 0);
-        alltau_vvlooseDNN->insert(alltau_vvlooseDNN->begin()+tpos, event->byVVLooseDeepTau2017v2p1VSjet_1 > 0);
-        alltau_vlooseDNN->insert(alltau_vlooseDNN->begin()+tpos, event->byVLooseDeepTau2017v2p1VSjet_1 > 0);
-        alltau_looseDNN->insert(alltau_looseDNN->begin()+tpos, event->byLooseDeepTau2017v2p1VSjet_1 > 0);
-        alltau_mediumDNN->insert(alltau_mediumDNN->begin()+tpos, event->byMediumDeepTau2017v2p1VSjet_1 > 0);
-        alltau_tightDNN->insert(alltau_tightDNN->begin()+tpos, event->byTightDeepTau2017v2p1VSjet_1 > 0);
-        alltau_vtightDNN->insert(alltau_vtightDNN->begin()+tpos, event->byVTightDeepTau2017v2p1VSjet_1 > 0);
-        alltau_vvtightDNN->insert(alltau_vvtightDNN->begin()+tpos, event->byVVTightDeepTau2017v2p1VSjet_1 > 0);
-
-      }else{
-      
-        // deepTauIDv2
-        alltau_vvvlooseDNN->insert(alltau_vvvlooseDNN->begin()+tpos, event->byVVVLooseDeepTau2017v2p1VSjet_1 );
-        alltau_vvlooseDNN->insert(alltau_vvlooseDNN->begin()+tpos, event->byVVLooseDeepTau2017v2p1VSjet_1 );
-        alltau_vlooseDNN->insert(alltau_vlooseDNN->begin()+tpos, event->byVLooseDeepTau2017v2p1VSjet_1 );
-        alltau_looseDNN->insert(alltau_looseDNN->begin()+tpos, event->byLooseDeepTau2017v2p1VSjet_1 );
-        alltau_mediumDNN->insert(alltau_mediumDNN->begin()+tpos, event->byMediumDeepTau2017v2p1VSjet_1 );
-        alltau_tightDNN->insert(alltau_tightDNN->begin()+tpos, event->byTightDeepTau2017v2p1VSjet_1 );
-        alltau_vtightDNN->insert(alltau_vtightDNN->begin()+tpos, event->byVTightDeepTau2017v2p1VSjet_1 );
-        alltau_vvtightDNN->insert(alltau_vvtightDNN->begin()+tpos, event->byVVTightDeepTau2017v2p1VSjet_1 );
-      }
       alltau_lepVeto->insert(alltau_lepVeto->begin()+tpos,passesTauLepVetos);
       alltau_gen_match->insert(alltau_gen_match->begin()+tpos,event->gen_match_1);
       alltau_mvis->insert(alltau_mvis->begin()+tpos,event->m_vis);
@@ -697,15 +719,15 @@ Int_t TNtupleAnalyzer::fitsGenCategory(const Int_t mode)
     } else if (mode & _DY && mode & _JTAU) { // DY_J
       if (gm_1==leptonRealJet || gm_2==realJet) return 1;
     } else if (mode & _DY && mode & _LTAU) { // DY_L
-      if ( !(gm_1 == leptonfromTau && gm_2 == 5)  && (gm_2!=realJet)  ) return 1;
+      if ( !(gm_1 == leptonfromTau && gm_2 == 5)  && !(gm_1==leptonRealJet || gm_2==realJet)  ) return 1;
     }  else if (mode & _TT && mode & _JTAU) { // TT_J
       if (gm_1==leptonRealJet || gm_2==realJet) return 1;
     } else if (mode & _TT && mode & _LTAU) { // TT_L
-      if ( !(gm_1 == leptonfromTau && gm_2 == 5)  && (gm_2!=realJet)  ) return 1;
+      if ( !(gm_1 == leptonfromTau && gm_2 == 5)  && !(gm_1==leptonRealJet || gm_2==realJet)  ) return 1;
     } else if (mode & _VV && mode & _JTAU) { // VV_J
       if (gm_1==leptonRealJet || gm_2==realJet) return 1;
     } else if (mode & _VV && mode & _LTAU) { // VV_L
-      if ( !(gm_1 == leptonfromTau && gm_2 == 5)  && (gm_2!=realJet)  ) return 1;
+      if ( !(gm_1 == leptonfromTau && gm_2 == 5)  && !(gm_1==leptonRealJet || gm_2==realJet)  ) return 1;
     } else if (mode & _QCD) {
       return 1;
     } else {
