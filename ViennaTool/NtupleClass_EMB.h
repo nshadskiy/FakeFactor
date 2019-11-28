@@ -122,6 +122,9 @@ public :
    Bool_t           trg_doubletau;
    Bool_t           trg_muonelectron;
    Bool_t           isEmbedded;
+   Bool_t           isData;
+   Bool_t           isMC;
+
    Float_t         gen_Mll;
    Float_t         genpX;
    Float_t         genpY;
@@ -573,6 +576,9 @@ public :
    TBranch        *b_trg_singlemuon_27;
 
    TBranch        *b_isEmbedded;   //!
+   TBranch        *b_isData;   //!
+   TBranch        *b_isMC;   //!
+
    TBranch        *b_trg_muonelectron;   //!
    TBranch        *b_crossTriggerDataEfficiencyWeight_tight_DeepTau_1;   //!
    TBranch        *b_crossTriggerDataEfficiencyWeight_tight_DeepTau_2;   //!
@@ -1174,6 +1180,8 @@ void NtupleClass::Init(TTree *tree)
   
 
    fChain->SetBranchAddress("isEmbedded", &isEmbedded, &b_isEmbedded);
+   fChain->SetBranchAddress("isData", &isData, &b_isData);
+   fChain->SetBranchAddress("isMC", &isMC, &b_isMC);
    fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_tight_DeepTau_1", &crossTriggerDataEfficiencyWeight_tight_DeepTau_1, &b_crossTriggerDataEfficiencyWeight_tight_DeepTau_1);
    fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_tight_DeepTau_2", &crossTriggerDataEfficiencyWeight_tight_DeepTau_2, &b_crossTriggerDataEfficiencyWeight_tight_DeepTau_2);
    fChain->SetBranchAddress("crossTriggerMCEfficiencyWeight_tight_DeepTau_1", &crossTriggerMCEfficiencyWeight_tight_DeepTau_1, &b_crossTriggerMCEfficiencyWeight_tight_DeepTau_1);
@@ -1339,7 +1347,6 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("byVVLooseDeepTau2017v2p1VSjet_1", &byVVLooseDeepTau2017v2p1VSjet_1, &b_byVVLooseDeepTau2017v2p1VSjet_1);
    fChain->SetBranchAddress("byVLooseDeepTau2017v2p1VSjet_1", &byVLooseDeepTau2017v2p1VSjet_1, &b_byVLooseDeepTau2017v2p1VSjet_1);
    fChain->SetBranchAddress("byLooseDeepTau2017v2p1VSjet_1", &byLooseDeepTau2017v2p1VSjet_1, &b_byLooseDeepTau2017v2p1VSjet_1);
-                             
    fChain->SetBranchAddress("byMediumDeepTau2017v2p1VSjet_1", &byMediumDeepTau2017v2p1VSjet_1, &b_byMediumDeepTau2017v2p1VSjet_1);
    fChain->SetBranchAddress("byTightDeepTau2017v2p1VSjet_1", &byTightDeepTau2017v2p1VSjet_1, &b_byTightDeepTau2017v2p1VSjet_1);
    fChain->SetBranchAddress("byVTightDeepTau2017v2p1VSjet_1", &byVTightDeepTau2017v2p1VSjet_1, &b_byVTightDeepTau2017v2p1VSjet_1);
