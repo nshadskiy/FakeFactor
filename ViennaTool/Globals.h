@@ -540,7 +540,7 @@ const Int_t N_j_QCD = sizeof(Njet_cuts_QCD)/sizeof(Int_t);
 const Int_t nbins_svfit=35;  const Double_t hist_min_svfit=0.;  const Double_t hist_max_svfit=350.;
 const Int_t nbins_lepPt=20;  const Double_t hist_min_lepPt=20.; const Double_t hist_max_lepPt=120.;
 const Int_t nbins_mt=25;     const Double_t hist_min_mt=0.;     const Double_t hist_max_mt=250.;
-const Int_t nbins_mvis=25;   const Double_t hist_min_mvis=0.;   const Double_t hist_max_mvis=250.;
+const Int_t nbins_mvis=15;   const Double_t hist_min_mvis=0.;   const Double_t hist_max_mvis=250.;
 const Int_t nbins_pt=25;     const Double_t hist_min_pt=20.;    const Double_t hist_max_pt=100.;
 const Int_t nbins_eta=20;    const Double_t hist_min_eta=-3.5;  const Double_t hist_max_eta=3.5;
 
