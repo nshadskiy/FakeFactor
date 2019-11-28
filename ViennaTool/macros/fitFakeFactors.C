@@ -357,7 +357,7 @@ void fitFakeFactors(){
           cms3.SetTextSize(0.05);
           cms3.SetTextFont(52);
           
-          TLatex infoRight = TLatex( 0.665, 0.915, "35.9 fb^{-1} (13 TeV)" );
+          TLatex infoRight = TLatex( 0.665, 0.915, "59.7 fb^{-1} (13 TeV)" );
           infoRight.SetNDC();
           infoRight.SetTextFont(42);
           infoRight.SetTextSize(0.03);
