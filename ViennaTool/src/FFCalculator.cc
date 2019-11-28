@@ -1470,7 +1470,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   //gsk.set_lastBinFrom(185);
   gsk.getContSmoothHisto();
   TGraphAsymmErrors *g=   gsk.returnSmoothedGraph();
-
+  /*
   Double_t x185; Double_t y185;
   Double_t scale_error_from=100;
   Double_t lim=(scale_error_from+20)*4;
@@ -1508,7 +1508,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
       g->SetPointEYhigh(i, upfactor*g->GetErrorYhigh(i) );
     }
   }
-  
+  */
 
   g->SetTitle("nonclosure"+sample);
   g->SetName("nonclosure"+sample);
@@ -1701,7 +1701,7 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   gsk.set_doErrors(1);
   gsk.getContSmoothHisto();
   TGraphAsymmErrors *g=   gsk.returnSmoothedGraph();
-
+  /*
   Double_t xV; Double_t yV;
   Int_t constPoint = 375;
   if( mode & JET0 ) constPoint = 394;
@@ -1713,8 +1713,9 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
       g->GetPoint(i,x,y);
       g->SetPoint(i,x,yV);
     }
+
   }
-  
+    */
   ///////////////////////////////////////////////////////////////
   g->SetTitle("nonclosure"+sample);
   g->SetName("nonclosure"+sample);
@@ -2136,11 +2137,13 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   gsk.set_kernelDistance( "lin" );
   gsk.set_doWidthInBins(1);
   gsk.setWidth(1.);
+  /*
   Double_t lastBin;
   // linear fit cut-off
   if(CHAN==kMU) lastBin=150;
   if(CHAN==kEL) lastBin=150;
   gsk.set_lastBinFrom(lastBin);
+  */
   gsk.getSmoothHisto();
   TH1D *h2=gsk.returnSmoothedHisto();
   h2->Write();
