@@ -105,10 +105,10 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
       float trgWeight = 1.0;
       if( CHAN == kMU ) {   
         if ((event->pt_1 < 25)) {
-          trgWeight *= (event->crossTriggerDataEfficiencyWeight_1/event->crossTriggerEMBEfficiencyWeight_1)*(event->crossTriggerDataEfficiencyWeight_tight_DeepTau_2/event->crossTriggerEMBEfficiencyWeight_tight_DeepTau_2);
+          trgWeight *= (event->crossTriggerEmbeddedWeight_1)*(event->crossTriggerDataEfficiencyWeight_tight_DeepTau_2/event->crossTriggerEMBEfficiencyWeight_tight_DeepTau_2);
         }
         else {
-          trgWeight *= (event->trigger_27_32_35_Weight_1);
+          trgWeight *= (event->trigger_24_27_Weight_1);
         }  
       }
       else if( CHAN == kEL ) {
