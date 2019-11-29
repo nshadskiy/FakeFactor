@@ -57,6 +57,7 @@ if [ $embedding == 1 ] || [ $ntuples == "KIT" ]; then
  	mv ViennaTool/src/TNtupleAnalyzer.cc ViennaTool/src/TNtupleAnalyzer_NonEMB.cc
 	mv ViennaTool/src/TNtupleAnalyzer_EMB.cc ViennaTool/src/TNtupleAnalyzer.cc
  	make -B -j 4
+
     if [ $ntuples != "KIT" ]; then
         ./Preselection_KIT
     else
@@ -80,11 +81,13 @@ if [ $ntuples != "KIT" ] && [ $do_presel == 1 ]; then
     ./Preselection 
 fi
 
+
 ./SRHisto &
 ./CRHisto &
 wait
 
 ./steerFF
+
 ./fitFakeFactors
 cd ViennaTool/Images_EMB/data_$chan
 gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck

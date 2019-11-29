@@ -3,7 +3,11 @@
 #include <iostream>
 #include <sstream>
 
+#include <chrono>
+#include <ctime>    
+
 using namespace std;
+
 
 FFCalculator::FFCalculator(//Int_t N_p_Wjets,Int_t N_p_DY,Int_t N_p_TT,Int_t N_p_QCD, Int_t N_p_QCD_AI,
                            Int_t N_p_Wjets,Int_t N_p_DY,Int_t N_p_TT_SR,Int_t N_p_TT_CR,Int_t N_p_QCD, Int_t N_p_QCD_AI,
@@ -848,141 +852,248 @@ Int_t FFCalculator::doTemplateFit(const TH1D *data, const std::vector<TH1D*> tem
 void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const std::vector<TString> pre_sub, const TString FF_file, const TString weight_file, const Int_t cuts)
 {
 
-  if (DEBUG) std::cout << "In calcFFCorr: \t Writing " << FF_file << "\t" << flush;
+  if (DEBUG) {
+    std::cout << "In calcFFCorr: \t Writing " << FF_file << std::endl;
+    std::cout << "Creating counting histogram with " << this->nBins(mode) << " number of bins" << std::endl;
+  }
 
-  int doCR=0;
-  if     ( ! (mode & SR) )  {doCR=1;} //otherwise, calculate FF in SR (for debugging)
+
+  int doCR=1; //calculate FF in determination region
+  if ( (mode & SR) ) { // for debugging purposes calculate FF in SR 
+    doCR=0;
+  } 
+
 
   TH1D counter_histo_proto("c_h","Counter histogram",this->nBins(mode),-0.5,this->nBins(mode)-0.5);
-  TH1D* counter_histo_loose_CR = (TH1D*) counter_histo_proto.Clone("c_l");
+
+
+  TH1D* counter_histo_loose_CR = (TH1D*) counter_histo_proto.Clone("c_l"); 
   TH1D* weighted_bin_center_loose= (TH1D*) counter_histo_proto.Clone("bins_weighted");
-  TH1D* counter_histo_tight_alt_CR = (TH1D*) counter_histo_proto.Clone("c_t_alt");
   TH1D* counter_histo_tight_CR = (TH1D*) counter_histo_proto.Clone("c_t");
+  
   TH1D* fakefactor_histo = (TH1D*) counter_histo_proto.Clone("c_f");
-  TH1D* fakefactor_histo_alt = (TH1D*) counter_histo_proto.Clone("c_t_alt");
- 
+  
   std::vector<TH1D*> counter_histo_loose_CR_cont;
-  std::vector<TH1D*> counter_histo_tight_alt_CR_cont;
   std::vector<TH1D*> counter_histo_tight_CR_cont;
+  
+  
   for (unsigned i=0; i<pre_sub.size(); i++){
     TString tmp; tmp+=i;
     counter_histo_loose_CR_cont.push_back( (TH1D*) counter_histo_proto.Clone("cc"+tmp+"_l")  );
-    counter_histo_tight_alt_CR_cont.push_back( (TH1D*) counter_histo_proto.Clone("cc"+tmp+"_t_alt")  );
     counter_histo_tight_CR_cont.push_back( (TH1D*) counter_histo_proto.Clone("cc"+tmp+"_t")  );
   }
 
   TH1D* counter_histo_numer = (TH1D*) counter_histo_proto.Clone("numer");
-  TH1D* counter_histo_numer_alt = (TH1D*) counter_histo_proto.Clone("numer_alt");
   TH1D* counter_histo_denom = (TH1D*) counter_histo_proto.Clone("denom");
-  TH1D* counter_histo_denom_alt = (TH1D*) counter_histo_proto.Clone("denom_alt");
-
+  
   int nT=0;
   int nL=0;
-  int nT_alt=0;
-  Double_t bin_values[this->getNjets(mode)*this->getNtracks(mode)][this->getNpts(mode)]={{0}}; Double_t bin_counters[this->getNjets(mode)*this->getNtracks(mode)][this->getNpts(mode)]={};
+  Double_t bin_values[this->getNjets(mode)*this->getNtracks(mode)][this->getNpts(mode)]={{0}}; 
+  Double_t bin_counters[this->getNjets(mode)*this->getNtracks(mode)][this->getNpts(mode)]={};
+  
+
+
+  
+
   loadFile(pre_main,"Events");
-  //Commence loop over tree
+  
+  // Start loop over tree
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
-  unsigned ntau=1; //only consider first tau, unless MULTITAU=1
-  //  std::cout <<" DOALL "<<" " " "<<" doCR "<<" " " "<<" this->isInCR(mode,i) "<<" " " "<<" this->isInSR(mode,i) "<< std::endl;
+  unsigned int tau_index=0; //only consider first tau, unless MULTITAU=1
+  unsigned ntau = 1;
+  
+
+  
+  // TString cutstringgg = this->getCRCutString(mode); // used with Draw: for the moment event loop is faster 
+  
+
+  int ccc_t = 0;
+  int ccc_l = 0;
+  
+  auto start = std::chrono::system_clock::now();
+  auto end  = std::chrono::system_clock::now();
+  std::chrono::duration<double> elapsed_seconds = end -start;
+
   for (Int_t jentry=0; jentry<nentries;jentry++) {
     event_s->GetEntry(jentry);
-    for (unsigned i=0; i<ntau; i++){
-      if ( !this->passesCuts(cuts,i) ) continue;
-      //if(pre_main.Contains("data"))cout << "Before" << endl;
-      if (  ( (mode & DOALL) && this->isInAll(mode,i) ) ||  ( doCR && this->isInCR(mode,i) ) || ( !doCR && this->isInSR(mode,i) )    ) {
-              //if(pre_main.Contains("data"))cout << "after" << endl;
-        nT=this->isTight(mode,i); nL=this->isLoose(mode,i); nT_alt=this->isTight_alt(mode,i);
-        if      (nT) {counter_histo_tight_CR->Fill(this->getBin(mode,i),event_s->weight_sf);}
-        if (nL) {counter_histo_loose_CR->Fill(this->getBin(mode,i),event_s->weight_sf);}
-        if (nT_alt) {counter_histo_tight_alt_CR->Fill(this->getBin(mode,i),event_s->weight_sf);}
+      
+    if (  ( doCR && this->isInCR(mode,tau_index) ) || ( !doCR && this->isInSR(mode,tau_index) )    ) {
+            
+      nT=this->isTight(mode,tau_index); 
+      nL=this->isLoose(mode,tau_index); 
+      
+      if (nT) {
+        ccc_t++;
+        counter_histo_tight_CR->Fill(    this->getBin(mode,tau_index),event_s->weight_sf);
+      }
+      else if (nL) {
+        ccc_l++;
+        counter_histo_loose_CR->Fill(    this->getBin(mode,tau_index),event_s->weight_sf);
 
-        if(nL){
-          Int_t pT_index=this->getPtIndex(mode,i);
-          Int_t njet_index=this->getNjetIndex(mode,i);
-          Int_t dm_index=this->getTrackIndex(mode,i);
-          bin_values[dm_index+this->getNtracks(mode)*njet_index][pT_index]=bin_values[dm_index+this->getNtracks(mode)*njet_index][pT_index]+event_s->alltau_pt->at(i)*event_s->weight_sf;
-          bin_counters[dm_index+this->getNtracks(mode)*njet_index][pT_index]=bin_counters[dm_index+this->getNtracks(mode)*njet_index][pT_index]+event_s->weight_sf;
+        // Below store sum_of_weights in bin_counters and sum of weighted tau pt in bin_values
+        Int_t pT_index=this->getPtIndex(mode,tau_index);
+        Int_t njet_index=this->getNjetIndex(mode,tau_index);
+        Int_t dm_index=this->getTrackIndex(mode,tau_index);
+
+        bin_values[dm_index+this->getNtracks(mode)*njet_index][pT_index]   += event_s->alltau_pt->at(tau_index)*event_s->weight_sf;
+        bin_counters[dm_index+this->getNtracks(mode)*njet_index][pT_index] += event_s->weight_sf;
+      }
+    }
+    
+  } //end loop over entries
+
+  end  = std::chrono::system_clock::now();
+  elapsed_seconds = end-start;
+
+  std::cout << "******************************************************" << std::endl;
+  std::cout << "Elapsed time (OLD): " << elapsed_seconds.count() << std::endl;
+  std::cout << "counter histo tight: " << counter_histo_tight_CR->GetEntries() << std::endl;
+  std::cout << "compare to : " << ccc_t << std::endl;
+  std::cout << "counter histo loose: " << counter_histo_loose_CR->GetEntries() << std::endl;
+  std::cout << "compare to : " << ccc_l << std::endl;
+  std::cout << "******************************************************" << std::endl;
+  
+  //using Draw instead
+  // start = std::chrono::system_clock::now();
+  // event_s->fChain->Draw( "1>>c_t", "weight_sf * "+cutstringgg + "*" + this->getWPCutString("tight"), "goff");
+  // event_s->fChain->Draw( "1>>c_l", "weight_sf * "+cutstringgg + "*" + this->getWPCutString("loose"), "goff");
+  // end  = std::chrono::system_clock::now();
+  // elapsed_seconds = end-start;
+  
+  // std::cout << "******************************************************" << std::endl;
+  // cout << "Elapsed time (NEW): " << elapsed_seconds.count() << endl;
+  // std::cout << "counter histo tight: " << counter_histo_tight_CR->GetEntries() << std::endl;
+  // std::cout << "compare to : " << ccc_t << std::endl;
+  // std::cout << "counter histo loose: " << counter_histo_loose_CR->GetEntries() << std::endl;
+  // std::cout << "compare to : " << ccc_l << std::endl;
+  // std::cout << "******************************************************" << std::endl;
+  
+  
+
+  if (DEBUG) std::cout<<"in "<<pre_main<<": "<<counter_histo_loose_CR->Integral(-1,-1) <<" loose, "<<counter_histo_tight_CR->Integral(-1,-1)<<" tight."<<std::endl;
+
+  ccc_t = 0;
+  ccc_l = 0;
+  TString tmp2; 
+  for (unsigned is=0; is<pre_sub.size(); is++){ // Loop over all backgrounds that need to be subtracted
+    
+    loadFile(pre_sub.at(is),"Events");
+    
+    ccc_t  = 0;
+    ccc_l  = 0;
+    nentries = Int_t(event_s->fChain->GetEntries());
+    
+    start = std::chrono::system_clock::now();
+    for (Int_t jentry=0; jentry<nentries;jentry++) {
+      
+      event_s->GetEntry(jentry);  
+      if (  ( doCR && this->isInCR(mode,tau_index) ) || ( !doCR && this->isInSR(mode,tau_index) )   ) {
+        nT=this->isTight(mode,tau_index); 
+        nL=this->isLoose(mode,tau_index); 
+       
+        if (nT) {
+          ccc_t++;
+          counter_histo_tight_CR_cont.at(is)->Fill(this->getBin(mode,tau_index),event_s->weight_sf);
+        }
+        else if (nL) {
+          counter_histo_loose_CR_cont.at(is)->Fill(this->getBin(mode,tau_index),event_s->weight_sf);
+          ccc_l++;
+
+          // Below store sum_of_weights in bin_counters and sum of weighted tau pt in bin_values
+          Int_t pT_index=this->getPtIndex(mode,tau_index);
+          Int_t njet_index=this->getNjetIndex(mode,tau_index);
+          Int_t dm_index=this->getTrackIndex(mode,tau_index);
+          bin_values[dm_index+this->getNtracks(mode)*njet_index][pT_index]=bin_values[dm_index+this->getNtracks(mode)*njet_index][pT_index]+event_s->alltau_pt->at(tau_index)*event_s->weight_sf*(-1);
+          bin_counters[dm_index+this->getNtracks(mode)*njet_index][pT_index]=bin_counters[dm_index+this->getNtracks(mode)*njet_index][pT_index]+event_s->weight_sf*(-1);
         }
       }
-    }
-  }//end loop over entries
+      
 
-  if (DEBUG) std::cout<<"in "<<pre_main<<": "<<counter_histo_loose_CR->Integral(-1,-1) <<" loose, "<<counter_histo_tight_CR->Integral(-1,-1)<<" tight, " <<counter_histo_tight_alt_CR->Integral(-1,-1)<<" loose tt."<<std::endl;
+    } // end loop over entries
+    if (DEBUG) std::cout<<std::endl<<"In contamination file "<<pre_sub.at(is)<<" "<< counter_histo_loose_CR_cont.at(is)->Integral(-1,-1) <<" loose "<<counter_histo_tight_CR_cont.at(is)->Integral(-1,-1)<<" tight."<<std::endl;
+    end  = std::chrono::system_clock::now();
+    elapsed_seconds = end-start;
+    std::cout << "******************************************************" << std::endl;
+    cout << "Elapsed time (OLD): " << elapsed_seconds.count() << endl;
+    std::cout << "counter histo tight: " << counter_histo_tight_CR_cont.at(is)->GetEntries() << std::endl;
+    std::cout << "compare to : " << ccc_t << std::endl;
+    std::cout << "counter histo loose: " << counter_histo_loose_CR_cont.at(is)->GetEntries() << std::endl;
+    std::cout << "compare to : " << ccc_l << std::endl;
+    std::cout << "******************************************************" << std::endl;
 
-  for (unsigned is=0; is<pre_sub.size(); is++){
-    loadFile(pre_sub.at(is),"Events");
-    //Commence loop over tree
-    nentries = Int_t(event_s->fChain->GetEntries());
-    for (Int_t jentry=0; jentry<nentries;jentry++) {
-      event_s->GetEntry(jentry);
-      for (unsigned i=0; i<ntau; i++){
-        if ( !this->passesCuts(cuts,i) ) continue;
-        if (  ( (mode & DOALL) && this->isInAll(mode,i) ) ||  ( doCR && this->isInCR(mode,i) ) || ( !doCR && this->isInSR(mode,i) )    ) {
-          nT=this->isTight(mode,i); nL=this->isLoose(mode,i); nT_alt=this->isTight_alt(mode,i);
-          if (nT) {counter_histo_tight_CR_cont.at(is)->Fill(this->getBin(mode,i),event_s->weight_sf);}
-          else if (nL) {counter_histo_loose_CR_cont.at(is)->Fill(this->getBin(mode,i),event_s->weight_sf);}
-          if (nT_alt) {counter_histo_tight_alt_CR_cont.at(is)->Fill(this->getBin(mode,i),event_s->weight_sf);}
+    
+    
+    // start = std::chrono::system_clock::now(); 
+    
+    // tmp2+=is;   
+    // event_s->fChain->Draw( "1>>c"+tmp2+"_t", "weight_sf * "+cutstringgg + "*" + this->getWPCutString("tight"), "goff");
+    // event_s->fChain->Draw( "1>>c"+tmp2+"_l", "weight_sf * "+cutstringgg + "*" + this->getWPCutString("loose"), "goff");
+    // end  = std::chrono::system_clock::now();
+    // elapsed_seconds = end-start;
+    
+    // std::cout << "******************************************************" << std::endl;
+    // cout << "Elapsed time (NEW): " << elapsed_seconds.count() << endl;
+    // std::cout << "counter histo tight: " << counter_histo_tight_CR_cont.at(is)->GetEntries() << std::endl;
+    // std::cout << "compare to : " << ccc_t << std::endl;
+    // std::cout << "counter histo loose: " << counter_histo_loose_CR_cont.at(is)->GetEntries() << std::endl;
+    // std::cout << "compare to : " << ccc_l << std::endl;
+    // std::cout << "******************************************************" << std::endl;
+    
+  }// end of loop over backgrounds
 
-          if(nL){
-            Int_t pT_index=this->getPtIndex(mode,i);
-            Int_t njet_index=this->getNjetIndex(mode,i);
-            Int_t dm_index=this->getTrackIndex(mode,i);
-            bin_values[dm_index+this->getNtracks(mode)*njet_index][pT_index]=bin_values[dm_index+this->getNtracks(mode)*njet_index][pT_index]+event_s->alltau_pt->at(i)*event_s->weight_sf*(-1);
-            bin_counters[dm_index+this->getNtracks(mode)*njet_index][pT_index]=bin_counters[dm_index+this->getNtracks(mode)*njet_index][pT_index]+event_s->weight_sf*(-1);
-          }
-      	}
-      }
-    }
-    if (DEBUG) std::cout<<std::endl<<"In contamination file "<<pre_sub.at(is)<<" "<< counter_histo_loose_CR_cont.at(is)->Integral(-1,-1) <<" loose "<<counter_histo_tight_CR_cont.at(is)->Integral(-1,-1)<<" tight, " <<counter_histo_tight_alt_CR_cont.at(is)->Integral(-1,-1)<<" loose tt."<<std::endl;
-  }
-  
+
+  // Maybe for later usage
+  // for (unsigned is=0; is<pre_sub.size(); is++){
+  //   loadFile(pre_sub.at(is),"Events");
+        // TString tmp2; tmp2+=is;
+        // std::cout << "value of tmp2 " << tmp2 << std::endl;
+        
+        // event_s->fChain->Draw( "1>>c"+tmp2+"_t", "weight_sf * "+cutstringgg + "*" + this->getWPCutString("tight"), "goff");
+        // event_s->fChain->Draw( "1>>c"+tmp2+"_l", "weight_sf * "+cutstringgg + "*" + this->getWPCutString("loose"), "goff");
+      
+  // }
+
+
+
+
   counter_histo_numer->Add(counter_histo_tight_CR);
-  counter_histo_numer_alt->Add(counter_histo_tight_alt_CR);
   counter_histo_denom->Add(counter_histo_loose_CR);
-  counter_histo_denom_alt->Add(counter_histo_loose_CR);
-
+  
   for (unsigned is=0; is<pre_sub.size(); is++){
     counter_histo_numer->Add(counter_histo_tight_CR_cont.at(is),-1.);
-    counter_histo_numer_alt->Add(counter_histo_tight_alt_CR_cont.at(is),-1.);
     counter_histo_denom->Add(counter_histo_loose_CR_cont.at(is),-1.);
-    counter_histo_denom_alt->Add(counter_histo_loose_CR_cont.at(is),-1.);
   }
 
-  TString ff_file=FF_file; //if(calcVTightFF)ff_file.ReplaceAll(".root","_VTight.root");
+  TString ff_file=FF_file; 
   TFile f(ff_file,"RECREATE");
   f.cd();
   
-  fakefactor_histo = counter_histo_numer; fakefactor_histo_alt = counter_histo_numer_alt;
+  fakefactor_histo = counter_histo_numer; 
+  
   //  fakefactor_histo->Divide(counter_histo_denom); //uncorrelated errors
-  fakefactor_histo->Divide(fakefactor_histo,counter_histo_denom,1,1,"B"); //binomial errors
+  fakefactor_histo->Divide(fakefactor_histo,counter_histo_denom,1,1); //Gaussian error propagation
   fakefactor_histo->SetTitle("Fakefactor");
   fakefactor_histo->SetName("c_t");
   fakefactor_histo->Write();
-  fakefactor_histo_alt->Divide(fakefactor_histo_alt,counter_histo_denom_alt,1,1,"B"); //binomial errors
-  fakefactor_histo_alt->SetTitle("Fakefactor");
-  fakefactor_histo_alt->SetName("c_t_alt");
-  fakefactor_histo_alt->Write();
+  
 
-
+  // filling histogram weighted_bin_center_loose in loose background control region CR
   for(Int_t ijets=0;ijets<this->getNjets(mode);ijets++){
     for(Int_t idm=0;idm<this->getNtracks(mode);idm++){
       for(Int_t ipt=0;ipt<this->getNpts(mode);ipt++){
-	if (DEBUG){
-	  cout << "Weighted: " << bin_values[idm+ijets*this->getNtracks(mode)][ipt] << endl;
-	  cout << "Counted: " << bin_counters[idm+ijets*this->getNtracks(mode)][ipt] << endl;
-	  cout << "Ratio: " << bin_values[idm+ijets*this->getNtracks(mode)][ipt]/bin_counters[idm+ijets*this->getNtracks(mode)][ipt] << endl;
-	}
+        std::cout << "ijets: " << ijets << " idm: " << idm << " ipt: " << ipt << std::endl;
+        if (DEBUG){
+          cout << "Weighted: " << bin_values[idm+ijets*this->getNtracks(mode)][ipt] << endl;
+          cout << "Counted: " << bin_counters[idm+ijets*this->getNtracks(mode)][ipt] << endl;
+          cout << "Ratio: " << bin_values[idm+ijets*this->getNtracks(mode)][ipt]/bin_counters[idm+ijets*this->getNtracks(mode)][ipt] << endl;
+        }
         weighted_bin_center_loose->SetBinContent(ipt+this->getNpts(mode)*idm + (this->getNpts(mode)*this->getNtracks(mode))*ijets + 1,bin_values[idm+ijets*this->getNtracks(mode)][ipt]/bin_counters[idm+ijets*this->getNtracks(mode)][ipt] ); 
       }      
     }
   }
   weighted_bin_center_loose->Write();
                                                
-                                               
-
-                                               
-
+            
   
   f.Close();
 
@@ -994,19 +1105,10 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
     }
   }
   
-  if (mode & VSVAR) return;
-
-  
-  if (DEBUG){
-    std::cout << std::endl;
-    std::cout << "Value\t\tError"<<std::endl;
-    for(int i=0;i<this->nBins(mode);i++) {
-      std::cout << fakefactor_histo->GetBinContent(i+1)<<"\t"<<fakefactor_histo->GetBinError(i+1)<<std::endl;
-    }
-    std::cout << std::endl;
-  }
   
 }
+
+
 
 TH1D* FFCalculator::setCorrValue(const TString fname, const TString hname){
   TFile *fc = new TFile(fname);

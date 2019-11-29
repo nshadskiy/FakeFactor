@@ -107,7 +107,7 @@ void TNtupleAnalyzer::select(const TString preselectionFile, const Int_t mode)
       }
     } 
     else{
-      if (jentry%100000 == 0) {
+      if (jentry%1000000 == 0) {
       cout << "Event " << jentry << " is processed: " << jentry / nentries * 100 << "% of total" << endl;
       }
     }

@@ -108,9 +108,9 @@ TString GlobalClass::getWPCutString(const TString isolation, const Int_t mode, c
   }
   
 
-  if (DEBUG) {
-    std::cout << "Returning the following WP cut string: " << "("+s_genmatch + "*" + s_fulfill + "*" + s_fail+")" <<std::endl;
-  }
+  // if (DEBUG) {
+  //   std::cout << "Returning the following WP cut string: " << "("+s_genmatch + "*" + s_fulfill + "*" + s_fail+")" <<std::endl;
+  // }
   return "("+s_genmatch + "*" + s_fulfill + "*" + s_fail+")";
 }
 
@@ -591,15 +591,18 @@ Int_t GlobalClass::getBin(const Int_t mode, const Int_t ind)
   //else if ( (mode & _TT) ) {n_p=n_p_TT;n_e=n_e_TT;n_t=n_t_TT;n_j=n_j_TT;}
   else if ( (mode & _QCD) && (mode & _AI) ) {n_p=n_p_QCD_AI;n_e=n_e_QCD;n_t=n_t_QCD;n_j=n_j_QCD;}
   else if ( (mode & _QCD) )     {n_p=n_p_QCD;n_e=n_e_QCD;n_t=n_t_QCD;n_j=n_j_QCD;}
-  //  else {cout<<"getBin: Define a valid MODE!"<<std::endl;n_p=-99;n_e=-99;n_t=-99;}
+  else {cout<<"getBin: Define a valid MODE!"<<std::endl;n_p=-99;n_e=-99;n_t=-99;}
   Int_t bin=i_e + i_p*n_e + i_t*n_p*n_e + i_j*n_t*n_p*n_e;
   // std::cout<<i_e<<" "<<i_p<<" "<<i_t<<" "<<bin<<" "<<std::endl;
-
+  // std::cout << bin << std::endl;
   return(bin);// combined index of track-pt-eta bin
 }
 
 Int_t GlobalClass::nBins(const Int_t mode)
 {
+  /* 
+  This function returns the number of bins depending on the mode.  
+  */
   if (mode & VSVAR){
     if (mode & _FIT ) return nFIT_BINS;
     else if ( ( mode & MT ) || ( mode & MTLL ) ) return p_mt_n;
@@ -613,8 +616,18 @@ Int_t GlobalClass::nBins(const Int_t mode)
   if (mode & _W_JETS) return(n_e_Wjets*n_p_Wjets*n_t_Wjets*n_m_Wjets*n_j_Wjets);
   else if ( (mode & _DY) ) return(n_e_DY*n_p_DY*n_t_DY*n_m_DY*n_j_DY);
   else if ( (mode & _TT) && (mode & SR) ) return(n_e_TT*n_p_TT_SR*n_t_TT*n_m_TT*n_j_TT_SR);
-  else if ( (mode & _TT) ) return(n_e_TT*n_p_TT_CR*n_t_TT*n_m_TT*n_j_TT_CR);
-  //else if ( (mode & _TT) && (mode & SR) ) return(n_e_TT*n_p_TT*n_t_TT*n_m_TT*n_j_TT);
+  else if ( (mode & _TT) ) {
+    // if (DEBUG) {
+    //   std::cout << "Number of eta bins: " << n_e_TT << std::endl;
+    //   std::cout << "Number of pt bins: " << n_p_TT_CR << std::endl;
+    //   std::cout << "Number of decay mode bins: " << n_t_TT << std::endl;
+    //   std::cout << "Number of mT bins: " << n_m_TT << std::endl;
+    //   std::cout << "Number of Njet bins: " << n_j_TT_CR << std::endl;
+      
+    // }
+    return(n_e_TT*n_p_TT_CR*n_t_TT*n_m_TT*n_j_TT_CR);
+  }
+  
   else if ( (mode & _QCD) && (mode & _AI) ) return(n_e_QCD*n_p_QCD_AI*n_t_QCD*n_m_QCD*n_m_QCD*n_j_QCD);
   else if ( (mode & _QCD) )   return(n_e_QCD*n_p_QCD*n_t_QCD*n_m_QCD*n_m_QCD*n_j_QCD);
 

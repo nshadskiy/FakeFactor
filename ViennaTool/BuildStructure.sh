@@ -1,6 +1,6 @@
 #!/bin/bash
 user=$USER
-fftype=test_wip
+fftype=ff_v14_KIT_emb
 
 line=" -------------------------------------------"
 echo "###### START of BuildStructure.sh ######"
