@@ -27,7 +27,9 @@ void fitFakeFactors(){
   TString pmc=path_ff_mc;             if ( ( !DOQCD && DOMC ) || CHAN!=kMU ) pmc=path_ff_mc_woQCD;
   TString psmc=preselection_MCsum;    if ( ( !DOQCD && DOMC ) || CHAN!=kMU ) psmc=preselection_MCsum_woQCD;
 
-  vector<TString> tight_cats; tight_cats.push_back("c_t"); tight_cats.push_back("c_t_alt");
+  vector<TString> tight_cats; tight_cats.push_back("c_t"); 
+  
+  // tight_cats.push_back("c_t_alt");
   vector<Int_t> modes; modes.push_back(_QCD); modes.push_back(_QCD|_AI); if(CHAN!=kTAU){modes.push_back(_W_JETS); modes.push_back(_W_JETS); modes.push_back(_TT);}
   vector<TString> fake_histos; fake_histos.push_back(p+FF_corr_QCD_MCsum_noGen); fake_histos.push_back(p+FF_corr_QCD_MCsum_noGen_AI); if(CHAN!=kTAU){fake_histos.push_back(p+FF_corr_Wjets_MCsum_noGen);  fake_histos.push_back(p+FF_corr_Wjets_MC_noGen); fake_histos.push_back(p+FF_TT_J_only_SR);}
   vector<Int_t> dm_bins; dm_bins.push_back(N_t_QCD); dm_bins.push_back(N_t_QCD); if(CHAN!=kTAU){dm_bins.push_back(N_t_Wjets); dm_bins.push_back(N_t_Wjets); dm_bins.push_back(N_t_TT);}
