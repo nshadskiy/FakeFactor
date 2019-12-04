@@ -40,7 +40,7 @@ if [ "$channel" != " kTAU" ]; then ff_tocheck+=' ff_Wjets_dm?_njet?_??.pdf ff_Wj
 
 
 sh BuildStructure.sh
-exit
+
 cd ../
 echo "Compiling the framework... "
 
