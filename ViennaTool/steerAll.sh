@@ -31,13 +31,8 @@ echo Name: $analysis
 echo doNjetBinning: $njetbinning
 echo NTuples: $ntuples
 
-sed s/user=\"whoami\"/user=\"$USER\"/g Settings.h >/tmp/Settings$USER.h
-yes | mv /tmp/Settings$USER.h Settings.h
-sed s/user=user/user=$USER/g BuildStructure_template.sh >/tmp/BuildStructure$USER.sh
-yes | mv /tmp/BuildStructure$USER.sh BuildStructure0.sh
-sed s/fftype=fftype/fftype=$analysis/g BuildStructure0.sh >/tmp/BuildStructure$USER.sh
+sed s/fftype=.*/fftype=$analysis/g BuildStructure.sh >/tmp/BuildStructure$USER.sh
 yes | mv /tmp/BuildStructure$USER.sh BuildStructure.sh
-yes | rm BuildStructure0.sh
 
 
 ff_tocheck='ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf'
@@ -45,7 +40,7 @@ if [ "$channel" != " kTAU" ]; then ff_tocheck+=' ff_Wjets_dm?_njet?_??.pdf ff_Wj
 
 
 sh BuildStructure.sh
-
+exit
 cd ../
 echo "Compiling the framework... "
 
