@@ -31,13 +31,8 @@ echo Name: $analysis
 echo doNjetBinning: $njetbinning
 echo NTuples: $ntuples
 
-sed s/user=\"whoami\"/user=\"$USER\"/g Settings.h >/tmp/Settings$USER.h
-yes | mv /tmp/Settings$USER.h Settings.h
-sed s/user=user/user=$USER/g BuildStructure_template.sh >/tmp/BuildStructure$USER.sh
-yes | mv /tmp/BuildStructure$USER.sh BuildStructure0.sh
-sed s/fftype=fftype/fftype=$analysis/g BuildStructure0.sh >/tmp/BuildStructure$USER.sh
+sed s/fftype=.*/fftype=$analysis/g BuildStructure.sh >/tmp/BuildStructure$USER.sh
 yes | mv /tmp/BuildStructure$USER.sh BuildStructure.sh
-yes | rm BuildStructure0.sh
 
 
 ff_tocheck='ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf'
@@ -67,6 +62,15 @@ if [ $embedding == 1 ] || [ $ntuples == "KIT" ]; then
         done
     fi
     wait
+	if [ $embedding == 1 ] ; then
+		if [ $chan == 'tt' ]; then
+			cp /ceph/$USER/$analysis/preselection/${chan}/preselection_TT_J_DC_EMB.root /ceph/$USER/$analysis/preselection/${chan}/preselection_TT_J_DC.root
+		else 	
+			cp /ceph/$USER/$analysis/preselection/${chan}/preselection_TT_J_EMB.root /ceph/$USER/$analysis/preselection/${chan}/preselection_TT_J.root
+		fi
+	fi
+	
+	
  	echo "Switch back and compile again"
  	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
  	mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
