@@ -733,9 +733,9 @@ void combineWSystematics( TString fW_nonclosure, TString sys_nonclosure, TString
       //overwriting overflow bin (otherwise: inf error):
       if( j == 2000) out_t->SetBinContent(i,j, out_t->GetBinContent(i,j-1));
       if( i == 2000) out_t->SetBinContent(i,j, out_t->GetBinContent(i-1,j));
-      if( out_t->GetBinContent(i,j) > 1){
-        cout << i << " " << j << " " << out_t->GetBinContent(i,j) << endl;
-      } 
+      // if( out_t->GetBinContent(i,j) > 1){
+      //   cout << i << " " << j << " " << out_t->GetBinContent(i,j) << endl;
+      // } 
     }
   }
   out_t->SetBinContent(2000,2000, out_t->GetBinContent(2000,1999) );
