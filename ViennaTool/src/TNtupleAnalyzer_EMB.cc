@@ -50,12 +50,17 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
   weight=1.;
   if( !preselectionFile.Contains("preselection_data")){
     if( !preselectionFile.Contains("preselection_EMB")){
-      float trgWeight = 1.;
-      if ((event->pt_1 < 23) && event->trg_mutaucross>0.5) {
-        trgWeight = event->crossTriggerDataEfficiencyWeight_1/event->crossTriggerMCEfficiencyWeight_1;
+      float trgWeight = 1.0;
+      if( CHAN == kMU ) {
+        trgWeight = ((event->trg_singlemuon)*event->singleTriggerDataEfficiencyWeightKIT_1+(event->pt_1 < 23 * event->trg_mutaucross * abs(event->eta_2)<2.1)*event->crossTriggerDataEfficiencyWeightKIT_1*((abs(event->eta_2)<2.1)*((event->byTightDeepTau2017v2p1VSjet_2<0.5 * event->byVLooseDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerDataEfficiencyWeight_vloose_DeepTau_2 + (event->byTightDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerDataEfficiencyWeight_tight_DeepTau_2)))/((event->trg_singlemuon)*event->singleTriggerMCEfficiencyWeightKIT_1+(event->pt_1 < 23 * event->trg_mutaucross * abs(event->eta_2)<2.1)*event->crossTriggerMCEfficiencyWeightKIT_1*((abs(event->eta_2)<2.1)*((event->byTightDeepTau2017v2p1VSjet_2<0.5 * event->byVLooseDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerMCEfficiencyWeight_vloose_DeepTau_2 + (event->byTightDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerMCEfficiencyWeight_tight_DeepTau_2))+((abs(event->eta_2)>2.1)));
       }
-      else if ((event->trg_singlemuon)>0.5) {
-        trgWeight = event->singleTriggerDataEfficiencyWeightKIT_1/event->singleTriggerMCEfficiencyWeightKIT_1;
+      else if( CHAN == kEL ) {
+        if ((event->trg_singleelectron)>0.5) {
+          trgWeight = event->singleTriggerDataEfficiencyWeightKIT_1/event->singleTriggerMCEfficiencyWeightKIT_1;
+      }
+      }
+      else if ( CHAN == kTAU ) {
+        trgWeight = (((abs(event->eta_2)<2.1)*((event->byTightDeepTau2017v2p1VSjet_1<0.5 * event->byVLooseDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerDataEfficiencyWeight_vloose_DeepTau_1 + (event->byTightDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerDataEfficiencyWeight_tight_DeepTau_1))*((abs(event->eta_2)<2.1)*((event->byTightDeepTau2017v2p1VSjet_2<0.5 * event->byVLooseDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerDataEfficiencyWeight_vloose_DeepTau_2 + (event->byTightDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerDataEfficiencyWeight_tight_DeepTau_2)))/(((abs(event->eta_2)<2.1)*((event->byTightDeepTau2017v2p1VSjet_1<0.5 * event->byVLooseDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerMCEfficiencyWeight_vloose_DeepTau_1 + (event->byTightDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerMCEfficiencyWeight_tight_DeepTau_1))*((abs(event->eta_2)<2.1)*((event->byTightDeepTau2017v2p1VSjet_2<0.5 * event->byVLooseDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerMCEfficiencyWeight_vloose_DeepTau_2 + (event->byTightDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerMCEfficiencyWeight_tight_DeepTau_2)));
       }
       if (trgWeight>10.0) {
         trgWeight = 1.0;
@@ -99,38 +104,18 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
     }else{
       float trgWeight = 1.;
       if( CHAN == kMU ) {
-        if ((event->pt_1 < 23) && event->trg_mutaucross>0.5) {
-          trgWeight = event->crossTriggerDataEfficiencyWeight_1/event->crossTriggerMCEfficiencyWeight_1;
-        }
-        else if ((event->trg_singlemuon)>0.5) {
-          trgWeight = event->singleTriggerDataEfficiencyWeightKIT_1/event->singleTriggerMCEfficiencyWeightKIT_1;
-        }
-        if (trgWeight>10.0) {
-          trgWeight = 1.0;
-        }
+          trgWeight = ((event->trg_singlemuon)*event->singleTriggerDataEfficiencyWeightKIT_1 + (event->pt_1 < 23 && event->trg_mutaucross)*event->crossTriggerDataEfficiencyWeightKIT_1*((event->byTightDeepTau2017v2p1VSjet_2<0.5 && event->byVLooseDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerDataEfficiencyWeight_vloose_DeepTau_2 + (event->byTightDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerDataEfficiencyWeight_tight_DeepTau_2))/((event->trg_singlemuon)*event->singleTriggerEmbeddedEfficiencyWeightKIT_1 + (event->pt_1 < 23 && event->trg_mutaucross)*event->crossTriggerEmbeddedEfficiencyWeightKIT_1*((event->byTightDeepTau2017v2p1VSjet_2<0.5 && event->byVLooseDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerEMBEfficiencyWeight_vloose_DeepTau_2 + (event->byTightDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerEMBEfficiencyWeight_tight_DeepTau_2));
       }
       else if( CHAN == kEL ) {
         if ((event->trg_singleelectron)>0.5) {
-          trgWeight = event->singleTriggerDataEfficiencyWeightKIT_1/event->singleTriggerMCEfficiencyWeightKIT_1;
-        }
-        if (trgWeight>10.0) {
-          trgWeight = 1.0;
-        }
-      }
+          trgWeight = event->singleTriggerDataEfficiencyWeightKIT_1/event->singleTriggerEmbeddedEfficiencyWeightKIT_1;
+      }}
       else {
-        if (event->byTightDeepTau2017v2p1VSjet_1>0.5) {
-          trgWeight *= (event->crossTriggerDataEfficiencyWeight_tight_DeepTau_1/event->crossTriggerEMBEfficiencyWeight_tight_DeepTau_1);
-        }
-        else if (event->byVLooseDeepTau2017v2p1VSjet_1>0.5) {
-          trgWeight *= (event->crossTriggerDataEfficiencyWeight_vloose_DeepTau_1/event->crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1);
-        }
-        if (event->byTightDeepTau2017v2p1VSjet_2>0.5) {
-          trgWeight *= (event->crossTriggerDataEfficiencyWeight_tight_DeepTau_2/event->crossTriggerEMBEfficiencyWeight_tight_DeepTau_2);
-        }
-        else if (event->byVLooseDeepTau2017v2p1VSjet_2>0.5) {
-          trgWeight *= (event->crossTriggerDataEfficiencyWeight_vloose_DeepTau_2/event->crossTriggerEMBEfficiencyWeight_vloose_DeepTau_2);
-        }
+        trgWeight = (((event->byTightDeepTau2017v2p1VSjet_1<0.5 * event->byVLooseDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerDataEfficiencyWeight_vloose_DeepTau_1 + (event->byTightDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerDataEfficiencyWeight_tight_DeepTau_1)*((event->byTightDeepTau2017v2p1VSjet_2<0.5 * event->byVLooseDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerDataEfficiencyWeight_vloose_DeepTau_2 + (event->byTightDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerDataEfficiencyWeight_tight_DeepTau_2))/(((event->byTightDeepTau2017v2p1VSjet_1<0.5 * event->byVLooseDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1 + (event->byTightDeepTau2017v2p1VSjet_1>0.5)*event->crossTriggerEMBEfficiencyWeight_tight_DeepTau_1)*((event->byTightDeepTau2017v2p1VSjet_2<0.5 * event->byVLooseDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerEMBEfficiencyWeight_vloose_DeepTau_2 + (event->byTightDeepTau2017v2p1VSjet_2>0.5)*event->crossTriggerEMBEfficiencyWeight_tight_DeepTau_2));
       }  
+      if (trgWeight>10.0) {
+         trgWeight = 1.0;
+        }
       if (event->generatorWeight<=1.0) {
       weight *= event->generatorWeight * event->muonEffTrgWeight * event->embeddedDecayModeWeight * event->muonEffIDWeight_1 * event->muonEffIDWeight_2 * event->idWeight_1 * event->isoWeight_1 * trgWeight;
       // float extra_iso_weight = 1.0;
