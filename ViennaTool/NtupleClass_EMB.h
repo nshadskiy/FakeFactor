@@ -83,8 +83,9 @@ public :
    Float_t        singleTriggerMCEfficiencyWeightKIT_1;
    Float_t        singleTriggerDataEfficiencyWeightKIT_1;
    Float_t        singleTriggerEmbeddedEfficiencyWeightKIT_1;
-   Float_t        crossTriggerMCEfficiencyWeight_1;
-   Float_t        crossTriggerDataEfficiencyWeight_1;
+   Float_t        crossTriggerMCEfficiencyWeightKIT_1;
+   Float_t        crossTriggerDataEfficiencyWeightKIT_1;
+   Float_t        crossTriggerEmbeddedEfficiencyWeightKIT_1;
 
    Float_t         topWeight;
    Float_t         topWeight_run1;
@@ -530,8 +531,9 @@ public :
    TBranch        *b_singleTriggerMCEfficiencyWeightKIT_1;
    TBranch        *b_singleTriggerDataEfficiencyWeightKIT_1;
    TBranch        *b_singleTriggerEmbeddedEfficiencyWeightKIT_1;
-   TBranch        *b_crossTriggerMCEfficiencyWeight_1;
-   TBranch        *b_crossTriggerDataEfficiencyWeight_1;
+   TBranch        *b_crossTriggerMCEfficiencyWeightKIT_1;
+   TBranch        *b_crossTriggerDataEfficiencyWeightKIT_1;
+   TBranch        *b_crossTriggerEmbeddedEfficiencyWeightKIT_1;
 
    TBranch        *b_zpt_weight_nom;   //!
    TBranch        *b_zpt_weight_esup;   //!
@@ -1118,9 +1120,9 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("singleTriggerDataEfficiencyWeightKIT_1", &singleTriggerDataEfficiencyWeightKIT_1, &b_singleTriggerDataEfficiencyWeightKIT_1);
    fChain->SetBranchAddress("singleTriggerEmbeddedEfficiencyWeightKIT_1", &singleTriggerEmbeddedEfficiencyWeightKIT_1, &b_singleTriggerEmbeddedEfficiencyWeightKIT_1);
    fChain->SetBranchAddress("singleTriggerEmbeddedEfficiencyWeightKIT_1", &singleTriggerEmbeddedEfficiencyWeightKIT_1, &b_singleTriggerEmbeddedEfficiencyWeightKIT_1);
-   fChain->SetBranchAddress("crossTriggerMCEfficiencyWeight_1", &crossTriggerMCEfficiencyWeight_1, &b_crossTriggerMCEfficiencyWeight_1);
-   fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_1", &crossTriggerDataEfficiencyWeight_1, &b_crossTriggerDataEfficiencyWeight_1);
-
+   fChain->SetBranchAddress("crossTriggerMCEfficiencyWeightKIT_1", &crossTriggerMCEfficiencyWeightKIT_1, &b_crossTriggerMCEfficiencyWeightKIT_1);
+   fChain->SetBranchAddress("crossTriggerDataEfficiencyWeightKIT_1", &crossTriggerDataEfficiencyWeightKIT_1, &b_crossTriggerDataEfficiencyWeightKIT_1);
+   fChain->SetBranchAddress("crossTriggerEmbeddedEfficiencyWeightKIT_1", &crossTriggerEmbeddedEfficiencyWeightKIT_1, &b_crossTriggerEmbeddedEfficiencyWeightKIT_1);
 
    fChain->SetBranchAddress("eleTauFakeRateWeight", &eleTauFakeRateWeight, &b_eleTauFakeRateWeight);
 
