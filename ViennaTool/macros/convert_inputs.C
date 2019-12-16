@@ -66,8 +66,8 @@ void convert_inputs(Int_t inclusive=1, Int_t categoryMode=0){
     fout_n3d="FakeFactors_Data_W_3D.root";
     //conv_th1_to_th2( d+fn , hn , hnout , o+fout_n , 0 );
     if(CHAN!=kTAU)conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
-    // hn="c_t_alt";
-    // fout_n3d="FakeFactors_Data_W_3D_alt.root";
+    hn="c_t_alt";
+    fout_n3d="FakeFactors_Data_W_3D_alt.root";
     if(CHAN!=kTAU)conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
     
     fn="FF_corr_DY_MCsum_noGen.root";
@@ -85,8 +85,8 @@ void convert_inputs(Int_t inclusive=1, Int_t categoryMode=0){
     hnout3d="FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode";
     //conv_th1_to_th2( d+fn , hn , o+fout_n , hnout , 0 );
     if(CHAN!=kTAU)conv_th1_to_th3( d+fn , hn , hnout3d, o+fout_n3d );
-    // hn="c_t_alt";
-    // fout_n3d="FakeFactors_Data_TT_3D_alt.root";
+    hn="c_t_alt";
+    fout_n3d="FakeFactors_Data_TT_3D_alt.root";
     if(CHAN!=kTAU)conv_th1_to_th3( d+fn , hn , hnout3d, o+fout_n3d );
     
     fn="FF_corr_QCD_MCsum_noGen"+AIstring+vtightString+".root";
@@ -98,8 +98,8 @@ void convert_inputs(Int_t inclusive=1, Int_t categoryMode=0){
     fout_n3d="FakeFactors_Data_QCD_3D.root";
     //conv_th1_to_th2( d+fn , hn , hnout , o+fout_n , 0 );
     conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
-    // hn="c_t_alt";
-    // fout_n3d="FakeFactors_Data_QCD_3D_alt.root";
+    hn="c_t_alt";
+    fout_n3d="FakeFactors_Data_QCD_3D_alt.root";
     conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
 
     if(!DOMC){
@@ -124,6 +124,7 @@ void convert_inputs(Int_t inclusive=1, Int_t categoryMode=0){
             convert_corrections( d+FF_corr_QCD_MCsum_noGen_muisocorr_1jet,    "muiso_QCD",        o+"Correction_Data_QCD_MuIso_1jet.root", "QCD_SS_Data_FFSSMuMediumData_isomu_correction");
           }
           convert_corrections( d+FF_corr_Wjets_MCsum_noGen_nonclosure,      "nonclosure_Wjets", o+"Correction_Data_W_MVis.root",         "W_OS_Data_FFOSData_mvis_correction");
+          convert_corrections( d+FF_corr_Wjets_MCsum_noGen_nonclosure_lepPt,      "nonclosure_Wjets", o+"Correction_Data_W_lepPt.root",         "W_OS_Data_FFOSData_lepPt_correction");
           if( doNJetBinning ){
             convert_corrections( d+FF_corr_Wjets_MCsum_noGen_nonclosure_0jet, "nonclosure_Wjets", o+"Correction_Data_W_MVis_0jet.root",    "W_OS_Data_FFOSData_mvis_correction");
             convert_corrections( d+FF_corr_Wjets_MCsum_noGen_nonclosure_1jet, "nonclosure_Wjets", o+"Correction_Data_W_MVis_1jet.root",    "W_OS_Data_FFOSData_mvis_correction");
@@ -349,7 +350,7 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
     for (int idm=0; idm<N_D2; idm++){
       for (int ijet=0; ijet<N_D3; ijet++){
         stringstream fitted_histo; fitted_histo << "dm" << idm << "_njet" << ijet;
-        // if(hn.Contains("alt")) fitted_histo << "_alt";
+        if(hn.Contains("alt")) fitted_histo << "_alt";
         TGraphAsymmErrors *h=(TGraphAsymmErrors*) f->Get(fitted_histo.str().c_str());
         double x=0; double cont=0;
         for (int ipt=0; ipt<fitBins; ipt++){
