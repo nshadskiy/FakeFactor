@@ -45,13 +45,13 @@ cd ../
 echo "Compiling the framework... "
 
 make -B -j 4
-
+if [ $do_presel == 1 ]; then
 for process in DY EMB Data VV TT WJets
 do
 ./Preselection_KIT $process &
 done
 wait
-
+fi
 
 ./SRHisto &
 ./CRHisto &
