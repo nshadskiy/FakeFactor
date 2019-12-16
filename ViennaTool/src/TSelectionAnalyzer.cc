@@ -45,8 +45,8 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
     looseSR = new TH1D("hh_l_svfit","Loose events in SR"+suff,nbins_svfit,hist_min_svfit,hist_max_svfit);
   }
   else if (mode & LEPPT) {                                      
-    tightSR = new TH1D("hh_t_lepPt","Tight events in SR"+suff,nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
-    looseSR = new TH1D("hh_l_lepPt","Loose events in SR"+suff,nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+    tightSR = new TH1D("hh_t_lepPt","Tight events in SR"+suff,w_lepPt_n,w_lepPt_v);
+    looseSR = new TH1D("hh_l_lepPt","Loose events in SR"+suff,w_lepPt_n,w_lepPt_v);
   }
   
   else {
@@ -125,8 +125,8 @@ void TSelectionAnalyzer::getCRHisto(TString preselection,Int_t mode,TString outp
     looseCR = new TH1D("hh_l_muiso","",w_muiso_n,w_muiso_v);
   }
   else if (mode & LEPPT) {
-    tightCR = new TH1D("hh_t_lepPt","",FI*nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
-    looseCR = new TH1D("hh_l_lepPt","",FI*nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+    tightCR = new TH1D("hh_t_lepPt","",w_lepPt_n,w_lepPt_v);
+    looseCR = new TH1D("hh_l_lepPt","",w_lepPt_n,w_lepPt_v);
   }
   else {
     std::cout<<"ERROR: no valid mode given. Exiting TNtupleAnalyzer::getCRHisto..."<<std::endl;
