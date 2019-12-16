@@ -44,46 +44,13 @@ sh BuildStructure.sh
 cd ../
 echo "Compiling the framework... "
 
-if [ $embedding == 1 ] || [ $ntuples == "KIT" ]; then
-	if [ $do_presel == 1 ]; then
- 	echo "Extra turnaround for embedded samples starts"
- 	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
- 	mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
- 	mv ViennaTool/src/TNtupleAnalyzer.cc ViennaTool/src/TNtupleAnalyzer_NonEMB.cc
-	mv ViennaTool/src/TNtupleAnalyzer_EMB.cc ViennaTool/src/TNtupleAnalyzer.cc
- 	make -B -j 4
-
-    if [ $ntuples != "KIT" ]; then
-        ./Preselection_KIT
-    else
-        for process in DY EMB Data VV TT WJets
-        do
-     	    ./Preselection_KIT $process &
-        done
-    fi
-    wait
-	if [ $embedding == 1 ] ; then
-		if [ $chan == 'tt' ]; then
-			cp /ceph/$USER/$analysis/preselection/${chan}/preselection_TT_J_DC_EMB.root /ceph/$USER/$analysis/preselection/${chan}/preselection_TT_J_DC.root
-		else 	
-			cp /ceph/$USER/$analysis/preselection/${chan}/preselection_TT_J_EMB.root /ceph/$USER/$analysis/preselection/${chan}/preselection_TT_J.root
-		fi
-	fi
-	
-	
- 	echo "Switch back and compile again"
- 	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
- 	mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
- 	mv ViennaTool/src/TNtupleAnalyzer.cc ViennaTool/src/TNtupleAnalyzer_EMB.cc
- 	mv ViennaTool/src/TNtupleAnalyzer_NonEMB.cc ViennaTool/src/TNtupleAnalyzer.cc
-	fi
-fi
-
 make -B -j 4
 
-if [ $ntuples != "KIT" ] && [ $do_presel == 1 ]; then
-    ./Preselection 
-fi
+for process in DY EMB Data VV TT WJets
+do
+./Preselection_KIT $process &
+done
+wait
 
 
 ./SRHisto &
