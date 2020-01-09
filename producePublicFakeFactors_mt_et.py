@@ -33,10 +33,10 @@ for x in range(0,len(categories)):
     # Individual fake factors
     ff_qcd_os = FakeFactor(vars=['tau_pt', 'tau_decay', 'njets', 'mvis', 'mt', 'mu_iso'])
     ff_qcd_ss = FakeFactor(vars=['tau_pt', 'tau_decay', 'mvis', 'mu_iso'])
-    ff_w      = FakeFactor(vars=['tau_pt', 'tau_decay', 'njets', 'mvis', 'mt'])
+    ff_w      = FakeFactor(vars=['tau_pt', 'tau_decay', 'njets', 'lep_pt', 'mt'])
     ff_tt     = FakeFactor(vars=['tau_pt', 'tau_decay', 'njets', 'mvis', 'mt'])
     # Combined fake factor
-    ff_comb   = FakeFactor(vars=['tau_pt', 'tau_decay', 'njets', 'mvis', 'mt', 'mu_iso', 'frac_qcd', 'frac_w', 'frac_tt'])
+    ff_comb   = FakeFactor(vars=['tau_pt', 'tau_decay', 'njets', 'mvis', 'lep_pt', 'mt', 'mu_iso', 'frac_qcd', 'frac_w', 'frac_tt'])
     
     
     home = os.getenv('HOME')
@@ -176,7 +176,7 @@ for x in range(0,len(categories)):
     
     w = Node(
         name='ff_w',
-        formula='{mtcorr_w}*{ff_raw_w}*{mviscorr_w}',
+        formula='{mtcorr_w}*{ff_raw_w}*{lepPtcorr_w}',
         leaves=[
             Leaf(
                 name='ff_raw_w',
@@ -185,10 +185,10 @@ for x in range(0,len(categories)):
                 vars=['tau_pt','tau_decay','njets']
             ),
             Leaf(
-                name='mviscorr_w',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_W_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
-                object='W_OS_Data_FFOSData_mvis_correction',
-                vars=['mvis']
+                name='lepPtcorr_w',
+                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_W_lepPt{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                object='W_OS_Data_FFOSData_lepPt_correction',
+                vars=['lep_pt']
             ),
             Leaf(
                 name='mtcorr_w',
@@ -248,7 +248,7 @@ for x in range(0,len(categories)):
                      name='sys_w_up',
                      file='{INDIR}/{CHANNEL}/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_W_MVis_MT_up',
-                     vars=['mvis', 'mt']
+                     vars=['lep_pt', 'mt']
                  ),
                  w.find('ff_w')
              ]
@@ -266,7 +266,7 @@ for x in range(0,len(categories)):
                      name='sys_w_down',
                      file='{INDIR}/{CHANNEL}/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_W_MVis_MT_down',
-                     vars=['mvis', 'mt']
+                     vars=['lep_pt', 'mt']
                  ),
                  w.find('ff_w')
              ]

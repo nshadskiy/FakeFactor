@@ -5,18 +5,19 @@
 #define kTAU         2
 ///////////////////////////////////////////////////
 #define EMB          1  
-#define selCHAN      kMU 
-const int CHAN     = kMU;
+#define selCHAN      kTAU
+const int CHAN     = kTAU;
 // FakeFactor_2016_DeepTauIDv2_v0
-const TString analysis      ="2018_ff";
-const TString output_folder ="/home/jandrej/2018_ff";
-const TString ver = "2018_v14"; // first time nanoAODv5 with deepTauIDv2 
+const TString analysis      ="2018";
+const TString output_folder ="/ceph/jbechtel/fakefactors/2018";
+const TString ver = "2018"; // first time nanoAODv5 with deepTauIDv2 
+
 
 const TString _NtupleTreeName = "TauCheck"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
-const TString _NtupleTreeName_KIT = "mt_nominal/ntuple"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
+const TString _NtupleTreeName_KIT = "tt_nominal/ntuple"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
 const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; //obsolete
 ///////////////////////////////////////////////////
-const TString user="jandrej";    
+const TString user="jbechtel";    
 const Double_t luminosity=59.74; //according to GOLDEN JSON see https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM    
 const int use_svfit = 0; //set to 1 to change input directory name accordingly
 const int DEBUG=0; //set to 1 for additional output

@@ -55,7 +55,7 @@ void calcCorrections() {
     //Analyzer->calc_nonclosure(_QCD,                               p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure,"_alt",0);
 
     cout << "Analysizer->calc_nonclosure( " << _W_JETS << " " << p+FF_corr_Wjets_MCsum_noGen_fitted << " " << CR_Wjets_mvis_data_MCsubtracted << " " << p+FF_corr_Wjets_MCsum_noGen_nonclosure << " 0" << endl;
-    Analyzer->calc_nonclosure(_W_JETS,                            p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure,     "",0);
+    Analyzer->calc_nonclosure_W_lepPt(_W_JETS,                            p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_lepPt_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure,     "",0);
     if( doNJetBinning ){
       Analyzer->calc_nonclosure(_W_JETS|JET0,                       p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure_0jet,"",0);
       Analyzer->calc_nonclosure(_W_JETS|JET1,                       p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure_1jet,"",0);
@@ -86,9 +86,9 @@ void calcCorrections() {
       Analyzer->calc_mtcorr(_W_JETS|NO_SR|JET0,                    p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mt_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure_0jet, p+FF_corr_Wjets_MC_noGen_mtcorr_0jet,"",0);
       Analyzer->calc_mtcorr(_W_JETS|NO_SR|JET1,                    p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mt_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure_1jet, p+FF_corr_Wjets_MC_noGen_mtcorr_1jet,"",0);
     }
-    cout << "Calc lepPt correction." << endl;
-    Analyzer->calc_nonclosure_lepPt(_W_JETS,                       p+FF_corr_Wjets_MCsum_noGen_fitted,        CR_Wjets_lepPt_data_MCsubtracted,   p+FF_corr_Wjets_MCsum_noGen_nonclosure,    p+FF_corr_Wjets_MCsum_noGen_nonclosure_lepPt,"",0);
-    Analyzer->calc_nonclosure_lepPt(_QCD,                       p+FF_corr_QCD_MCsum_noGen_fitted,        CR_QCD_lepPt_data_MCsubtracted,   p+FF_corr_QCD_MCsum_noGen_nonclosure,    p+FF_corr_QCD_MCsum_noGen_nonclosure_lepPt,"",0);
+    // cout << "Calc lepPt correction." << endl;
+    // Analyzer->calc_nonclosure_lepPt(_W_JETS,                       p+FF_corr_Wjets_MCsum_noGen_fitted,        CR_Wjets_lepPt_data_MCsubtracted,   p+FF_corr_Wjets_MCsum_noGen_nonclosure,    p+FF_corr_Wjets_MCsum_noGen_nonclosure_lepPt,"",0);
+    // Analyzer->calc_nonclosure_lepPt(_QCD,                       p+FF_corr_QCD_MCsum_noGen_fitted,        CR_QCD_lepPt_data_MCsubtracted,   p+FF_corr_QCD_MCsum_noGen_nonclosure,    p+FF_corr_QCD_MCsum_noGen_nonclosure_lepPt,"",0);
 
   }
   else cout << "FIXME: Reasonable corrections for MC closure if enough statistics" << endl;
