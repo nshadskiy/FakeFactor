@@ -45,7 +45,7 @@ void CalcFF() {
   Analyzer->init();
 
   std::vector<TString> wf; wf.push_back(p+a_weight[0]); wf.push_back(p+a_weight[1]); wf.push_back(p+a_weight[2]); if (DOQCD) wf.push_back(p+a_weight[3]);
-  std::vector<TString> ps; ps.push_back(preselection_Wjets); ps.push_back(preselection_DY_J); ps.push_back(preselection_TT_J); //if (DOQCD) ps.push_back(preselection_QCD);
+  std::vector<TString> ps; ps.push_back(preselection_Wjets); ps.push_back(preselection_DY_J); ps.push_back(preselection_TT_J_EMB); //if (DOQCD) ps.push_back(preselection_QCD);
   ps.push_back(preselection_DY_TT); ps.push_back(preselection_DY_L); ps.push_back(preselection_TT_T); ps.push_back(preselection_TT_L);
   if(useVV) {ps.push_back(preselection_VV_T); ps.push_back(preselection_VV_L);}
 
@@ -72,7 +72,7 @@ void CalcFF() {
   //       std::vector<TString> wf; wf.push_back(p+a_weight[0]); wf.push_back(p+a_weight[1]); wf.push_back(p+a_weight[2]); if (DOQCD) wf.push_back(p+a_weight[3]);
   //       //for(Int_t iwf; iwf<wf.size();iwf++) wf.at(iwf).ReplaceAll( ".root",categories[icat]+".root" );
   //       TString template_file_name_tmp=p+template_file_name; template_file_name_tmp.ReplaceAll( ".root",categories[icat]+".root" );
-  //       std::vector<TString> ps; ps.push_back(preselection_Wjets); ps.push_back(preselection_DY_J); ps.push_back(preselection_TT_J); //if (DOQCD) ps.push_back(preselection_QCD);
+  //       std::vector<TString> ps; ps.push_back(preselection_Wjets); ps.push_back(preselection_DY_J); ps.push_back(preselection_TT_J_EMB); //if (DOQCD) ps.push_back(preselection_QCD);
   //       ps.push_back(preselection_DY_TT); ps.push_back(preselection_DY_L); ps.push_back(preselection_TT_T); ps.push_back(preselection_TT_L);
   //       if(useVV) {ps.push_back(preselection_VV_T); ps.push_back(preselection_VV_L);}
   //       //for(Int_t ips=0; ips<ps.size();ips++) ps.at(ips).ReplaceAll( ".root",categories[icat]+".root" );
@@ -159,8 +159,8 @@ void CalcFF() {
       cout << "Calculating TT FFs" << endl;
       if (useDYFF_forTT) Analyzer->calcFFCorr(_DY|m_gen_match,     m_preselection_data,   pre_sub_dy,          p+FF_corr_TT_MCsum_noGen,     p+weight_TT_J);
       else               Analyzer->calcFFCorr(_TT|m_gen_match,     m_preselection_data,   pre_sub_tt,          p+FF_corr_TT_MCsum_noGen,     p+weight_TT_J);
-      Analyzer->calcFFCorr(_TT|m_gen_match,                        preselection_TT_J,     empty_vec_tstring,   p+FF_TT_J_only,               p+weight_TT_J);
-      Analyzer->calcFFCorr(_TT|m_gen_match|SR,                     preselection_TT_J,     empty_vec_tstring,   p+FF_TT_J_only_SR,            p+weight_TT_J);
+      Analyzer->calcFFCorr(_TT|m_gen_match,                        preselection_TT_J_EMB,     empty_vec_tstring,   p+FF_TT_J_only,               p+weight_TT_J);
+      Analyzer->calcFFCorr(_TT|m_gen_match|SR,                     preselection_TT_J_EMB,     empty_vec_tstring,   p+FF_TT_J_only_SR,            p+weight_TT_J);
 
       
       cout << "Calculating W+Jets FFs" << endl;
