@@ -17,7 +17,6 @@
 #include "TH3D.h"
 #include "TFormula.h"
 #include "TF1.h"
-#include "TEventList.h"
 
 
 class FFCalculator : public GlobalClass, public PlotterClass{
@@ -58,7 +57,10 @@ class FFCalculator : public GlobalClass, public PlotterClass{
   void getSystUncertainties(const Int_t mode, TString ffname, const std::vector<TString> syst_file, TString outfile);
 
   void calc_nonclosure(const Int_t mode, const TString raw_ff, const TString compare_file, TString ff_output, const TString tight_cat="", const Int_t doPlot=1, const Int_t subtractMC=1, const Int_t tau_ind=0 );
+  // void calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff, const TString compare_file, const TString nonclosure_corr, TString ff_output, const TString tight_cat="", const Int_t doPlot=1, const Int_t subtractMC=1, const Int_t tau_ind=0 );
   void calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff, const TString compare_file, const TString nonclosure_corr, TString ff_output, const TString tight_cat="", const Int_t doPlot=1, const Int_t subtractMC=1, const Int_t tau_ind=0 );
+  void calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_ff, const TString compare_file, TString ff_output, const TString tight_cat="", const Int_t doPlot=1, const Int_t subtractMC=1, const Int_t tau_ind=0 );
+
   void calc_muisocorr(const Int_t mode, const TString raw_ff, const TString CR_file, TString nonclosure_corr, TString ff_output, const TString tight_cat="", const Int_t doPlot=1, const Int_t subtractMC=1, const Int_t tau_ind=0 );
   void calc_mtcorr(const Int_t mode, const TString raw_ff, const TString CR_file, TString nonclosure_corr, TString ff_output, const TString tight_cat="", const Int_t doPlot=1, const Int_t tau_ind=0 );
   void calc_OSSScorr(const Int_t mode, const TString raw_ff, const TString SR_file_AI, TString nonclosure_corr, TString ff_output, const TString tight_cat="", const Int_t doPlot=1, const Int_t subtractMC=1, const Int_t tau_ind=0 );

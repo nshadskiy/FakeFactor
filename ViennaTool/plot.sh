@@ -1,9 +1,10 @@
-source /home/jbechtel/747_init.sh
+source ~/747_init.sh
 cd -
 
-channel=$1
+era=$1
+channel=$2
 
-python plot_sr.py --era 2016 -c $channel -v pt mvis mt mvis_AI  --emb
-python plot_cr.py --era 2016 -c $channel -v pt mvis mt  --emb
+python plot_sr.py --era $era -c $channel -v pt mvis mt mvis_AI  --emb
+python plot_cr.py --era $era -c $channel -v pt mvis mt  --emb
 
 
