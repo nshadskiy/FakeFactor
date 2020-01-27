@@ -120,7 +120,7 @@ const TString s_tight        ="tight";
 
 
 //Output directories
-const TString path_presel        = "/ceph/"+user+"/"+analysis+"/preselection/"+s_chan[CHAN]+"/";
+const TString path_presel        = "/ceph/"+user+"/fakefactors/"+analysis+"/preselection/"+s_chan[CHAN]+"/";
 const TString path_ff            = "ViennaTool/fakefactor/";
 const TString path_ff_data       = path_ff+"data_"+s_chan[CHAN]+"/";
 const TString path_ff_mc         = path_ff+"mc_"+s_chan[CHAN]+"/";
@@ -132,7 +132,7 @@ const TString path_img_mc        = path_img+"mc_"+s_chan[CHAN]+"/";
 const TString path_img_mc_woQCD  = path_img+"mc_woQCD_"+s_chan[CHAN]+"/";
 
 //Input directories
-const TString indir = "/ceph/jbechtel/"+ver+"/";
+const TString indir = "/ceph/jbechtel/fakefactors/"+ver+"/";
 const TString datafile   = indir + s_chan[CHAN] + "-NOMINAL_ntuple_Data.root";
 const TString EMBfile    = indir + s_chan[CHAN] + "-NOMINAL_ntuple_EMB.root";
 const TString DY_NJfile  = indir + s_chan[CHAN] + "-NOMINAL_ntuple_DY.root";
@@ -227,6 +227,7 @@ const TString FF_corr_Wjets_MCsum_noGen_SR_weighted             = "FF_"+s_corr+"
 const TString FF_corr_Wjets_MCsum_Gen                           = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_Gen.root";
 const TString FF_corr_Wjets_MCsum_Gen_fitted                    = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_Gen_fitted.root";
 const TString FF_corr_Wjets_MCsum_Gen_weighted                  = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_Gen_"+s_weighted+".root";
+const TString FF_corr_Wjets_MCsum_noGen_nonclosure_lepPt        = "FF_"+s_corr+"_Wjets_"+s_MCsum+"_noGen_nonclosure_lepPt.root";
 
 const TString FF_corr_DY_data                    = "FF_"+s_corr+"_DY_data.root";
 const TString FF_corr_DY_data_weighted           = "FF_"+s_corr+"_DY_data_"+s_weighted+".root";
@@ -436,6 +437,8 @@ const TString CR_QCD_mvis_AI_data_MCsubtracted   = path_sim+s_CR+"_QCD_"+s_mvis+
 const TString CR_QCD_muiso_data_MCsubtracted     = path_sim+s_CR+"_QCD_muiso_data_MCsubtracted.root";
 const TString CR_Wjets_mvis_data_MCsubtracted    = path_sim+s_CR+"_Wjets_"+s_mvis+"_data_MCsubtracted.root";
 const TString CR_QCD_lepPt_data_MCsubtracted     = path_sim+s_CR+"_QCD_"+s_lepPt+"_data_MCsubtracted.root";
+const TString CR_Wjets_lepPt_data_MCsubtracted     = path_sim+s_CR+"_Wjets_"+s_lepPt+"_data_MCsubtracted.root";
+
 const TString empty_mt="empty_"+s_SR+"_"+s_mt+".root";
 
 // Signal region
@@ -557,7 +560,7 @@ const Int_t    w_mttot_n=(sizeof(w_mttot_v)/sizeof(Double_t)) -1;
 const Double_t w_mvis_v[]={0,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450};
 const Int_t w_mvis_n=(sizeof(w_mvis_v)/sizeof(Double_t)) -1;
 
-const Double_t w_lepPt_v[]={20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120};
+const Double_t w_lepPt_v[]={33,36,40,45,50,55,60,65,70,75,80,85,90,95,100,110,120,200};
 const Int_t w_lepPt_n=(sizeof(w_lepPt_v)/sizeof(Double_t)) -1;
 
 const Double_t w_muiso_v[]={0.00,0.02,0.05,0.1,0.15,0.2,0.25,0.3,0.4,0.5,0.7};

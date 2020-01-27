@@ -123,7 +123,8 @@ void convert_inputs(Int_t inclusive=1, Int_t categoryMode=0){
             convert_corrections( d+FF_corr_QCD_MCsum_noGen_muisocorr_0jet,    "muiso_QCD",        o+"Correction_Data_QCD_MuIso_0jet.root", "QCD_SS_Data_FFSSMuMediumData_isomu_correction");
             convert_corrections( d+FF_corr_QCD_MCsum_noGen_muisocorr_1jet,    "muiso_QCD",        o+"Correction_Data_QCD_MuIso_1jet.root", "QCD_SS_Data_FFSSMuMediumData_isomu_correction");
           }
-          convert_corrections( d+FF_corr_Wjets_MCsum_noGen_nonclosure,      "nonclosure_Wjets", o+"Correction_Data_W_MVis.root",         "W_OS_Data_FFOSData_mvis_correction");
+          //convert_corrections( d+FF_corr_Wjets_MCsum_noGen_nonclosure,      "nonclosure_Wjets", o+"Correction_Data_W_MVis.root",         "W_OS_Data_FFOSData_mvis_correction");
+          convert_corrections( d+FF_corr_Wjets_MCsum_noGen_nonclosure,      "nonclosure_Wjets", o+"Correction_Data_W_lepPt.root",         "W_OS_Data_FFOSData_lepPt_correction");
           if( doNJetBinning ){
             convert_corrections( d+FF_corr_Wjets_MCsum_noGen_nonclosure_0jet, "nonclosure_Wjets", o+"Correction_Data_W_MVis_0jet.root",    "W_OS_Data_FFOSData_mvis_correction");
             convert_corrections( d+FF_corr_Wjets_MCsum_noGen_nonclosure_1jet, "nonclosure_Wjets", o+"Correction_Data_W_MVis_1jet.root",    "W_OS_Data_FFOSData_mvis_correction");
