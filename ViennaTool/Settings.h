@@ -20,6 +20,8 @@ const TString user="jbechtel";
 const Double_t luminosity=41.529; //according to GOLDEN JSON see https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM    
 const int use_svfit = 0; //set to 1 to change input directory name accordingly
 const int DEBUG=0; //set to 1 for additional output
+const TString ERA = "2017"; // needed for plotting
+
 ///////////////////////////////////////////////////
 //Out of date
 const int inclusive_selection=1; 
