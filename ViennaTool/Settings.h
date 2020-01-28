@@ -19,6 +19,7 @@ const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_
 ///////////////////////////////////////////////////
 const TString user="jbechtel";    
 const Double_t luminosity=59.74; //according to GOLDEN JSON see https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM    
+const TString ERA = "2018"; // needed for plotting
 const int use_svfit = 0; //set to 1 to change input directory name accordingly
 const int DEBUG=0; //set to 1 for additional output
 ///////////////////////////////////////////////////
