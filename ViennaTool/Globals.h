@@ -650,6 +650,15 @@ const Int_t vcolor[10]=         {kRed    ,kGreen                  ,kGreen+2     
 
 const int smap[10]=      {0,2,6,7,1,4,5,3,8,9};
 const int smap_noqcd[9]={0,2,5,6,1,3,4,7,8};
+
+const int nSAMPLES_DY=10;
+const int nSAMPLES_COMP_DY=7;
+static const TString vlabel_DY[nSAMPLES_DY]={"W+jets","ttJ (j#rightarrow#tau)","ttT (#tau#rightarrow#tau)","ttL (l#rightarrow#tau)","ZJ (j#rightarrow#tau)","ZTT (#tau#rightarrow#tau)","ZL (l#rightarrow#tau)","VV (j#rightarrow#tau)", "VV (#tau#rightarrow#tau)","VV (l#rightarrow#tau)"};
+static const TString vsuff_DY[nSAMPLES_DY]= {"Wjets" ,"TT_J"                  ,"TT_T"                     ,"TT_L"                  ,"DY_J"                   ,"DY_TT"                    ,"DY_L"                   ,"VV_J", "VV_T", "VV_L"};
+const Int_t vcolor_DY[nSAMPLES_DY]=         {kRed    ,kGreen                  ,kGreen+2                   ,kGreen-1                ,kBlue                    ,kYellow                    ,kViolet                  ,kYellow-5, kYellow-6,kYellow-8};
+
+const int smap_DY[nSAMPLES_DY]=      {0,2,6,7,1,4,5,3,8,9};
+const int smap_noqcd_DY[nSAMPLES_DY-1]={0,2,5,6,1,3,4,7,8};
 #endif
 
 const unsigned NC=10;
