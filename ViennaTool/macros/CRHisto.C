@@ -47,6 +47,14 @@ void CallCRHisto_creation (TSelectionAnalyzer* Analyzer, int variable_bitcode, i
 void ProduceMCsubtractedHistos (TString control_region, TString variable_name, TString AI_extension, TString Njet_extension, int variable_mask ) {
   TString modes[] = {"l","t"};
   Int_t nmodes = 2;
+  if (AI_extension == "_AI") {
+    const TString *ssa=vsuff_DY;
+    int nSA = nSAMPLES_DY;
+  }
+  else {
+    const TString *ssa=vsuff;
+    int nSA = nSAMPLES;
+  }
   const TString *ssa=vsuff;
   int nSA = nSAMPLES;
 
