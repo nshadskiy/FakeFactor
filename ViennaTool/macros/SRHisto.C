@@ -6,9 +6,9 @@
 
 using namespace std;
 
-std::tuple<std::vector<TString>,std::vector<TString>> FillPaths(std::vector<TString> ps, std::vector<TString> fl) {
+std::tuple<std::vector<TString>,std::vector<TString>> FillPaths(std::vector<TString> ps, std::vector<TString> fl, bool use_emb) {
   
-  if( EMB==1 ){
+  if( use_emb==1 ){
     ps.push_back(preselection_data);
     ps.push_back(preselection_Wjets); 
     ps.push_back(preselection_EMB); 
@@ -60,10 +60,16 @@ std::tuple<std::vector<TString>,std::vector<TString>> FillPaths(std::vector<TStr
 int ProduceMCsubtracted (TString variable_name, TString extension) {
   TString modes[] = {"l","t"}; // the 2 modes are l(oose) and t(ight) where FF is defined via t / l&!t
   Int_t nmodes = 2;//sizeof(modes) / sizeof(*modes);
-
-  int nSA = nSAMPLES; // depends on EMB or nonEMB
-  const TString *ssa=vsuff;
-
+  int nSA;
+  const TString *ssa;
+  if (extension == "_AI") {
+    int nSA = nSAMPLES_DY;
+    const TString *ssa=vsuff_DY;
+  }
+  else {
+    int nSA = nSAMPLES; // depends on EMB or nonEMB
+    const TString *ssa=vsuff;
+  }
   TString outfile_name = path_sim+s_SR+"_data"+variable_name+extension+"_MCsubtracted.root";
   TString infile_name  = path_sim+s_SR+"_data"+variable_name+extension+".root";
 
@@ -127,7 +133,7 @@ void SRHisto() {
 
   std::vector<TString> ps; // preselection path
   std::vector<TString> fl; // path to SR histos - to be found out more
-  std::tie(ps,fl) = FillPaths(ps,fl);
+  std::tie(ps,fl) = FillPaths(ps,fl,EMB);
   
   
   Int_t nVARused = nVAR-1; //nVAR = 5 (Globals.h) no muiso is needed here
@@ -149,16 +155,17 @@ void SRHisto() {
     Analyzer->calcBgEstSim( ps.at(i), MVIS, categoryMode, tmp.ReplaceAll(r1[1],r2[1]) );
     Analyzer->calcBgEstSim( ps.at(i), PT, categoryMode, tmp.ReplaceAll(r1[2],r2[2]) );
     Analyzer->calcBgEstSim( ps.at(i), ETA2, categoryMode, tmp.ReplaceAll(discrim_var[2],discrim_var[3]) );
-    
-    tmp=fl.at(i); 
-    Analyzer->calcBgEstSim( ps.at(i), MVIS|_AI, categoryMode, tmp.ReplaceAll(r2[0], "_mvis_AI") );
-    
     if(use_svfit){
       tmp=fl.at(i); 
       Analyzer->calcBgEstSim( ps.at(i), SVFIT, categoryMode, tmp.ReplaceAll(r2[0], "_svfit"));
     }
-    
-    
+  }
+  std::tie(ps,fl) = FillPaths(ps,fl,false);
+  for (unsigned i=0; i<ps.size(); i++){ // loop over all preselection paths to root files
+
+    tmp=fl.at(i); 
+    Int_t categoryMode=0;
+    Analyzer->calcBgEstSim( ps.at(i), MVIS|_AI, categoryMode, tmp.ReplaceAll(r2[0], "_mvis_AI") );
   }
   delete Analyzer;
 
