@@ -105,11 +105,11 @@ void convert_inputs(Int_t inclusive=1, Int_t categoryMode=0){
     if(!DOMC){
       if(!CALC_SS_SR){
         if(CHAN==kTAU) {
-          convert_corrections( d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD", o+"Correction_Data_QCD_PT.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction");
-          if( doNJetBinning ){
-            convert_corrections( d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt_0jet.root", "nonclosure_QCD", o+"Correction_Data_QCD_PT_0jet.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction");
-            convert_corrections( d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt_1jet.root", "nonclosure_QCD", o+"Correction_Data_QCD_PT_1jet.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction");
-          }
+          //convert_corrections( d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD", o+"Correction_Data_QCD_PT.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction");
+          //if( doNJetBinning ){
+           // convert_corrections( d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt_0jet.root", "nonclosure_QCD", o+"Correction_Data_QCD_PT_0jet.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction");
+          //  convert_corrections( d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt_1jet.root", "nonclosure_QCD", o+"Correction_Data_QCD_PT_1jet.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction");
+         // }
         }
         convert_corrections( d+FF_corr_QCD_MCsum_noGen_nonclosure,      "nonclosure_QCD", o+"Correction_Data_QCD_MVis.root",      "QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction");
         if( doNJetBinning ){
