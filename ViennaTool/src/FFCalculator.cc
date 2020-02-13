@@ -1456,8 +1456,8 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   gsk.set_doErrors(1);
   //if(mode & _QCD) gsk.set_lastBinFrom(150);
   Double_t fitWidth;
-  if(mode & _QCD) fitWidth=1.5; else if(mode & _W_JETS) fitWidth=1.5; else fitWidth=1.5;
-  if(CHAN==kTAU) fitWidth=1.5;
+  if(mode & _QCD) fitWidth=1.; else if(mode & _W_JETS) fitWidth=1.; else fitWidth=1.;
+  if(CHAN==kTAU) fitWidth=1.;
   cout << "FitWidth: " << fitWidth << endl;
   gsk.setWidth(fitWidth);
   gsk.set_widthInBins_sf(1.115);
@@ -1694,8 +1694,8 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
   gsk.set_doErrors(1);
   //if(mode & _QCD) gsk.set_lastBinFrom(150);
   Double_t fitWidth;
-  if(mode & _QCD) fitWidth=1.5; else if(mode & _W_JETS) fitWidth=1.5; else fitWidth=1.5;
-  if(CHAN==kTAU) fitWidth=1.5;
+  if(mode & _QCD) fitWidth=1.; else if(mode & _W_JETS) fitWidth=1.; else fitWidth=1.;
+  if(CHAN==kTAU) fitWidth=1.;
   cout << "FitWidth: " << fitWidth << endl;
   gsk.setWidth(fitWidth);
   gsk.set_widthInBins_sf(1.115);
