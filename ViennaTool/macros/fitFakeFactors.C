@@ -137,20 +137,6 @@ void fitFakeFactors(){
   std::cout << "*******************************************************" << std::endl << std::endl;
 
   
-<<<<<<< HEAD
-  TString p, pi;
-  TString m_preselection_data;
-  TString m_SR_data;
-  TString m_label;
-  if      ( DOMC  &&  DOQCD                 ){ pi=path_img_mc;         p=path_ff_mc;         m_preselection_data=preselection_MCsum;       m_SR_data=SR_MCsum;       m_label="sim";  }
-  else if ( !DOMC                           ){ pi=path_img_data;       p=path_ff_data;       m_preselection_data=preselection_data;        m_SR_data=SR_data;        m_label="data"; }
-  else if ( DOMC  && ( !DOQCD || CHAN!=kMU) ){ pi=path_img_mc_woQCD;   p=path_ff_mc_woQCD;   m_preselection_data=preselection_MCsum_woQCD; m_SR_data=SR_MCsum_woQCD; m_label="sim";  }
-
-  TString pmc=path_ff_mc;             if ( ( !DOQCD && DOMC ) || CHAN!=kMU ) pmc=path_ff_mc_woQCD;
-  TString psmc=preselection_MCsum;    if ( ( !DOQCD && DOMC ) || CHAN!=kMU ) psmc=preselection_MCsum_woQCD;
-
-  vector<TString> tight_cats; tight_cats.push_back("c_t"); tight_cats.push_back("c_t_alt");
-=======
   
   TString pi=path_img_data;       
   TString p=path_ff_data;       
@@ -161,7 +147,6 @@ void fitFakeFactors(){
 
  
 
->>>>>>> bfee5b2... cleaning and improve FF fit - adding fit chi2 gof
   vector<Int_t> modes; modes.push_back(_QCD); modes.push_back(_QCD|_AI); if(CHAN!=kTAU){modes.push_back(_W_JETS); modes.push_back(_W_JETS); modes.push_back(_TT);}
   vector<TString> fake_histos; fake_histos.push_back(p+FF_corr_QCD_MCsum_noGen); fake_histos.push_back(p+FF_corr_QCD_MCsum_noGen_AI); if(CHAN!=kTAU){fake_histos.push_back(p+FF_corr_Wjets_MCsum_noGen);  fake_histos.push_back(p+FF_corr_Wjets_MC_noGen); fake_histos.push_back(p+FF_TT_J_only_SR);}
   vector<Int_t> dm_bins; dm_bins.push_back(N_t_QCD); dm_bins.push_back(N_t_QCD); if(CHAN!=kTAU){dm_bins.push_back(N_t_Wjets); dm_bins.push_back(N_t_Wjets); dm_bins.push_back(N_t_TT);}
