@@ -57,6 +57,7 @@ fi
 ./CRHisto &
 wait
 
+
 ./steerFF
 
 ./fitFakeFactors
@@ -65,7 +66,7 @@ gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_t
 cd -
 
 ./calcCorrections
-python plotCorrections.py --channel $channel  --doNjetBinning $njetbinning
+#python plotCorrections.py --channel $channel  --doNjetBinning $njetbinning
 ./convert_inputs
 
 
