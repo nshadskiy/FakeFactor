@@ -674,6 +674,150 @@ for x in range(0,len(categories)):
          )
         }
     )
+    comb_qcd_up_stat_dm0_njet0_param1_v2 = replace_nodes(
+        comb, 
+        {'ff_qcd':
+         Node(
+             name='ff_qcd_up_stat_dm0_njet0_param1_v2',
+             formula='(1.+{stat_qcd_up_dm0_njet0_param1_v2})*{ff_qcd}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_up_dm0_njet0_param1_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0_param1_v2_high',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_qcd')
+             ]
+         )
+        }
+    )   
+    comb_qcd_down_stat_dm0_njet0_param1_v2 = replace_nodes(
+        comb, 
+        {'ff_qcd':
+         Node(
+             name='ff_qcd_down_stat_dm0_njet0_param1_v2',
+             formula='max(0.,1.-{stat_qcd_down_dm0_njet0_param1_v2})*{ff_qcd}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_down_dm0_njet0_param1_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0_param1_v2_low',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_qcd')
+             ]
+         )
+        }
+    )
+    comb_qcd_up_stat_dm0_njet0_param2_v2 = replace_nodes(
+        comb, 
+        {'ff_qcd':
+         Node(
+             name='ff_qcd_up_stat_dm0_njet0_param2_v2',
+             formula='(1.+{stat_qcd_up_dm0_njet0_param2_v2})*{ff_qcd}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_up_dm0_njet0_param2_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0_param2_v2_high',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_qcd')
+             ]
+         )
+        }
+    )   
+    comb_qcd_down_stat_dm0_njet0_param2_v2 = replace_nodes(
+        comb, 
+        {'ff_qcd':
+         Node(
+             name='ff_qcd_down_stat_dm0_njet0_param2_v2',
+             formula='max(0.,1.-{stat_qcd_down_dm0_njet0_param2_v2})*{ff_qcd}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_down_dm0_njet0_param2_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0_param2_v2_low',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_qcd')
+             ]
+         )
+        }
+    )
+    comb_qcd_up_stat_dm0_njet1_param1_v2 = replace_nodes(
+        comb, 
+        {'ff_qcd':
+         Node(
+             name='ff_qcd_up_stat_dm0_njet1_param1_v2',
+             formula='(1.+{stat_qcd_up_dm0_njet1_param1_v2})*{ff_qcd}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_up_dm0_njet1_param1_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1_param1_v2_high',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_qcd')
+             ]
+         )
+        }
+    )   
+    comb_qcd_down_stat_dm0_njet1_param1_v2 = replace_nodes(
+        comb, 
+        {'ff_qcd':
+         Node(
+             name='ff_qcd_down_stat_dm0_njet1_param1_v2',
+             formula='max(0.,1.-{stat_qcd_down_dm0_njet1_param1_v2})*{ff_qcd}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_down_dm0_njet1_param1_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1_param1_v2_low',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_qcd')
+             ]
+         )
+        }
+    )
+    comb_qcd_up_stat_dm0_njet1_param2_v2 = replace_nodes(
+        comb, 
+        {'ff_qcd':
+         Node(
+             name='ff_qcd_up_stat_dm0_njet1_param2_v2',
+             formula='(1.+{stat_qcd_up_dm0_njet1_param2_v2})*{ff_qcd}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_up_dm0_njet1_param2_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1_param2_v2_high',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_qcd')
+             ]
+         )
+        }
+    )   
+    comb_qcd_down_stat_dm0_njet1_param2_v2 = replace_nodes(
+        comb, 
+        {'ff_qcd':
+         Node(
+             name='ff_qcd_down_stat_dm0_njet1_param2_v2',
+             formula='max(0.,1.-{stat_qcd_down_dm0_njet1_param2_v2})*{ff_qcd}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_down_dm0_njet1_param2_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1_param2_v2_low',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_qcd')
+             ]
+         )
+        }
+    )
     ###############################################################################################################################
     comb_w_up = replace_nodes(
         comb,
@@ -729,6 +873,7 @@ for x in range(0,len(categories)):
          )
         }
     )
+ 
     comb_w_down_stat_dm0_njet0 = replace_nodes(
         comb, 
         {'ff_w':
@@ -776,6 +921,150 @@ for x in range(0,len(categories)):
                      name='stat_w_down_dm0_njet1',
                      file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1_low',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_up_stat_dm0_njet0_param1_v2 = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_up_stat_dm0_njet0_param1_v2',
+             formula='(1.+{stat_w_up_dm0_njet0_param1_v2})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_up_dm0_njet0_param1_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0_param1_v2_high',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )   
+    comb_w_down_stat_dm0_njet0_param1_v2 = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_down_stat_dm0_njet0_param1_v2',
+             formula='max(0.,1.-{stat_w_down_dm0_njet0_param1_v2})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_down_dm0_njet0_param1_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0_param1_v2_low',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_up_stat_dm0_njet0_param2_v2 = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_up_stat_dm0_njet0_param2_v2',
+             formula='(1.+{stat_w_up_dm0_njet0_param2_v2})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_up_dm0_njet0_param2_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0_param2_v2_high',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )   
+    comb_w_down_stat_dm0_njet0_param2_v2 = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_down_stat_dm0_njet0_param2_v2',
+             formula='max(0.,1.-{stat_w_down_dm0_njet0_param2_v2})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_down_dm0_njet0_param2_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet0_param2_v2_low',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_up_stat_dm0_njet1_param1_v2 = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_up_stat_dm0_njet1_param1_v2',
+             formula='(1.+{stat_w_up_dm0_njet1_param1_v2})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_up_dm0_njet1_param1_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1_param1_v2_high',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )   
+    comb_w_down_stat_dm0_njet1_param1_v2 = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_down_stat_dm0_njet1_param1_v2',
+             formula='max(0.,1.-{stat_w_down_dm0_njet1_param1_v2})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_down_dm0_njet1_param1_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1_param1_v2_low',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_up_stat_dm0_njet1_param2_v2 = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_up_stat_dm0_njet1_param2_v2',
+             formula='(1.+{stat_w_up_dm0_njet1_param2_v2})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_up_dm0_njet1_param2_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1_param2_v2_high',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )   
+    comb_w_down_stat_dm0_njet1_param2_v2 = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_down_stat_dm0_njet1_param2_v2',
+             formula='max(0.,1.-{stat_w_down_dm0_njet1_param2_v2})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_down_dm0_njet1_param2_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1_param2_v2_low',
                      vars=['tau_pt','tau_decay','njets']
                  ),
                  comb.find('ff_w')
@@ -946,6 +1235,7 @@ for x in range(0,len(categories)):
          )
         }
     )
+
     comb_tt_down_stat_dm0_njet0 = replace_nodes(
         comb, 
         {'ff_tt':
@@ -1108,7 +1398,150 @@ for x in range(0,len(categories)):
          )
         }
     )
-    
+    comb_tt_up_stat_dm0_njet0_param1_v2 = replace_nodes(
+        comb, 
+        {'ff_tt':
+         Node(
+             name='ff_tt_up_stat_dm0_njet0_param1_v2',
+             formula='(1.+{stat_tt_up_dm0_njet0_param1_v2})*{ff_tt}',
+             leaves=[
+                 Leaf(
+                     name='stat_tt_up_dm0_njet0_param1_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet0_param1_v2_high',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_tt')
+             ]
+         )
+        }
+    )   
+    comb_tt_down_stat_dm0_njet0_param1_v2 = replace_nodes(
+        comb, 
+        {'ff_tt':
+         Node(
+             name='ff_tt_down_stat_dm0_njet0_param1_v2',
+             formula='max(0.,1.-{stat_tt_down_dm0_njet0_param1_v2})*{ff_tt}',
+             leaves=[
+                 Leaf(
+                     name='stat_tt_down_dm0_njet0_param1_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet0_param1_v2_low',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_tt')
+             ]
+         )
+        }
+    )
+    comb_tt_up_stat_dm0_njet0_param2_v2 = replace_nodes(
+        comb, 
+        {'ff_tt':
+         Node(
+             name='ff_tt_up_stat_dm0_njet0_param2_v2',
+             formula='(1.+{stat_tt_up_dm0_njet0_param2_v2})*{ff_tt}',
+             leaves=[
+                 Leaf(
+                     name='stat_tt_up_dm0_njet0_param2_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet0_param2_v2_high',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_tt')
+             ]
+         )
+        }
+    )   
+    comb_tt_down_stat_dm0_njet0_param2_v2 = replace_nodes(
+        comb, 
+        {'ff_tt':
+         Node(
+             name='ff_tt_down_stat_dm0_njet0_param2_v2',
+             formula='max(0.,1.-{stat_tt_down_dm0_njet0_param2_v2})*{ff_tt}',
+             leaves=[
+                 Leaf(
+                     name='stat_tt_down_dm0_njet0_param2_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet0_param2_v2_low',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_tt')
+             ]
+         )
+        }
+    )
+    comb_tt_up_stat_dm0_njet1_param1_v2 = replace_nodes(
+        comb, 
+        {'ff_tt':
+         Node(
+             name='ff_tt_up_stat_dm0_njet1_param1_v2',
+             formula='(1.+{stat_tt_up_dm0_njet1_param1_v2})*{ff_tt}',
+             leaves=[
+                 Leaf(
+                     name='stat_tt_up_dm0_njet1_param1_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet1_param1_v2_high',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_tt')
+             ]
+         )
+        }
+    )   
+    comb_tt_down_stat_dm0_njet1_param1_v2 = replace_nodes(
+        comb, 
+        {'ff_tt':
+         Node(
+             name='ff_tt_down_stat_dm0_njet1_param1_v2',
+             formula='max(0.,1.-{stat_tt_down_dm0_njet1_param1_v2})*{ff_tt}',
+             leaves=[
+                 Leaf(
+                     name='stat_tt_down_dm0_njet1_param1_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet1_param1_v2_low',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_tt')
+             ]
+         )
+        }
+    )
+    comb_tt_up_stat_dm0_njet1_param2_v2 = replace_nodes(
+        comb, 
+        {'ff_tt':
+         Node(
+             name='ff_tt_up_stat_dm0_njet1_param2_v2',
+             formula='(1.+{stat_tt_up_dm0_njet1_param2_v2})*{ff_tt}',
+             leaves=[
+                 Leaf(
+                     name='stat_tt_up_dm0_njet1_param2_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet1_param2_v2_high',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_tt')
+             ]
+         )
+        }
+    )   
+    comb_tt_down_stat_dm0_njet1_param2_v2 = replace_nodes(
+        comb, 
+        {'ff_tt':
+         Node(
+             name='ff_tt_down_stat_dm0_njet1_param2_v2',
+             formula='max(0.,1.-{stat_tt_down_dm0_njet1_param2_v2})*{ff_tt}',
+             leaves=[
+                 Leaf(
+                     name='stat_tt_down_dm0_njet1_param2_v2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_TT_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode_error_dm0_njet1_param2_v2_low',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_tt')
+             ]
+         )
+        }
+    )
     
     
     fill(ff_qcd_os, qcd_os)
@@ -1143,6 +1576,14 @@ for x in range(0,len(categories)):
     fill(ff_comb, comb_qcd_down_stat_dm1_njet0,   sys='ff_qcd_dm1_njet0_stat_down')
     fill(ff_comb, comb_qcd_up_stat_dm1_njet1,   sys='ff_qcd_dm1_njet1_stat_up')
     fill(ff_comb, comb_qcd_down_stat_dm1_njet1,   sys='ff_qcd_dm1_njet1_stat_down')
+    fill(ff_comb, comb_qcd_up_stat_dm0_njet0_param1_v2,   sys='ff_qcd_dm0_njet0_param1_v2_stat_up')
+    fill(ff_comb, comb_qcd_down_stat_dm0_njet0_param1_v2,   sys='ff_qcd_dm0_njet0_param1_v2_stat_down')
+    fill(ff_comb, comb_qcd_up_stat_dm0_njet1_param1_v2,   sys='ff_qcd_dm0_njet1_param1_v2_stat_up')
+    fill(ff_comb, comb_qcd_down_stat_dm0_njet1_param1_v2,   sys='ff_qcd_dm0_njet1_param1_v2_stat_down')
+    fill(ff_comb, comb_qcd_up_stat_dm0_njet0_param2_v2,   sys='ff_qcd_dm0_njet0_param2_v2_stat_up')
+    fill(ff_comb, comb_qcd_down_stat_dm0_njet0_param2_v2,   sys='ff_qcd_dm0_njet0_param2_v2_stat_down')
+    fill(ff_comb, comb_qcd_up_stat_dm0_njet1_param2_v2,   sys='ff_qcd_dm0_njet1_param2_v2_stat_up')
+    fill(ff_comb, comb_qcd_down_stat_dm0_njet1_param2_v2,   sys='ff_qcd_dm0_njet1_param2_v2_stat_down')
     fill(ff_comb, comb_w_up,   sys='ff_w_syst_up')
     fill(ff_comb, comb_w_down,   sys='ff_w_syst_down')
     fill(ff_comb, comb_w_up_stat,   sys='ff_w_stat_up')
@@ -1151,6 +1592,14 @@ for x in range(0,len(categories)):
     fill(ff_comb, comb_w_down_stat_dm0_njet0,   sys='ff_w_dm0_njet0_stat_down')
     fill(ff_comb, comb_w_up_stat_dm0_njet1,   sys='ff_w_dm0_njet1_stat_up')
     fill(ff_comb, comb_w_down_stat_dm0_njet1,   sys='ff_w_dm0_njet1_stat_down')
+    fill(ff_comb, comb_w_up_stat_dm0_njet0_param1_v2,   sys='ff_w_dm0_njet0_param1_v2_stat_up')
+    fill(ff_comb, comb_w_down_stat_dm0_njet0_param1_v2,   sys='ff_w_dm0_njet0_param1_v2_stat_down')
+    fill(ff_comb, comb_w_up_stat_dm0_njet1_param1_v2,   sys='ff_w_dm0_njet1_param1_v2_stat_up')
+    fill(ff_comb, comb_w_down_stat_dm0_njet1_param1_v2,   sys='ff_w_dm0_njet1_param1_v2_stat_down')
+    fill(ff_comb, comb_w_up_stat_dm0_njet0_param2_v2,   sys='ff_w_dm0_njet0_param2_v2_stat_up')
+    fill(ff_comb, comb_w_down_stat_dm0_njet0_param2_v2,   sys='ff_w_dm0_njet0_param2_v2_stat_down')
+    fill(ff_comb, comb_w_up_stat_dm0_njet1_param2_v2,   sys='ff_w_dm0_njet1_param2_v2_stat_up')
+    fill(ff_comb, comb_w_down_stat_dm0_njet1_param2_v2,   sys='ff_w_dm0_njet1_param2_v2_stat_down')
     fill(ff_comb, comb_w_up_stat_dm1_njet0,   sys='ff_w_dm1_njet0_stat_up')
     fill(ff_comb, comb_w_down_stat_dm1_njet0,   sys='ff_w_dm1_njet0_stat_down')
     fill(ff_comb, comb_w_up_stat_dm1_njet1,   sys='ff_w_dm1_njet1_stat_up')
@@ -1167,7 +1616,14 @@ for x in range(0,len(categories)):
     fill(ff_comb, comb_tt_down_stat_dm1_njet0, sys='ff_tt_dm1_njet0_stat_down')
     fill(ff_comb, comb_tt_up_stat_dm1_njet1,   sys='ff_tt_dm1_njet1_stat_up')
     fill(ff_comb, comb_tt_down_stat_dm1_njet1, sys='ff_tt_dm1_njet1_stat_down')
-    
+    fill(ff_comb, comb_tt_up_stat_dm0_njet0_param1_v2,   sys='ff_tt_dm0_njet0_param1_v2_stat_up')
+    fill(ff_comb, comb_tt_down_stat_dm0_njet0_param1_v2,   sys='ff_tt_dm0_njet0_param1_v2_stat_down')
+    fill(ff_comb, comb_tt_up_stat_dm0_njet1_param1_v2,   sys='ff_tt_dm0_njet1_param1_v2_stat_up')
+    fill(ff_comb, comb_tt_down_stat_dm0_njet1_param1_v2,   sys='ff_tt_dm0_njet1_param1_v2_stat_down')
+    fill(ff_comb, comb_tt_up_stat_dm0_njet0_param2_v2,   sys='ff_tt_dm0_njet0_param2_v2_stat_up')
+    fill(ff_comb, comb_tt_down_stat_dm0_njet0_param2_v2,   sys='ff_tt_dm0_njet0_param2_v2_stat_down')
+    fill(ff_comb, comb_tt_up_stat_dm0_njet1_param2_v2,   sys='ff_tt_dm0_njet1_param2_v2_stat_up')
+    fill(ff_comb, comb_tt_down_stat_dm0_njet1_param2_v2,   sys='ff_tt_dm0_njet1_param2_v2_stat_down')    
     file = ROOT.TFile.Open("{INDIR}/{CHANNEL}/{CATEGORY}/fakeFactors_{ISOLATION}.root".format(INDIR=indir,CHANNEL=channel,CATEGORY=category, ISOLATION=isolation), "recreate")
     # Write meta-data
     tag_ts     = ROOT.TString(tag)
