@@ -196,13 +196,19 @@ void fitFakeFactors(){
         cf.set_bin_centers( fake_histos.at(imode) , "bins_weighted", nbins ); //Fill the vector this->bin_centers of CostumFit (cf) with the bin center values 
 
         cf.fitHisto();
-        
         TGraphAsymmErrors *g_fit_input=cf.returnFitInputGraph(); //the input to the fit: data points in the range given
         TF1 *f_fit=cf.returnFitForm();                //the fit result (function)
+        std::cout << "TF1 printout " << std::endl;
+        f_fit->Print();
+        std::cout << f_fit->GetParameter(0) << std::endl;
+        std::cout << f_fit->GetParameter(1) << std::endl;
+        std::cout << f_fit->GetParError(0) << std::endl;
+        std::cout << f_fit->GetParError(1) << std::endl;
+        std::cout << "TF1 printout done " << std::endl;
         TGraphAsymmErrors *g_fit=cf.returnFitGraph();              //the fit result binned (histo)
         TGraphAsymmErrors *g_fit2=new TGraphAsymmErrors( *g_fit );
 
-        double ymax = 0.2; 
+        double ymax = 0.7; 
         double ymin = 0.001;
         
         for(int i=0; i<g_fit->GetN(); i++) {
@@ -383,11 +389,12 @@ void fitFakeFactors(){
         // cms3.Draw();
         
         
-        TString ending=""; stringstream convert;
+        TString ending=""; stringstream convert; stringstream f_convert;
         if(modes.at(imode) & _QCD) ending=ending+"QCD_"; if(modes.at(imode) & _W_JETS) ending=ending+"Wjets_"; if(modes.at(imode) & _TT) ending=ending+"TT_";
         if( modes.at(imode) & _QCD && ff_fitted_name.Contains("AI") ) ending += "AI_";
         if( modes.at(imode) & _W_JETS && ff_fitted_name.Contains("_MC_") ) ending += "MC_";
         convert << "dm" << idm << "_" << "njet" << ijet;
+        f_convert << "f_dm" << idm << "_" << "njet" << ijet;
         
         stringstream convertChannel;
         if(CHAN==kMU) convertChannel<<"_mt"; if(CHAN==kEL) convertChannel<<"_et"; if(CHAN==kTAU) convertChannel<<"_tt"; 
@@ -413,7 +420,7 @@ void fitFakeFactors(){
           if(y+g_fit->GetErrorYhigh(i)>=1.) g_fit->SetPointEYhigh( i,0.99-y );
 
         }
-        
+        f_fit->SetName(f_convert.str().c_str());
         g_fit->SetName(convert.str().c_str());
         g_fit->GetYaxis()->SetRangeUser(0.,1.);
         // g_fit->GetXaxis()->SetRangeUser(fitMin-0.1,fitMax+7); //TODO
@@ -422,7 +429,7 @@ void fitFakeFactors(){
         
         ff_fitted.cd();
         g_fit->Write();
-        
+        f_fit->Write();
         delete g_fit_input,f_fit;
         delete c2;
       
