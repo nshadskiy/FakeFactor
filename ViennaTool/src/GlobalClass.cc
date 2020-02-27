@@ -327,7 +327,7 @@ TString GlobalClass::getCRCutString(const Int_t mode){
         s_mode += " * (lep_q*alltau_q[0]>0.0) * (passesDLVeto > 0.5) * (passes3LVeto > 0.5)";
       }
     }else{
-      s_mode = "(alltau_mt[0] < 40)";
+      s_mode = "(alltau_mt[0] < 50)";
       s_mode += " * (lep_q * alltau_q[0] >= 0) * (passesDLVeto > 0.5) * (passes3LVeto > 0.5) ";
       if( !CALC_SS_SR * !(mode & _AI) ){
         if( !(mode & MUISO) ) s_mode += " * (lep_iso > "+to_string(lep_iso_min)+") * (lep_iso < "+to_string(lep_iso_max)+") ";
