@@ -152,7 +152,7 @@ void SRHisto() {
     
     tmp=fl.at(i); 
     Analyzer->calcBgEstSim( ps.at(i), MVIS|_AI, categoryMode, tmp.ReplaceAll(r2[0], "_mvis_AI") );
-    Analyzer->calcBgEstSim( ps.at(i), MT|_AI, categoryMode, tmp.ReplaceAll(r2[0], "_mt_AI") );
+    // Analyzer->calcBgEstSim( ps.at(i), MT|_AI, categoryMode, tmp.ReplaceAll(r2[0], "_mt_AI") );
     
     if(use_svfit){
       tmp=fl.at(i); 
