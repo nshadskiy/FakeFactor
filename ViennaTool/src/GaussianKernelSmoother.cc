@@ -3,6 +3,7 @@
 //ClassImp(GaussianKernelSmoother)
 
 GaussianKernelSmoother::GaussianKernelSmoother(){
+  std::cout << "Gaussian kernal smoother initialized" << std::endl;
   this->doIgnoreZeroBins=1.;
   this->doWidthInBins=0.;
   this->widthInBins_sf=0.5;
@@ -27,10 +28,29 @@ TH1D* GaussianKernelSmoother::fluctuateHisto(){
   return h;
 }
 
-double GaussianKernelSmoother::getSmoothedValue(TH1D* m_h , const double m_x){
+double GaussianKernelSmoother::getBinWidthForGaussianWindow(TH1D* m_h) {
+  Int_t nbins = m_h->GetNbinsX();
+  double bin_width=0;
+  for (int ib=1; ib<=nbins; ib++) { // find maximal bin width
+    if ( bin_width < m_h->GetBinWidth(ib) ) {
+      bin_width=m_h->GetBinWidth(ib);  
+    }
+
+  }
+  bin_width *= this->widthInBins_sf; // scale the maximal bin width found with widthInBins_sf (= 1.115);
+  std::cout << "Bin width for gaussian window: " << bin_width << std::endl;
+
+  return bin_width;
+}
+
+double GaussianKernelSmoother::getSmoothedValue( TH1D* m_h , const double x) {
+  return 1.1;
+}
+
+double GaussianKernelSmoother::getSmoothedValue(TH1D* m_h , const double m_x, const double bin_width){
 
   double x;
-  if ( doLastBinFrom && m_x > lastBinFrom ) x=lastBinFrom;
+  if ( doLastBinFrom && m_x > lastBinFrom ) x=lastBinFrom; // obsolete doLastBinFrom=0
   else x=m_x;
 
   double sumw = 0.;
@@ -39,45 +59,35 @@ double GaussianKernelSmoother::getSmoothedValue(TH1D* m_h , const double m_x){
 
   double m_width=this->width;
 
-  if ( this->doWidthInBins ){
+  if ( this->doWidthInBins ){ // is set to 1 
+
+  
     m_width=0;
     double wsum=0;
-
-    double bin_width=0;
-    //    bin_width=( m_h->GetBinLowEdge(nbins+1)-m_h->GetBinLowEdge(1) ) / nbins; //option 1: average bin width
-    for (int ib=1; ib<=nbins; ib++){
-      if ( bin_width<m_h->GetBinWidth(ib) ) bin_width=m_h->GetBinWidth(ib);  //option 2: max bin width
-      //      bin_width/=2;                                                          //option 2b: half max bin width
-      bin_width*=this->widthInBins_sf; //1.12;
-    }
-
-    //    int m_bin=m_h->FindBin(x);
-
     for (int ib=1; ib<=nbins; ib++){
       double w=TMath::Gaus( fabs( x-m_h->GetBinCenter(ib) )/(bin_width) );
-      m_width+=m_h->GetBinWidth(ib)* w;
-      wsum+=w;
+      m_width += m_h->GetBinWidth(ib)* w;
+      wsum += w;
     }
-    m_width/=wsum;
-    m_width*=this->width;
-    //    cout << x << " " << m_width << " " << wsum << " " << bin_width*nbins << " " <<bin_width << endl;
+    m_width /= wsum;
+    m_width *= this->width;
   }
-
-  //  std::cout << x << " :  "  << m_width << std::endl;
-
-  //int firstBinWithContent=0;
+  // std::cout << "m_width: " << m_width << std::endl;
+      
+ 
   for (int ib=1; ib<=nbins; ib++){
     double yi = m_h->GetBinContent(ib);
     double ei = m_h->GetBinError(ib);
-    //  if ( !firstBinWithContent && fabs(yi)<1e-8 ) continue; else{ firstBinWithContent=ib; } //skip all bins until the first with non-zero content
-    if ( fabs(yi)<1e-8 && ei<1e-8 ) continue;
-    double xi = m_h->GetXaxis()->GetBinCenter(ib);
-
-    //    double dx = ( x - xi ) / this->width;
+    if ( fabs(yi)<1e-8 && ei<1e-8 ) {
+      // std::cout << "Found low bin content and low uncertainty" << std::endl;
+      continue;
+    }
+    double xi = m_h->GetBinCenter(ib);
     double dx = ( this->rescaling(x) - this->rescaling(xi) ) / m_width;
 
     double wi = TMath::Gaus(dx);
     if (this->doWeights) wi *= this->h_w->GetBinContent(ib);
+    
     sumw += wi;
     sumwy += wi*yi;
   }
@@ -97,20 +107,25 @@ void GaussianKernelSmoother::getSmoothHisto(){
 
   Int_t nbins = this->h_out->GetNbinsX();
 
+
+  double binWidthforGaussianWindow = this->getBinWidthForGaussianWindow(this->h_in);
+
   for (int ib=1; ib<=nbins; ib++){
     double x = this->h_out->GetBinCenter(ib);
-    double smooth_val = this->getSmoothedValue(this->h_in , x);
+    std::cout << "Bin center at " << x << std::endl;
+    double smooth_val = this->getSmoothedValue(this->h_in , x, binWidthforGaussianWindow);
+    std::cout << "Value " << this->h_in->GetBinContent(ib) << " changed to " << smooth_val << std::endl;
     this->h_out->SetBinContent(ib,smooth_val);
+    // exit(0);
   }
 }
 
 double GaussianKernelSmoother::rescaling( double val ){
 
-  //  if ( doLastBinFrom && lastBinFrom > 0 ) return this->g_rescaling->Eval(val);
-
+  
   if ( kernelDistance == "lin" ) return val;
-  if ( kernelDistance == "log" ) return log(val);
-  if ( kernelDistance == "err" ) return this->g_rescaling->Eval(val);
+  else if ( kernelDistance == "log" ) return log(val);
+  else if ( kernelDistance == "err" ) return this->g_rescaling->Eval(val);
   else return val;
 }
 
@@ -131,7 +146,14 @@ void GaussianKernelSmoother::getContSmoothHisto(){
   double mini = this->h_in->GetXaxis()->GetBinLowEdge(1);
   double maxi = this->h_in->GetXaxis()->GetBinUpEdge(this->h_in->GetNbinsX());
 
+  std::cout << "mini " << mini << std::endl;
+  std::cout << "maxi " << maxi << std::endl;
+  
+
   if ( fabs(mini)<1e-8 ) mini = this->h_in->GetXaxis()->GetBinUpEdge(1)/10.;
+
+  std::cout << "mini " << mini << std::endl;
+  std::cout << "maxi " << maxi << std::endl;
 
   const int nbins = 2000;
   double bins[nbins+1]={0};
@@ -144,31 +166,30 @@ void GaussianKernelSmoother::getContSmoothHisto(){
     bins[i] = this->invertRescaling(  this->rescaling(mini) + i*dx  );
   }
   
+  double binWidthforGaussianWindow = this->getBinWidthForGaussianWindow(this->h_in);
   for (int i=0; i<nbins; i++){
     xs[i] = ( bins[i]+bins[i+1] )/2;
-    ys[i] = this->getSmoothedValue( this->h_in , xs[i] );
+    ys[i] = this->getSmoothedValue( this->h_in , xs[i], binWidthforGaussianWindow );
   } 
-
-  if ( this->doErrors ){
+  if ( this->doErrors ) {
     const int NTOYS=100;
     double ys_rnd[nbins]={0};
     double ys_err[nbins]={0};
-    double ys_low[nbins]={0};
-    double ys_high[nbins]={0};
+    
 
     std::vector<double> toys[nbins];
+    
     for (int it=0; it<NTOYS; it++){
       TH1D *h_rnd=this->fluctuateHisto();
       for (int ib=0; ib<nbins; ib++){
-	ys_rnd[ib]=this->getSmoothedValue( h_rnd , xs[ib] );
-	toys[ib].push_back( ys_rnd[ib] );
+        ys_rnd[ib]=this->getSmoothedValue( h_rnd , xs[ib], binWidthforGaussianWindow );
+        toys[ib].push_back( ys_rnd[ib] );
       }
       delete h_rnd;
     }
+    
     for (int i=0; i<nbins; i++){
       ys_err[i]  = this->std_dev( toys[i] );
-      ys_low[i]  = ys[i]-ys_err[i];
-      ys_high[i] = ys[i]+ys_err[i];
     }
 
     g_out=new TGraphAsymmErrors( nbins , xs , ys , 0 , 0 , ys_err , ys_err );
@@ -177,10 +198,12 @@ void GaussianKernelSmoother::getContSmoothHisto(){
     g_out->SetMarkerStyle(20);
     g_out->SetMarkerSize(0.5);
     g_out_err=new TGraphAsymmErrors( nbins , xs , ys_err );
-  } else{
+  } 
+  else { // never happens
     g_out = new TGraphAsymmErrors( nbins , xs , ys , 0 , 0 , 0 , 0 );
     g_out_err=new TGraphAsymmErrors( nbins , xs , 0 );
   }
+  
 
 }
 
@@ -206,27 +229,6 @@ TH1D* GaussianKernelSmoother::makeWeights( TH1D* h ){
   return h_w;
 }
 
-/*
-void GaussianKernelSmoother::createGraphMax( TH1D* m_h ){
-
-  int nbins=m_h->GetNbinsX();
-
-  double *x=new double[nbins];
-  double *y=new double[nbins];
- 
-  for (int ib=1; ib<=nbins; ib++){
-    x[ib-1]=m_h->GetBinCenter(ib);
-    y[ib-1]=x[ib-1];
-    if ( doLastBinFrom && x[ib-1]>lastBinFrom ){ nbins=ib; break; }
-  }
-
-  std::cout << "nbins: " << nbins << std::endl;
-  for (int i=0; i<nbins; i++) std::cout << x[i] << " : " << y[i] << std::endl;
-
-  this->g_rescaling=new TGraph(nbins,x,y);
-  this->g_inv_rescaling=new TGraph(nbins,y,x);
-}
-*/
 
 void GaussianKernelSmoother::createGraphKDE( TH1D* m_h ){
 
@@ -259,7 +261,7 @@ double GaussianKernelSmoother::std_dev( std::vector<double> v ){
     double diff = v.at(i) - mean;
     std_dev+=diff*diff;
   }
-  std_dev/=size;
+  std_dev/=(size-1.);
   std_dev=sqrt(std_dev);
  
   return std_dev;

@@ -34,12 +34,12 @@ class GaussianKernelSmoother
   void set_lastBinFrom( double m_lastBinFrom ){ 
     this->lastBinFrom = m_lastBinFrom; 
     this->doLastBinFrom = 1;
-    //    this->createGraphMax( this->h_in );
   }
   void getSmoothHisto();
   void getContSmoothHisto();
   void createTestHisto();
   TH1D* returnSmoothedHisto(){ return this->h_out; }
+  TH1D* returnWeightHisto(){ return this->h_w; }
   TH1D* returnInputHisto(){ return this->h_in; }
   TGraphAsymmErrors* returnSmoothedGraph(){ return this->g_out; }
   TGraph* returnSmoothedGraphErr(){ return this->g_out_err; }
@@ -56,15 +56,16 @@ class GaussianKernelSmoother
   }
 
   private:
-  double getSmoothedValue( TH1D* m_h , const double x );
+  double getSmoothedValue( TH1D* m_h , const double x, const double bin_width);
+  double getSmoothedValue( TH1D* m_h , const double x);
+  double getBinWidthForGaussianWindow(TH1D* m_h);
   TH1D* makeWeights( TH1D* h );
   double rescaling( double val );
   double invertRescaling( double val );
   TH1D* fluctuateHisto();
   double std_dev( std::vector<double> v );
   void createGraphKDE( TH1D* h );
-  //  void createGraphMax( TH1D* h );
-
+ 
   TH1D *h_in;
   TH1D *h_out;
   TH1D *h_w;

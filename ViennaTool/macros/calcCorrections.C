@@ -13,22 +13,17 @@ void calcCorrections() {
   std::cout << "***************************************" << std::endl << std::endl;
 
   
-  TString p, pi;
-  TString m_preselection_data;
-  TString m_SR_data;
-  TString m_label;
-  if      ( DOMC  &&  DOQCD                 ){ pi=path_img_mc;         p=path_ff_mc;         m_preselection_data=preselection_MCsum;       m_SR_data=SR_MCsum;       m_label="sim";  }
-  else if ( !DOMC                           ){ pi=path_img_data;       p=path_ff_data;       m_preselection_data=preselection_data;        m_SR_data=SR_data;        m_label="data"; }
-  else if ( DOMC  && ( !DOQCD || CHAN!=kMU) ){ pi=path_img_mc_woQCD;   p=path_ff_mc_woQCD;   m_preselection_data=preselection_MCsum_woQCD; m_SR_data=SR_MCsum_woQCD; m_label="sim";  }
-
-  TString pmc=path_ff_mc;             if ( ( !DOQCD && DOMC ) || CHAN!=kMU ) pmc=path_ff_mc_woQCD;
-  TString psmc=preselection_MCsum;    if ( ( !DOQCD && DOMC ) || CHAN!=kMU ) psmc=preselection_MCsum_woQCD;
+  TString pi=path_img_data;       
+  TString p=path_ff_data;       
+  TString m_preselection_data=preselection_data;        
+  TString m_SR_data=SR_data;        
+  TString m_label="data"; 
+  
+  TString pmc=path_ff_mc;             if ( CHAN!=kMU ) pmc=path_ff_mc_woQCD;
+  TString psmc=preselection_MCsum;    if ( CHAN!=kMU ) psmc=preselection_MCsum_woQCD;
 
   int m_gen_match=0;
-  if (requireGenMatch_whenCalcFF) m_gen_match=GEN_MATCH;
-
-
-
+  
   
   FFCalculator* Analyzer = new FFCalculator(N_p_Wjets,N_p_DY,N_p_TT_SR,N_p_TT_CR,N_p_QCD,N_p_QCD_AI,
                                             N_e_Wjets,N_e_DY,N_e_TT,N_e_QCD,
@@ -45,34 +40,43 @@ void calcCorrections() {
   Analyzer->init();
 
   cout << "Calculating QCD and W+jets corrections" << endl;
-  if(!DOMC && CHAN!=kTAU){
+  if(CHAN!=kTAU){
     Analyzer->loadFile(m_preselection_data,"Events");
     Analyzer->calc_nonclosure(_QCD,                               p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure,"",0);
+    Analyzer->calc_nonclosure(_W_JETS,                            p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure,     "",0);
+    
+    Analyzer->calc_muisocorr(_QCD|MUISO,                          p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_muiso_data_MCsubtracted,  p+FF_corr_QCD_MCsum_noGen_nonclosure,      p+FF_corr_QCD_MCsum_noGen_muisocorr,"",0);
+
+    // first need to perform the AI non closure correction before the SS-OS can be done because it depends on it.
+    Analyzer->calc_nonclosure(_QCD|_AI,                           p+FF_corr_QCD_MCsum_noGen_AI_fitted,   CR_QCD_mvis_AI_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_AI,      "",0);
+    Analyzer->calc_OSSScorr(_QCD|_AI,                             p+FF_corr_QCD_MCsum_noGen_AI_fitted,   SR_data_mvis_AI_MCsubtracted,     p+FF_corr_QCD_MCsum_noGen_nonclosure_AI,      p+FF_corr_QCD_MCsum_noGen_OSSScorr,"",0);
+    
+    
     if( doNJetBinning ){
+      // QCD
       Analyzer->calc_nonclosure(_QCD|JET0,                          p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_0jet,"",0);
       Analyzer->calc_nonclosure(_QCD|JET1,                          p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_1jet,"",0);
-    }
-    //Analyzer->calc_nonclosure(_QCD,                               p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure,"_alt",0);
 
-    cout << "Analysizer->calc_nonclosure( " << _W_JETS << " " << p+FF_corr_Wjets_MCsum_noGen_fitted << " " << CR_Wjets_mvis_data_MCsubtracted << " " << p+FF_corr_Wjets_MCsum_noGen_nonclosure << " 0" << endl;
-    Analyzer->calc_nonclosure(_W_JETS,                            p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure,     "",0);
-    if( doNJetBinning ){
+      // W+jets
       Analyzer->calc_nonclosure(_W_JETS|JET0,                       p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure_0jet,"",0);
       Analyzer->calc_nonclosure(_W_JETS|JET1,                       p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure_1jet,"",0);
-    }
-    Analyzer->calc_muisocorr(_QCD|MUISO,                          p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_muiso_data_MCsubtracted,  p+FF_corr_QCD_MCsum_noGen_nonclosure,      p+FF_corr_QCD_MCsum_noGen_muisocorr,"",0);
-    if( doNJetBinning ){
+   
       Analyzer->calc_muisocorr(_QCD|MUISO|JET0,                     p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_muiso_data_MCsubtracted,  p+FF_corr_QCD_MCsum_noGen_nonclosure_0jet, p+FF_corr_QCD_MCsum_noGen_muisocorr_0jet,"",0);
       Analyzer->calc_muisocorr(_QCD|MUISO|JET1,                     p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_muiso_data_MCsubtracted,  p+FF_corr_QCD_MCsum_noGen_nonclosure_1jet, p+FF_corr_QCD_MCsum_noGen_muisocorr_1jet,"",0);
-    }
-    Analyzer->calc_nonclosure(_QCD|_AI,                           p+FF_corr_QCD_MCsum_noGen_AI_fitted,   CR_QCD_mvis_AI_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_AI,      "",0);
-    if( doNJetBinning ){
+    
       Analyzer->calc_nonclosure(_QCD|_AI|JET0,                      p+FF_corr_QCD_MCsum_noGen_AI_fitted,   CR_QCD_mvis_AI_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_AI_0jet, "",0);
       Analyzer->calc_nonclosure(_QCD|_AI|JET1,                      p+FF_corr_QCD_MCsum_noGen_AI_fitted,   CR_QCD_mvis_AI_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_AI_1jet, "",0);
+    
+      Analyzer->calc_OSSScorr(_QCD|_AI|JET0,                        p+FF_corr_QCD_MCsum_noGen_AI_fitted,   SR_data_mvis_AI_MCsubtracted,     p+FF_corr_QCD_MCsum_noGen_nonclosure_AI_0jet, p+FF_corr_QCD_MCsum_noGen_OSSScorr_0jet,"",0);
+      Analyzer->calc_OSSScorr(_QCD|_AI|JET1,                        p+FF_corr_QCD_MCsum_noGen_AI_fitted,   SR_data_mvis_AI_MCsubtracted,     p+FF_corr_QCD_MCsum_noGen_nonclosure_AI_1jet, p+FF_corr_QCD_MCsum_noGen_OSSScorr_1jet,"",0);
+    
     }
-    Analyzer->calc_OSSScorr(_QCD|_AI,                             p+FF_corr_QCD_MCsum_noGen_AI_fitted,   SR_data_mvis_AI_MCsubtracted,     p+FF_corr_QCD_MCsum_noGen_nonclosure_AI,      p+FF_corr_QCD_MCsum_noGen_OSSScorr,"",0);
-    // Analyzer->calc_OSSScorr(_QCD|_AI|JET0,                        p+FF_corr_QCD_MCsum_noGen_AI_fitted,   SR_data_mvis_AI_MCsubtracted,     p+FF_corr_QCD_MCsum_noGen_nonclosure_AI_0jet, p+FF_corr_QCD_MCsum_noGen_OSSScorr_0jet,"",0);
-    // Analyzer->calc_OSSScorr(_QCD|_AI|JET1,                        p+FF_corr_QCD_MCsum_noGen_AI_fitted,   SR_data_mvis_AI_MCsubtracted,     p+FF_corr_QCD_MCsum_noGen_nonclosure_AI_1jet, p+FF_corr_QCD_MCsum_noGen_OSSScorr_1jet,"",0);
+
+    
+    
+    
+    
+    
     
     Analyzer->loadFile(preselection_Wjets,"Events");
     Analyzer->calc_nonclosure(_W_JETS,                           p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mvis_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure, "", 0, 0);

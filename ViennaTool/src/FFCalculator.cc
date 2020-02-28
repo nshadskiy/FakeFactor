@@ -9,12 +9,11 @@
 using namespace std;
 
 
-FFCalculator::FFCalculator(//Int_t N_p_Wjets,Int_t N_p_DY,Int_t N_p_TT,Int_t N_p_QCD, Int_t N_p_QCD_AI,
+FFCalculator::FFCalculator(
                            Int_t N_p_Wjets,Int_t N_p_DY,Int_t N_p_TT_SR,Int_t N_p_TT_CR,Int_t N_p_QCD, Int_t N_p_QCD_AI,
                            Int_t N_eta_Wjets,Int_t N_eta_DY,Int_t N_eta_TT,Int_t N_eta_QCD,
                            Int_t N_t_Wjets,Int_t N_t_DY,Int_t N_t_TT,Int_t N_t_QCD,
                            Int_t N_m_Wjets,Int_t N_m_DY,Int_t N_m_TT,Int_t N_m_QCD,
-                           //Int_t N_j_Wjets,Int_t N_j_DY,Int_t N_j_TT,Int_t N_j_QCD,
                            Int_t N_j_Wjets,Int_t N_j_DY,Int_t N_j_TT_SR,Int_t N_j_TT_CR,Int_t N_j_QCD,
                            const Double_t Pt_cuts_Wjets[],const Double_t Pt_cuts_DY[],const Double_t Pt_cuts_TT_SR[],const Double_t Pt_cuts_TT_CR[],const Double_t Pt_cuts_QCD[],const Double_t Pt_cuts_QCD_AI[],
                            const Double_t Eta_cuts_Wjets[],const Double_t Eta_cuts_DY[],const Double_t Eta_cuts_TT[],const Double_t Eta_cuts_QCD[],
@@ -1419,199 +1418,167 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
 
   cout << "Calculating corrections for " << ff_output << endl;
   cout << "mode: " << mode << endl;
-  cout << "raw ff: " << raw_ff << endl;
-  cout << "compare_file: " << compare_file << endl;
+  cout << "raw ff: " << raw_ff << endl; // contains dm0_njet0 dm0_njet1 of type TGrapAsymmeErrors
+  cout << "compare_file: " << compare_file << endl; //contains TH1Ds: hh_l_mvis, hh_l_mvis_MCsubtracted, hh_l_mvis_dataminusMC and the same for tight
   cout << "ff_output: " << ff_output << endl;
-  cout << "tight_cat: " << tight_cat << endl;
-  cout << "subtractMC: " << subtractMC << endl; 
+  cout << "tight_cat: " << tight_cat << endl; // always "" since not doing alt anymore
+  cout << "doPlot: " << doPlot << endl; // 
+  cout << "subtractMC: " << subtractMC << endl; // is probably always 1 (default) 
   cout << "tau_ind: " << tau_ind << endl;
   
 
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
-  TString cr_file=compare_file;
-  if(mode & JET0 ) cr_file = cr_file.ReplaceAll("_data","_0jet_data");
-  if(mode & JET1 ) cr_file = cr_file.ReplaceAll("_data","_1jet_data");
+  
+  TString cr_file = compare_file;
+  
+  if(mode & JET0 ) cr_file = cr_file.ReplaceAll("_data","_0jet_data"); // used for dedicated Njet correction
+  if(mode & JET1 ) cr_file = cr_file.ReplaceAll("_data","_1jet_data"); // used for dedicated Njet correction
+  
   TString sample;
   if(mode & _QCD) sample="_QCD";
   if(mode & _W_JETS) sample="_Wjets";
   if(mode & _TT) sample="_TT";
-  if(!subtractMC) sample+="_MC";
+  if(!subtractMC) sample+="_MC"; // probably obsolete
+  std::cout << "sample name extension " << sample << std::endl;
+
   
   TH1D *closure_h;
-  if(mode & _TT) closure_h= new TH1D("closure"+sample,"",nbins_mvis,hist_min_mvis,hist_max_mvis);
-  else closure_h= new TH1D("closure"+sample,"",w_mvis_n,w_mvis_v);
+  if(mode & _TT) closure_h= new TH1D("closure"+sample,"",nbins_mvis,hist_min_mvis,hist_max_mvis); // closure plot 15 bins between [0,250]
+  else closure_h= new TH1D("closure"+sample,"",w_mvis_n,w_mvis_v); // closure plot with binning {0,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450}
   
-  TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
-  TH1D *output_h = new TH1D("nonclosure_mvis","",w_mvis_n,w_mvis_v);
+  TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE"); //can be simplified. 
+  TH1D *output_h = new TH1D("nonclosure_mvis","",w_mvis_n,w_mvis_v); // output histogram with binning {0,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450}
   
   TFile FF_lookup(raw_ff);
   TH1D* FF_lookup_h = nullptr;
-  if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t"+tight_cat);
+  
+  // fill the fits to the raw FFs in the vector fittedFFs. ToDo: Why is dm1 also needed - without it get segfault
   vector<TGraphAsymmErrors*> fittedFFs;
-  if( raw_ff.Contains("_fitted") ){
-    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"+tight_cat); fittedFFs.push_back(dm0njet0);
-    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"+tight_cat); fittedFFs.push_back(dm1njet0);
-    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"+tight_cat); fittedFFs.push_back(dm0njet1);
-    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"+tight_cat); fittedFFs.push_back(dm1njet1);
+  TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"+tight_cat); fittedFFs.push_back(dm0njet0);
+  TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"+tight_cat); fittedFFs.push_back(dm1njet0);
+  TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"+tight_cat); fittedFFs.push_back(dm0njet1);
+  TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"+tight_cat); fittedFFs.push_back(dm1njet1);
+  
+  if (mode & _W_JETS) { // ToDo: for more jet categories
+    TGraphAsymmErrors *dm0njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2"+tight_cat); fittedFFs.push_back(dm0njet2);
+    TGraphAsymmErrors *dm1njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2"+tight_cat); fittedFFs.push_back(dm1njet2);
   }
+
   
   TFile compare(cr_file);
   Double_t FF_value=0;
-  if(subtractMC){
+
+  if(subtractMC){ // always true
     TString ff_inputHist="hh_l"; 
     TH1D* compare_l              = (TH1D*) compare.Get(ff_inputHist+"_mvis");
     TH1D* compare_l_MCsubtracted = (TH1D*) compare.Get(ff_inputHist+"_mvis_MCsubtracted");
+    TH1D* compare_l_dataminusMC  = (TH1D*) compare.Get(ff_inputHist+"_mvis_dataminusMC");
     
-    TH1D* ratio_l                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l");
+    // TH1D* ratio_l                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l");
+    TH1D* ratio_l                = (TH1D*)compare_l_dataminusMC->Clone("ratio_l");
     ratio_l->Divide(compare_l);
 
     ///get unity histogram
     TH1D *unity_h = new TH1D("unity","",w_mvis_n,w_mvis_v);
     for(int ibin=1; ibin<=unity_h->GetNbinsX(); ibin++) unity_h->SetBinContent(ibin,1.);
-    ratio_l->Add(unity_h,-1);ratio_l->Scale(-1);
-    TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis");
-    TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis_MCsubtracted");
-  
-    for (Int_t jentry=0; jentry<nentries;jentry++) {
+    // ratio_l->Add(unity_h,-1);ratio_l->Scale(-1);
+    
+    
+    for (Int_t jentry=0; jentry<nentries;jentry++) { // Fill mvis distribution in closure_h where each event in the loose determination region is 
+                                                     // weighted with the measured FF (extracted from the fit) to get its estimate in the tight determination region
+                                                     // entries are looping over preselection data file
       event_s->GetEntry(jentry);
-      if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;}
-      if (mode & SR){
+      if (DEBUG){ 
+        if(jentry % 100000 == 0) {
+          cout << jentry << "/" << nentries << endl;
+          // if (jentry > 0) {
+          //   break;
+          // }
+        }
+      }
+      if (mode & SR){ // happens only for TTbar
         if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) {
-          if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
-          else if( raw_ff.Contains("_fitted") ){
-            FF_value = this->getFittedBinContent( mode, fittedFFs );
-          }
+          FF_value = this->getFittedBinContent( mode, fittedFFs );
           closure_h->Fill(event_s->alltau_mvis->at(tau_ind),FF_value*event_s->weight_sf );
         }
       }
-      else{
+      else{ // mode is not SR
+        
         if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
-          if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
-          else if( raw_ff.Contains("_fitted") ){            
-            FF_value = this->getFittedBinContent( mode, fittedFFs );
-          }
-          closure_h->Fill(event_s->alltau_mvis->at(tau_ind),FF_value*event_s->weight_sf );
-        }
-      }
-    }
-
-    closure_h->Multiply(ratio_l);
-    output->cd();
-    closure_h->Write();
-  
-    output_h = (TH1D*)compare_t->Clone("nonclosure");
-    output_h->Add(compare_t_MCsubtracted,-1);
-    compare_t->Add(compare_t_MCsubtracted,-1);
-    compare_t->Write();
-    output_h->Divide(closure_h);
-  }
-  else{ 
-    TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis");
-  
-    for (Int_t jentry=0; jentry<nentries;jentry++) {
-      event_s->GetEntry(jentry);
-      if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl; }
-      if (mode & SR){
-        if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
-          if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
-          else if( raw_ff.Contains("_fitted") ){
-            FF_value = this->getFittedBinContent( mode, fittedFFs );
-          }
-          closure_h->Fill(event_s->alltau_mvis->at(tau_ind),FF_value*event_s->weight_sf );
-        }
-      }
-      else{
-        if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
-          if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
-          else if( raw_ff.Contains("_fitted") ){
-            FF_value = this->getFittedBinContent( mode, fittedFFs );
-          }
+          FF_value = this->getFittedBinContent( mode, fittedFFs );
           closure_h->Fill(event_s->alltau_mvis->at(tau_ind),FF_value*event_s->weight_sf );
         }
       }
     }
     
+    closure_h->Multiply(ratio_l);
     output->cd();
     closure_h->Write();
+
+    TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis");
+    TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis_MCsubtracted");
+    TH1D* compare_t_dataminusMC  = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis_dataminusMC");
+  
   
     output_h = (TH1D*)compare_t->Clone("nonclosure");
+    // for (int i=0; i<output_h->GetNbinsX(); i++) {std::cout << "bin content output_h: " << output_h->GetBinContent(i+1) << std::endl;}
+    output_h->Add(compare_t_MCsubtracted,-1);
+    
+    compare_t->Add(compare_t_MCsubtracted,-1);
+    compare_t->Write();
     output_h->Divide(closure_h);
   }
+  
 
   TH1D* output_fit;
   output_fit = (TH1D*)output_h->Clone("nonclosure_fit");
 
   for(int i=1;i<=output_h->GetNbinsX();i++){
-    if( output_h->GetBinContent(i) < 0 ) output_h->SetBinError(i,1.);
+    std::cout << "correction: " << output_h->GetBinContent(i) << std::endl;
+    if ( output_h->GetBinContent(i) < 0 ) {
+      output_h->SetBinError(i,1.);
+      std::cout << "Found negative correction value !" << std::endl;
+    } 
   }
   
   output->cd();
-  output_fit->Write();
+  output_fit->Write(); // at this point it is just the ratio of histograms
+
+
+
+
+
+
 
   GaussianKernelSmoother gsk;
-  int ret=gsk.setInputHisto( output_fit );
+  int ret=gsk.setInputHisto( output_fit ); // set this->h_in to output_fit 
   if ( ret != 0 ) return;
+
   gsk.set_doWeights(1);
   gsk.set_doIgnoreZeroBins(0);
   gsk.set_kernelDistance( "lin" );
   gsk.set_doWidthInBins(1);
   gsk.set_doErrors(1);
   //if(mode & _QCD) gsk.set_lastBinFrom(150);
+  
   Double_t fitWidth;
   if(mode & _QCD) fitWidth=1.5; else if(mode & _W_JETS) fitWidth=1.5; else fitWidth=1.5;
   if(CHAN==kTAU) fitWidth=1.5;
   cout << "FitWidth: " << fitWidth << endl;
   gsk.setWidth(fitWidth);
-  gsk.set_widthInBins_sf(1.115);
+  gsk.set_widthInBins_sf(3);
   
   gsk.getSmoothHisto();
-  TH1D *h2=gsk.returnSmoothedHisto();
+  TH1D *h2=gsk.returnSmoothedHisto(); //nonclosure_fit_smoothed is returned
+  TH1D *h22=gsk.returnWeightHisto(); 
   h2->Write();
-
+  h22->Write();
+  
   gsk.set_doErrors(1);
-  //gsk.set_lastBinFrom(185);
   gsk.getContSmoothHisto();
   TGraphAsymmErrors *g=   gsk.returnSmoothedGraph();
-  /*
-  Double_t x185; Double_t y185;
-  Double_t scale_error_from=100;
-  Double_t lim=(scale_error_from+20)*4;
-  Int_t constPoint = 0;
-  if(mode & _QCD) {
-    // constPoint = 223; //223
-    if(mode & JET0){
-      if(CHAN != kEL) constPoint = 255;
-      else constPoint = 215;
-    } 
-    else {
-      if(CHAN != kEL) constPoint = 125;
-      else constPoint = 165;
-    }
-  }
-  else constPoint = 170;
-  if(mode & _TT) constPoint = 153;
-
-  if(CHAN ==kTAU){
-    if(mode & JET0) constPoint = 195;
-    // if(mode & JET1) constPoint = 153;
-  }
-
-  g->GetPoint(constPoint*4,x185,y185);
-  for(int i=0; i<g->GetN(); i++){
-    Double_t x; Double_t y;
-    if(i>constPoint*4){
-      g->GetPoint(i,x,y);
-      g->SetPoint(i,x,y185);
-    }
-    if (CHAN == kMU && (mode & _QCD) && i>lim){
-      float upfactor=(i-lim)/lim+1;
-      upfactor=pow(upfactor,0.7);
-      g->SetPointEYlow(i, upfactor*g->GetErrorYlow(i) );
-      g->SetPointEYhigh(i, upfactor*g->GetErrorYhigh(i) );
-    }
-  }
-  */
-
+  
+  
   g->SetTitle("nonclosure"+sample);
   g->SetName("nonclosure"+sample);
   g->Write();
@@ -1626,6 +1593,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   gdown->Write();
   
 
+  // This down here is not necesaairy probably happens again in plotCorrections.py
   TCanvas *c2=new TCanvas();
   output_h->Draw("E");
   g->Draw("same LP");
@@ -1639,15 +1607,15 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   output_h->SetMinimum(0.);
   c2->SetName("nonclosure"+sample+"_c");
   c2->Write();
-  TString SSstring="";
-  if(CALC_SS_SR)SSstring+="_SS_SR";
-  if ( doPlot)  c2->SaveAs("ViennaTool/Images/data_"+s_chan[CHAN]+"/nonclosure"+sample+SSstring+tight_cat+".png");
-
+  // from obove commend to here could be deleted
+  
+  std::cout << "test1" << std::endl;
+  
+  // close everything in RAM
   FF_lookup.Close();output->Close();
-  if( raw_ff.Contains("_fitted") ){
-    for(int i=0; i<fittedFFs.size();i++){
-      delete fittedFFs.at(i);
-    }
+  std::cout << "test2" << std::endl;
+  for(int i=0; i<fittedFFs.size();i++){
+    delete fittedFFs.at(i);
   }
   
 }
@@ -2009,63 +1977,85 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
 void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const TString SR_file_AI, TString nonclosure_corr, TString ff_output, const TString tight_cat, const Int_t doPlot, const Int_t subtractMC, const Int_t tau_ind){
 
   cout << "Calculating corrections for " << ff_output << endl;
+  cout << "mode: " << mode << endl;
+  cout << "raw ff: " << raw_ff << endl; // contains dm0_njet0 dm0_njet1 of type TGrapAsymmeErrors
+  cout << "SR_file_AI: " << SR_file_AI << endl; // contains hh_(l or t)_mvis
+  cout << "nonclosure_corr: " << nonclosure_corr << endl; 
+  cout << "ff_output: " << ff_output << endl;
+  cout << "tight_cat: " << tight_cat << endl; // always "" since not doing alt anymore
+  cout << "doPlot: " << doPlot << endl; // 
+  cout << "subtractMC: " << subtractMC << endl; // is probably always 1 (default) 
+  cout << "tau_ind: " << tau_ind << endl;
+
+  
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
-  cout << nentries << endl;
+  
   TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
   TH1D *output_h = new TH1D("OSSS_corr","",w_mvis_n,w_mvis_v);
   TH1D *closure_h = new TH1D("closure","",w_mvis_n,w_mvis_v);
+  
   Double_t FF_value=0;
+  
   TFile compare(SR_file_AI);
   if(compare.IsZombie()) cout << SR_file_AI << " does not exist" << endl;
   TFile FF_lookup(raw_ff);
   if(FF_lookup.IsZombie()) cout << raw_ff << " does not exist" << endl;
   TH1D* FF_lookup_h = nullptr;
-  if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t"+tight_cat);
+  
   vector<TGraphAsymmErrors*> fittedFFs;
-  if( raw_ff.Contains("_fitted") ){
-    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"+tight_cat); fittedFFs.push_back(dm0njet0);
-    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"+tight_cat); fittedFFs.push_back(dm1njet0);
-    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"+tight_cat); fittedFFs.push_back(dm0njet1);
-    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"+tight_cat); fittedFFs.push_back(dm1njet1);
+  TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"+tight_cat); fittedFFs.push_back(dm0njet0);
+  TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"+tight_cat); fittedFFs.push_back(dm1njet0);
+  TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"+tight_cat); fittedFFs.push_back(dm0njet1);
+  TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"+tight_cat); fittedFFs.push_back(dm1njet1);
+  if (mode & _W_JETS) { // ToDo: for more jet categories
+    TGraphAsymmErrors *dm0njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2"+tight_cat); fittedFFs.push_back(dm0njet2);
+    TGraphAsymmErrors *dm1njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2"+tight_cat); fittedFFs.push_back(dm1njet2);
   }
+
   TFile nonclosure(nonclosure_corr.ReplaceAll(".root",tight_cat+".root"));
   if(nonclosure.IsZombie()) cout << nonclosure_corr << " does not exist" << endl;
   TH1D* nonclosure_h = (TH1D*) nonclosure.Get("nonclosure_fit_smoothed");
-
+  std::cout << "nonclosure_h: " << nonclosure_h << std::endl; // this is a histogram filled with zeros!?
   if(subtractMC){
     TString ff_inputHist="hh_l";
     TH1D* compare_l              = (TH1D*) compare.Get(ff_inputHist+"_mvis");
     TH1D* compare_l_MCsubtracted = (TH1D*) compare.Get(ff_inputHist+"_mvis_MCsubtracted");
-    TH1D* ratio_l                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l");
+    TH1D* compare_l_dataminusMC = (TH1D*) compare.Get(ff_inputHist+"_mvis_dataminusMC");
+    TH1D* ratio_l                = (TH1D*)compare_l_dataminusMC->Clone("ratio_l");
     ratio_l->Divide(compare_l);
-    ///get unity histogram
-    TH1D *unity_h = new TH1D("unity","",w_mvis_n,w_mvis_v);
-    for(int ibin=1; ibin<=unity_h->GetNbinsX(); ibin++) unity_h->SetBinContent(ibin,1.);
-    ratio_l->Add(unity_h,-1);ratio_l->Scale(-1);
+    
     TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis");
     TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis_MCsubtracted");
-    //if(CHAN==kEL)compare_t_MCsubtracted->Scale(0.8);
-    //if(CHAN==kMU)compare_t_MCsubtracted->Scale(0.95);
-    TH1D* ratio_t                = (TH1D*)compare_t_MCsubtracted->Clone("ratio_t");
+    TH1D* compare_t_dataminusMC = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis_dataminusMC");
+    TH1D* ratio_t                = (TH1D*)compare_t_dataminusMC->Clone("ratio_t");
     ratio_t->Divide(compare_t);
-    ratio_t->Add(unity_h,-1);ratio_t->Scale(-1);
     
+
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
-      if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl; }
-      if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
-        if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
-        else if( raw_ff.Contains("_fitted") ){
-          FF_value = this->getFittedBinContent( mode, fittedFFs );
+      if (DEBUG){ 
+        if(jentry % 100000 == 0) {
+          cout << jentry << "/" << nentries << endl; 
+          // if (jentry > 0) {break;}
         }
+        
+      }
+      if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+        FF_value = this->getFittedBinContent( mode, fittedFFs );
+        // std::cout << "correction " << nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) << std::endl;
         closure_h->Fill(event_s->alltau_mvis->at(tau_ind),event_s->weight_sf*FF_value*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );
+        
       } 
     }
+    // exit(0);
     
     closure_h->Multiply(ratio_l);
     output->cd();
     ratio_l->Write();
     ratio_t->Write();
+    compare_t_dataminusMC->Write();
+    compare_t_MCsubtracted->Write();
+    compare_t->Write();
     closure_h->Write();
     
     output_h = (TH1D*)compare_t->Clone("OSSS_corr");
@@ -2091,6 +2081,7 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
     }
     
     output->cd();
+    
     closure_h->Write();
   
     output_h = (TH1D*)compare_t->Clone("OSSS_corr");
