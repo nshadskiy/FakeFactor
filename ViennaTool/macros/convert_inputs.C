@@ -399,7 +399,7 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
         double param2 = f_fit->GetParameter(1);
         double pthist_max = 0.0;
         if(fn.Contains("TT")) pthist_max = 200.;
-        else pthist_max =  100.;
+        else pthist_max =  80.;
 
           double crossing1; double crossing2;
           double startpoint1; double startpoint2;
@@ -440,12 +440,12 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
           }
           double param1_error_v2; double param2_error_v2;
           if (x<pthist_max) {
-            param1_error_v2 = cont - (x*(param2+err2)+startpoint1);
-            param2_error_v2 = cont - (x*(param2+0.5*err2)+startpoint2);
+            param1_error_v2 = 3.0*(cont - (x*(param2+err2)+startpoint1));
+            param2_error_v2 = 3.0*(cont - (x*(param2+0.5*err2)+startpoint2));
           }
           else {
-            param1_error_v2 = cont - (pthist_max*(param2+err2)+startpoint1);
-            param2_error_v2 = cont - (pthist_max*(param2+0.5*err2)+startpoint2);
+            param1_error_v2 = 3.0*(cont - (pthist_max*(param2+err2)+startpoint1));
+            param2_error_v2 = 3.0*(cont - (pthist_max*(param2+0.5*err2)+startpoint2));
             }
           if(idm==0 && ijet==0){
             hout_err_dm0_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , TMath::Sqrt( TMath::Power(err_low/cont,2) + TMath::Power(err_dm0njet0,2) ) );
@@ -567,7 +567,8 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
             hout_err_dm1_njet0_param1_v2_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
             hout_err_dm1_njet1_param1_v2_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
             hout_err_dm1_njet0_param2_v2_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
-            hout_err_dm1_njet1_param2_v2_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );          
+            hout_err_dm1_njet1_param2_v2_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );      
+           
           }
           if(idm==0 && ijet==1){
             hout_err_dm0_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
