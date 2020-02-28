@@ -157,7 +157,8 @@ void CRHisto(int doCalc, int nCR, int nQU) {
 
   //pick only QCD control region - produces ViennaTool/sim/channel/CR_QCD_lepPt_*.root but not the MCsubtracted one
   CallCRHisto_creation(Analyzer, 0, _QCD|LEPPT, s_QCD, "lepPt" );
-  
+  CallCRHisto_creation(Analyzer, 0, _W_JETS|LEPPT, s_Wjets, "lepPt" );
+
   
   //get AI CR histogramms for QCD mvis nonclosure
   CallCRHisto_creation(Analyzer, MVIS, _QCD|_AI, s_QCD, s_mvis+"_AI" );
@@ -198,6 +199,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   
   for (int ij=0; ij<=2*(doNJetBinning); ij++){ //loop over inclusive, 0jet, 1jet //Check if Njet binning is implemented
     ProduceMCsubtractedHistos(s_QCD  ,"lepPt",""   ,sjet[ij],0); //get QCD      lepPT MC subtracted CRs
+    ProduceMCsubtractedHistos(s_Wjets  ,"lepPt",""   ,sjet[ij],0); //get QCD      lepPT MC subtracted CRs
     ProduceMCsubtractedHistos(s_QCD  ,s_mvis ,"_AI",sjet[ij],0); //get QCD   AI mvis  MC subtracted CRs
     ProduceMCsubtractedHistos(s_Wjets,s_mvis ,"_SS",sjet[ij],0); //get Wjets SS mvis  MC subtracted CRs
   }

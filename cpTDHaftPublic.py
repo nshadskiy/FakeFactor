@@ -250,7 +250,7 @@ if __name__ == '__main__':
     altFF3D=[]
     ttaltFF3D=[]
     fractions=['frac_qcd.root','frac_tt.root','frac_dy.root','frac_wjets.root']
-    corrections=['Correction_Data_QCD_MuIso.root','Correction_Data_QCD_MVis.root','Correction_Data_QCD_OSSS.root','Correction_Data_W_MVis.root','Correction_MC_W_MT.root','Correction_MC_TT_MVis.root','uncertainties_TT.root']
+    corrections=['Correction_Data_QCD_MuIso.root','Correction_Data_QCD_MVis.root','Correction_Data_QCD_OSSS.root','Correction_Data_W_MVis.root','Correction_Data_W_lepPt.root','Correction_MC_W_MT.root','Correction_MC_TT_MVis.root','uncertainties_TT.root']
     if(args.do_njetbinning == 1):
         corrections.extend(['Correction_Data_QCD_MuIso_0jet.root','Correction_Data_QCD_MuIso_1jet.root','Correction_Data_QCD_MVis_0jet.root','Correction_Data_QCD_MVis_1jet.root','Correction_Data_W_MVis_0jet.root','Correction_Data_W_MVis_1jet.root','Correction_MC_W_MT_0jet.root','Correction_MC_W_MT_1jet.root'])    
     altcorrections=[]
