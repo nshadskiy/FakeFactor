@@ -42,7 +42,9 @@ if __name__ == '__main__':
               ])
      
 
-     files_et = [{'name': 'ViennaTool/fakefactor/data_et/FF_corr_QCD_MCsum_noGen_nonclosure.root','data':'nonclosure_fit', 'graph':'nonclosure_QCD','CMS':preliminary,'Y':[0,2],'X':[0,305], 'Label':'m_{vis} (GeV)','file':'corr_QCD_nonclosure','plotLabel1':'e#tau_{h} QCD multijet','plotLabel2':'Nonclosure correction'},
+     files_et = [
+              {'name': 'ViennaTool/fakefactor/data_et/FF_corr_QCD_MCsum_noGen_nonclosure.root','data':'nonclosure_fit', 'graph':'nonclosure_QCD','CMS':preliminary,'Y':[0,2],'X':[0,305], 'Label':'m_{vis} (GeV)','file':'corr_QCD_nonclosure','plotLabel1':'e#tau_{h} QCD multijet','plotLabel2':'Nonclosure correction'},
+              {'name': 'ViennaTool/fakefactor/data_et/FF_corr_QCD_MCsum_noGen_nonclosure_AI.root','data':'nonclosure_fit', 'graph':'nonclosure_QCD','CMS':preliminary,'Y':[0,2],'X':[0,305], 'Label':'m_{vis} (GeV)','file':'corr_QCD_AI_nonclosure','plotLabel1':'e#tau_{h} QCD multijet','plotLabel2':'Nonclosure correction'},
               {'name': 'ViennaTool/fakefactor/data_et/FF_corr_QCD_MCsum_noGen_muisocorr.root','data':'muiso_corr', 'graph':'muiso_QCD','CMS':preliminary,'Y':[0.4,1.3],'X':[0,0.71], 'Label':'iso(e)','file':'corr_QCD_lepiso','plotLabel1':'e#tau_{h} QCD multijet','plotLabel2':'Iso(e) correction'},
               {'name': 'ViennaTool/fakefactor/data_et/FF_corr_QCD_MCsum_noGen_OSSScorr.root','data':'OSSS_corr', 'graph':'OSSS_corr_QCD','CMS':preliminary,'Y':[0,2],'X':[0,305], 'Label':'m_{vis} (GeV)','file':'corr_QCD_OSSS','plotLabel1':'e#tau_{h} QCD multijet','plotLabel2':'opposite/same charge correction'},
               {'name': 'ViennaTool/fakefactor/data_et/FF_corr_TT_MC_noGen_nonclosure.root','data':'nonclosure_fit', 'graph':'nonclosure_TT_MC','CMS':'Simulation '+preliminary,'Y':[0.5,1.5],'X':[0,250], 'Label':'m_{vis} (GeV)','file':'corr_TT_nonclosure','plotLabel1':'e#tau_{h} t#bar{t}','plotLabel2':'Nonclosure correction'},
@@ -133,7 +135,8 @@ if __name__ == '__main__':
                datapoints_graph.SetPointEXhigh(i, datapoints.GetBinCenter(i)-datapoints.GetBinLowEdge(i))
                datapoints_graph.SetPointEXlow(i, datapoints.GetBinLowEdge(i+1)-datapoints.GetBinCenter(i))
 
-          
+          datapoints_graph.RemovePoint(0)
+         
           datapoints_graph.SetMarkerStyle(20)
           datapoints_graph.SetLineWidth(1)
           datapoints_graph.SetMarkerSize(1.5)
