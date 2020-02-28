@@ -13,6 +13,7 @@ njetbinning=$(grep 'doNJetBinning' "Settings.h" | awk -F'[=;]' '{print $2}' )
 
 do_presel=$1 # 0 or 1 (default)
 ntuples=$2 # Use "KIT" to process KIT ntuples, otherwise Vienna is assumed
+saveWork=$3 # 0 or 1 whether plots / root files will be saved to /ceph/USER/analysis , i.e. where the preselection is found
 
 if [ -z "$do_presel" ]; then
     do_presel=1
@@ -30,14 +31,16 @@ echo User: $USER
 echo Name: $analysis
 echo doNjetBinning: $njetbinning
 echo NTuples: $ntuples
+echo savework: $saveWork
 
 sed s/fftype=.*/fftype=$analysis/g BuildStructure.sh >/tmp/BuildStructure$USER.sh
 yes | mv /tmp/BuildStructure$USER.sh BuildStructure.sh
 
 
-ff_tocheck='ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf'
+f_tocheck='ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf'
 if [ "$channel" != " kTAU" ]; then ff_tocheck+=' ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf'; fi
 
+read -p "Are the above settings ok? If so, press enter to continue"
 
 sh BuildStructure.sh
 
@@ -46,36 +49,35 @@ echo "Compiling the framework... "
 
 if [ $embedding == 1 ] || [ $ntuples == "KIT" ]; then
 	if [ $do_presel == 1 ]; then
- 	echo "Extra turnaround for embedded samples starts"
- 	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
- 	mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
- 	mv ViennaTool/src/TNtupleAnalyzer.cc ViennaTool/src/TNtupleAnalyzer_NonEMB.cc
-	mv ViennaTool/src/TNtupleAnalyzer_EMB.cc ViennaTool/src/TNtupleAnalyzer.cc
- 	make -B -j 4
+		echo "Extra turnaround for embedded samples starts"
+		mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_NonEMB.h
+		mv ViennaTool/NtupleClass_EMB.h ViennaTool/NtupleClass.h
+		mv ViennaTool/src/TNtupleAnalyzer.cc ViennaTool/src/TNtupleAnalyzer_NonEMB.cc
+		mv ViennaTool/src/TNtupleAnalyzer_EMB.cc ViennaTool/src/TNtupleAnalyzer.cc
+		make -B -j 4
 
-    if [ $ntuples != "KIT" ]; then
-        ./Preselection_KIT
-    else
-        for process in DY EMB Data VV TT WJets
-        do
-     	    ./Preselection_KIT $process &
-        done
-    fi
-    wait
-	if [ $embedding == 1 ] ; then
-		if [ $chan == 'tt' ]; then
-			cp /ceph/$USER/$analysis/preselection/${chan}/preselection_TT_J_DC_EMB.root /ceph/$USER/$analysis/preselection/${chan}/preselection_TT_J_DC.root
-		else 	
-			cp /ceph/$USER/$analysis/preselection/${chan}/preselection_TT_J_EMB.root /ceph/$USER/$analysis/preselection/${chan}/preselection_TT_J.root
+		if [ $ntuples != "KIT" ]; then
+			./Preselection_KIT
+		else
+			for process in DY EMB Data VV TT WJets
+			do
+				./Preselection_KIT $process &
+			done
 		fi
-	fi
-	
-	
- 	echo "Switch back and compile again"
- 	mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
- 	mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
- 	mv ViennaTool/src/TNtupleAnalyzer.cc ViennaTool/src/TNtupleAnalyzer_EMB.cc
- 	mv ViennaTool/src/TNtupleAnalyzer_NonEMB.cc ViennaTool/src/TNtupleAnalyzer.cc
+		wait
+		if [ $embedding == 1 ] ; then
+			if [ $chan == 'tt' ]; then
+				cp /ceph/$USER/$analysis/preselection/${chan}/preselection_TT_J_DC_EMB.root /ceph/$USER/$analysis/preselection/${chan}/preselection_TT_J_DC.root
+			else 	
+				cp /ceph/$USER/$analysis/preselection/${chan}/preselection_TT_J_EMB.root /ceph/$USER/$analysis/preselection/${chan}/preselection_TT_J.root
+			fi
+		fi
+		
+		echo "Switch back and compile again"
+		mv ViennaTool/NtupleClass.h ViennaTool/NtupleClass_EMB.h
+		mv ViennaTool/NtupleClass_NonEMB.h ViennaTool/NtupleClass.h
+		mv ViennaTool/src/TNtupleAnalyzer.cc ViennaTool/src/TNtupleAnalyzer_EMB.cc
+		mv ViennaTool/src/TNtupleAnalyzer_NonEMB.cc ViennaTool/src/TNtupleAnalyzer.cc
 	fi
 fi
 
@@ -85,13 +87,11 @@ if [ $ntuples != "KIT" ] && [ $do_presel == 1 ]; then
     ./Preselection 
 fi
 
-
 ./SRHisto &
 ./CRHisto &
 wait
 
 ./steerFF
-
 ./fitFakeFactors
 cd ViennaTool/Images_EMB/data_$chan
 gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
@@ -105,5 +105,21 @@ python plotCorrections.py --channel $channel  --doNjetBinning $njetbinning
 python cpTDHaftPublic.py --destination $output --channel $channel --doNjetBinning $njetbinning
 echo $output $channel $njetbinning
 python producePublicFakeFactors.py --input $output --channel $channel --njetbinning $njetbinning
+
+if [ $saveWork == 1 ] ; then
+	echo "------- SAVE WORK ---------"
+	cd ViennaTool
+	if [ ! -d save_$analysis ]; then
+		mkdir save_$analysis
+	fi
+	cp -r Images_EMB save_$analysis
+	cp -r fakefactor save_$analysis
+	cp -r ff_2d save_$analysis
+	cp -r sim save_$analysis
+	if [ -d /ceph/$USER/$analysis/save_$analysis ]; then
+		rm -rf /ceph/$USER/$analysis/save_$analysis
+	fi
+	mv save_$analysis /ceph/$USER/$analysis
+fi
 
 echo "------ END OF steerAll.sh ---------"
