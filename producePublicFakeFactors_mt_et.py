@@ -476,6 +476,150 @@ for x in range(0,len(categories)):
          )
         }
     )
+    comb_qcd_mvis_up = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_mvis_up',
+             formula='(1.+{sys_qcd_mvis_up})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='sys_qcd_mvis_up',
+                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_nonclosure.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='nonclosure_QCD_up',
+                     vars=['mvis']
+                 ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_qcd_mvis_down = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_mvis_down',
+             formula='(1.-{sys_qcd_mvis_down})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='sys_qcd_mvis_down',
+                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_nonclosure.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='nonclosure_QCD_down',
+                     vars=['mvis']
+                 ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_qcd_muiso_up = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_muiso_up',
+             formula='(1.+{sys_qcd_muiso_up})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='sys_qcd_muiso_up',
+                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_muisocorr.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='muiso_corr_QCD_up',
+                     vars=['mu_iso']
+                 ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_qcd_muiso_down = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_muiso_down',
+             formula='(1.-{sys_qcd_muiso_down})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='sys_qcd_muiso_down',
+                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_muisocorr.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='muiso_corr_QCD_down',
+                     vars=['mu_iso']
+                 ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_qcd_mvis_mcup = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_mvis_mcup',
+             formula='(1.+{sys_qcd_mvis_mcup})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='sys_qcd_mvis_mcup',
+                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_nonclosure.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='nonclosure_mcup_QCD',
+                     vars=['mvis']
+                 ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_qcd_mvis_mcdown = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_mvis_mcdown',
+             formula='(1.+{sys_qcd_mvis_mcdown})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='sys_qcd_mvis_mcdown',
+                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_nonclosure.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='nonclosure_mcdown_QCD',
+                     vars=['mvis']
+                 ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_qcd_muiso_mcup = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_muiso_mcup',
+             formula='(1.+{sys_qcd_muiso_mcup})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='sys_qcd_muiso_mcup',
+                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_muisocorr.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='muiso_mcup_QCD',
+                     vars=['mu_iso']
+                 ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_qcd_muiso_mcdown = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_muiso_mcdown',
+             formula='(1.+{sys_qcd_muiso_mcdown})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='sys_qcd_muiso_mcdown',
+                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_muisocorr.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='muiso_mcdown_QCD',
+                     vars=['mu_iso']
+                 ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
     comb_qcd_down = replace_nodes(
         comb,
         {'ff_qcd_os':
@@ -830,7 +974,115 @@ for x in range(0,len(categories)):
                      name='sys_w_up',
                      file='{INDIR}/{CHANNEL}/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_W_MVis_MT_up',
-                     vars=['mvis', 'mt']
+                     vars=['lep_pt', 'mt']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_lepPt_up = replace_nodes(
+        comb,
+        {'ff_w':
+         Node(
+             name='ff_w_lepPt_up',
+             formula='(1.+{sys_w_lepPt_up})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='sys_w_lepPt_up',
+                     file='{INDIR}/{CHANNEL}/FF_corr_Wjets_MCsum_noGen_nonclosure.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='nonclosure_Wjets_up',
+                     vars=['lep_pt']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_lepPt_mcup = replace_nodes(
+        comb,
+        {'ff_w':
+         Node(
+             name='ff_w_lepPt_mcup',
+             formula='(1.+{sys_w_lepPt_mcup})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='sys_w_lepPt_mcup',
+                     file='{INDIR}/{CHANNEL}/FF_corr_Wjets_MCsum_noGen_nonclosure.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='nonclosure_mcup_Wjets',
+                     vars=['lep_pt']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_lepPt_down = replace_nodes(
+        comb,
+        {'ff_w':
+         Node(
+             name='ff_w_lepPt_down',
+             formula='(1.-{sys_w_lepPt_down})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='sys_w_lepPt_down',
+                     file='{INDIR}/{CHANNEL}/FF_corr_Wjets_MCsum_noGen_nonclosure.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='nonclosure_Wjets_down',
+                     vars=['lep_pt']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_mt_up = replace_nodes(
+        comb,
+        {'ff_w':
+         Node(
+             name='ff_w_mt_up',
+             formula='(1.+{sys_w_mt_up})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='sys_w_mt_up',
+                     file='{INDIR}/{CHANNEL}/FF_corr_Wjets_MC_noGen_mtcorr.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='mt_corr_Wjets_up',
+                     vars=['mt']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_mt_down = replace_nodes(
+        comb,
+        {'ff_w':
+         Node(
+             name='ff_w_mt_down',
+             formula='(1.-{sys_w_mt_down})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='sys_w_mt_down',
+                     file='{INDIR}/{CHANNEL}/FF_corr_Wjets_MC_noGen_mtcorr.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='mt_corr_Wjets_down',
+                     vars=['mt']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_lepPt_mcdown = replace_nodes(
+        comb,
+        {'ff_w':
+         Node(
+             name='ff_w_lepPt_mcdown',
+             formula='(1.+{sys_w_lepPt_mcdown})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='sys_w_lepPt_mcdown',
+                     file='{INDIR}/{CHANNEL}/FF_corr_Wjets_MCsum_noGen_nonclosure.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='nonclosure_mcdown_Wjets',
+                     vars=['lep_pt']
                  ),
                  comb.find('ff_w')
              ]
@@ -1566,6 +1818,16 @@ for x in range(0,len(categories)):
     fill(ff_comb  , comb)
     fill(ff_comb, comb_qcd_up,   sys='ff_qcd_syst_up')
     fill(ff_comb, comb_qcd_down,   sys='ff_qcd_syst_down')
+
+
+    fill(ff_comb, comb_qcd_mvis_up,   sys='ff_qcd_mvis_up')
+    fill(ff_comb, comb_qcd_mvis_down,   sys='ff_qcd_mvis_down')
+    fill(ff_comb, comb_qcd_muiso_up,   sys='ff_qcd_muiso_up')
+    fill(ff_comb, comb_qcd_muiso_down,   sys='ff_qcd_muiso_down')
+    fill(ff_comb, comb_qcd_mvis_mcup,   sys='ff_qcd_mvis_mcup')
+    fill(ff_comb, comb_qcd_mvis_mcdown,   sys='ff_qcd_mvis_mcdown')
+    fill(ff_comb, comb_qcd_muiso_mcup,   sys='ff_qcd_muiso_mcup')
+    fill(ff_comb, comb_qcd_muiso_mcdown,   sys='ff_qcd_muiso_mcdown')
     fill(ff_comb, comb_qcd_up_stat,   sys='ff_qcd_stat_up')
     fill(ff_comb, comb_qcd_down_stat,   sys='ff_qcd_stat_down')
     fill(ff_comb, comb_qcd_up_stat_dm0_njet0,   sys='ff_qcd_dm0_njet0_stat_up')
@@ -1586,6 +1848,13 @@ for x in range(0,len(categories)):
     fill(ff_comb, comb_qcd_down_stat_dm0_njet1_param2_v2,   sys='ff_qcd_dm0_njet1_param2_v2_stat_down')
     fill(ff_comb, comb_w_up,   sys='ff_w_syst_up')
     fill(ff_comb, comb_w_down,   sys='ff_w_syst_down')
+    fill(ff_comb, comb_w_lepPt_up, sys='ff_w_lepPt_up')
+    fill(ff_comb, comb_w_lepPt_down, sys='ff_w_lepPt_down')
+    fill(ff_comb, comb_w_lepPt_mcup, sys='ff_w_lepPt_mcup')
+    fill(ff_comb, comb_w_lepPt_mcdown, sys='ff_w_lepPt_mcdown')
+    fill(ff_comb, comb_w_mt_up, sys='ff_w_mt_up')
+    fill(ff_comb, comb_w_mt_down, sys='ff_w_mt_down')
+
     fill(ff_comb, comb_w_up_stat,   sys='ff_w_stat_up')
     fill(ff_comb, comb_w_down_stat,   sys='ff_w_stat_down')
     fill(ff_comb, comb_w_up_stat_dm0_njet0,   sys='ff_w_dm0_njet0_stat_up')
