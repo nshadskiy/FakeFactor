@@ -55,8 +55,8 @@ fi
 
 for process in DY VV TT
 do
-cp -rs /ceph/jbechtel/fakefactors/2017/preselection/et/preselection_${process}_J_EMB.root  /ceph/jbechtel/fakefactors/2017/preselection/et/preselection_${process}_J.root
-cp -rs /ceph/jbechtel/fakefactors/2017/preselection/et/preselection_${process}_L_EMB.root  /ceph/jbechtel/fakefactors/2017/preselection/et/preselection_${process}_L.root
+cp -rs ${output}/preselection/${chan}/preselection_${process}_J_EMB.root  ${output}/preselection/${chan}/preselection_${process}_J.root
+cp -rs ${output}/preselection/${chan}/preselection_${process}_L_EMB.root  ${output}/preselection/${chan}/preselection_${process}_L.root
 done
 
 ./SRHisto &
