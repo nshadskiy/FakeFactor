@@ -53,6 +53,12 @@ done
 wait
 fi
 
+for process in DY VV TT
+do
+cp -rs /ceph/jbechtel/fakefactors/2017/preselection/et/preselection_${process}_J_EMB.root  /ceph/jbechtel/fakefactors/2017/preselection/et/preselection_${process}_J.root
+cp -rs /ceph/jbechtel/fakefactors/2017/preselection/et/preselection_${process}_L_EMB.root  /ceph/jbechtel/fakefactors/2017/preselection/et/preselection_${process}_L.root
+done
+
 ./SRHisto &
 ./CRHisto &
 wait
@@ -72,6 +78,8 @@ cd -
 rsync -vhrP ViennaTool/fakefactor/data_${chan}/FF_corr_* ${output}/${chan}/.
 
 python cpTDHaftPublic.py --destination $output --channel $channel --doNjetBinning $njetbinning
+
+
 echo $output $channel $njetbinning
 python producePublicFakeFactors.py --input $output --channel $channel --njetbinning $njetbinning
 
