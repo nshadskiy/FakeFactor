@@ -760,7 +760,7 @@ for category in categories:
     fill(ff_comb, comb_qcd_mvis_up,   sys='ff_qcd_mvis_up')        
     fill(ff_comb, comb_qcd_mvis_down,   sys='ff_qcd_mvis_down')        
     fill(ff_comb, comb_qcd_tau2_pt_up,   sys='ff_qcd_tau2_pt_up')        
-    fill(ff_comb, comb_qcd_tau2_pt_down,   sys='ff_tau2_pt_down')        
+    fill(ff_comb, comb_qcd_tau2_pt_down,   sys='ff_qcd_tau2_pt_down')        
     fill(ff_comb, comb_qcd_mvis_mcup,   sys='ff_qcd_mvis_mcup')        
     fill(ff_comb, comb_qcd_mvis_mcdown,   sys='ff_qcd_mvis_mcdown')        
     fill(ff_comb, comb_qcd_tau2_pt_mcup,   sys='ff_qcd_tau2_pt_mcup')        
