@@ -68,6 +68,7 @@ cd -
 python plotCorrections.py --channel $channel  --doNjetBinning $njetbinning
 ./convert_inputs
 
+rsync -vhrP ViennaTool/fakefactor/data_${chan}/FF_corr_* ${output}/${chan}/.
 
 python cpTDHaftPublic.py --destination $output --channel $channel --doNjetBinning $njetbinning
 echo $output $channel $njetbinning
