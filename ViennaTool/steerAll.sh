@@ -58,19 +58,19 @@ done
 wait
 fi
 
-#./SRHisto &
-#./CRHisto &
-#wait
+./SRHisto &
+./CRHisto &
+wait
 
-#./steerFF
+./steerFF
 
-#./fitFakeFactors
-#cd ViennaTool/Images_EMB/data_$chan
-#gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
-#cd -
+./fitFakeFactors
+cd ViennaTool/Images_EMB/data_$chan
+gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
+cd -
 
-#./calcCorrections
-#python plotCorrections.py --channel $channel  --doNjetBinning $njetbinning
+./calcCorrections
+python plotCorrections.py --channel $channel  --doNjetBinning $njetbinning
 ./convert_inputs
 
 rsync -vhrP ViennaTool/fakefactor/data_${chan}/FF_corr_* ${output}/${chan}/.
