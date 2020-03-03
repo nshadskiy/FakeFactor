@@ -1058,10 +1058,23 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
 
   counter_histo_numer->Add(counter_histo_tight_CR);
   counter_histo_denom->Add(counter_histo_loose_CR);
-  
+
+  TH1D* counter_histo_numer_mcup; TH1D* counter_histo_numer_mcdown; 
+  TH1D* counter_histo_denom_mcup; TH1D* counter_histo_denom_mcdown; 
+
+  counter_histo_numer_mcup =(TH1D*) counter_histo_numer->Clone("counter_histo_numer_mcup");
+  counter_histo_numer_mcdown =(TH1D*) counter_histo_numer->Clone("counter_histo_numer_mcdown");
+  counter_histo_denom_mcup =(TH1D*) counter_histo_denom->Clone("counter_histo_denom_mcup");
+  counter_histo_denom_mcdown =(TH1D*) counter_histo_denom->Clone("counter_histo_denom_mcdown");
+
   for (unsigned is=0; is<pre_sub.size(); is++){
     counter_histo_numer->Add(counter_histo_tight_CR_cont.at(is),-1.);
     counter_histo_denom->Add(counter_histo_loose_CR_cont.at(is),-1.);
+
+    counter_histo_numer_mcup->Add(counter_histo_tight_CR_cont.at(is),-1.*1.07);
+    counter_histo_denom_mcup->Add(counter_histo_loose_CR_cont.at(is),-1.*1.07);
+    counter_histo_numer_mcdown->Add(counter_histo_tight_CR_cont.at(is),-1./1.07);
+    counter_histo_denom_mcdown->Add(counter_histo_loose_CR_cont.at(is),-1./1.07);
   }
 
   TString ff_file=FF_file; 
@@ -1072,10 +1085,18 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
   
   //  fakefactor_histo->Divide(counter_histo_denom); //uncorrelated errors
   fakefactor_histo->Divide(fakefactor_histo,counter_histo_denom,1,1); //Gaussian error propagation
+  counter_histo_numer_mcup->Divide(counter_histo_denom_mcup);
+  counter_histo_numer_mcdown->Divide(counter_histo_denom_mcdown);
+  counter_histo_numer_mcup->SetTitle("FakeFactor_mcup");
+  counter_histo_numer_mcdown->SetTitle("FakeFactor_mcdown");
+  counter_histo_numer_mcup->SetName("c_t_mcup");
+  counter_histo_numer_mcdown->SetName("c_t_mcdown");
   fakefactor_histo->SetTitle("Fakefactor");
   fakefactor_histo->SetName("c_t");
   fakefactor_histo->Write();
-  
+  counter_histo_numer_mcup->Write();
+  counter_histo_numer_mcdown->Write();
+
 
   // filling histogram weighted_bin_center_loose in loose background control region CR
   for(Int_t ijets=0;ijets<this->getNjets(mode);ijets++){
@@ -1463,9 +1484,9 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
     TH1D* compare_l              = (TH1D*) compare.Get(ff_inputHist+"_mvis");
     TH1D* compare_l_MCsubtracted = (TH1D*) compare.Get(ff_inputHist+"_mvis_MCsubtracted");
     TH1D* ratio_l_mcup                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l_mcup");
-    ratio_l_mcup->Scale(1.1);
+    ratio_l_mcup->Scale(1.07);
     TH1D* ratio_l_mcdown                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l_mcdown");
-    ratio_l_mcdown->Scale(0.9);
+    ratio_l_mcdown->Scale(1.0/1.07);
     TH1D* ratio_l                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l");
   
     ratio_l->Divide(compare_l);
@@ -1483,8 +1504,8 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
     TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis_MCsubtracted");
     TH1D* compare_t_MCsubtracted_mcup                = (TH1D*)compare_t_MCsubtracted->Clone("compare_t_MCsubtracted_mcup");
     TH1D* compare_t_MCsubtracted_mcdown                = (TH1D*)compare_t_MCsubtracted->Clone("compare_t_MCsubtracted_mcdown");
-    compare_t_MCsubtracted_mcup->Scale(1.1);
-    compare_t_MCsubtracted_mcdown->Scale(0.9);
+    compare_t_MCsubtracted_mcup->Scale(1.07);
+    compare_t_MCsubtracted_mcdown->Scale(1.0/1.07);
 
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
@@ -1755,16 +1776,21 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
     
     TH1D* ratio_l                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l");
     TH1D* ratio_l_mcup                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l_mcup");
-    ratio_l_mcup->Scale(1.1);
+    ratio_l_mcup->Scale(1.07);
     TH1D* ratio_l_mcdown                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l_mcdown");
-    ratio_l_mcdown->Scale(0.9);      
+    ratio_l_mcdown->Scale(1.0/1.07);
+    std::cout << "ratio_l" << std::endl;
+    std::cout << ratio_l->GetBinContent(2) << std::endl;
     ratio_l->Divide(compare_l);
+    std::cout << ratio_l->GetBinContent(2) << std::endl;
+
     ratio_l_mcup->Divide(compare_l);
     ratio_l_mcdown->Divide(compare_l);
     ///get unity histogram
     TH1D *unity_h = new TH1D("unity","",w_lepPt_n,w_lepPt_v);
     for(int ibin=1; ibin<=unity_h->GetNbinsX(); ibin++) unity_h->SetBinContent(ibin,1.);
     ratio_l->Add(unity_h,-1);ratio_l->Scale(-1);
+    std::cout << "here" << std::endl;
     ratio_l_mcup->Add(unity_h,-1);ratio_l_mcup->Scale(-1);
     ratio_l_mcdown->Add(unity_h,-1);ratio_l_mcdown->Scale(-1);
     std::cout << "AAA" << std::endl;
@@ -1772,8 +1798,8 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
     TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t"+tight_cat+"_lepPt_MCsubtracted");
     TH1D* compare_t_MCsubtracted_mcup                = (TH1D*)compare_t_MCsubtracted->Clone("compare_t_MCsubtracted_mcup");
     TH1D* compare_t_MCsubtracted_mcdown                = (TH1D*)compare_t_MCsubtracted->Clone("compare_t_MCsubtracted_mcdown");
-    compare_t_MCsubtracted_mcup->Scale(1.1);
-    compare_t_MCsubtracted_mcdown->Scale(0.9);
+    compare_t_MCsubtracted_mcup->Scale(1.07);
+    compare_t_MCsubtracted_mcdown->Scale(1.0/1.07);
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
       if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl;}
@@ -2020,10 +2046,10 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   TH1D *closure_h;
   Double_t FF_value=0;
   if(mode & _TT) closure_h= new TH1D("closure"+sample,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
-  else closure_h= new TH1D("closure"+sample,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+  else closure_h= new TH1D("closure"+sample,"",w_lepPt_n,w_lepPt_v);
   
   TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
-  TH1D *output_h = new TH1D("nonclosure_lepPt","",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+  TH1D *output_h = new TH1D("nonclosure_lepPt","",w_lepPt_n,w_lepPt_v);
   TH1D* output_h_mcup; TH1D* output_h_mcdown;
 
   TFile FF_lookup(raw_ff);
@@ -2047,9 +2073,9 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
     TH1D* compare_l_MCsubtracted = (TH1D*) compare.Get(ff_inputHist+"_lepPt_MCsubtracted");
     
     TH1D* ratio_l_mcup                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l_mcup");
-    ratio_l_mcup->Scale(1.1);
+    ratio_l_mcup->Scale(1.07);
     TH1D* ratio_l_mcdown                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l_mcdown");
-    ratio_l_mcdown->Scale(0.9);
+    ratio_l_mcdown->Scale(1.0/1.07);
     TH1D* ratio_l                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l");
   
     ratio_l->Divide(compare_l);
@@ -2057,7 +2083,7 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
     ratio_l_mcdown->Divide(compare_l);
 
     ///get unity histogram
-    TH1D *unity_h = new TH1D("unity","",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+    TH1D *unity_h = new TH1D("unity","",w_lepPt_n,w_lepPt_v);
     for(int ibin=1; ibin<=unity_h->GetNbinsX(); ibin++) unity_h->SetBinContent(ibin,1.);
     ratio_l->Add(unity_h,-1);ratio_l->Scale(-1);
     ratio_l_mcup->Add(unity_h,-1);ratio_l_mcup->Scale(-1);
@@ -2067,8 +2093,8 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
     TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t"+tight_cat+"_lepPt_MCsubtracted");
     TH1D* compare_t_MCsubtracted_mcup                = (TH1D*)compare_t_MCsubtracted->Clone("compare_t_MCsubtracted_mcup");
     TH1D* compare_t_MCsubtracted_mcdown                = (TH1D*)compare_t_MCsubtracted->Clone("compare_t_MCsubtracted_mcdown");
-    compare_t_MCsubtracted_mcup->Scale(1.1);
-    compare_t_MCsubtracted_mcdown->Scale(0.9);
+    compare_t_MCsubtracted_mcup->Scale(1.07);
+    compare_t_MCsubtracted_mcdown->Scale(1.0/1.07);
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
       if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl; }
@@ -2173,7 +2199,7 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   
   Double_t fitWidth;
   if(mode & _QCD) fitWidth=1.0; else if(mode & _W_JETS) fitWidth=1.0; else fitWidth=1.0;
-  if(CHAN==kTAU) fitWidth=1.;
+  if(CHAN==kTAU) fitWidth=0.7;
   cout << "FitWidth: " << fitWidth << endl;
 
   //NOMINAL
@@ -2314,9 +2340,9 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
     TH1D* compare_l_MCsubtracted = (TH1D*) compare.Get("hh_l_muiso_MCsubtracted");
     TH1D* ratio_l                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l");
     TH1D* ratio_l_mcup                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l_mcup");
-    ratio_l_mcup->Scale(1.1);
+    ratio_l_mcup->Scale(1.07);
     TH1D* ratio_l_mcdown                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l_mcdown");
-    ratio_l_mcdown->Scale(0.9);    
+    ratio_l_mcdown->Scale(1.0/1.07);    
     ratio_l->Divide(compare_l);
     ratio_l_mcup->Divide(compare_l);
     ratio_l_mcdown->Divide(compare_l);
@@ -2330,8 +2356,8 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
     TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t"+tight_cat+"_muiso_MCsubtracted");
     TH1D* compare_t_MCsubtracted_mcup                = (TH1D*)compare_t_MCsubtracted->Clone("compare_t_MCsubtracted_mcup");
     TH1D* compare_t_MCsubtracted_mcdown                = (TH1D*)compare_t_MCsubtracted->Clone("compare_t_MCsubtracted_mcdown");
-    compare_t_MCsubtracted_mcup->Scale(1.1);
-    compare_t_MCsubtracted_mcdown->Scale(0.9);
+    compare_t_MCsubtracted_mcup->Scale(1.07);
+    compare_t_MCsubtracted_mcdown->Scale(1.0/1.07);
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
       if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl; }
