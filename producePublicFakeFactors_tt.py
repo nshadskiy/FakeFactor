@@ -460,7 +460,7 @@ for category in categories:
              leaves=[
                  Leaf(
                      name='sys_qcd_tau2_pt_up',
-                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
                      object='nonclosure_QCD_up',
                      vars=['tau2_pt']
                  ),
@@ -478,7 +478,7 @@ for category in categories:
              leaves=[
                  Leaf(
                      name='sys_qcd_tau2_pt_down',
-                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_nonclosure.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='nonclosure_QCD_down',
                      vars=['tau2_pt']
                  ),
@@ -487,78 +487,68 @@ for category in categories:
          )
         }
     )
-    comb_qcd_mvis_mcup = replace_nodes(
+    comb_qcd_mc_up = replace_nodes(
         comb,
         {'ff_qcd_os':
          Node(
-             name='ff_qcd_mvis_mcup',
-             formula='(1.+{sys_qcd_mvis_mcup})*{ff_qcd_os}',
+             name='ff_qcd_mc_up',
+             formula='(1.+sqrt(({sys_qcd_mvis_mcup}**2)+({sys_qcd_tau2_pt_mcup}**2)+({ff_raw_qcd_mcup}**2)))*{ff_qcd_os}',
              leaves=[
                  Leaf(
                      name='sys_qcd_mvis_mcup',
-                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_nonclosure.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_nonclosure.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
                      object='nonclosure_mcup_QCD',
                      vars=['mvis']
                  ),
+                 Leaf(
+                     name='sys_qcd_tau2_pt_mcup',
+                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
+                     object='nonclosure_mcup_QCD',
+                     vars=['tau2_pt']
+                 ),
+                Leaf(
+                    name='ff_raw_qcd_mcup',
+                    file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                    object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_mc_high',
+                    vars=['tau_pt','tau_decay','njets']
+                ),
                  comb.find('ff_qcd_os')
+        
              ]
          )
         }
     )
-    comb_qcd_mvis_mcdown = replace_nodes(
+    comb_qcd_mc_down = replace_nodes(
         comb,
         {'ff_qcd_os':
          Node(
-             name='ff_qcd_mvis_mcdown',
-             formula='(1.+{sys_qcd_mvis_mcdown})*{ff_qcd_os}',
+             name='ff_qcd_mc_down',
+             formula='(1.-sqrt(({sys_qcd_mvis_mcdown}**2)+({sys_qcd_tau2_pt_mcdown}**2)+({ff_raw_qcd_mcdown}**2)))*{ff_qcd_os}',
              leaves=[
                  Leaf(
                      name='sys_qcd_mvis_mcdown',
-                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_nonclosure.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_nonclosure.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
                      object='nonclosure_mcdown_QCD',
                      vars=['mvis']
                  ),
-                 comb.find('ff_qcd_os')
-             ]
-         )
-        }
-    )  
-    comb_qcd_tau2_pt_mcup = replace_nodes(
-        comb,
-        {'ff_qcd_os':
-         Node(
-             name='ff_qcd_tau2_pt_mcup',
-             formula='(1.+{sys_qcd_tau2_pt_mcup})*{ff_qcd_os}',
-             leaves=[
                  Leaf(
-                     name='sys_qcd_tau2_pt_mcup',
-                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
-                     object='nonclosure_mcup_QCD',
+                     name='sys_qcd_tau2_pt_mcdown',
+                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
+                     object='nonclosure_mcdown_QCD',
                      vars=['tau2_pt']
                  ),
+                Leaf(
+                    name='ff_raw_qcd_mcdown',
+                    file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                    object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_mc_low',
+                    vars=['tau_pt','tau_decay','njets']
+                ),
                  comb.find('ff_qcd_os')
+        
              ]
          )
         }
     )
-    comb_qcd_tau2_pt_mcdown = replace_nodes(
-        comb,
-        {'ff_qcd_os':
-         Node(
-             name='ff_qcd_tau2_pt_mcdown',
-             formula='(1.+{sys_qcd_tau2_pt_mcdown})*{ff_qcd_os}',
-             leaves=[
-                 Leaf(
-                     name='sys_qcd_tau2_pt_mcdown',
-                     file='{INDIR}/{CHANNEL}/FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
-                     object='nonclosure_mcdown_QCD',
-                     vars=['tau2_pt']
-                 ),
-                 comb.find('ff_qcd_os')
-             ]
-         )
-        }
-    )  
     comb_qcd_up_stat = replace_nodes(
         comb, 
         {'ff_qcd_os':
@@ -758,14 +748,11 @@ for category in categories:
     fill(ff_comb, comb_qcd_up,   sys='ff_qcd_syst_up')        
     fill(ff_comb, comb_qcd_down,   sys='ff_qcd_syst_down')
     fill(ff_comb, comb_qcd_mvis_up,   sys='ff_qcd_mvis_up')        
-    fill(ff_comb, comb_qcd_mvis_down,   sys='ff_qcd_mvis_down')        
+    fill(ff_comb, comb_qcd_mvis_down,   sys='ff_qcd_mvis_down')
     fill(ff_comb, comb_qcd_tau2_pt_up,   sys='ff_qcd_tau2_pt_up')        
-    fill(ff_comb, comb_qcd_tau2_pt_down,   sys='ff_tau2_pt_down')        
-    fill(ff_comb, comb_qcd_mvis_mcup,   sys='ff_qcd_mvis_mcup')        
-    fill(ff_comb, comb_qcd_mvis_mcdown,   sys='ff_qcd_mvis_mcdown')        
-    fill(ff_comb, comb_qcd_tau2_pt_mcup,   sys='ff_qcd_tau2_pt_mcup')        
-    fill(ff_comb, comb_qcd_tau2_pt_mcdown,   sys='ff_qcd_tau2_pt_mcdown')        
-
+    fill(ff_comb, comb_qcd_tau2_pt_down,   sys='ff_qcd_tau2_pt_down')        
+    fill(ff_comb, comb_qcd_mc_up,   sys='ff_qcd_mc_up')        
+    fill(ff_comb, comb_qcd_mc_down,   sys='ff_qcd_mc_down')        
     fill(ff_comb, comb_qcd_up_stat,   sys='ff_qcd_stat_up')
     fill(ff_comb, comb_qcd_down_stat,   sys='ff_qcd_stat_down')
     fill(ff_comb, comb_qcd_up_stat_dm0_njet0,   sys='ff_qcd_dm0_njet0_stat_up')

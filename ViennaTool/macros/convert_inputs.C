@@ -250,7 +250,6 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
     TH1D *h_data_CR= (TH1D*)f_data_CR->Get(hn);
     TFile *f_MC_CR=new TFile(d+"FF_TT_J_only.root");
     TH1D *h_MC_CR= (TH1D*)f_MC_CR->Get(hn);
-  
     //for(int i=1; i<=h_data_CR->GetNbinsX(); i++){
     for(int i=1; i<=2; i++){
       if( sizeof(Decay_cuts_Wjets)/sizeof(Decay_cuts_Wjets[0]) > 1 ){
@@ -306,6 +305,9 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
   TH3D *hout_err_dm0_njet1_high   = new TH3D( hnout+"_error_dm0_njet1_high",     "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
   TH3D *hout_err_dm1_njet0_high   = new TH3D( hnout+"_error_dm1_njet0_high",     "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
   TH3D *hout_err_dm1_njet1_high   = new TH3D( hnout+"_error_dm1_njet1_high",     "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+
+  TH3D *hout_err_mc_low    = new TH3D( hnout+"_error_mc_low",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout_err_mc_high   = new TH3D( hnout+"_error_mc_high",     "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
 
   TH3D *hout_err_dm0_njet0_param1_low    = new TH3D( hnout+"_error_dm0_njet0_param1_low",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
   TH3D *hout_err_dm0_njet0_param1_high    = new TH3D( hnout+"_error_dm0_njet0_param1_high",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
@@ -394,12 +396,20 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
       for (int ijet=0; ijet<N_D3; ijet++){
         stringstream fitted_histo; fitted_histo << "dm" << idm << "_njet" << ijet;
         stringstream func_name; func_name << "f_dm" << idm << "_njet" << ijet;
-
+        stringstream fitted_histo_mcup; fitted_histo_mcup << "dm" << idm << "_njet" << ijet << "_mcup";
+        stringstream fitted_histo_mcdown; fitted_histo_mcdown << "dm" << idm << "_njet" << ijet << "_mcdown";
+        std::cout << fitted_histo.str().c_str() << std::endl;
+        std::cout << fitted_histo_mcup.str().c_str() << std::endl;
+        std::cout << fitted_histo_mcdown.str().c_str() << std::endl;
+    
         TGraphAsymmErrors *h=(TGraphAsymmErrors*) f->Get(fitted_histo.str().c_str());
+        TGraphAsymmErrors *h_mcup=(TGraphAsymmErrors*) f->Get(fitted_histo_mcup.str().c_str());
+        TGraphAsymmErrors *h_mcdown=(TGraphAsymmErrors*) f->Get(fitted_histo_mcdown.str().c_str());
+
         TF1 *f_fit = (TF1*) f->Get(func_name.str().c_str());
         double err1 = f_fit->GetParError(0);
         double err2 = f_fit->GetParError(1);
-        double x=0; double cont=0;
+        double x=0; double cont=0;  double cont_mcup=0;  double cont_mcdown=0;
         double y_value = 0;
         double param1 = f_fit->GetParameter(0);
         double param2 = f_fit->GetParameter(1);
@@ -423,6 +433,9 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
 
         for (int ipt=0; ipt<fitBins; ipt++){
           h->GetPoint( ipt + 1,x,cont );
+          h_mcup->GetPoint( ipt + 1,x,cont_mcup );
+          h_mcdown->GetPoint( ipt + 1,x,cont_mcdown );
+
           // cont = cont*scale_factors.at(idm);
           y_value = x*(param2+err2)+param1;
           double err_low=h->GetErrorYlow(ipt+1);
@@ -433,8 +446,12 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
           hout->SetBinError(         ipt+1 , idm+1 , ijet+1 , (err_low+err_high)/2 );
           hout_err_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_low/cont );
           hout_err_low->SetBinError(       ipt+1 , idm+1 , ijet+1 , err_low );
+          hout_err_mc_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , (cont-cont_mcdown)/cont );
+          hout_err_mc_low->SetBinError(       ipt+1 , idm+1 , ijet+1 , 0 );
           hout_err_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_high/cont );
           hout_err_high->SetBinError(       ipt+1 , idm+1 , ijet+1 , err_high );
+          hout_err_mc_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , (cont-cont_mcup)/cont );
+          hout_err_mc_high->SetBinError(       ipt+1 , idm+1 , ijet+1 , 0 );
           double param1_error; double param2_error;
 
           param1_error = err1;
@@ -453,6 +470,8 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
             param1_error_v2 = 3.0*(cont - (pthist_max*(param2+err2)+startpoint1));
             param2_error_v2 = 3.0*(cont - (pthist_max*(param2+0.5*err2)+startpoint2));
             }
+            
+          std::cout << cont << " " << cont-cont_mcup << " " << cont-cont_mcdown << std::endl;
           if(idm==0 && ijet==0){
             hout_err_dm0_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , TMath::Sqrt( TMath::Power(err_low/cont,2) + TMath::Power(err_dm0njet0,2) ) );
             hout_err_dm0_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
@@ -482,6 +501,7 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
             hout_err_dm0_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , TMath::Sqrt( TMath::Power(err_low/cont,2) + TMath::Power(err_dm0njet1,2) ) );
             hout_err_dm1_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
             hout_err_dm1_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+
 
             hout_err_dm0_njet0_param1_low->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
             hout_err_dm0_njet1_param1_low->SetBinContent(ipt+1 , idm+1 , ijet+1 , param1_error );
@@ -556,6 +576,7 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
             hout_err_dm0_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
             hout_err_dm1_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
             hout_err_dm1_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+
 
             hout_err_dm0_njet0_param1_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , param1_error );
             hout_err_dm0_njet1_param1_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
@@ -685,6 +706,8 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
   hout->Write();
   hout_err_low->Write();
   hout_err_high->Write();
+  hout_err_mc_low->Write();
+  hout_err_mc_high->Write();
   if(fit_pT_bins){
     hout_err_dm0_njet0_low->Write();
     hout_err_dm0_njet1_low->Write();
