@@ -1068,8 +1068,9 @@ void combineTTSystematics( TString fTT_nonclosure, TString sys_nonclosure, TStri
   TH2D *out_t = new TH2D(tout, tout, 2,0,2,sys_nonclosure_t->GetN(), sys_nonclosure_t->GetX()[0], sys_nonclosure_t->GetX()[sys_nonclosure_t->GetN()-1]);
   for(Int_t i=0; i<2; i++){
     for(Int_t j=0; j<=sys_nonclosure_t->GetN(); j++){
-      if(!DOMC)out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2)+TMath::Power(scale_factors[i],2) ));
-      else out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[i],2) ) );
+      if(!DOMC)out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[j],2)+TMath::Power(scale_factors[i],2) ));
+      else out_t->SetBinContent(i,j,TMath::Sqrt( TMath::Power(sys_nonclosure_t->GetY()[j],2) ) );
+      
     }
     if( sizeof(Decay_cuts_Wjets)/sizeof(Decay_cuts_Wjets[0]) > 1 ){
       for(Int_t j=0; j<=sys_nonclosure_t->GetN(); j++){
