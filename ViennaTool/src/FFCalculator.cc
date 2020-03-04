@@ -1669,10 +1669,8 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
     ratio_l_mcup->Scale(1.07);
     TH1D* ratio_l_mcdown                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l_mcdown");
     ratio_l_mcdown->Scale(1.0/1.07);
-    std::cout << "ratio_l" << std::endl;
-    std::cout << ratio_l->GetBinContent(2) << std::endl;
     ratio_l->Divide(compare_l);
-    std::cout << ratio_l->GetBinContent(2) << std::endl;
+
 
     ratio_l_mcup->Divide(compare_l);
     ratio_l_mcdown->Divide(compare_l);
@@ -1680,10 +1678,10 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
     TH1D *unity_h = new TH1D("unity","",w_lepPt_n,w_lepPt_v);
     for(int ibin=1; ibin<=unity_h->GetNbinsX(); ibin++) unity_h->SetBinContent(ibin,1.);
     ratio_l->Add(unity_h,-1);ratio_l->Scale(-1);
-    std::cout << "here" << std::endl;
+
     ratio_l_mcup->Add(unity_h,-1);ratio_l_mcup->Scale(-1);
     ratio_l_mcdown->Add(unity_h,-1);ratio_l_mcdown->Scale(-1);
-    std::cout << "AAA" << std::endl;
+
     TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_lepPt");
     TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t"+tight_cat+"_lepPt_MCsubtracted");
     TH1D* compare_t_MCsubtracted_mcup                = (TH1D*)compare_t_MCsubtracted->Clone("compare_t_MCsubtracted_mcup");
@@ -1712,22 +1710,22 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
         }
       }
     }
-        std::cout << "BBB" << std::endl;
+       
 
     TH1D* closure_h_mcup = (TH1D*)closure_h->Clone("closure_h_mcup");
     TH1D* closure_h_mcdown = (TH1D*)closure_h->Clone("closure_h_mcdown");
-        std::cout << "BBB1" << std::endl;
+       
 
     closure_h->Multiply(ratio_l);
     closure_h_mcup->Multiply(ratio_l_mcup);
     closure_h_mcdown->Multiply(ratio_l_mcdown);
-        std::cout << "BBB2" << std::endl;
+       
 
     output->cd();
     closure_h->Write();
     closure_h_mcup->Write();
     closure_h_mcdown->Write();
-        std::cout << "BBB3" << std::endl;
+       
 
     output_h = (TH1D*)compare_t->Clone("nonclosure");
     output_h_mcup = (TH1D*)compare_t->Clone("nonclosure_mcup");
@@ -1737,7 +1735,7 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
     compare_t->Add(compare_t_MCsubtracted,-1);
     output_h_mcup->Add(compare_t_MCsubtracted_mcup,-1);
     output_h_mcdown->Add(compare_t_MCsubtracted_mcdown,-1);
-        std::cout << "BBB4" << std::endl;
+       
 
     compare_t->Write();
     output_h->Divide(closure_h);
@@ -1745,7 +1743,7 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
     output_h_mcdown->Divide(closure_h_mcdown);
     output_h_mcup->Add(output_h,-1);
     output_h_mcdown->Add(output_h,-1);
-        std::cout << "BBB5" << std::endl;
+       
 
   }
   else{ 
@@ -1780,7 +1778,7 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
     output_h = (TH1D*)compare_t->Clone("nonclosure");
     output_h->Divide(closure_h);
   }
-        std::cout << "CCC" << std::endl;
+      
 
   TH1D* output_fit;   TH1D* output_fit_mcup;  TH1D* output_fit_mcdown;
   output_fit = (TH1D*)output_h->Clone("nonclosure_fit");

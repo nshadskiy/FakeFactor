@@ -471,7 +471,6 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
             param2_error_v2 = 3.0*(cont - (pthist_max*(param2+0.5*err2)+startpoint2));
             }
             
-          std::cout << cont << " " << cont-cont_mcup << " " << cont-cont_mcdown << std::endl;
           if(idm==0 && ijet==0){
             hout_err_dm0_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , TMath::Sqrt( TMath::Power(err_low/cont,2) + TMath::Power(err_dm0njet0,2) ) );
             hout_err_dm0_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
