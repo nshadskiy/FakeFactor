@@ -2226,7 +2226,7 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
 
   //UP
   GaussianKernelSmoother gsk_mcup;
-  gsk_mcup.setInputHisto( output_fit );
+  gsk_mcup.setInputHisto( output_fit_mcup );
   gsk_mcup.set_doWeights(1);
   gsk_mcup.set_doIgnoreZeroBins(0);
   gsk_mcup.set_kernelDistance( "lin" );
@@ -2248,7 +2248,7 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
 
   //DOWN
   GaussianKernelSmoother gsk_mcdown;
-  gsk_mcdown.setInputHisto( output_fit );
+  gsk_mcdown.setInputHisto( output_fit_mcdown );
   gsk_mcdown.set_doWeights(1);
   gsk_mcdown.set_doIgnoreZeroBins(0);
   gsk_mcdown.set_kernelDistance( "lin" );
