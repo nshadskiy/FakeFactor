@@ -66,10 +66,6 @@ void convert_inputs(Int_t inclusive=1, Int_t categoryMode=0){
     fout_n3d="FakeFactors_Data_W_3D.root";
     //conv_th1_to_th2( d+fn , hn , hnout , o+fout_n , 0 );
     if(CHAN!=kTAU)conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
-    hn="c_t_alt";
-    fout_n3d="FakeFactors_Data_W_3D_alt.root";
-    if(CHAN!=kTAU)conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
-    
     fn="FF_corr_DY_MCsum_noGen.root";
     hn="c_t";
     hnout="c_t_2d";
@@ -85,9 +81,6 @@ void convert_inputs(Int_t inclusive=1, Int_t categoryMode=0){
     hnout3d="FakeFactors_Data_TT_anyb_addLep_InvertIso_tau_pt_vs_decayMode";
     //conv_th1_to_th2( d+fn , hn , o+fout_n , hnout , 0 );
     if(CHAN!=kTAU)conv_th1_to_th3( d+fn , hn , hnout3d, o+fout_n3d );
-    hn="c_t_alt";
-    fout_n3d="FakeFactors_Data_TT_3D_alt.root";
-    if(CHAN!=kTAU)conv_th1_to_th3( d+fn , hn , hnout3d, o+fout_n3d );
     
     fn="FF_corr_QCD_MCsum_noGen"+AIstring+vtightString+".root";
     fn3d="FF_corr_QCD_MCsum_noGen"+AIstring+vtightString+".root";
@@ -97,9 +90,6 @@ void convert_inputs(Int_t inclusive=1, Int_t categoryMode=0){
     fout_n="FakeFactors_Data_QCD_2D.root";
     fout_n3d="FakeFactors_Data_QCD_3D.root";
     //conv_th1_to_th2( d+fn , hn , hnout , o+fout_n , 0 );
-    conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
-    hn="c_t_alt";
-    fout_n3d="FakeFactors_Data_QCD_3D_alt.root";
     conv_th1_to_th3( d+fn3d , hn , hnout3d , o+fout_n3d );
 
     if(!DOMC){
