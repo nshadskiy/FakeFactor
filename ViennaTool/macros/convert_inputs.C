@@ -446,11 +446,11 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
           hout->SetBinError(         ipt+1 , idm+1 , ijet+1 , (err_low+err_high)/2 );
           hout_err_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_low/cont );
           hout_err_low->SetBinError(       ipt+1 , idm+1 , ijet+1 , err_low );
-          hout_err_mc_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , (cont-cont_mcdown)/cont );
+          hout_err_mc_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , (cont-cont_mcup)/cont );
           hout_err_mc_low->SetBinError(       ipt+1 , idm+1 , ijet+1 , 0 );
           hout_err_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , err_high/cont );
           hout_err_high->SetBinError(       ipt+1 , idm+1 , ijet+1 , err_high );
-          hout_err_mc_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , (cont-cont_mcup)/cont );
+          hout_err_mc_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , (cont-cont_mcdown)/cont );
           hout_err_mc_high->SetBinError(       ipt+1 , idm+1 , ijet+1 , 0 );
           double param1_error; double param2_error;
 
