@@ -20,15 +20,19 @@ void Preselection(TString argument) {
   if (argument.Contains("VV") || argument.Contains("all")) {
     myList.push_back(SelectionClass(VVfile, preselection_VV_J_EMB, _VV|_JTAU));
     myList.push_back(SelectionClass(VVfile, preselection_VV_L_EMB, _VV|_LTAU));
+    myList.push_back(SelectionClass(VVfile, preselection_VV_T, _VV|_TTAU));
   }
   if (argument.Contains("TT") || argument.Contains("all")) {
     myList.push_back(SelectionClass(TTfile, preselection_TT_J_EMB, _TT|_JTAU));
     myList.push_back(SelectionClass(TTfile, preselection_TT_L_EMB, _TT|_LTAU));
+    myList.push_back(SelectionClass(TTfile, preselection_TT_T, _TT|_TTAU));
+    
   }
   if (argument.Contains("DY") || argument.Contains("all")) {
     myList.push_back(SelectionClass(DYfile, preselection_DY_J_EMB, _DY|_JTAU));
     myList.push_back(SelectionClass(DYfile, preselection_DY_L_EMB, _DY|_LTAU));
     myList.push_back(SelectionClass(DYfile, preselection_DY_T_EMB, _DY|_TTAU));
+    
     myList.push_back(SelectionClass(DYfile, preselection_DY_EMB, 0));
   }
   if (myList.size()==0) {
