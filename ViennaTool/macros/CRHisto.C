@@ -148,7 +148,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
 
   for (int ic=0; ic<nCR; ic++){ //loop over CRs - Wjets, DY, TT, QCD 
     for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt, muiso
-      CallCRHisto_creation (Analyzer, ivar[iv], icr[ic], scr[ic], tvarCR[iv]);     
+      CallCRHisto_creation (Analyzer, ivar[iv], icr[ic], scr[ic], tvarCR[iv]);  
     }
   }
 
@@ -178,17 +178,17 @@ void CRHisto(int doCalc, int nCR, int nQU) {
 
 
 // void CallCRHisto_creation (TSelectionAnalyzer* Analyzer, int variable_bitcode, int CR_bitcode, TString control_region, TString variable_name) {
-  for (int ic=0; ic<nCR; ic++){ //loop over CRs
-    for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt, muiso
-        for (int is=0; is<nSA; is++){ 
-          Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root"  );
-          Analyzer->getCRHisto(presel_file, icr[ic]|LEPPT    , path_sim+s_CR+"_"+scr[ic]+"_lepPt_"         +ssa[is]+".root"  );
-          Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_"+ssa[is]+".root"  );
-          Analyzer->getCRHisto(presel_file, LEPPT|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_"+ssa[is]+".root"  );
-          Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_"+ssa[is]+".root"  );
-      }
-    }
-  }        
+  // for (int ic=0; ic<nCR; ic++){ //loop over CRs
+  //   for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt, muiso
+  //       for (int is=0; is<nSA; is++){ 
+  //         Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic] , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_"+ssa[is]+".root"  );
+  //         Analyzer->getCRHisto(presel_file, icr[ic]|LEPPT    , path_sim+s_CR+"_"+scr[ic]+"_lepPt_"         +ssa[is]+".root"  );
+  //         Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_AI_"+ssa[is]+".root"  );
+  //         Analyzer->getCRHisto(presel_file, LEPPT|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_lepPt_AI_"+ssa[is]+".root"  );
+  //         Analyzer->getCRHisto(presel_file, ivar[iv]|icr[ic]|_AI , path_sim+s_CR+"_"+scr[ic]+"_"+tvarCR[iv]+"_SS_"+ssa[is]+".root"  );
+  //     }
+  //   }
+  // }        
   // const int ivar[4]={MT|NO_SR,MVIS,PT,MUISO};
   // const int icr[nCR]=        {_W_JETS , _DY  , _TT  , _QCD};
   // const TString scr[nCR]=    {s_Wjets, s_DY , s_TT , s_QCD};
