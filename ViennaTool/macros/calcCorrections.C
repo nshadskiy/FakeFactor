@@ -43,7 +43,8 @@ void calcCorrections() {
   if(CHAN!=kTAU){
  
     Analyzer->loadFile(m_preselection_data,"Events");
-    // Analyzer->calc_nonclosure(_QCD,                               p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure,"",0);
+    Analyzer->calc_nonclosure(_QCD,                               p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure,"",0);
+    
     if (usePt_nonclosure_Wjets )
       Analyzer->calc_nonclosure_W_lepPt(_W_JETS,   p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_lepPt_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure, "",0);
     else {
@@ -64,7 +65,7 @@ void calcCorrections() {
     }
     cout << "Analysizer->calc_nonclosure( " << _W_JETS << " " << p+FF_corr_Wjets_MCsum_noGen_fitted << " " << CR_Wjets_mvis_data_MCsubtracted << " " << p+FF_corr_Wjets_MCsum_noGen_nonclosure << " 0" << endl;
     Analyzer->calc_nonclosure_W_lepPt(_W_JETS,                            p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_lepPt_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure,     "",0);
-    // if( doNJetBinning ){
+    if( doNJetBinning ){
       Analyzer->calc_nonclosure(_W_JETS|JET0,                       p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure_0jet,"",0);
       Analyzer->calc_nonclosure(_W_JETS|JET1,                       p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure_1jet,"",0);
    
