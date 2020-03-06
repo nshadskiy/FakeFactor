@@ -41,38 +41,43 @@ void calcCorrections() {
 
   cout << "Calculating QCD and W+jets corrections" << endl;
   if(CHAN!=kTAU){
+ 
     Analyzer->loadFile(m_preselection_data,"Events");
-    Analyzer->calc_nonclosure(_QCD,                               p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure,"",0);
-    Analyzer->calc_nonclosure(_W_JETS,                            p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure,     "",0);
-    
-    Analyzer->calc_muisocorr(_QCD|MUISO,                          p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_muiso_data_MCsubtracted,  p+FF_corr_QCD_MCsum_noGen_nonclosure,      p+FF_corr_QCD_MCsum_noGen_muisocorr,"",0);
-
-    // first need to perform the AI non closure correction before the SS-OS can be done because it depends on it.
-    Analyzer->calc_nonclosure(_QCD|_AI,                           p+FF_corr_QCD_MCsum_noGen_AI_fitted,   CR_QCD_mvis_AI_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_AI,      "",0);
-    Analyzer->calc_OSSScorr(_QCD|_AI,                             p+FF_corr_QCD_MCsum_noGen_AI_fitted,   SR_data_mvis_AI_MCsubtracted,     p+FF_corr_QCD_MCsum_noGen_nonclosure_AI,      p+FF_corr_QCD_MCsum_noGen_OSSScorr,"",0);
-    
-    
-    if( doNJetBinning ){
-      // QCD
-      Analyzer->calc_nonclosure(_QCD|JET0,                          p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_0jet,"",0);
-      Analyzer->calc_nonclosure(_QCD|JET1,                          p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_1jet,"",0);
+    // Analyzer->calc_nonclosure(_QCD,                               p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure,"",0);
+    if (usePt_nonclosure_Wjets )
+      Analyzer->calc_nonclosure_W_lepPt(_W_JETS,   p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_lepPt_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure, "",0);
+    else {
+      Analyzer->calc_nonclosure(_W_JETS,           p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted,  p+FF_corr_Wjets_MCsum_noGen_nonclosure, "",0);
     }
-    cout << "Analysizer->calc_nonclosure( " << _W_JETS << " " << p+FF_corr_Wjets_MCsum_noGen_fitted << " " << CR_Wjets_mvis_data_MCsubtracted << " " << p+FF_corr_Wjets_MCsum_noGen_nonclosure << " 0" << endl;
-    Analyzer->calc_nonclosure_W_lepPt(_W_JETS,                            p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_lepPt_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure,     "",0);
-    if( doNJetBinning ){
-      Analyzer->calc_nonclosure(_W_JETS|JET0,                       p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure_0jet,"",0);
-      Analyzer->calc_nonclosure(_W_JETS|JET1,                       p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure_1jet,"",0);
+    exit(0);
+    // Analyzer->calc_muisocorr(_QCD|MUISO,                          p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_muiso_data_MCsubtracted,  p+FF_corr_QCD_MCsum_noGen_nonclosure,      p+FF_corr_QCD_MCsum_noGen_muisocorr,"",0);
+
+    // // first need to perform the AI non closure correction before the SS-OS can be done because it depends on it.
+    // Analyzer->calc_nonclosure(_QCD|_AI,                           p+FF_corr_QCD_MCsum_noGen_AI_fitted,   CR_QCD_mvis_AI_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_AI,      "",0);
+    // Analyzer->calc_OSSScorr(_QCD|_AI,                             p+FF_corr_QCD_MCsum_noGen_AI_fitted,   SR_data_mvis_AI_MCsubtracted,     p+FF_corr_QCD_MCsum_noGen_nonclosure_AI,      p+FF_corr_QCD_MCsum_noGen_OSSScorr,"",0);
+    
+    
+    // if( doNJetBinning ){
+    //   // QCD
+    //   Analyzer->calc_nonclosure(_QCD|JET0,                          p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_0jet,"",0);
+    //   Analyzer->calc_nonclosure(_QCD|JET1,                          p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_1jet,"",0);
+    // }
+    // cout << "Analysizer->calc_nonclosure( " << _W_JETS << " " << p+FF_corr_Wjets_MCsum_noGen_fitted << " " << CR_Wjets_mvis_data_MCsubtracted << " " << p+FF_corr_Wjets_MCsum_noGen_nonclosure << " 0" << endl;
+    // Analyzer->calc_nonclosure_W_lepPt(_W_JETS,                            p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_lepPt_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure,     "",0);
+    // // if( doNJetBinning ){
+    //   Analyzer->calc_nonclosure(_W_JETS|JET0,                       p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure_0jet,"",0);
+    //   Analyzer->calc_nonclosure(_W_JETS|JET1,                       p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure_1jet,"",0);
    
-      Analyzer->calc_muisocorr(_QCD|MUISO|JET0,                     p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_muiso_data_MCsubtracted,  p+FF_corr_QCD_MCsum_noGen_nonclosure_0jet, p+FF_corr_QCD_MCsum_noGen_muisocorr_0jet,"",0);
-      Analyzer->calc_muisocorr(_QCD|MUISO|JET1,                     p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_muiso_data_MCsubtracted,  p+FF_corr_QCD_MCsum_noGen_nonclosure_1jet, p+FF_corr_QCD_MCsum_noGen_muisocorr_1jet,"",0);
+    //   Analyzer->calc_muisocorr(_QCD|MUISO|JET0,                     p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_muiso_data_MCsubtracted,  p+FF_corr_QCD_MCsum_noGen_nonclosure_0jet, p+FF_corr_QCD_MCsum_noGen_muisocorr_0jet,"",0);
+    //   Analyzer->calc_muisocorr(_QCD|MUISO|JET1,                     p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_muiso_data_MCsubtracted,  p+FF_corr_QCD_MCsum_noGen_nonclosure_1jet, p+FF_corr_QCD_MCsum_noGen_muisocorr_1jet,"",0);
     
-      Analyzer->calc_nonclosure(_QCD|_AI|JET0,                      p+FF_corr_QCD_MCsum_noGen_AI_fitted,   CR_QCD_mvis_AI_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_AI_0jet, "",0);
-      Analyzer->calc_nonclosure(_QCD|_AI|JET1,                      p+FF_corr_QCD_MCsum_noGen_AI_fitted,   CR_QCD_mvis_AI_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_AI_1jet, "",0);
+    //   Analyzer->calc_nonclosure(_QCD|_AI|JET0,                      p+FF_corr_QCD_MCsum_noGen_AI_fitted,   CR_QCD_mvis_AI_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_AI_0jet, "",0);
+    //   Analyzer->calc_nonclosure(_QCD|_AI|JET1,                      p+FF_corr_QCD_MCsum_noGen_AI_fitted,   CR_QCD_mvis_AI_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_AI_1jet, "",0);
     
-      Analyzer->calc_OSSScorr(_QCD|_AI|JET0,                        p+FF_corr_QCD_MCsum_noGen_AI_fitted,   SR_data_mvis_AI_MCsubtracted,     p+FF_corr_QCD_MCsum_noGen_nonclosure_AI_0jet, p+FF_corr_QCD_MCsum_noGen_OSSScorr_0jet,"",0);
-      Analyzer->calc_OSSScorr(_QCD|_AI|JET1,                        p+FF_corr_QCD_MCsum_noGen_AI_fitted,   SR_data_mvis_AI_MCsubtracted,     p+FF_corr_QCD_MCsum_noGen_nonclosure_AI_1jet, p+FF_corr_QCD_MCsum_noGen_OSSScorr_1jet,"",0);
+    //   Analyzer->calc_OSSScorr(_QCD|_AI|JET0,                        p+FF_corr_QCD_MCsum_noGen_AI_fitted,   SR_data_mvis_AI_MCsubtracted,     p+FF_corr_QCD_MCsum_noGen_nonclosure_AI_0jet, p+FF_corr_QCD_MCsum_noGen_OSSScorr_0jet,"",0);
+    //   Analyzer->calc_OSSScorr(_QCD|_AI|JET1,                        p+FF_corr_QCD_MCsum_noGen_AI_fitted,   SR_data_mvis_AI_MCsubtracted,     p+FF_corr_QCD_MCsum_noGen_nonclosure_AI_1jet, p+FF_corr_QCD_MCsum_noGen_OSSScorr_1jet,"",0);
     
-    }
+    // }
 
     
     
@@ -81,30 +86,54 @@ void calcCorrections() {
     
     
     Analyzer->loadFile(preselection_Wjets,"Events");
-    Analyzer->calc_nonclosure(_W_JETS,                           p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mvis_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure, "", 0, 0);
-    if( doNJetBinning ){
-      Analyzer->calc_nonclosure(_W_JETS|JET0,                      p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mvis_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure_0jet, "", 0, 0);
-      Analyzer->calc_nonclosure(_W_JETS|JET1,                      p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mvis_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure_1jet, "", 0, 0);
+    
+    if (usePt_nonclosure_Wjets) {
+      Analyzer->calc_nonclosure_W_lepPt(_W_JETS,                      p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_lepPt_Wjets,             p+FF_corr_Wjets_MC_noGen_nonclosure_lepPt,     "",0,0);
     }
-    Analyzer->loadFile(preselection_Wjets,"Events");
-    Analyzer->calc_mtcorr(_W_JETS|NO_SR,                         p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mt_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure,      p+FF_corr_Wjets_MC_noGen_mtcorr,"",0);
-    if( doNJetBinning ){
-      Analyzer->calc_mtcorr(_W_JETS|NO_SR|JET0,                    p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mt_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure_0jet, p+FF_corr_Wjets_MC_noGen_mtcorr_0jet,"",0);
-      Analyzer->calc_mtcorr(_W_JETS|NO_SR|JET1,                    p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mt_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure_1jet, p+FF_corr_Wjets_MC_noGen_mtcorr_1jet,"",0);
+    else {
+      Analyzer->calc_nonclosure(_W_JETS,                           p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mvis_Wjets,              p+FF_corr_Wjets_MC_noGen_nonclosure, "", 0, 0);
+    }  
+    // if( doNJetBinning ){
+    //   Analyzer->calc_nonclosure(_W_JETS|JET0,                      p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mvis_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure_0jet, "", 0, 0);
+    //   Analyzer->calc_nonclosure(_W_JETS|JET1,                      p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mvis_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure_1jet, "", 0, 0);
+    // }
+    // Analyzer->loadFile(preselection_Wjets,"Events");
+    
+    if (usePt_nonclosure_Wjets) {
+      Analyzer->calc_mtcorr(     _W_JETS|NO_SR,                         p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mt_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure_lepPt,      p+FF_corr_Wjets_MC_noGen_mtcorr,"",0);
     }
+    else {
+      Analyzer->calc_mtcorr(   _W_JETS|NO_SR,                         p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mt_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure,               p+FF_corr_Wjets_MC_noGen_mtcorr,"",0);
+    }
+ 
+    exit(0);
+    // if( doNJetBinning ){
+    //   Analyzer->calc_mtcorr(_W_JETS|NO_SR|JET0,                    p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mt_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure_0jet, p+FF_corr_Wjets_MC_noGen_mtcorr_0jet,"",0);
+    //   Analyzer->calc_mtcorr(_W_JETS|NO_SR|JET1,                    p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mt_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure_1jet, p+FF_corr_Wjets_MC_noGen_mtcorr_1jet,"",0);
+    // }
+
+
+
+    // obsolete
     // cout << "Calc lepPt correction." << endl;
     // Analyzer->calc_nonclosure_lepPt(_W_JETS,                       p+FF_corr_Wjets_MCsum_noGen_fitted,        CR_Wjets_lepPt_data_MCsubtracted,   p+FF_corr_Wjets_MCsum_noGen_nonclosure,    p+FF_corr_Wjets_MCsum_noGen_nonclosure_lepPt,"",0);
     // Analyzer->calc_nonclosure_lepPt(_QCD,                       p+FF_corr_QCD_MCsum_noGen_fitted,        CR_QCD_lepPt_data_MCsubtracted,   p+FF_corr_QCD_MCsum_noGen_nonclosure,    p+FF_corr_QCD_MCsum_noGen_nonclosure_lepPt,"",0);
 
   }
   else cout << "FIXME: Reasonable corrections for MC closure if enough statistics" << endl;
+  
+  
+  
   if(CHAN!=kTAU){
     cout << "Calculating TT corrections" << endl;
     Analyzer->loadFile(preselection_TT_J_EMB,"Events");
     Analyzer->calc_nonclosure(_TT|SR,                            p+FF_TT_J_only_SR_fitted,               SR_TT_J_mvis_sim, p+FF_corr_TT_MC_noGen_nonclosure, "", 0, 0);
-    //Analyzer->calc_nonclosure(_TT|SR,                            p+FF_TT_J_only_SR_fitted,               SR_TT_J_mvis_sim, p+FF_corr_TT_MC_noGen_nonclosure, "_alt", 0, 0);
-    //...done
+  
   }
+
+
+
+
 
   if(CHAN==kTAU){
     Analyzer->loadFile(preselection_data,"Events");

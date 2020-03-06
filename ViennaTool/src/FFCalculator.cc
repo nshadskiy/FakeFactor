@@ -1446,6 +1446,8 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   if(mode & _TT) closure_h= new TH1D("closure"+sample,"",nbins_mvis,hist_min_mvis,hist_max_mvis); // closure plot 15 bins between [0,250]
   else closure_h= new TH1D("closure"+sample,"",w_mvis_n,w_mvis_v); // closure plot with binning {0,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450}
   
+  std::cout << "fine 1 " << std::endl;
+  
   TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE"); //can be simplified. 
   TH1D *output_h = new TH1D("nonclosure_mvis","",w_mvis_n,w_mvis_v); // output histogram with binning {0,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450}
   
@@ -1505,15 +1507,18 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
       else{ // mode is not SR
         
         if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+          cout << "FF_value: " << FF_value << endl;
           FF_value = this->getFittedBinContent( mode, fittedFFs );
           closure_h->Fill(event_s->alltau_mvis->at(tau_ind),FF_value*event_s->weight_sf );
         }
       }
     }
-    
+    std::cout << "fine 2 " << std::endl;
     closure_h->Multiply(ratio_l);
+    std::cout << "fine 3 " << std::endl;
     output->cd();
     closure_h->Write();
+    std::cout << "fine 4 " << std::endl;
 
     TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis");
     TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis_MCsubtracted");
@@ -1527,6 +1532,40 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
     compare_t->Add(compare_t_MCsubtracted,-1);
     compare_t->Write();
     output_h->Divide(closure_h);
+    std::cout << "fine 5 " << std::endl;
+  }
+  else{ //happens for Wjets non closure correction in case of Simulation based correction 
+    TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis");
+    
+    for (Int_t jentry=0; jentry<nentries;jentry++) {
+      event_s->GetEntry(jentry);
+      if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl; }
+      if (mode & SR){
+        if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+          if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
+          else if( raw_ff.Contains("_fitted") ){
+            FF_value = this->getFittedBinContent( mode, fittedFFs );
+          }
+          closure_h->Fill(event_s->alltau_mvis->at(tau_ind),FF_value*event_s->weight_sf );
+        }
+      }
+      else{
+        if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+          if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
+          else if( raw_ff.Contains("_fitted") ){
+            FF_value = this->getFittedBinContent( mode, fittedFFs );
+          }
+          closure_h->Fill(event_s->alltau_mvis->at(tau_ind),FF_value*event_s->weight_sf );
+        }
+      }
+    }
+    
+    output->cd();
+    compare_t->Write();
+    closure_h->Write();
+  
+    output_h = (TH1D*)compare_t->Clone("nonclosure");
+    output_h->Divide(closure_h);
   }
   
 
@@ -1534,7 +1573,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   output_fit = (TH1D*)output_h->Clone("nonclosure_fit");
 
   for(int i=1;i<=output_h->GetNbinsX();i++){
-    std::cout << "correction: " << output_h->GetBinContent(i) << std::endl;
+    // std::cout << "correction: " << output_h->GetBinContent(i) << std::endl;
     if ( output_h->GetBinContent(i) < 0 ) {
       output_h->SetBinError(i,1.);
       std::cout << "Found negative correction value !" << std::endl;
@@ -1545,8 +1584,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   output_fit->Write(); // at this point it is just the ratio of histograms
 
 
-
-
+  
 
 
 
@@ -1567,6 +1605,8 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   cout << "FitWidth: " << fitWidth << endl;
   gsk.setWidth(fitWidth);
   gsk.set_widthInBins_sf(3);
+  
+
   
   gsk.getSmoothHisto();
   TH1D *h2=gsk.returnSmoothedHisto(); //nonclosure_fit_smoothed is returned
@@ -1614,6 +1654,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   // close everything in RAM
   FF_lookup.Close();output->Close();
   std::cout << "test2" << std::endl;
+  delete closure_h;
   for(int i=0; i<fittedFFs.size();i++){
     delete fittedFFs.at(i);
   }
@@ -1634,6 +1675,7 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
   
 
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
+  
   TString cr_file=compare_file;
   if(mode & JET0 ) cr_file = cr_file.ReplaceAll("_data","_0jet_data");
   if(mode & JET1 ) cr_file = cr_file.ReplaceAll("_data","_1jet_data");
@@ -1739,6 +1781,7 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
     
     output->cd();
     closure_h->Write();
+    compare_t->Write();
   
     output_h = (TH1D*)compare_t->Clone("nonclosure");
     output_h->Divide(closure_h);
@@ -1764,7 +1807,7 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
   gsk.set_doErrors(1);
   //if(mode & _QCD) gsk.set_lastBinFrom(150);
   Double_t fitWidth;
-  if(mode & _QCD) fitWidth=1.0; else if(mode & _W_JETS) fitWidth=1.0; else fitWidth=1.0;
+  if(mode & _QCD) fitWidth=1.0; else if(mode & _W_JETS) fitWidth=1.2; else fitWidth=1.0; // fitWidth 1.2 is arbitrary at the moment to get away the wiggle at high pT
   if(CHAN==kTAU) fitWidth=1.0;
   cout << "FitWidth: " << fitWidth << endl;
   gsk.setWidth(fitWidth);
@@ -2001,7 +2044,7 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   if(CHAN==kTAU) fitWidth=1.;
   cout << "FitWidth: " << fitWidth << endl;
   gsk.setWidth(fitWidth);
-  gsk.set_widthInBins_sf(1.);
+  gsk.set_widthInBins_sf(3.);
   
   gsk.getSmoothHisto();
   TH1D *h2=gsk.returnSmoothedHisto();
@@ -2269,6 +2312,7 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
     TH1D* ratio_t                = (TH1D*)compare_t_dataminusMC->Clone("ratio_t");
     ratio_t->Divide(compare_t);
     
+    std::cout << "test 1" << std::endl;
 
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
@@ -2281,7 +2325,7 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
       }
       if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
         FF_value = this->getFittedBinContent( mode, fittedFFs );
-        // std::cout << "correction " << nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) << std::endl;
+        std::cout << "correction " << nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) << std::endl;
         closure_h->Fill(event_s->alltau_mvis->at(tau_ind),event_s->weight_sf*FF_value*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );
         
       } 
@@ -2413,6 +2457,7 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
 void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TString CR_file, TString nonclosure_corr, TString ff_output, const TString tight_cat, const Int_t doPlot, const Int_t tau_ind){
 
   cout << "Calculating corrections for " << ff_output << endl;
+  cout << "nonclosure_corr: " << nonclosure_corr << endl;
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
   cout << nentries << endl;
   TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
@@ -2440,17 +2485,28 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
       if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl; }
-        if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+      
+      if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
         if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
         else if( raw_ff.Contains("_fitted") ){
           FF_value = this->getFittedBinContent( mode, fittedFFs );
+          std::cout << "FF value: " << FF_value << std::endl;
+          cout<< "nonclosure: " << nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) << endl;
         }
-        closure_h->Fill(event_s->alltau_mt->at(tau_ind),FF_value*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 )*event_s->weight_sf );
+        // cout << "weight index: " << this->getWeightIndex_lepPt(event_s->lep_pt)+1 << endl;
+        // std::cout << "factor: " << nonclosure_h->GetBinContent( this->getWeightIndex_lepPt(event_s->lep_pt)+1 ) << std::endl;
+        // std::cout << "factor: " << nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) << std::endl;
+        
+        // closure_h->Fill(event_s->alltau_mt->at(tau_ind),FF_value*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 )*event_s->weight_sf );
+        
+        // lep pT case:
+        closure_h->Fill(event_s->alltau_mt->at(tau_ind),FF_value * nonclosure_h->GetBinContent( this->getWeightIndex_lepPt(event_s->lep_pt)+1 ) *event_s->weight_sf );
       }
   }
 
   output->cd();
   closure_h->Write();
+  compare_t->Write();
   
   output_h = (TH1D*)compare_t->Clone("mt_corr");
   output_h->Divide(closure_h);

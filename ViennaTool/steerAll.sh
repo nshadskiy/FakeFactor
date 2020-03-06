@@ -10,6 +10,7 @@ embedding=$(grep '#define EMB' "Settings.h" | awk -F'[B]' '{print $2}')
 output=$(grep 'output_folder' "Settings.h" | awk -F'[=;]' '{print $2}' | tr -d '"')
 analysis=$(grep 'analysis' "Settings.h" | awk -F'[=;]' '{print $2}' | tr -d '"')
 njetbinning=$(grep 'doNJetBinning' "Settings.h" | awk -F'[=;]' '{print $2}' )
+usePt_nonclosure=$(grep 'usePt_nonclosure_Wjets' "Settings.h" | awk -F'[=;]' '{print $2}' )
 
 do_presel=$1 # 0 or 1 (default)
 ntuples=$2 # Use "KIT" to process KIT ntuples, otherwise Vienna is assumed
@@ -56,6 +57,7 @@ done
 wait
 fi
 
+
 ./SRHisto &
 ./CRHisto &
 wait
@@ -67,7 +69,7 @@ gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_t
 cd -
 
 ./calcCorrections
-python plotCorrections.py --channel $channel  --doNjetBinning $njetbinning
+python plotCorrections.py --channel $channel  --doNjetBinning $njetbinning --usePt_nonclosure_Wjets $usePt_nonclosure
 ./convert_inputs
 
 

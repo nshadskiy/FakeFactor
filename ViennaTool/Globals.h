@@ -219,6 +219,9 @@ const TString FF_corr_Wjets_MCsum_noGen_nonclosure_SS_SR        = "FF_"+s_corr+"
 const TString FF_corr_Wjets_MC_noGen_nonclosure                 = "FF_"+s_corr+"_Wjets_MC_noGen_nonclosure.root";
 const TString FF_corr_Wjets_MC_noGen_nonclosure_0jet            = "FF_"+s_corr+"_Wjets_MC_noGen_nonclosure_0jet.root";
 const TString FF_corr_Wjets_MC_noGen_nonclosure_1jet            = "FF_"+s_corr+"_Wjets_MC_noGen_nonclosure_1jet.root";
+const TString FF_corr_Wjets_MC_noGen_nonclosure_lepPt           = "FF_"+s_corr+"_Wjets_MC_noGen_nonclosure_lepPt.root";
+
+
 const TString FF_corr_Wjets_MC_noGen_mtcorr                     = "FF_"+s_corr+"_Wjets_MC_noGen_mtcorr.root";
 const TString FF_corr_Wjets_MC_noGen_mtcorr_0jet                = "FF_"+s_corr+"_Wjets_MC_noGen_mtcorr_0jet.root";
 const TString FF_corr_Wjets_MC_noGen_mtcorr_1jet                = "FF_"+s_corr+"_Wjets_MC_noGen_mtcorr_1jet.root";
@@ -415,6 +418,7 @@ const TString SS_SR_VV_L_pt_sim      =path_sim + s_SS_SR+"_VV_L_"+s_pt+".root";
 // Control region histograms
 const TString CR_Wjets_mt_Wjets    = path_sim + s_CR+"_Wjets_"+s_mt+"_Wjets.root";
 const TString CR_Wjets_mvis_Wjets    = path_sim + s_CR+"_Wjets_"+s_mvis+"_Wjets.root";
+const TString CR_Wjets_lepPt_Wjets    = path_sim + s_CR+"_Wjets_"+s_lepPt+"_Wjets.root";
 const TString CR_Wjets_mt_DY   = path_sim + s_CR+"_Wjets_"+s_mt+"_DY.root";
 const TString CR_Wjets_mt_TT    = path_sim + s_CR+"_Wjets_"+s_mt+"_TT.root";
 const TString CR_Wjets_mt_QCD      = path_sim + s_CR+"_Wjets_"+s_mt+"_QCD.root";
