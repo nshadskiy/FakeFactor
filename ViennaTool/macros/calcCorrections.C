@@ -45,12 +45,13 @@ void calcCorrections() {
     Analyzer->loadFile(m_preselection_data,"Events");
     Analyzer->calc_nonclosure(_QCD,                               p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure,"",0);
     
-    if (usePt_nonclosure_Wjets )
+    if (usePt_nonclosure_Wjets ) {
       Analyzer->calc_nonclosure_W_lepPt(_W_JETS,   p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_lepPt_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure, "",0);
+    }
     else {
       Analyzer->calc_nonclosure(_W_JETS,           p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted,  p+FF_corr_Wjets_MCsum_noGen_nonclosure, "",0);
     }
-    
+    // exit(0);
     Analyzer->calc_muisocorr(_QCD|MUISO,                          p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_muiso_data_MCsubtracted,  p+FF_corr_QCD_MCsum_noGen_nonclosure,      p+FF_corr_QCD_MCsum_noGen_muisocorr,"",0);
 
     // first need to perform the AI non closure correction before the SS-OS can be done because it depends on it.
@@ -64,7 +65,7 @@ void calcCorrections() {
       Analyzer->calc_nonclosure(_QCD|JET1,                          p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_1jet,"",0);
     }
     cout << "Analysizer->calc_nonclosure( " << _W_JETS << " " << p+FF_corr_Wjets_MCsum_noGen_fitted << " " << CR_Wjets_mvis_data_MCsubtracted << " " << p+FF_corr_Wjets_MCsum_noGen_nonclosure << " 0" << endl;
-    Analyzer->calc_nonclosure_W_lepPt(_W_JETS,                            p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_lepPt_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure,     "",0);
+    // Analyzer->calc_nonclosure_W_lepPt(_W_JETS,                            p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_lepPt_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure,     "",0);
     if( doNJetBinning ){
       Analyzer->calc_nonclosure(_W_JETS|JET0,                       p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure_0jet,"",0);
       Analyzer->calc_nonclosure(_W_JETS|JET1,                       p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_mvis_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure_1jet,"",0);
