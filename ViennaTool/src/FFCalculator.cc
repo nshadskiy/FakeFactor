@@ -1507,18 +1507,15 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
       else{ // mode is not SR
         
         if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
-          cout << "FF_value: " << FF_value << endl;
+          // cout << "FF_value: " << FF_value << endl;
           FF_value = this->getFittedBinContent( mode, fittedFFs );
           closure_h->Fill(event_s->alltau_mvis->at(tau_ind),FF_value*event_s->weight_sf );
         }
       }
     }
-    std::cout << "fine 2 " << std::endl;
     closure_h->Multiply(ratio_l);
-    std::cout << "fine 3 " << std::endl;
     output->cd();
     closure_h->Write();
-    std::cout << "fine 4 " << std::endl;
 
     TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis");
     TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis_MCsubtracted");
@@ -1649,11 +1646,9 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   c2->Write();
   // from obove commend to here could be deleted
   
-  std::cout << "test1" << std::endl;
   
   // close everything in RAM
   FF_lookup.Close();output->Close();
-  std::cout << "test2" << std::endl;
   delete closure_h;
   for(int i=0; i<fittedFFs.size();i++){
     delete fittedFFs.at(i);
@@ -1956,7 +1951,11 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
-      if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl; }
+      if (DEBUG){ 
+        if(jentry % 100000 == 0) {
+          cout << jentry << "/" << nentries << endl; 
+        }
+      }
       if (mode & SR){
         if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
           if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
@@ -2312,8 +2311,7 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
     TH1D* ratio_t                = (TH1D*)compare_t_dataminusMC->Clone("ratio_t");
     ratio_t->Divide(compare_t);
     
-    std::cout << "test 1" << std::endl;
-
+    
     for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
       if (DEBUG){ 
@@ -2325,7 +2323,6 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
       }
       if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
         FF_value = this->getFittedBinContent( mode, fittedFFs );
-        std::cout << "correction " << nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) << std::endl;
         closure_h->Fill(event_s->alltau_mvis->at(tau_ind),event_s->weight_sf*FF_value*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) );
         
       } 
@@ -2388,8 +2385,8 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
   gsk.set_doWidthInBins(1);
   gsk.set_doErrors(1);
   gsk.setWidth( 2. );
-  if(CHAN ==kTAU ) gsk.setWidth(1.08);
-  if(CHAN ==kTAU ) gsk.set_widthInBins_sf(1.01);
+  if(CHAN ==kTAU ) gsk.setWidth(0.7);
+  if(CHAN ==kTAU ) gsk.set_widthInBins_sf(0.2);
   else gsk.set_widthInBins_sf(1.115);
   //if(mode & _QCD) gsk.set_lastBinFrom(170);
   gsk.getSmoothHisto();
@@ -2490,8 +2487,8 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
         if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
         else if( raw_ff.Contains("_fitted") ){
           FF_value = this->getFittedBinContent( mode, fittedFFs );
-          std::cout << "FF value: " << FF_value << std::endl;
-          cout<< "nonclosure: " << nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) << endl;
+          // std::cout << "FF value: " << FF_value << std::endl;
+          // cout<< "nonclosure: " << nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 ) << endl;
         }
         // cout << "weight index: " << this->getWeightIndex_lepPt(event_s->lep_pt)+1 << endl;
         // std::cout << "factor: " << nonclosure_h->GetBinContent( this->getWeightIndex_lepPt(event_s->lep_pt)+1 ) << std::endl;
