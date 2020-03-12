@@ -5,6 +5,7 @@ ViennaTool/NtupleClass_NonEMB.h
 *.root
 *.xgb
 *.keras
+ViennaTool/Images_EMB/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
