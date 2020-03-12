@@ -8,8 +8,8 @@ if __name__ == '__main__':
 
      parser = argparse.ArgumentParser()
      parser.add_argument('--channel', dest = 'channel', help='Channel to plot: kMU,kEL,kTAU', type=str, metavar = 'TAG', required = True)
-     parser.add_argument('--doNjetBinning', dest = 'do_njetbinning', help='Defines if corrections are binned in 0jet/1jet', type=str, metavar = 'TAG', required = True)
-     parser.add_argument('--usePt_nonclosure_Wjets', dest = 'do_pt_lep', help='use pt binned wjets corrections', type=str, metavar = 'TAG', required = True)
+     parser.add_argument('--doNjetBinning', dest = 'do_njetbinning', help='Defines if corrections are binned in 0jet/1jet', type=int, metavar = 'TAG', required = True)
+     parser.add_argument('--usePt_nonclosure_Wjets', dest = 'do_pt_lep', help='use pt binned wjets corrections', type=int, metavar = 'TAG', required = True)
      
      args = parser.parse_args()
     
@@ -22,7 +22,7 @@ if __name__ == '__main__':
               {'name': 'ViennaTool/fakefactor/data_mt/FF_corr_QCD_MCsum_noGen_OSSScorr.root','data':'OSSS_corr', 'graph':'OSSS_corr_QCD','CMS':preliminary,'Y':[0.2,2.1],'X':[0,305], 'Label':'m_{vis} (GeV)','file':'corr_QCD_OSSS','plotLabel1':'#mu^{}#tau_{h} QCD multijet','plotLabel2':'opposite/same charge correction'},
               {'name': 'ViennaTool/fakefactor/data_mt/FF_corr_TT_MC_noGen_nonclosure.root','data':'nonclosure_fit', 'graph':'nonclosure_TT_MC','CMS':'Simulation '+preliminary,'Y':[0.5,1.5],'X':[0,250], 'Label':'m_{vis} (GeV)','file':'corr_TT_nonclosure','plotLabel1':'#mu^{}#tau_{h} t#bar{t}','plotLabel2':'Nonclosure correction'},
               {'name': 'ViennaTool/fakefactor/data_mt/FF_corr_Wjets_MC_noGen_mtcorr.root','data':'mt_corr', 'graph':'mt_corr_Wjets','CMS':'Simulation '+preliminary,'Y':[0.5,1.5],'X':[0,70], 'Label':'m^{#mu}_{T} [GeV]','file':'corr_W_mt','plotLabel1':'#mu^{}#tau_{h} W+jets','plotLabel2':'m^{#mu}_{T} correction'},
-              {'name': 'ViennaTool/fakefactor/data_mt/FF_corr_Wjets_MCsum_noGen_nonclosure.root','data':'nonclosure_fit', 'graph':'nonclosure_Wjets','CMS':preliminary,'Y':[0.5,1.5],'X':[20,200], 'Label':'Muon p_{T} (GeV)','file':'corr_W_nonclosure','plotLabel1':'#mu^{}#tau_{h} W+jets','plotLabel2':'Nonclosure correction'},
+          #     {'name': 'ViennaTool/fakefactor/data_mt/FF_corr_Wjets_MCsum_noGen_nonclosure.root','data':'nonclosure_fit', 'graph':'nonclosure_Wjets','CMS':preliminary,'Y':[0.5,1.5],'X':[20,200], 'Label':'Muon p_{T} (GeV)','file':'corr_W_nonclosure','plotLabel1':'#mu^{}#tau_{h} W+jets','plotLabel2':'Nonclosure correction'},
               #{'name': 'ViennaTool/fakefactor/data_mt/FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root','data':'nonclosure_fit', 'graph':'nonclosure_QCD','CMS':preliminary,'Y':[0.5,1.5],'X':[20,120], 'Label':'p_{T} (GeV)','file':'corr_QCD_nonclosure_pt','plotLabel1':'#mu^{}#tau_{h} QCD multijet','plotLabel2':'p_{T} correction'},
               #{'name': 'ViennaTool/fakefactor/data_mt/FF_corr_Wjets_MCsum_noGen_nonclosure_lepPt.root','data':'nonclosure_fit', 'graph':'nonclosure_Wjets','CMS':preliminary,'Y':[0.5,1.5],'X':[25,120], 'Label':'p_{T} (GeV)','file':'corr_Wjets_nonclosure_pt','plotLabel1':'#mu^{}#tau_{h} W+jets','plotLabel2':'p_{T} correction'},
 
@@ -33,9 +33,17 @@ if __name__ == '__main__':
               #{'name': 'ViennaTool/fakefactor/data_mt/FF_corr_Wjets_MC_noGen_mtcorr_alt.root','data':'mt_corr', 'graph':'mt_corr_Wjets','CMS':'Simulation','Y':[0.4,2],'X':[0,250], 'Label':'m_{T} [GeV]','file':'mtcorr_W_alt'},
               #{'name': 'ViennaTool/fakefactor/data_mt/FF_corr_Wjets_MCsum_noGen_nonclosure_alt.root','data':'nonclosure_fit', 'graph':'nonclosure_Wjets','CMS':'Preliminary','Y':[0,2],'X':[0,305], 'Label':'m_{vis} [GeV]','file':'nonclosure_W_alt'}
      ]
+     if (args.do_pt_lep == 1) :
+          files_mt.extend([
+              {'name': 'ViennaTool/fakefactor/data_mt/FF_corr_Wjets_MCsum_noGen_nonclosure.root','data':'nonclosure_fit', 'graph':'nonclosure_Wjets','CMS':preliminary,'Y':[0.5,1.5],'X':[30,130], 'Label':'p_{T}^{#mu} (GeV)','file':'corr_W_nonclosure','plotLabel1':'#mu#tau_{h} W+jets','plotLabel2':'Nonclosure correction'},
+          ])
+     else :
+          files_mt.extend([
+              {'name': 'ViennaTool/fakefactor/data_mt/FF_corr_Wjets_MCsum_noGen_nonclosure.root','data':'nonclosure_fit', 'graph':'nonclosure_Wjets','CMS':preliminary,'Y':[0,2],'X':[0,305], 'Label':'m_{vis} (GeV)','file':'corr_W_nonclosure','plotLabel1':'#mu#tau_{h} W+jets','plotLabel2':'Nonclosure correction'},
+          ])
      if(args.do_njetbinning == 1):
           files_mt.extend([
-               {'name': 'ViennaTool/fakefactor/data_mt/FF_corr_QCD_MCsum_noGen_nonclosure_0jet.root','data':'nonclosure_fit', 'graph':'nonclosure_QCD','CMS':preliminary,'Y':[0,2],'X':[0,305], 'Label':'m_{vis} (GeV)','file':'corr_QCD_nonclosure_0jet','plotLabel1':'#mu^{}#tau_{h} QCD multijet','plotLabel2':'Nonclosure correction, 0jet'},
+              {'name': 'ViennaTool/fakefactor/data_mt/FF_corr_QCD_MCsum_noGen_nonclosure_0jet.root','data':'nonclosure_fit', 'graph':'nonclosure_QCD','CMS':preliminary,'Y':[0,2],'X':[0,305], 'Label':'m_{vis} (GeV)','file':'corr_QCD_nonclosure_0jet','plotLabel1':'#mu^{}#tau_{h} QCD multijet','plotLabel2':'Nonclosure correction, 0jet'},
               {'name': 'ViennaTool/fakefactor/data_mt/FF_corr_QCD_MCsum_noGen_nonclosure_1jet.root','data':'nonclosure_fit', 'graph':'nonclosure_QCD','CMS':preliminary,'Y':[0,2],'X':[0,305], 'Label':'m_{vis} (GeV)','file':'corr_QCD_nonclosure_1jet','plotLabel1':'#mu^{}#tau_{h} QCD multijet','plotLabel2':'Nonclosure correction, #geq 1jet'},
               {'name': 'ViennaTool/fakefactor/data_mt/FF_corr_QCD_MCsum_noGen_muisocorr_0jet.root','data':'muiso_corr', 'graph':'muiso_QCD','CMS':preliminary,'Y':[0.4,1.3],'X':[0,0.71], 'Label':'iso(#mu)','file':'corr_QCD_lepiso_0jet','plotLabel1':'#mu^{}#tau_{h} QCD multijet','plotLabel2':'Iso(#mu) correction, 0jet'},
               {'name': 'ViennaTool/fakefactor/data_mt/FF_corr_QCD_MCsum_noGen_muisocorr_1jet.root','data':'muiso_corr', 'graph':'muiso_QCD','CMS':preliminary,'Y':[0.4,1.3],'X':[0,0.71], 'Label':'iso(#mu)','file':'corr_QCD_lepiso_1jet','plotLabel1':'#mu^{}#tau_{h} QCD multijet','plotLabel2':'Iso(#mu) correction, #geq 1jet'},
@@ -53,17 +61,6 @@ if __name__ == '__main__':
               {'name': 'ViennaTool/fakefactor/data_et/FF_corr_QCD_MCsum_noGen_OSSScorr.root','data':'OSSS_corr', 'graph':'OSSS_corr_QCD','CMS':preliminary,'Y':[0,2],'X':[0,305], 'Label':'m_{vis} (GeV)','file':'corr_QCD_OSSS','plotLabel1':'e#tau_{h} QCD multijet','plotLabel2':'opposite/same charge correction'},
               {'name': 'ViennaTool/fakefactor/data_et/FF_corr_TT_MC_noGen_nonclosure.root','data':'nonclosure_fit', 'graph':'nonclosure_TT_MC','CMS':'Simulation '+preliminary,'Y':[0.5,1.5],'X':[0,250], 'Label':'m_{vis} (GeV)','file':'corr_TT_nonclosure','plotLabel1':'e#tau_{h} t#bar{t}','plotLabel2':'Nonclosure correction'},
               {'name': 'ViennaTool/fakefactor/data_et/FF_corr_Wjets_MC_noGen_mtcorr.root','data':'mt_corr', 'graph':'mt_corr_Wjets','CMS':'Simulation '+preliminary,'Y':[0.0,1.5],'X':[0,70], 'Label':'m^{e}_{T} [GeV]','file':'corr_mt_W','plotLabel1':'e#tau_{h} W+jets','plotLabel2':'m^{e}_{T} correction'},
-         
-         
-          #     {'name': 'ViennaTool/fakefactor/data_et/FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root','data':'nonclosure_fit', 'graph':'nonclosure_QCD','CMS':preliminary,'Y':[0.5,1.5],'X':[20,120], 'Label':'p_{T} (GeV)','file':'corr_QCD_nonclosure_pt','plotLabel1':'e#tau_{h} QCD multijet','plotLabel2':'p_{T} correction'},
-          #     {'name': 'ViennaTool/fakefactor/data_et/FF_corr_Wjets_MCsum_noGen_nonclosure_lepPt.root','data':'nonclosure_fit', 'graph':'nonclosure_Wjets','CMS':preliminary,'Y':[0.5,1.5],'X':[25,120], 'Label':'Electron p_{T} (GeV)','file':'corr_Wjets_nonclosure_pt','plotLabel1':'e#tau_{h} W+jets','plotLabel2':'p_{T} correction'},
-              
-              #{'name': 'ViennaTool/fakefactor/data_et/FF_corr_QCD_MCsum_noGen_nonclosure_alt.root','data':'nonclosure_fit', 'graph':'nonclosure_QCD','CMS':'Preliminary','Y':[0,2],'X':[0,305], 'Label':'m_{vis} [GeV/c]','file':'nonclosure_QCD_alt'},
-              #{'name': 'ViennaTool/fakefactor/data_et/FF_corr_QCD_MCsum_noGen_muisocorr_alt.root','data':'muiso_corr', 'graph':'muiso_QCD','CMS':'Preliminary','Y':[0.4,1.3],'X':[0,0.71], 'Label':'iso(e)','file':'eisocorr_QCD_alt'},
-              #{'name': 'ViennaTool/fakefactor/data_et/FF_corr_QCD_MCsum_noGen_OSSScorr_alt.root','data':'OSSS_corr', 'graph':'OSSS_corr_QCD','CMS':'Preliminary','Y':[0,2],'X':[0,305], 'Label':'m_{vis} [GeV/c]','file':'OSSScorr_QCD_alt'},
-              #{'name': 'ViennaTool/fakefactor/data_et/FF_corr_TT_MC_noGen_nonclosure_alt.root','data':'nonclosure_fit', 'graph':'nonclosure_TT_MC','CMS':'Simulation','Y':[0.5,1.5],'X':[0,250], 'Label':'m_{vis} [GeV/c]','file':'nonclosure_TT_alt'},
-              #{'name': 'ViennaTool/fakefactor/data_et/FF_corr_Wjets_MC_noGen_mtcorr_alt.root','data':'mt_corr', 'graph':'mt_corr_Wjets','CMS':'Simulation','Y':[0.4,2],'X':[0,250], 'Label':'m_{T} [GeV/c]','file':'mtcorr_W_alt'},
-              #{'name': 'ViennaTool/fakefactor/data_et/FF_corr_Wjets_MCsum_noGen_nonclosure_alt.root','data':'nonclosure_fit', 'graph':'nonclosure_Wjets','CMS':'Preliminary','Y':[0,2],'X':[0,305], 'Label':'m_{vis} [GeV/c]','file':'nonclosure_W_alt'},
      ]
      if (args.do_pt_lep == 1) :
           files_et.extend([
