@@ -6,9 +6,10 @@
 
 using namespace std;
 
-std::tuple<std::vector<TString>,std::vector<TString>> FillPaths(std::vector<TString> ps, std::vector<TString> fl) {
-  
-  if( EMB==1 ){
+std::tuple<std::vector<TString>,std::vector<TString>> FillPaths(std::vector<TString> ps, std::vector<TString> fl, int emb) {
+  ps.clear();
+  fl.clear();
+  if( emb==1 ){
     ps.push_back(preselection_data);
     ps.push_back(preselection_Wjets); 
     ps.push_back(preselection_EMB); 
@@ -28,7 +29,8 @@ std::tuple<std::vector<TString>,std::vector<TString>> FillPaths(std::vector<TStr
     fl.push_back(SR_VV_L_mt_sim);
     fl.push_back(SR_DY_J_mt_sim); 
     fl.push_back(SR_DY_L_mt_sim); 
-  }else{
+  }
+  else if (emb==0) {
     ps.push_back(preselection_data);
     ps.push_back(preselection_Wjets); 
     ps.push_back(preselection_TT_T); 
@@ -53,6 +55,31 @@ std::tuple<std::vector<TString>,std::vector<TString>> FillPaths(std::vector<TStr
     fl.push_back(SR_DY_J_mt_sim); 
     fl.push_back(SR_DY_L_mt_sim); 
   }
+  else {
+    ps.push_back(preselection_data);
+    ps.push_back(preselection_Wjets); 
+    ps.push_back(preselection_TT_T_EMB); 
+    ps.push_back(preselection_TT_J_EMB); 
+    ps.push_back(preselection_TT_L_EMB);
+    ps.push_back(preselection_VV_T_EMB); 
+    ps.push_back(preselection_VV_J_EMB); 
+    ps.push_back(preselection_VV_L_EMB);
+    ps.push_back(preselection_DY_TT_EMB); 
+    ps.push_back(preselection_DY_J_EMB); 
+    ps.push_back(preselection_DY_L_EMB); 
+    
+    fl.push_back(SR_data_mt); 
+    fl.push_back(SR_Wjets_mt_sim); 
+    fl.push_back(SR_TT_T_mt_sim);
+    fl.push_back(SR_TT_J_mt_sim); 
+    fl.push_back(SR_TT_L_mt_sim);
+    fl.push_back(SR_VV_T_mt_sim); 
+    fl.push_back(SR_VV_J_mt_sim); 
+    fl.push_back(SR_VV_L_mt_sim);
+    fl.push_back(SR_DY_TT_mt_sim); 
+    fl.push_back(SR_DY_J_mt_sim); 
+    fl.push_back(SR_DY_L_mt_sim); 
+  }
   return std::make_tuple(ps,fl);
 
 }
@@ -61,8 +88,35 @@ int ProduceMCsubtracted (TString variable_name, TString extension) {
   TString modes[] = {"l","t"}; // the 2 modes are l(oose) and t(ight) where FF is defined via t / l&!t
   Int_t nmodes = 2;//sizeof(modes) / sizeof(*modes);
 
-  int nSA = nSAMPLES; // depends on EMB or nonEMB
-  const TString *ssa=vsuff;
+  /* The below fix is used to derive the SS/OS correction with DY MC and not embedding because
+    the EMB samples are not well discribed in the anti-isolated lepton region [0.15,0.25], i.e.
+    where this correction is derived. In principle this should also be done in the QCD AI DR but there
+    the genuine tau yield is very low and the differences between DY_MC and EMB are not relevant.
+  */  
+  int nSA;
+  if (extension.Contains("_AI") && (EMB==1)) {
+    nSA = 10;
+  }
+  else { 
+    nSA = nSAMPLES; // depends on EMB or nonEMB
+  }
+  TString ssa[nSA];
+
+  if (extension.Contains("_AI") && (EMB==1)) {
+    const TString ssa_to_be_filled[nSA] = {"Wjets", "TT_J", "TT_T", "TT_L", "DY_J","DY_TT","DY_L","VV_J", "VV_T", "VV_L"};
+    for (int i = 0; i < nSA; i++) {
+      ssa[i] = ssa_to_be_filled[i];
+    }
+  }
+  else {
+    const TString ssa_to_be_filled[nSA] = {"Wjets" ,"TT_J","TT_L","DY_J","DY_L","VV_J", "VV_L", "EMB"};
+    for (int i = 0; i < nSA; i++) {
+        ssa[i] = ssa_to_be_filled[i];
+    }
+  }
+  // end of fix
+  
+  
 
   TString outfile_name = path_sim+s_SR+"_data"+variable_name+extension+"_MCsubtracted.root";
   TString infile_name  = path_sim+s_SR+"_data"+variable_name+extension+".root";
@@ -127,7 +181,7 @@ void SRHisto() {
 
   std::vector<TString> ps; // preselection path
   std::vector<TString> fl; // path to SR histos - to be found out more
-  std::tie(ps,fl) = FillPaths(ps,fl);
+  std::tie(ps,fl) = FillPaths(ps,fl,EMB);
   
   
   Int_t nVARused = nVAR-1; //nVAR = 5 (Globals.h) no muiso is needed here
@@ -137,11 +191,14 @@ void SRHisto() {
   const TString discrim_var[nVAR] = {"_mt", "_mvis", "_pt","_eta"};
   Int_t n_discrim_var = 4;//sizeof(discrim_var) / sizeof(*discrim_var) -1;
 
-  TString tmp,tmp2;
+  TString tmp;
+  Int_t categoryMode=0;
+
+
   for (unsigned i=0; i<ps.size(); i++){ // loop over all preselection paths to root files
     
     tmp=fl.at(i); //avoid editing fl
-    Int_t categoryMode=0;
+    
 
     if (DEBUG) {std::cout << "Loading preselection file: " << ps.at(i) << std::endl;}
     
@@ -152,17 +209,31 @@ void SRHisto() {
     
     tmp=fl.at(i); 
     Analyzer->calcBgEstSim( ps.at(i), MVIS|_AI, categoryMode, tmp.ReplaceAll(r2[0], "_mvis_AI") );
-    // Analyzer->calcBgEstSim( ps.at(i), MT|_AI, categoryMode, tmp.ReplaceAll(r2[0], "_mt_AI") );
     
     if(use_svfit){
       tmp=fl.at(i); 
       Analyzer->calcBgEstSim( ps.at(i), SVFIT, categoryMode, tmp.ReplaceAll(r2[0], "_svfit"));
-    }
-    
+    }  
     
   }
-  delete Analyzer;
 
+  /* The below fix is used to derive the SS/OS correction with DY MC and not embedding because
+  the EMB samples are not well discribed in the anti-isolated lepton region [0.15,0.25], i.e.
+  where this correction is derived. In principle this should also be done in the QCD AI DR but there
+  the genuine tau yield is very low and the differences between DY_MC and EMB are not relevant.
+  */
+  if (EMB == 1) {
+    std::tie(ps,fl) = FillPaths(ps,fl,2);
+    for (unsigned i=0; i<ps.size(); i++){ // loop over all preselection paths to root files
+      tmp=fl.at(i); 
+      std::cout << "file name " << ps.at(i) << std::endl;
+      Analyzer->calcBgEstSim( ps.at(i), MVIS|_AI, categoryMode, tmp.ReplaceAll(r2[0], "_mvis_AI") );
+    }
+    std::tie(ps,fl) = FillPaths(ps,fl,EMB);
+    // end of the fix for SS/OS correction
+  }
+  delete Analyzer;
+  
   //Get all histos with MC subtracted
   for (unsigned int ivar=0; ivar < n_discrim_var; ivar++) {
     ProduceMCsubtracted(discrim_var[ivar],"");

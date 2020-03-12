@@ -94,10 +94,20 @@ void CalcFF() {
   
     cout << "Calculating QCD FFs" << endl;
     Analyzer->calcFFCorr(_QCD|m_gen_match,                       m_preselection_data,   pre_sub_qcd,         p+FF_corr_QCD_MCsum_noGen,    p+weight_QCD);
+    if( EMB ){
+      pre_sub_qcd.clear();
+      pre_sub_qcd.push_back(preselection_DY_EMB); pre_sub_qcd.push_back(preselection_Wjets); pre_sub_qcd.push_back(preselection_TT_T_EMB); pre_sub_qcd.push_back(preselection_TT_J_EMB); pre_sub_qcd.push_back(preselection_TT_L_EMB); pre_sub_qcd.push_back(preselection_VV_T_EMB); pre_sub_qcd.push_back(preselection_VV_L_EMB); pre_sub_qcd.push_back(preselection_VV_J_EMB);
+      
+    }
     Analyzer->calcFFCorr(_QCD|m_gen_match|_AI,                   m_preselection_data,   pre_sub_qcd,         p+FF_corr_QCD_MCsum_noGen_AI, p+weight_QCD);
   }
   else { // in the tt channel there are only QCD fake factors
     Analyzer->calcFFCorr(_QCD|m_gen_match,                       m_preselection_data,   pre_sub_qcd,         p+FF_corr_QCD_MCsum_noGen,    p+weight_QCD);
+    if( EMB ){
+      pre_sub_qcd.clear();
+      pre_sub_qcd.push_back(preselection_DY_EMB); pre_sub_qcd.push_back(preselection_Wjets); pre_sub_qcd.push_back(preselection_TT_T_EMB); pre_sub_qcd.push_back(preselection_TT_J_EMB); pre_sub_qcd.push_back(preselection_TT_L_EMB); pre_sub_qcd.push_back(preselection_VV_T_EMB); pre_sub_qcd.push_back(preselection_VV_L_EMB); pre_sub_qcd.push_back(preselection_VV_J_EMB);
+      
+    }
     Analyzer->calcFFCorr(_QCD|m_gen_match|_AI,                   m_preselection_data,   pre_sub_qcd,         p+"FF_corr_QCD_MCsum_noGen_AI.root", p+weight_QCD);
   }
   
