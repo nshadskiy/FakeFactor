@@ -253,7 +253,7 @@ void fitFakeFactors(){
         
         
         g_fit->GetXaxis()->SetRangeUser(fitMin-0.1,fitMax+7);
-        g_fit->GetXaxis()->SetTitle("p_{T}(#tau_{h}) (GeV)");
+        g_fit->GetXaxis()->SetTitle("p_{T}(#tau_{h}) [GeV]");
         g_fit->GetXaxis()->SetTitleSize(0.06);
         g_fit->GetXaxis()->SetTitleFont(42);
         g_fit->GetXaxis()->SetTitleOffset(1.06);
@@ -359,8 +359,8 @@ void fitFakeFactors(){
         TString paper; 
         Double_t yvalue = 0.78;          
         
-        if( modes.at(imode) & _TT ) {paper="#splitline{Simulation}{Supplementary}"; yvalue=0.765;}
-        else paper="Supplementary";
+        if( modes.at(imode) & _TT ) {paper="#splitline{Simulation}{Own Work}"; yvalue=0.765;}
+        else paper="Own Work";
         if( modes.at(imode) & _TT ) {preliminary="#splitline{Simulation}{Preliminary}"; yvalue=0.765;}
         else preliminary="Preliminary";
         TLatex cms2 = TLatex( 0.19, yvalue, paper );
