@@ -348,6 +348,7 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
     c1 = new TCanvas("c1","weights_tight",1200,800);
     hsTight->Draw();
     gPad->SaveAs(m_path_img+"weights_tight.png");
+    c1->SaveAs(m_path_img+"weights_tight.C");
     c1->Close();
     
   }
@@ -1482,7 +1483,6 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
     output_h = (TH1D*)compare_t->Clone("nonclosure");
     output_h->Divide(closure_h);
   }
-
   TH1D* output_fit;  TH1D* output_fit_mcup;  TH1D* output_fit_mcdown;
   output_fit = (TH1D*)output_h->Clone("nonclosure_fit");
   if(subtractMC){
@@ -2091,7 +2091,7 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   
   Double_t fitWidth;
   if(mode & _QCD) fitWidth=1.0; else if(mode & _W_JETS) fitWidth=1.0; else fitWidth=1.0;
-  if(CHAN==kTAU) fitWidth=0.7;
+  if(CHAN==kTAU) fitWidth=0.5;
   cout << "FitWidth: " << fitWidth << endl;
 
   //NOMINAL

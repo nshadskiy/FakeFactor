@@ -30,7 +30,7 @@ const int useVV=1;
 const int useMVAMET=0;
 ///////////////////////////////////////////////////
 //Out of date - no need to change 
-const int ALLPLOTS=0; //set to 1 for PDFs etc
+const int ALLPLOTS=1; //set to 1 for PDFs etc
 const int DOQCD=0; //set to 1 to include QCD estimate, 0 for w/o; only works for MC - QCD preselection is not done anyway
 const int DOMC=0; //set to 1 for MC, 0 for data
 const int doCuts=0;

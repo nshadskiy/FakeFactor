@@ -419,7 +419,8 @@ void fitFakeFactors(){
         ending=ending+convert.str()+convertChannel.str();
         gPad->RedrawAxis();
 
-        if(ALLPLOTS) c2->SaveAs(pi+"ff_"+ending+".png");
+        c2->SaveAs(pi+"ff_"+ending+".png");
+        c2->SaveAs(pi+"ff_"+ending+".C");
         c2->SaveAs(pi+"ff_"+ending+".pdf");
 
         c2->cd();
