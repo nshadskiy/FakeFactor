@@ -200,6 +200,7 @@ if __name__ == '__main__':
           #cms2b.Draw()
           canvas.Print( 'ViennaTool/Images_EMB/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'.png' )
           canvas.Print( 'ViennaTool/Images_EMB/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'.pdf' )
+	  canvas.SaveAs('ViennaTool/Images_EMB/data_{0}/'.format(channel)  + el['file'] + '_'+channel+'.C' )
           #canvas.Print( 'tt/' + el['file'] + '.root')
 
 
