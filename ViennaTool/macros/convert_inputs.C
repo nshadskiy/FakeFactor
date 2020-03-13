@@ -143,7 +143,7 @@ void convert_inputs(Int_t inclusive=1, Int_t categoryMode=0){
         if(CHAN==kTAU){
           combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_QCD_up",    d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD_up",   d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",  o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up");
           combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_QCD_down",  d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD_down", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_down", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down");
-          combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_QCD",  d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS");
+          combineQCDSystematics_morphed( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_QCD",  d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS");
           combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_mcup_QCD",    d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_mcup_QCD",   d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",  o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_mcup");
           combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_mcdown_QCD",  d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_mcdown_QCD", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_down", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_mcdown");
         }else{
@@ -997,6 +997,8 @@ void combineQCDSystematics_morphed( TString fQCD_nonclosure, TString sys_nonclos
     n_morph_pt += 1;
     i_morph_pt = i;
   }
+  std::cout << i_morph_pt << std::endl;
+  std::cout << sys_otherLep_t_down->GetX()[i_morph_pt] << std::endl;
   for(Int_t i=0; i<=sys_nonclosure_t_down->GetN(); i++){
     morphed_high = (-sys_nonclosure_t_down->GetY()[i])*float( n_morph_mvis-i-1)/(n_morph_mvis-1) + (sys_nonclosure_t_up->GetY()[i])*float(i)/(n_morph_mvis-1);
     morphed_low = (sys_nonclosure_t_up->GetY()[i])*float( n_morph_mvis-i-1)/(n_morph_mvis-1) + (-sys_nonclosure_t_down->GetY()[i])*float(i)/(n_morph_mvis-1);
@@ -1011,8 +1013,8 @@ void combineQCDSystematics_morphed( TString fQCD_nonclosure, TString sys_nonclos
     morphed_high = (-sys_otherLep_t_down->GetY()[i])*float( n_morph_pt-i-1)/(n_morph_pt-1) + (sys_otherLep_t_up->GetY()[i])*float(i)/(n_morph_pt-1);
     morphed_low = (sys_otherLep_t_up->GetY()[i])*float( n_morph_pt-i-1)/(n_morph_pt-1) + (-sys_otherLep_t_down->GetY()[i])*float(i)/(n_morph_pt-1);
     if (i>i_morph_pt){
-      morphed_high = (-sys_nonclosure_t_down->GetY()[i_morph_pt])*float( n_morph_pt-i_morph_pt-1)/(n_morph_pt-1) + (sys_nonclosure_t_up->GetY()[i_morph_pt])*float(i_morph_pt)/(n_morph_pt-1);
-      morphed_low = (sys_nonclosure_t_up->GetY()[i_morph_pt])*float( n_morph_pt-i_morph_pt-1)/(n_morph_pt-1) + (-sys_nonclosure_t_down->GetY()[i_morph_pt])*float(i_morph_pt)/(n_morph_pt-1);
+      morphed_high = (-sys_otherLep_t_down->GetY()[i_morph_pt])*float( n_morph_pt-i_morph_pt-1)/(n_morph_pt-1) + (sys_otherLep_t_up->GetY()[i_morph_pt])*float(i_morph_pt)/(n_morph_pt-1);
+      morphed_low = (sys_otherLep_t_up->GetY()[i_morph_pt])*float( n_morph_pt-i_morph_pt-1)/(n_morph_pt-1) + (-sys_otherLep_t_down->GetY()[i_morph_pt])*float(i_morph_pt)/(n_morph_pt-1);
     }
     out_t_pt_up->SetBinContent(i,morphed_high);
     out_t_pt_down->SetBinContent(i,morphed_low);
