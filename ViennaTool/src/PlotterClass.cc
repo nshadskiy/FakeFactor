@@ -637,7 +637,7 @@ Int_t PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,con
     if (ALLPLOTS){
       gPad->SaveAs(plotfile+tight_cat+".pdf");
       gPad->SaveAs(plotfile+tight_cat+".eps");
-      //      c1->SaveAs(imagefilename+".C");
+      gPad->SaveAs(plotfile+tight_cat+".C");
     }
   }
 
