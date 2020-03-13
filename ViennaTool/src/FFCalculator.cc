@@ -2626,7 +2626,7 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
         else if( raw_ff.Contains("_fitted") ){
           FF_value = this->getFittedBinContent( mode, fittedFFs );
         }
-        closure_h->Fill(event_s->alltau_mt->at(tau_ind),FF_value*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 )*event_s->weight_sf );
+        closure_h->Fill(event_s->alltau_mt->at(tau_ind),FF_value*nonclosure_h->GetBinContent( this->getWeightIndex_lepPt(event_s->lep_pt )+1 )*event_s->weight_sf );
       }
   }
 
