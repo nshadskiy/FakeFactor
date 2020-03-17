@@ -752,7 +752,7 @@ for category in categories:
         {'ff_qcd_os':
          Node(
              name='ff_qcd_down_stat_dm0_njet0_morphed',
-             formula='max(0.,1.-{stat_qcd_down_dm0_njet0_morphed})*{ff_qcd_os}',
+             formula='max(0.,1.+{stat_qcd_down_dm0_njet0_morphed})*{ff_qcd_os}',
              leaves=[
                  Leaf(
                      name='stat_qcd_down_dm0_njet0_morphed',
@@ -788,7 +788,7 @@ for category in categories:
         {'ff_qcd_os':
          Node(
              name='ff_qcd_down_stat_dm0_njet1_morphed',
-             formula='max(0.,1.-{stat_qcd_down_dm0_njet1_morphed})*{ff_qcd_os}',
+             formula='max(0.,1.+{stat_qcd_down_dm0_njet1_morphed})*{ff_qcd_os}',
              leaves=[
                  Leaf(
                      name='stat_qcd_down_dm0_njet1_morphed',
