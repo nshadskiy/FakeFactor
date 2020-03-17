@@ -98,8 +98,8 @@ CustomFit SetCustomFit(CustomFit cf, Int_t mode_i, Int_t idm, Int_t ijet) {
   //////////////////////////////////////////////
   else if( CHAN==kTAU ){ //use default p0 for 1p0j, only //THIS IS USED FOR "TIGHT WP"  #&& !(ijet == 0 && idm == 0) 
     //	  else if( CHAN==kTAU && ijet == 1 ){ //use default p0 for 1p1j/3p1j //THIS IS USED FOR "VERY TIGHT WP"
-    cf.set_fitFunc( "pol1(0)" );
-    cf.set_err_scale( 1.2 );
+    cf.set_fitFunc( "pol3(0)" );
+    cf.set_err_scale( 3.0 );
     
     if(mode_i & _AI) cf.set_histMaxFrac( 80.0/500.0 ); 
     else{
@@ -159,13 +159,22 @@ void fitFakeFactors(){
     ff_fitted_name.ReplaceAll(".root","_fitted.root");
     TFile ff_fitted(ff_fitted_name,"RECREATE");
     std::cout << "Creating " << ff_fitted_name << std::endl;
-    
+    for (Int_t i_uncmode=0; i_uncmode<3; i_uncmode++) {
     for(Int_t idm=0; idm<dm_bins.at(imode); idm++){ // loop over decay modes 
       for(Int_t ijet=0; ijet<jet_bins.at(imode); ijet++){ // loop over jet categories
       
         CustomFit cf;
-        
-        int ret = cf.setInputHisto( fake_histos.at(imode) , "c_t" );
+        TString histname = "c_t";
+        if(i_uncmode==1) {
+          histname = "c_t_mcup";
+        }
+        else if(i_uncmode==2) {
+          histname = "c_t_mcdown";
+        }
+        std::cout << "i_uncmode " << i_uncmode << std::endl;
+        std::cout << "histname " << histname << std::endl;
+
+        int ret = cf.setInputHisto( fake_histos.at(imode) , histname );
         if ( ret != 0 ) return; // error appeared
         TH1D *h = cf.returnInputHisto(); // h is the histogram of the FF measurement in the different jet categories
         
@@ -194,44 +203,18 @@ void fitFakeFactors(){
 
         cf.set_fitFromBin( 1+cat*nbins );
         cf.set_bin_centers( fake_histos.at(imode) , "bins_weighted", nbins ); //Fill the vector this->bin_centers of CostumFit (cf) with the bin center values 
-                                                                              //of the "bins_weighted" histogram. Note: set_fitFromBin needs to be set BEFORE
-        
-
-
-
-
-
-
-
-
-
-
-
-
 
         cf.fitHisto();
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         TGraphAsymmErrors *g_fit_input=cf.returnFitInputGraph(); //the input to the fit: data points in the range given
         TF1 *f_fit=cf.returnFitForm();                //the fit result (function)
+        std::cout << "TF1 printout " << std::endl;
+        f_fit->Print();
+        std::cout << f_fit->GetParameter(0) << std::endl;
+        std::cout << f_fit->GetParameter(1) << std::endl;
+        std::cout << f_fit->GetParError(0) << std::endl;
+        std::cout << f_fit->GetParError(1) << std::endl;
+        std::cout << "TF1 printout done " << std::endl;
         TGraphAsymmErrors *g_fit=cf.returnFitGraph();              //the fit result binned (histo)
         TGraphAsymmErrors *g_fit2=new TGraphAsymmErrors( *g_fit );
 
@@ -307,20 +290,7 @@ void fitFakeFactors(){
         */
 
         TGraphErrors* grint = cf.returnConfInterval();
-        
-      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
         grint->SetLineColor(kRed);
         // std::cout << grint << std::endl;
         grint->SetLineColorAlpha(kRed, 0.1);
@@ -429,12 +399,22 @@ void fitFakeFactors(){
         // cms3.Draw();
         
         
-        TString ending=""; stringstream convert;
+        TString ending=""; stringstream convert; stringstream f_convert;
         if(modes.at(imode) & _QCD) ending=ending+"QCD_"; if(modes.at(imode) & _W_JETS) ending=ending+"Wjets_"; if(modes.at(imode) & _TT) ending=ending+"TT_";
         if( modes.at(imode) & _QCD && ff_fitted_name.Contains("AI") ) ending += "AI_";
         if( modes.at(imode) & _W_JETS && ff_fitted_name.Contains("_MC_") ) ending += "MC_";
+        if(i_uncmode==0) {
         convert << "dm" << idm << "_" << "njet" << ijet;
-        
+        f_convert << "f_dm" << idm << "_" << "njet" << ijet;
+         }
+        else if(i_uncmode==1) {
+          convert << "dm" << idm << "_" << "njet" << ijet << "_mcup";
+          f_convert << "f_dm" << idm << "_" << "njet" << ijet << "_mcup";   
+          }
+        else if(i_uncmode==2) {
+          convert << "dm" << idm << "_" << "njet" << ijet << "_mcdown";
+          f_convert << "f_dm" << idm << "_" << "njet" << ijet << "_mcdown";   
+          }
         stringstream convertChannel;
         if(CHAN==kMU) convertChannel<<"_mt"; if(CHAN==kEL) convertChannel<<"_et"; if(CHAN==kTAU) convertChannel<<"_tt"; 
         ending=ending+convert.str()+convertChannel.str();
@@ -459,7 +439,7 @@ void fitFakeFactors(){
           if(y+g_fit->GetErrorYhigh(i)>=1.) g_fit->SetPointEYhigh( i,0.99-y );
 
         }
-        
+        f_fit->SetName(f_convert.str().c_str());
         g_fit->SetName(convert.str().c_str());
         g_fit->GetYaxis()->SetRangeUser(0.,1.);
         // g_fit->GetXaxis()->SetRangeUser(fitMin-0.1,fitMax+7); //TODO
@@ -468,12 +448,13 @@ void fitFakeFactors(){
         
         ff_fitted.cd();
         g_fit->Write();
-        
+        f_fit->Write();
         delete g_fit_input,f_fit;
         delete c2;
       
       
       }
+    }
     }
     ff_fitted.Close();
     // exit(0);
