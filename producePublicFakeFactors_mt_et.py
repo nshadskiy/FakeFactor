@@ -574,10 +574,10 @@ for x in range(0,len(categories)):
         {'ff_qcd_os':
          Node(
              name='ff_corr_qcd_mvis_up',
-             formula='{ff_qcd_os}*({mviscorr_qcd})',
+             formula='{ff_qcd_os}*({mviscorr_qcd_temp})',
              leaves=[
                     Leaf(
-                        name='mviscorr_qcd',
+                        name='mviscorr_qcd_temp',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
                         vars=['mvis']
@@ -592,10 +592,10 @@ for x in range(0,len(categories)):
         {'ff_qcd_os':
          Node(
              name='ff_corr_qcd_mvis_down',
-             formula='{ff_qcd_os}/({mviscorr_qcd})',
+             formula='{ff_qcd_os}/({mviscorr_qcd_temp})',
              leaves=[
                     Leaf(
-                        name='mviscorr_qcd',
+                        name='mviscorr_qcd_temp',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
                         vars=['mvis']
@@ -610,10 +610,10 @@ for x in range(0,len(categories)):
         {'ff_qcd_os':
          Node(
              name='ff_corr_qcd_muiso_up',
-             formula='{ff_qcd_os}*({isocorr_qcd})',
+             formula='{ff_qcd_os}*({isocorr_qcd_temp})',
              leaves=[
                     Leaf(
-                        name='isocorr_qcd',
+                        name='isocorr_qcd_temp',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MuIso{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='QCD_SS_Data_FFSSMuMediumData_isomu_correction',
                         vars=['mu_iso']
@@ -628,10 +628,10 @@ for x in range(0,len(categories)):
         {'ff_qcd_os':
          Node(
              name='ff_corr_qcd_muiso_down',
-             formula='{ff_qcd_os}/({isocorr_qcd})',
+             formula='{ff_qcd_os}/({isocorr_qcd_temp})',
              leaves=[
                     Leaf(
-                        name='isocorr_qcd',
+                        name='isocorr_qcd_temp',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MuIso{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='QCD_SS_Data_FFSSMuMediumData_isomu_correction',
                         vars=['mu_iso']
@@ -1208,10 +1208,10 @@ for x in range(0,len(categories)):
         {'ff_w':
          Node(
              name='ff_corr_w_lepPt_up',
-             formula='{ff_w}*({lepPtcorr_w})',
+             formula='({ff_w})*({lepPtcorr_w_temp})',
              leaves=[
                     Leaf(
-                        name='lepPtcorr_w',
+                        name='lepPtcorr_w_temp',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_W_lepPt{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='W_OS_Data_FFOSData_lepPt_correction',
                         vars=['lep_pt']
@@ -1227,10 +1227,10 @@ for x in range(0,len(categories)):
         {'ff_w':
          Node(
              name='ff_corr_w_lepPt_down',
-             formula='{ff_w}/({lepPtcorr_w})',
+             formula='{ff_w}/({lepPtcorr_w_temp})',
              leaves=[
                     Leaf(
-                        name='lepPtcorr_w',
+                        name='lepPtcorr_w_temp',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_W_lepPt{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='W_OS_Data_FFOSData_lepPt_correction',
                         vars=['lep_pt']
@@ -1245,10 +1245,10 @@ for x in range(0,len(categories)):
         {'ff_w':
          Node(
              name='ff_corr_w_mt_up',
-             formula='{ff_w}*({mtcorr_w})',
+             formula='{ff_w}*({mtcorr_w_temp})',
              leaves=[
                     Leaf(
-                        name='mtcorr_w',
+                        name='mtcorr_w_temp',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_MC_W_MT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='W_OS_MC_FFOSMC_mt_correction',
                         vars=['mt']
@@ -1264,10 +1264,10 @@ for x in range(0,len(categories)):
         {'ff_w':
          Node(
              name='ff_corr_w_mt_down',
-             formula='{ff_w}/({mtcorr_w})',
+             formula='{ff_w}/({mtcorr_w_temp})',
              leaves=[
                     Leaf(
-                        name='mtcorr_w',
+                        name='mtcorr_w_temp',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_MC_W_MT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='W_OS_MC_FFOSMC_mt_correction',
                         vars=['mt']
@@ -1594,10 +1594,10 @@ for x in range(0,len(categories)):
         {'ff_tt':
          Node(
              name='ff_corr_tt_up',
-             formula='{ff_tt}*({mviscorr_tt})',
+             formula='{ff_tt}*({mviscorr_tt_temp})',
              leaves=[
                     Leaf(
-                        name='mviscorr_tt',
+                        name='mviscorr_tt_temp',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_MC_TT_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='TT_OS_MC_mvis_correction',
                         vars=['mvis']
@@ -1612,10 +1612,10 @@ for x in range(0,len(categories)):
         {'ff_tt':
          Node(
              name='ff_corr_tt_down',
-             formula='{ff_tt}/({mviscorr_tt})',
+             formula='{ff_tt}/({mviscorr_tt_temp})',
              leaves=[
                     Leaf(
-                        name='mviscorr_tt',
+                        name='mviscorr_tt_temp',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_MC_TT_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='TT_OS_MC_mvis_correction',
                         vars=['mvis']
