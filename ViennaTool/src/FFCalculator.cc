@@ -2572,10 +2572,14 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
   
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
   
-  TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
+  TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");  
   TH1D *output_h = new TH1D("OSSS_corr","",w_mvis_n,w_mvis_v);
   TH1D *closure_h = new TH1D("closure","",w_mvis_n,w_mvis_v);
   
+  if (CHAN == kEL || CHAN == kMU) {   //rebin for better statistics in et and mt channel
+    output_h->Rebin(2);
+    closure_h->Rebin(2);
+  }
   Double_t FF_value=0;
   
   TFile compare(SR_file_AI);
@@ -2603,12 +2607,23 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
     TH1D* compare_l              = (TH1D*) compare.Get(ff_inputHist+"_mvis");
     TH1D* compare_l_MCsubtracted = (TH1D*) compare.Get(ff_inputHist+"_mvis_MCsubtracted");
     TH1D* compare_l_dataminusMC = (TH1D*) compare.Get(ff_inputHist+"_mvis_dataminusMC");
+    if (CHAN == kEL || CHAN == kMU) { //rebin for better statistics in et and mt channel
+      compare_l->Rebin(2);          
+      compare_l_MCsubtracted->Rebin(2);
+      compare_l_dataminusMC->Rebin(2); 
+    }
+    
     TH1D* ratio_l                = (TH1D*)compare_l_dataminusMC->Clone("ratio_l");
     ratio_l->Divide(compare_l);
     
     TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis");
     TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis_MCsubtracted");
     TH1D* compare_t_dataminusMC = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis_dataminusMC");
+    if (CHAN == kEL || CHAN == kMU) { //rebin for better statistics in et and mt channel
+      compare_t->Rebin(2);          
+      compare_t_MCsubtracted->Rebin(2);
+      compare_t_dataminusMC->Rebin(2); 
+    }
     TH1D* ratio_t                = (TH1D*)compare_t_dataminusMC->Clone("ratio_t");
     ratio_t->Divide(compare_t);
     
@@ -2672,7 +2687,7 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
   
   output->cd();
   output_h->Write();
-
+  
   TString sample;
   if(mode & _QCD) sample="_QCD";
   if(mode & _W_JETS) sample="_Wjets";
