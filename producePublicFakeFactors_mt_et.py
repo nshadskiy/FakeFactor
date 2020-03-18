@@ -610,7 +610,7 @@ for x in range(0,len(categories)):
         {'ff_qcd_os':
          Node(
              name='ff_corr_qcd_mvis_osss_up',
-             formula='{ff_qcd_os}*({mvis_ossscorr_qcd_temp})',
+             formula='{ff_qcd_os}*({OSSS_corr_qcd_temp})',
              leaves=[
                     Leaf(
                         name='OSSS_corr_qcd_temp',
@@ -628,7 +628,7 @@ for x in range(0,len(categories)):
         {'ff_qcd_os':
          Node(
              name='ff_corr_qcd_mvis_osss_down',
-             formula='{ff_qcd_os}/({mvis_ossscorr_qcd_temp})',
+             formula='{ff_qcd_os}/({OSSS_corr_qcd_temp})',
              leaves=[
                     Leaf(
                         name='OSSS_corr_qcd_temp',
@@ -714,24 +714,7 @@ for x in range(0,len(categories)):
          )
         }
     )
-    comb_qcd_mvis_up = replace_nodes(
-        comb,
-        {'ff_qcd_os':
-         Node(
-             name='ff_qcd_mvis_up',
-             formula='(1.+{sys_qcd_mvis_up})*{ff_qcd_os}',
-             leaves=[
-                 Leaf(
-                     name='sys_qcd_mvis_up',
-                     file='{INDIR}/{CHANNEL}/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
-                     object='uncertainties_QCD_MVis_Iso_SS2OS_morphed_mvis_up',
-                     vars=['mvis']
-                 ),
-                 comb.find('ff_qcd_os')
-             ]
-         )
-        }
-    )
+
     comb_qcd_mvis_osss_up = replace_nodes(
         comb,
         {'ff_qcd_os':
