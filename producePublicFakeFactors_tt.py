@@ -475,6 +475,79 @@ for category in categories:
          )
         }
     )
+    comb_corr_qcd_mvis_up = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_corr_qcd_mvis_up',
+             formula='{ff_qcd_os}*({mviscorr_qcd})',
+             leaves=[
+                    Leaf(
+                        name='mviscorr_qcd',
+                        file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                        object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
+                        vars=['mvis']
+                    ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_corr_qcd_mvis_down = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_corr_qcd_mvis_down',
+             formula='{ff_qcd_os}/({mviscorr_qcd})',
+             leaves=[
+                    Leaf(
+                        name='mviscorr_qcd',
+                        file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                        object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
+                        vars=['mvis']
+                    ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_corr_qcd_tau2_pt_up = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_corr_qcd_tau2_pt_up',
+             formula='{ff_qcd_os}*({ptcorr_qcd})',
+             leaves=[
+                    Leaf(
+                        name='ptcorr_qcd',
+                        file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_PT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                        object='QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction',
+                        vars=['tau2_pt']
+                    ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_corr_qcd_tau2_pt_down = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_corr_qcd_tau2_pt_down',
+             formula='{ff_qcd_os}/({ptcorr_qcd})',
+             leaves=[
+                    Leaf(
+                        name='ptcorr_qcd',
+                        file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_PT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                        object='QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction',
+                        vars=['tau2_pt']
+                    ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+
     comb_qcd_mc_up = replace_nodes(
         comb,
         {'ff_qcd_os':
