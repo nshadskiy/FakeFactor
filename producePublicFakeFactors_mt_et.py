@@ -610,7 +610,7 @@ for x in range(0,len(categories)):
         {'ff_qcd_os':
          Node(
              name='ff_corr_qcd_mvis_osss_up',
-             formula='{ff_qcd_os}*({mvis_ossscorr_qcd_temp})',
+             formula='{ff_qcd_os}*({OSSS_corr_qcd_temp})',
              leaves=[
                     Leaf(
                         name='OSSS_corr_qcd_temp',
@@ -628,7 +628,7 @@ for x in range(0,len(categories)):
         {'ff_qcd_os':
          Node(
              name='ff_corr_qcd_mvis_osss_down',
-             formula='{ff_qcd_os}/({mvis_ossscorr_qcd_temp})',
+             formula='{ff_qcd_os}/({OSSS_corr_qcd_temp})',
              leaves=[
                     Leaf(
                         name='OSSS_corr_qcd_temp',
