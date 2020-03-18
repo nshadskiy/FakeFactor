@@ -5,21 +5,20 @@
 #define kTAU         2
 ///////////////////////////////////////////////////
 #define EMB          1  
-#define selCHAN      kMU 
-const int CHAN     = kMU;
+#define selCHAN      kTAU
+const int CHAN     = kTAU;
 // FakeFactor_2016_DeepTauIDv2_v0
-const TString analysis      ="ff_2016_WIP_MC";
-const TString output_folder ="/home/jandrej/ff_2016_WIP_MC";
-const TString ver = "2016";  
-// in Globals.h specify the path where the files can be found: const TString indir = "/ceph/jbechtel/"+ver+"/";
+const TString analysis      ="ff_2017_v15";
+const TString output_folder ="/home/jandrej/ff_2017_v15";
+const TString ver = "2017"; // first time nanoAODv5 with deepTauIDv2 
 
 const TString _NtupleTreeName = "TauCheck"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
-const TString _NtupleTreeName_KIT = "mt_nominal/ntuple"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
+const TString _NtupleTreeName_KIT = "tt_nominal/ntuple"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
 const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; //obsolete
 ///////////////////////////////////////////////////
 const TString user="jandrej";    
-const Double_t luminosity=35.87; //according to GOLDEN JSON see https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM    
-const TString ERA = "2016"; // needed for plotting
+const Double_t luminosity=41.529; //according to GOLDEN JSON see https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM    
+const TString ERA = "2017"; // needed for plotting
 const int use_svfit = 0; //set to 1 to change input directory name accordingly
 const int DEBUG=0; //set to 1 for additional output
 const int usePt_nonclosure_Wjets = 1; //0 -> mvis is used. =1 -> pT lepton is used

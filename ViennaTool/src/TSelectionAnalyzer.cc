@@ -69,18 +69,11 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
   else if (mode & LEPPT) {s_selval = "lep_pt";         s_histoname = "lepPt"; }
   else if (mode & SVFIT) {s_selval = "alltau_svfit[tau_iso_ind]"; s_histoname = "svfit"; }
 
-
   event_s->fChain->Draw(s_selval + ">>hh_t_"+s_histoname+"", "weight_sf * "+cutstring + "*" + this->getWPCutString("tight"), "goff");
-   if ( DEBUG ) {
-     cout << "hh_t_"<<s_histoname << " DONE " << endl;
-     cout << "full cut string tight region : "<<"weight_sf * " << cutstring  <<  "*"  <<  this->getWPCutString("tight") <<endl; 
-   }
+   if ( DEBUG ) cout << "hh_t_"<<s_histoname << " DONE " << endl;
   event_s->fChain->Draw(s_selval + ">>hh_l_"+s_histoname+"", "weight_sf * "+cutstring + "*" + this->getWPCutString("loose"), "goff");
-   if ( DEBUG ) {
-     cout << "hh_l_"<<s_histoname << " DONE " << endl;
-     cout << "full cut string loose region : " <<"weight_sf * " <<cutstring  << "*"  << this->getWPCutString("loose") <<endl; 
- 
-    }
+   if ( DEBUG ) cout << "hh_l_"<<s_histoname << " DONE " << endl;
+  
   
   
   TFile f(output,"recreate");

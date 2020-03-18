@@ -105,10 +105,10 @@ void PlotterClass::plotPieFractions_mutau_etau(TString channel, TString outfile,
 
   cpie->cd();
   TLatex cms1 = TLatex( 0.05, 0.955, "CMS" );
-  TString caption = "Supplementary";
+  TString caption = "Own Work";
   if(preliminary) caption = "Preliminary";
   TLatex cms2 = TLatex( 0.183, 0.955, caption );
-  //TLatex cms2 = TLatex( 0.183, 0.955, "Supplementary" );
+  //TLatex cms2 = TLatex( 0.183, 0.955, "Own Work" );
   cms1.SetNDC();
   cms1.SetTextSize(0.055);
   cms2.SetNDC();
@@ -117,7 +117,7 @@ void PlotterClass::plotPieFractions_mutau_etau(TString channel, TString outfile,
   cms1.Draw();
   if(preliminary) cms2.Draw();
 
-  TLatex infoRight = TLatex( 0.675, 0.955, "35.9 fb^{-1} (13 TeV)" );
+  TLatex infoRight = TLatex( 0.675, 0.955, "41.5 fb^{-1} (13 TeV)" );
   infoRight.SetNDC();
   infoRight.SetTextSize(0.035);
   infoRight.SetTextFont(42);
@@ -203,7 +203,7 @@ void PlotterClass::plotPieFractions_tautau(TString channel, TString outfile, Int
   cpie->cd();
   TLatex cms1 = TLatex( 0.05, 0.91, "CMS" );
   //TLatex cms2 = TLatex( 0.173, 0.91, "Preliminary" );
-  TLatex cms2 = TLatex( 0.173, 0.91, "Supplementary" );
+  TLatex cms2 = TLatex( 0.173, 0.91, "Own Work" );
   cms1.SetNDC();
   cms1.SetTextSize(0.11);
   cms1.SetTextFont(62);
@@ -213,7 +213,7 @@ void PlotterClass::plotPieFractions_tautau(TString channel, TString outfile, Int
   cms1.Draw();
   if(preliminary) cms2.Draw();
 
-  TLatex infoRight = TLatex( 0.675, 0.915, "35.9 fb^{-1} (13 TeV)" );
+  TLatex infoRight = TLatex( 0.675, 0.915, "41.5 fb^{-1} (13 TeV)" );
   infoRight.SetNDC();
   infoRight.SetTextSize(0.07);
   infoRight.SetTextFont(42);
@@ -408,7 +408,7 @@ void PlotterClass::makeRatioPlot(TH1D *hdata, TH1D *hmc, TString imagefilename, 
   //l.SetTextFont(102);
   // FIXME lumi is hardcoded !
   // l.DrawLatex(0.75,0.93,"41.5 fb^{-1} (13 TeV)");
-  l.DrawLatex(0.75,0.93,"35.9 fb^{-1} (13 TeV)");
+  l.DrawLatex(0.75,0.93,"41.5 fb^{-1} (13 TeV)");
 
   TLatex c;
   cout << "Caption: " << caption << endl;
@@ -637,7 +637,7 @@ Int_t PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,con
     if (ALLPLOTS){
       gPad->SaveAs(plotfile+tight_cat+".pdf");
       gPad->SaveAs(plotfile+tight_cat+".eps");
-      //      c1->SaveAs(imagefilename+".C");
+      gPad->SaveAs(plotfile+tight_cat+".C");
     }
   }
 
