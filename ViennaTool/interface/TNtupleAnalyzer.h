@@ -47,7 +47,7 @@ class TNtupleAnalyzer{
   int    lep_q, lep_gen_match;
   int n_iso_lep, n_iso_otherLep;
   int tau_iso_ind;
-  int evt_ID;
+
 
   std::vector<TLorentzVector> *m_otherLep;
   std::vector<Double_t> *m_otherLep_pt;

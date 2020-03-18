@@ -1,6 +1,6 @@
 #!/bin/bash
 user=$USER
-fftype=2016
+fftype=ff_2018_v15
 
 line=" -------------------------------------------"
 echo "###### START of BuildStructure.sh ######"

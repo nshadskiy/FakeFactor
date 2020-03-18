@@ -28,7 +28,7 @@ public :
    Int_t           entry;
    Int_t           run;
    Float_t         lumi;
-   ULong64_t       event;
+   ULong64_t       evt;
    Double_t         weight;
    Double_t         emb_weight;
    Float_t         lumiWeight;
@@ -41,30 +41,22 @@ public :
    Float_t         muonEffIDWeight_1;
    Float_t         muonEffIDWeight_2;
    Float_t         triggerWeight_1;
+   Float_t         trigger_24_27_Weight_1;
+   Float_t         trigger_27_32_35_Weight_1;
+   Float_t         crossTriggerEmbeddedWeight_1;
    Float_t         embeddedDecayModeWeight;
    Float_t         idWeight_1;
    Float_t         isoWeight_1;
-   Float_t         idWeight_2;
-   Float_t         isoWeight_2;
-   Float_t         eleRecoWeight_1;
    Float_t         reco_sf;
    Float_t         singleTriggerSFLeg1;
    Float_t         xTriggerSFLeg1;
    Float_t         xTriggerSFLeg2;
    Float_t         sf_DoubleTauTight;
    Float_t         sf_SingleOrCrossTrigger;
-   Float_t         crossTriggerDataEfficiencyWeight_tight_DeepTau_1;
-   Float_t         crossTriggerDataEfficiencyWeight_tight_DeepTau_2;
-   Float_t         crossTriggerMCEfficiencyWeight_tight_DeepTau_1;
-   Float_t         crossTriggerMCEfficiencyWeight_tight_DeepTau_2;
-   Float_t         crossTriggerEMBEfficiencyWeight_tight_DeepTau_1;
-   Float_t         crossTriggerEMBEfficiencyWeight_tight_DeepTau_2;
-   Float_t         crossTriggerDataEfficiencyWeight_vloose_DeepTau_1;
-   Float_t         crossTriggerDataEfficiencyWeight_vloose_DeepTau_2;
-   Float_t         crossTriggerMCEfficiencyWeight_vloose_DeepTau_1;
-   Float_t         crossTriggerMCEfficiencyWeight_vloose_DeepTau_2;
-   Float_t         crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1;
-   Float_t         crossTriggerEMBEfficiencyWeight_vloose_DeepTau_2;
+   Float_t         crossTriggerDataEfficiencyWeight_tight_MVA_1;
+   Float_t         crossTriggerDataEfficiencyWeight_tight_MVA_2;
+   Float_t         crossTriggerMCEfficiencyWeight_tight_MVA_1;
+   Float_t         crossTriggerMCEfficiencyWeight_tight_MVA_2;
    Float_t         genweight;
    Float_t         trigweight_1;
    Float_t         anti_trigweight_1;
@@ -79,13 +71,9 @@ public :
    Float_t         numberGeneratedEventsWeight;
    Float_t         crossSectionPerEventWeight;
    Float_t         trackWeight_1;
-   Float_t         trackWeight_2;
    Float_t        singleTriggerMCEfficiencyWeightKIT_1;
    Float_t        singleTriggerDataEfficiencyWeightKIT_1;
-   Float_t        singleTriggerEmbeddedEfficiencyWeightKIT_1;
-   Float_t        crossTriggerMCEfficiencyWeightKIT_1;
-   Float_t        crossTriggerDataEfficiencyWeightKIT_1;
-   Float_t        crossTriggerEmbeddedEfficiencyWeightKIT_1;
+    
 
    Float_t         topWeight;
    Float_t         topWeight_run1;
@@ -100,16 +88,33 @@ public :
    Float_t         zpt_weight_statpt40down;
    Float_t         zpt_weight_statpt80up;
    Float_t         zpt_weight_statpt80down;
-   Bool_t           trg_singlemuon;
+   Bool_t           trg_singlemuon_24;
+   Bool_t           trg_singlemuon_27;
+   Bool_t           trg_crossmuon_mu20tau27;
+   Bool_t           trg_crossmuon_mu20tau27_hps;
+
    Bool_t           trg_mutaucross;
-//    Float_t           trg_mutaucross;
-   Bool_t           trg_singleelectron;
+//    Int_t           trg_mutaucross;
+   Bool_t           trg_singleelectron_35;
+   Bool_t          trg_singleelectron_32;
+   Bool_t           trg_singleelectron_27;
    Bool_t           trg_crossele_ele24tau30;
-//    Float_t           trg_singletau;
-   Bool_t           trg_singlemu_22; 
-   Bool_t           trg_doubletau;
+   Bool_t           trg_crossele_ele24tau30_hps;
+
+//    Int_t           trg_singletau;
+   Bool_t           trg_doubletau_35_tightiso_tightid;
+   Bool_t           trg_doubletau_40_mediso_tightid;
+   Bool_t           trg_doubletau_40_tightiso;
+   Bool_t           trg_doubletau_35_tightiso_tightid_hps;
+   Bool_t           trg_doubletau_40_mediso_tightid_hps;
+   Bool_t           trg_doubletau_40_tightiso_hps;
+   Bool_t           trg_doubletau_40_mediso_hps;
+   Bool_t           trg_doubletau_35_mediso_hps;
+
    Bool_t           trg_muonelectron;
    Bool_t           isEmbedded;
+   Bool_t           isMC;
+
    Float_t         gen_Mll;
    Float_t         genpX;
    Float_t         genpY;
@@ -196,18 +201,32 @@ public :
    Float_t           byMediumIsolationMVArun2017v1DBoldDMwLT2017_1;
    Float_t           byTightIsolationMVArun2017v1DBoldDMwLT2017_1;
    Float_t           byVTightIsolationMVArun2017v1DBoldDMwLT2017_1;
-//    Int_t           byVLooseIsolationMVArun2v1DBnewDMwLT_1;
-//    Int_t           byLooseIsolationMVArun2v1DBnewDMwLT_1;
-//    Int_t           byMediumIsolationMVArun2v1DBnewDMwLT_1;
-//    Int_t           byTightIsolationMVArun2v1DBnewDMwLT_1;
-//    Int_t           byVTightIsolationMVArun2v1DBnewDMwLT_1;
-//    Int_t           byRerunMVAIdVLoose_1;
-//    Int_t           byRerunMVAIdLoose_1;
-//    Int_t           byRerunMVAIdMedium_1;
-//    Int_t           byRerunMVAIdTight_1;
-//    Int_t           byRerunMVAIdVTight_1;
-//    Int_t           byRerunMVAIdVVTight_1;
-//    Float_t         idMVANewDM_1;
+   Float_t         crossTriggerDataEfficiencyWeight_tight_DeepTau_1;
+   Float_t         crossTriggerDataEfficiencyWeight_tight_DeepTau_2;
+   Float_t         crossTriggerMCEfficiencyWeight_tight_DeepTau_1;
+   Float_t         crossTriggerMCEfficiencyWeight_tight_DeepTau_2;
+   Float_t         crossTriggerEMBEfficiencyWeight_tight_DeepTau_1;
+   Float_t         crossTriggerEMBEfficiencyWeight_tight_DeepTau_2;
+   Float_t         crossTriggerDataEfficiencyWeight_vloose_DeepTau_1;
+   Float_t         crossTriggerDataEfficiencyWeight_vloose_DeepTau_2;
+   Float_t         crossTriggerMCEfficiencyWeight_vloose_DeepTau_1;
+   Float_t         crossTriggerMCEfficiencyWeight_vloose_DeepTau_2;
+   Float_t         crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1;
+   Float_t         crossTriggerEMBEfficiencyWeight_vloose_DeepTau_2;
+   Float_t         tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1;
+   Float_t         tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2;
+   Float_t         tauIDScaleFactorWeight_vloose_DeepTau2017v2p1VSjet_1;
+   Float_t         tauIDScaleFactorWeight_vloose_DeepTau2017v2p1VSjet_2;
+
+   Float_t        crossTriggerMCEfficiencyWeight_1;
+   Float_t        crossTriggerDataEfficiencyWeight_1;
+   Float_t        crossTriggerEMBEfficiencyWeight_1;
+   Float_t           crossTriggerMCWeight_1;
+   Float_t           trigger_32_35_Weight_1;
+
+   Float_t           crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2;
+   Float_t           crossTriggerCorrectedEMBEfficiencyWeight_tight_DeepTau_2;
+
    Float_t           byVVVLooseDeepTau2017v2p1VSjet_1;
    Float_t           byVVLooseDeepTau2017v2p1VSjet_1;
    Float_t           byVLooseDeepTau2017v2p1VSjet_1;
@@ -231,7 +250,7 @@ public :
    Float_t         puCorrPtSum_1;
    Int_t           decayModeFindingOldDMs_1;
    Int_t           decayMode_1;
-   Float_t         id_e_DeepTau_nt_loose_1;
+   Float_t         id_e_mva_nt_loose_1;
    Float_t         id_m_loose_1;
    Float_t         id_m_medium_1;
    Float_t         id_m_tight_1;
@@ -313,10 +332,9 @@ public :
    Float_t         lep_etacentrality;
    Float_t         sphericity;
    Int_t           nadditionalMu;
-   Float_t         topPtReweightWeight;
+
    Float_t         topPtReweightWeightRun1;
    Float_t         topPtReweightWeightRun2;
-   Float_t         prefiringweight;
    Float_t         eleTauFakeRateWeight;
    Float_t         muTauFakeRateWeight;
    Float_t         zPtReweightWeight;
@@ -483,7 +501,7 @@ public :
    TBranch        *b_entry;   //!
    TBranch        *b_run;   //!
    TBranch        *b_lumi;   //!
-   TBranch        *b_event;   //!
+   TBranch        *b_evt;   //!
    TBranch        *b_weight;   //!
    TBranch        *b_lumiWeight;   //!
    TBranch        *b_emb_weight;   //!
@@ -497,12 +515,12 @@ public :
    TBranch        *b_muonEffIDWeight_2;
 
    TBranch        *b_triggerWeight_1;
+   TBranch        *b_trigger_24_27_Weight_1;
+   TBranch        *b_trigger_27_32_35_Weight_1;
+   TBranch        *b_crossTriggerEmbeddedWeight_1;
    TBranch        *b_embeddedDecayModeWeight;
    TBranch        *b_idWeight_1;
    TBranch        *b_isoWeight_1;
-   TBranch        *b_idWeight_2;
-   TBranch        *b_isoWeight_2;
-   TBranch        *b_eleRecoWeight_1;   
    TBranch        *b_reco_sf;
    TBranch        *b_singleTriggerSFLeg1;
    TBranch        *b_xTriggerSFLeg1;
@@ -526,14 +544,16 @@ public :
    TBranch         *b_numberGeneratedEventsWeight;
    TBranch         *b_crossSectionPerEventWeight;
    TBranch         *b_trackWeight_1;
-   TBranch         *b_trackWeight_2;
-
    TBranch        *b_singleTriggerMCEfficiencyWeightKIT_1;
    TBranch        *b_singleTriggerDataEfficiencyWeightKIT_1;
-   TBranch        *b_singleTriggerEmbeddedEfficiencyWeightKIT_1;
-   TBranch        *b_crossTriggerMCEfficiencyWeightKIT_1;
-   TBranch        *b_crossTriggerDataEfficiencyWeightKIT_1;
-   TBranch        *b_crossTriggerEmbeddedEfficiencyWeightKIT_1;
+   TBranch        *b_crossTriggerMCEfficiencyWeight_1;
+   TBranch        *b_crossTriggerDataEfficiencyWeight_1;
+   TBranch        *b_crossTriggerEMBEfficiencyWeight_1;
+   TBranch        *b_crossTriggerMCWeight_1;
+   TBranch        *b_trigger_32_35_Weight_1;
+   TBranch        *b_crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2;
+   TBranch        *b_crossTriggerCorrectedEMBEfficiencyWeight_tight_DeepTau_2;
+
 
    TBranch        *b_zpt_weight_nom;   //!
    TBranch        *b_zpt_weight_esup;   //!
@@ -546,27 +566,34 @@ public :
    TBranch        *b_zpt_weight_statpt40down;   //!
    TBranch        *b_zpt_weight_statpt80up;   //!
    TBranch        *b_zpt_weight_statpt80down;   //!
-   TBranch        *b_trg_singlemuon;   //!
-   TBranch        *b_trg_mutaucross;   //!
-   TBranch        *b_trg_singleelectron;   //!
-   TBranch        *b_trg_crossele_ele24tau30;   //!
-   TBranch        *b_trg_doubletau;   //!
-   TBranch        *b_trg_singlemu_22;   //!
+    TBranch        *b_trg_singlemuon_24;
+    TBranch        *b_trg_singlemuon_27;
+    TBranch        *b_trg_crossmuon_mu20tau27;
+    TBranch        *b_trg_crossmuon_mu20tau27_hps;
+
+    TBranch        *b_trg_mutaucross;
+    TBranch        *b_trg_singleelectron_35;
+    TBranch        *b_trg_singleelectron_32;
+    TBranch        *b_trg_singleelectron_27;
+    TBranch        *b_trg_crossele_ele24tau30;
+    TBranch        *b_trg_crossele_ele24tau30_hps;
+    TBranch        *b_trg_doubletau_35_tightiso_tightid;
+    TBranch        *b_trg_doubletau_40_mediso_tightid;
+    TBranch        *b_trg_doubletau_40_tightiso;
+    TBranch        *b_trg_doubletau_35_tightiso_tightid_hps;
+    TBranch        *b_trg_doubletau_40_mediso_tightid_hps;
+    TBranch        *b_trg_doubletau_40_tightiso_hps;
+    TBranch        *b_trg_doubletau_40_mediso_hps;
+    TBranch        *b_trg_doubletau_35_mediso_hps;
 
    TBranch        *b_isEmbedded;   //!
+   TBranch        *b_isMC;   //!
+
    TBranch        *b_trg_muonelectron;   //!
-   TBranch        *b_crossTriggerDataEfficiencyWeight_tight_DeepTau_1;   //!
-   TBranch        *b_crossTriggerDataEfficiencyWeight_tight_DeepTau_2;   //!
-   TBranch        *b_crossTriggerMCEfficiencyWeight_tight_DeepTau_1;   //!
-   TBranch        *b_crossTriggerMCEfficiencyWeight_tight_DeepTau_2;   //!
-   TBranch        *b_crossTriggerEMBEfficiencyWeight_tight_DeepTau_1;   //!
-   TBranch        *b_crossTriggerEMBEfficiencyWeight_tight_DeepTau_2;   //!
-   TBranch        *b_crossTriggerDataEfficiencyWeight_vloose_DeepTau_1;   //!
-   TBranch        *b_crossTriggerDataEfficiencyWeight_vloose_DeepTau_2;   //!
-   TBranch        *b_crossTriggerMCEfficiencyWeight_vloose_DeepTau_1;   //!
-   TBranch        *b_crossTriggerMCEfficiencyWeight_vloose_DeepTau_2;   //!
-   TBranch        *b_crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1;   //!
-   TBranch        *b_crossTriggerEMBEfficiencyWeight_vloose_DeepTau_2;   //!
+   TBranch        *b_crossTriggerDataEfficiencyWeight_tight_MVA_1;   //!
+   TBranch        *b_crossTriggerDataEfficiencyWeight_tight_MVA_2;   //!
+   TBranch        *b_crossTriggerMCEfficiencyWeight_tight_MVA_1;   //!
+   TBranch        *b_crossTriggerMCEfficiencyWeight_tight_MVA_2;   //!
    TBranch        *b_gen_Mll;   //!
    TBranch        *b_genpX;   //!
    TBranch        *b_genpY;   //!
@@ -673,26 +700,29 @@ public :
 
    TBranch        *b_decayModeFindingNewDMs_1;   //!
    TBranch        *b_decayModeFindingNewDMs_2;   //!
+   TBranch        *b_crossTriggerDataEfficiencyWeight_tight_DeepTau_1;   //!
+   TBranch        *b_crossTriggerDataEfficiencyWeight_tight_DeepTau_2;   //!
+   TBranch        *b_crossTriggerMCEfficiencyWeight_tight_DeepTau_1;   //!
+   TBranch        *b_crossTriggerMCEfficiencyWeight_tight_DeepTau_2;   //!
+   TBranch        *b_crossTriggerEMBEfficiencyWeight_tight_DeepTau_1;   //!
+   TBranch        *b_crossTriggerEMBEfficiencyWeight_tight_DeepTau_2;   //!
+   TBranch        *b_crossTriggerDataEfficiencyWeight_vloose_DeepTau_1;   //!
+   TBranch        *b_crossTriggerDataEfficiencyWeight_vloose_DeepTau_2;   //!
+   TBranch        *b_crossTriggerMCEfficiencyWeight_vloose_DeepTau_1;   //!
+   TBranch        *b_crossTriggerMCEfficiencyWeight_vloose_DeepTau_2;   //!
+   TBranch        *b_crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1;   //!
+   TBranch        *b_crossTriggerEMBEfficiencyWeight_vloose_DeepTau_2;   //!
 
-
-//    TBranch        *b_byVLooseIsolationMVArun2v1DBnewDMwLT_1;   //!
-//    TBranch        *b_byLooseIsolationMVArun2v1DBnewDMwLT_1;   //!
-//    TBranch        *b_byMediumIsolationMVArun2v1DBnewDMwLT_1;   //!
-//    TBranch        *b_byTightIsolationMVArun2v1DBnewDMwLT_1;   //!
-//    TBranch        *b_byVTightIsolationMVArun2v1DBnewDMwLT_1;   //!
-//    TBranch        *b_byRerunMVAIdVLoose_1;   //!
-//    TBranch        *b_byRerunMVAIdLoose_1;   //!
-//    TBranch        *b_byRerunMVAIdMedium_1;   //!
-//    TBranch        *b_byRerunMVAIdTight_1;   //!
-//    TBranch        *b_byRerunMVAIdVTight_1;   //!
-//    TBranch        *b_byRerunMVAIdVVTight_1;   //!
-//    TBranch        *b_idMVANewDM_1;   //!
+   TBranch        *b_tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1;   //!
+   TBranch        *b_tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2;   //!
+   TBranch        *b_tauIDScaleFactorWeight_vloose_DeepTau2017v2p1VSjet_1;   //!
+   TBranch        *b_tauIDScaleFactorWeight_vloose_DeepTau2017v2p1VSjet_2;   //!
    TBranch        *b_chargedIsoPtSum_1;   //!
    TBranch        *b_neutralIsoPtSum_1;   //!
    TBranch        *b_puCorrPtSum_1;   //!
    TBranch        *b_decayModeFindingOldDMs_1;   //!
    TBranch        *b_decayMode_1;   //!
-   TBranch        *b_id_e_DeepTau_nt_loose_1;   //!
+   TBranch        *b_id_e_mva_nt_loose_1;   //!
    TBranch        *b_id_m_loose_1;   //!
    TBranch        *b_id_m_medium_1;   //!
    TBranch        *b_id_m_tight_1;   //!
@@ -923,10 +953,9 @@ public :
 //    TBranch        *b_mt_sv_unc;   //!
    TBranch        *b_pt_sv;   //!
 //    TBranch        *b_pt_sv_unc;   //!
-   TBranch        *b_topPtReweightWeight;   //!
+
    TBranch        *b_topPtReweightWeightRun1;   //!
    TBranch        *b_topPtReweightWeightRun2;   //!
-   TBranch        *b_prefiringweight;
    TBranch        *b_eleTauFakeRateWeight;   //!
    TBranch        *b_muTauFakeRateWeight;   //!
    TBranch        *b_zPtReweightWeight;   //!
@@ -1069,9 +1098,10 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetMakeClass(1);
 
    fChain->SetBranchAddress("fileEntry", &fileEntry, &b_fileEntry);
-   fChain->SetBranchAddress("event", &event, &b_event);
+   fChain->SetBranchAddress("entry", &entry, &b_entry);
    fChain->SetBranchAddress("run", &run, &b_run);
    fChain->SetBranchAddress("lumi", &lumi, &b_lumi);
+   fChain->SetBranchAddress("evt", &evt, &b_evt);
    fChain->SetBranchAddress("weight", &weight, &b_weight);
    fChain->SetBranchAddress("lumiWeight", &lumiWeight, &b_lumiWeight);
    fChain->SetBranchAddress("emb_weight", &emb_weight, &b_emb_weight);
@@ -1084,12 +1114,12 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("muonEffIDWeight_1", &muonEffIDWeight_1, &b_muonEffIDWeight_1);
    fChain->SetBranchAddress("muonEffIDWeight_2", &muonEffIDWeight_2, &b_muonEffIDWeight_2);
    fChain->SetBranchAddress("triggerWeight_1", &triggerWeight_1, &b_triggerWeight_1);
+   fChain->SetBranchAddress("trigger_27_32_35_Weight_1", &trigger_27_32_35_Weight_1, &b_trigger_27_32_35_Weight_1);
+   fChain->SetBranchAddress("trigger_24_27_Weight_1", &trigger_24_27_Weight_1, &b_trigger_24_27_Weight_1);
+   fChain->SetBranchAddress("crossTriggerEmbeddedWeight_1", &crossTriggerEmbeddedWeight_1, &b_crossTriggerEmbeddedWeight_1);
    fChain->SetBranchAddress("embeddedDecayModeWeight", &embeddedDecayModeWeight, &b_embeddedDecayModeWeight);
    fChain->SetBranchAddress("idWeight_1", &idWeight_1, &b_idWeight_1);
    fChain->SetBranchAddress("isoWeight_1", &isoWeight_1, &b_isoWeight_1);
-   fChain->SetBranchAddress("idWeight_2", &idWeight_2, &b_idWeight_2);
-   fChain->SetBranchAddress("isoWeight_2", &isoWeight_2, &b_isoWeight_2);
-   fChain->SetBranchAddress("eleRecoWeight_1", &eleRecoWeight_1, &b_eleRecoWeight_1);
    fChain->SetBranchAddress("reco_sf", &reco_sf, &b_reco_sf);
    fChain->SetBranchAddress("singleTriggerSFLeg1", &singleTriggerSFLeg1, &b_singleTriggerSFLeg1);
    fChain->SetBranchAddress("xTriggerSFLeg1", &xTriggerSFLeg1, &b_xTriggerSFLeg1);
@@ -1108,21 +1138,22 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("stitchedWeight", &stitchedWeight, &b_stitchedWeight);
    fChain->SetBranchAddress("topWeight", &topWeight, &b_topWeight);
    fChain->SetBranchAddress("topWeight_run1", &topWeight_run1, &b_topWeight_run1);
-   fChain->SetBranchAddress("topPtReweightWeight", &topPtReweightWeight, &b_topPtReweightWeight);
    fChain->SetBranchAddress("topPtReweightWeightRun1", &topPtReweightWeightRun1, &b_topPtReweightWeightRun1);
    fChain->SetBranchAddress("topPtReweightWeightRun2", &topPtReweightWeightRun2, &b_topPtReweightWeightRun2);
-   fChain->SetBranchAddress("prefiringweight", &prefiringweight, &b_prefiringweight);
    fChain->SetBranchAddress("numberGeneratedEventsWeight", &numberGeneratedEventsWeight, &b_numberGeneratedEventsWeight);
    fChain->SetBranchAddress("crossSectionPerEventWeight", &crossSectionPerEventWeight, &b_crossSectionPerEventWeight);
    fChain->SetBranchAddress("trackWeight_1", &trackWeight_1, &b_trackWeight_1);
-   fChain->SetBranchAddress("trackWeight_2", &trackWeight_2, &b_trackWeight_2);
    fChain->SetBranchAddress("singleTriggerMCEfficiencyWeightKIT_1", &singleTriggerMCEfficiencyWeightKIT_1, &b_singleTriggerMCEfficiencyWeightKIT_1);
    fChain->SetBranchAddress("singleTriggerDataEfficiencyWeightKIT_1", &singleTriggerDataEfficiencyWeightKIT_1, &b_singleTriggerDataEfficiencyWeightKIT_1);
-   fChain->SetBranchAddress("singleTriggerEmbeddedEfficiencyWeightKIT_1", &singleTriggerEmbeddedEfficiencyWeightKIT_1, &b_singleTriggerEmbeddedEfficiencyWeightKIT_1);
-   fChain->SetBranchAddress("singleTriggerEmbeddedEfficiencyWeightKIT_1", &singleTriggerEmbeddedEfficiencyWeightKIT_1, &b_singleTriggerEmbeddedEfficiencyWeightKIT_1);
-   fChain->SetBranchAddress("crossTriggerMCEfficiencyWeightKIT_1", &crossTriggerMCEfficiencyWeightKIT_1, &b_crossTriggerMCEfficiencyWeightKIT_1);
-   fChain->SetBranchAddress("crossTriggerDataEfficiencyWeightKIT_1", &crossTriggerDataEfficiencyWeightKIT_1, &b_crossTriggerDataEfficiencyWeightKIT_1);
-   fChain->SetBranchAddress("crossTriggerEmbeddedEfficiencyWeightKIT_1", &crossTriggerEmbeddedEfficiencyWeightKIT_1, &b_crossTriggerEmbeddedEfficiencyWeightKIT_1);
+   fChain->SetBranchAddress("crossTriggerMCEfficiencyWeight_1", &crossTriggerMCEfficiencyWeight_1, &b_crossTriggerMCEfficiencyWeight_1);
+   fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_1", &crossTriggerDataEfficiencyWeight_1, &b_crossTriggerDataEfficiencyWeight_1);
+   fChain->SetBranchAddress("crossTriggerEMBEfficiencyWeight_1", &crossTriggerEMBEfficiencyWeight_1, &b_crossTriggerEMBEfficiencyWeight_1);
+   fChain->SetBranchAddress("crossTriggerMCWeight_1", &crossTriggerMCWeight_1, &b_crossTriggerMCWeight_1);
+   fChain->SetBranchAddress("trigger_32_35_Weight_1", &trigger_32_35_Weight_1, &b_trigger_32_35_Weight_1);
+
+   fChain->SetBranchAddress("crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2", &crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2, &b_crossTriggerCorrectedDataEfficiencyWeight_tight_DeepTau_2);
+   fChain->SetBranchAddress("crossTriggerCorrectedEMBEfficiencyWeight_tight_DeepTau_2", &crossTriggerCorrectedEMBEfficiencyWeight_tight_DeepTau_2, &b_crossTriggerCorrectedEMBEfficiencyWeight_tight_DeepTau_2);
+
 
    fChain->SetBranchAddress("eleTauFakeRateWeight", &eleTauFakeRateWeight, &b_eleTauFakeRateWeight);
 
@@ -1140,25 +1171,34 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("zpt_weight_statpt40down", &zpt_weight_statpt40down, &b_zpt_weight_statpt40down);
    fChain->SetBranchAddress("zpt_weight_statpt80up", &zpt_weight_statpt80up, &b_zpt_weight_statpt80up);
    fChain->SetBranchAddress("zpt_weight_statpt80down", &zpt_weight_statpt80down, &b_zpt_weight_statpt80down);
-   fChain->SetBranchAddress("trg_singlemuon", &trg_singlemuon, &b_trg_singlemuon);
-   fChain->SetBranchAddress("trg_mutaucross", &trg_mutaucross, &b_trg_mutaucross);
-   fChain->SetBranchAddress("trg_singleelectron", &trg_singleelectron, &b_trg_singleelectron);
+   fChain->SetBranchAddress("trg_singlemuon_24", &trg_singlemuon_24, &b_trg_singlemuon_24);
+   fChain->SetBranchAddress("trg_singlemuon_27", &trg_singlemuon_27, &b_trg_singlemuon_27);
+   fChain->SetBranchAddress("trg_crossmuon_mu20tau27", &trg_crossmuon_mu20tau27, &b_trg_crossmuon_mu20tau27);
+   fChain->SetBranchAddress("trg_crossmuon_mu20tau27_hps", &trg_crossmuon_mu20tau27_hps, &b_trg_crossmuon_mu20tau27_hps);
+
+   fChain->SetBranchAddress("trg_singleelectron_35", &trg_singleelectron_35, &b_trg_singleelectron_35);
+   fChain->SetBranchAddress("trg_singleelectron_32", &trg_singleelectron_32, &b_trg_singleelectron_32);
+   fChain->SetBranchAddress("trg_singleelectron_27", &trg_singleelectron_27, &b_trg_singleelectron_27);
    fChain->SetBranchAddress("trg_crossele_ele24tau30", &trg_crossele_ele24tau30, &b_trg_crossele_ele24tau30);
-   fChain->SetBranchAddress("trg_doubletau", &trg_doubletau, &b_trg_doubletau);
+   fChain->SetBranchAddress("trg_crossele_ele24tau30_hps", &trg_crossele_ele24tau30_hps, &b_trg_crossele_ele24tau30_hps);
+
+   fChain->SetBranchAddress("trg_doubletau_35_tightiso_tightid", &trg_doubletau_35_tightiso_tightid, &b_trg_doubletau_35_tightiso_tightid);
+   fChain->SetBranchAddress("trg_doubletau_40_mediso_tightid", &trg_doubletau_40_mediso_tightid, &b_trg_doubletau_40_mediso_tightid);
+   fChain->SetBranchAddress("trg_doubletau_40_tightiso", &trg_doubletau_40_tightiso, &b_trg_doubletau_40_tightiso);
+   fChain->SetBranchAddress("trg_doubletau_35_tightiso_tightid_hps", &trg_doubletau_35_tightiso_tightid_hps, &b_trg_doubletau_35_tightiso_tightid_hps);
+   fChain->SetBranchAddress("trg_doubletau_40_mediso_tightid_hps", &trg_doubletau_40_mediso_tightid_hps, &b_trg_doubletau_40_mediso_tightid_hps);
+   fChain->SetBranchAddress("trg_doubletau_40_tightiso_hps", &trg_doubletau_40_tightiso_hps, &b_trg_doubletau_40_tightiso_hps);
+   fChain->SetBranchAddress("trg_doubletau_40_mediso_hps", &trg_doubletau_40_mediso_hps, &b_trg_doubletau_40_mediso_hps);
+   fChain->SetBranchAddress("trg_doubletau_35_mediso_hps", &trg_doubletau_35_mediso_hps, &b_trg_doubletau_35_mediso_hps);
+
    fChain->SetBranchAddress("trg_muonelectron", &trg_muonelectron, &b_trg_muonelectron);
    fChain->SetBranchAddress("isEmbedded", &isEmbedded, &b_isEmbedded);
-   fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_tight_DeepTau_1", &crossTriggerDataEfficiencyWeight_tight_DeepTau_1, &b_crossTriggerDataEfficiencyWeight_tight_DeepTau_1);
-   fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_tight_DeepTau_2", &crossTriggerDataEfficiencyWeight_tight_DeepTau_2, &b_crossTriggerDataEfficiencyWeight_tight_DeepTau_2);
-   fChain->SetBranchAddress("crossTriggerMCEfficiencyWeight_tight_DeepTau_1", &crossTriggerMCEfficiencyWeight_tight_DeepTau_1, &b_crossTriggerMCEfficiencyWeight_tight_DeepTau_1);
-   fChain->SetBranchAddress("crossTriggerMCEfficiencyWeight_tight_DeepTau_2", &crossTriggerMCEfficiencyWeight_tight_DeepTau_2, &b_crossTriggerMCEfficiencyWeight_tight_DeepTau_2);
-   fChain->SetBranchAddress("crossTriggerEMBEfficiencyWeight_tight_DeepTau_1", &crossTriggerEMBEfficiencyWeight_tight_DeepTau_1, &b_crossTriggerEMBEfficiencyWeight_tight_DeepTau_1);
-   fChain->SetBranchAddress("crossTriggerEMBEfficiencyWeight_tight_DeepTau_2", &crossTriggerEMBEfficiencyWeight_tight_DeepTau_2, &b_crossTriggerEMBEfficiencyWeight_tight_DeepTau_2);
-   fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_vloose_DeepTau_1", &crossTriggerDataEfficiencyWeight_vloose_DeepTau_1, &b_crossTriggerDataEfficiencyWeight_vloose_DeepTau_1);
-   fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_vloose_DeepTau_2", &crossTriggerDataEfficiencyWeight_vloose_DeepTau_2, &b_crossTriggerDataEfficiencyWeight_vloose_DeepTau_2);
-   fChain->SetBranchAddress("crossTriggerMCEfficiencyWeight_vloose_DeepTau_1", &crossTriggerMCEfficiencyWeight_vloose_DeepTau_1, &b_crossTriggerMCEfficiencyWeight_vloose_DeepTau_1);
-   fChain->SetBranchAddress("crossTriggerMCEfficiencyWeight_vloose_DeepTau_2", &crossTriggerMCEfficiencyWeight_vloose_DeepTau_2, &b_crossTriggerMCEfficiencyWeight_vloose_DeepTau_2);
-   fChain->SetBranchAddress("crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1", &crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1, &b_crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1);
-   fChain->SetBranchAddress("crossTriggerEMBEfficiencyWeight_vloose_DeepTau_2", &crossTriggerEMBEfficiencyWeight_vloose_DeepTau_2, &b_crossTriggerEMBEfficiencyWeight_vloose_DeepTau_2);
+   fChain->SetBranchAddress("isMC", &isMC, &b_isMC);
+
+   fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_tight_MVA_1", &crossTriggerDataEfficiencyWeight_tight_MVA_1, &b_crossTriggerDataEfficiencyWeight_tight_MVA_1);
+   fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_tight_MVA_2", &crossTriggerDataEfficiencyWeight_tight_MVA_2, &b_crossTriggerDataEfficiencyWeight_tight_MVA_2);
+   fChain->SetBranchAddress("crossTriggerMCEfficiencyWeight_tight_MVA_1", &crossTriggerMCEfficiencyWeight_tight_MVA_1, &b_crossTriggerMCEfficiencyWeight_tight_MVA_1);
+   fChain->SetBranchAddress("crossTriggerMCEfficiencyWeight_tight_MVA_2", &crossTriggerMCEfficiencyWeight_tight_MVA_2, &b_crossTriggerMCEfficiencyWeight_tight_MVA_2);
    fChain->SetBranchAddress("gen_Mll", &gen_Mll, &b_gen_Mll);
    fChain->SetBranchAddress("genpX", &genpX, &b_genpX);
    fChain->SetBranchAddress("genpY", &genpY, &b_genpY);
@@ -1173,21 +1213,10 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("npu", &npu, &b_npu);
    fChain->SetBranchAddress("rho", &rho, &b_rho);
    fChain->SetBranchAddress("NUP", &NUP, &b_NUP);
-//    fChain->SetBranchAddress("passBadMuonFilter", &passBadMuonFilter, &b_passBadMuonFilter);
-//    fChain->SetBranchAddress("passBadChargedHadronFilter", &passBadChargedHadronFilter, &b_passBadChargedHadronFilter);
-//    fChain->SetBranchAddress("flagHBHENoiseFilter", &flagHBHENoiseFilter, &b_flagHBHENoiseFilter);
-//    fChain->SetBranchAddress("flagHBHENoiseIsoFilter", &flagHBHENoiseIsoFilter, &b_flagHBHENoiseIsoFilter);
-//    fChain->SetBranchAddress("flagEcalDeadCellTriggerPrimitiveFilter", &flagEcalDeadCellTriggerPrimitiveFilter, &b_flagEcalDeadCellTriggerPrimitiveFilter);
-//    fChain->SetBranchAddress("flagGoodVertices", &flagGoodVertices, &b_flagGoodVertices);
-//    fChain->SetBranchAddress("flagEeBadScFilter", &flagEeBadScFilter, &b_flagEeBadScFilter);
-//    fChain->SetBranchAddress("flagGlobalTightHalo2016Filter", &flagGlobalTightHalo2016Filter, &b_flagGlobalTightHalo2016Filter);
+
    fChain->SetBranchAddress("Flag_badMuons", &Flag_badMuons, &b_Flag_badMuons);
    fChain->SetBranchAddress("Flag_duplicateMuons", &Flag_duplicateMuons, &b_Flag_duplicateMuons);
    fChain->SetBranchAddress("flagMETFilter", &flagMETFilter, &b_flagMETFilter);
-//    fChain->SetBranchAddress("matchedJetPt03_1", &matchedJetPt03_1, &b_matchedJetPt03_1);
-//    fChain->SetBranchAddress("matchedJetPt05_1", &matchedJetPt05_1, &b_matchedJetPt05_1);
-//    fChain->SetBranchAddress("matchedJetPt03_2", &matchedJetPt03_2, &b_matchedJetPt03_2);
-//    fChain->SetBranchAddress("matchedJetPt05_2", &matchedJetPt05_2, &b_matchedJetPt05_2);
    fChain->SetBranchAddress("gen_match_1", &gen_match_1, &b_gen_match_1);
    fChain->SetBranchAddress("gen_match_2", &gen_match_2, &b_gen_match_2);
    fChain->SetBranchAddress("gen_match_jetId_1", &gen_match_jetId_1, &b_gen_match_jetId_1);
@@ -1245,24 +1274,12 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("byMediumIsolationMVArun2017v1DBoldDMwLT2017_1", &byMediumIsolationMVArun2017v1DBoldDMwLT2017_1, &b_byMediumIsolationMVArun2017v1DBoldDMwLT2017_1);
    fChain->SetBranchAddress("byTightIsolationMVArun2017v1DBoldDMwLT2017_1", &byTightIsolationMVArun2017v1DBoldDMwLT2017_1, &b_byTightIsolationMVArun2017v1DBoldDMwLT2017_1);
    fChain->SetBranchAddress("byVTightIsolationMVArun2017v1DBoldDMwLT2017_1", &byVTightIsolationMVArun2017v1DBoldDMwLT2017_1, &b_byVTightIsolationMVArun2017v1DBoldDMwLT2017_1);
-//    fChain->SetBranchAddress("byVLooseIsolationMVArun2v1DBnewDMwLT_1", &byVLooseIsolationMVArun2v1DBnewDMwLT_1, &b_byVLooseIsolationMVArun2v1DBnewDMwLT_1);
-//    fChain->SetBranchAddress("byLooseIsolationMVArun2v1DBnewDMwLT_1", &byLooseIsolationMVArun2v1DBnewDMwLT_1, &b_byLooseIsolationMVArun2v1DBnewDMwLT_1);
-//    fChain->SetBranchAddress("byMediumIsolationMVArun2v1DBnewDMwLT_1", &byMediumIsolationMVArun2v1DBnewDMwLT_1, &b_byMediumIsolationMVArun2v1DBnewDMwLT_1);
-//    fChain->SetBranchAddress("byTightIsolationMVArun2v1DBnewDMwLT_1", &byTightIsolationMVArun2v1DBnewDMwLT_1, &b_byTightIsolationMVArun2v1DBnewDMwLT_1);
-//    fChain->SetBranchAddress("byVTightIsolationMVArun2v1DBnewDMwLT_1", &byVTightIsolationMVArun2v1DBnewDMwLT_1, &b_byVTightIsolationMVArun2v1DBnewDMwLT_1);
-//    fChain->SetBranchAddress("byRerunMVAIdVLoose_1", &byRerunMVAIdVLoose_1, &b_byRerunMVAIdVLoose_1);
-//    fChain->SetBranchAddress("byRerunMVAIdLoose_1", &byRerunMVAIdLoose_1, &b_byRerunMVAIdLoose_1);
-//    fChain->SetBranchAddress("byRerunMVAIdMedium_1", &byRerunMVAIdMedium_1, &b_byRerunMVAIdMedium_1);
-//    fChain->SetBranchAddress("byRerunMVAIdTight_1", &byRerunMVAIdTight_1, &b_byRerunMVAIdTight_1);
-//    fChain->SetBranchAddress("byRerunMVAIdVTight_1", &byRerunMVAIdVTight_1, &b_byRerunMVAIdVTight_1);
-//    fChain->SetBranchAddress("byRerunMVAIdVVTight_1", &byRerunMVAIdVVTight_1, &b_byRerunMVAIdVVTight_1);
-//    fChain->SetBranchAddress("idMVANewDM_1", &idMVANewDM_1, &b_idMVANewDM_1);
    fChain->SetBranchAddress("chargedIsoPtSum_1", &chargedIsoPtSum_1, &b_chargedIsoPtSum_1);
    fChain->SetBranchAddress("neutralIsoPtSum_1", &neutralIsoPtSum_1, &b_neutralIsoPtSum_1);
    fChain->SetBranchAddress("puCorrPtSum_1", &puCorrPtSum_1, &b_puCorrPtSum_1);
    fChain->SetBranchAddress("decayModeFindingOldDMs_1", &decayModeFindingOldDMs_1, &b_decayModeFindingOldDMs_1);
    fChain->SetBranchAddress("decayMode_1", &decayMode_1, &b_decayMode_1);
-   fChain->SetBranchAddress("id_e_DeepTau_nt_loose_1", &id_e_DeepTau_nt_loose_1, &b_id_e_DeepTau_nt_loose_1);
+   fChain->SetBranchAddress("id_e_mva_nt_loose_1", &id_e_mva_nt_loose_1, &b_id_e_mva_nt_loose_1);
    fChain->SetBranchAddress("id_m_loose_1", &id_m_loose_1, &b_id_m_loose_1);
    fChain->SetBranchAddress("id_m_medium_1", &id_m_medium_1, &b_id_m_medium_1);
    fChain->SetBranchAddress("id_m_tight_1", &id_m_tight_1, &b_id_m_tight_1);
@@ -1312,7 +1329,6 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("byVVLooseDeepTau2017v2p1VSjet_1", &byVVLooseDeepTau2017v2p1VSjet_1, &b_byVVLooseDeepTau2017v2p1VSjet_1);
    fChain->SetBranchAddress("byVLooseDeepTau2017v2p1VSjet_1", &byVLooseDeepTau2017v2p1VSjet_1, &b_byVLooseDeepTau2017v2p1VSjet_1);
    fChain->SetBranchAddress("byLooseDeepTau2017v2p1VSjet_1", &byLooseDeepTau2017v2p1VSjet_1, &b_byLooseDeepTau2017v2p1VSjet_1);
-                             
    fChain->SetBranchAddress("byMediumDeepTau2017v2p1VSjet_1", &byMediumDeepTau2017v2p1VSjet_1, &b_byMediumDeepTau2017v2p1VSjet_1);
    fChain->SetBranchAddress("byTightDeepTau2017v2p1VSjet_1", &byTightDeepTau2017v2p1VSjet_1, &b_byTightDeepTau2017v2p1VSjet_1);
    fChain->SetBranchAddress("byVTightDeepTau2017v2p1VSjet_1", &byVTightDeepTau2017v2p1VSjet_1, &b_byVTightDeepTau2017v2p1VSjet_1);
@@ -1327,20 +1343,23 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("byVVTightDeepTau2017v2p1VSjet_2", &byVVTightDeepTau2017v2p1VSjet_2, &b_byVVTightDeepTau2017v2p1VSjet_2);
    fChain->SetBranchAddress("decayModeFindingNewDMs_1", &decayModeFindingNewDMs_1, &b_decayModeFindingNewDMs_1);
    fChain->SetBranchAddress("decayModeFindingNewDMs_2", &decayModeFindingNewDMs_2, &b_decayModeFindingNewDMs_2);
+   fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_tight_DeepTau_1", &crossTriggerDataEfficiencyWeight_tight_DeepTau_1, &b_crossTriggerDataEfficiencyWeight_tight_DeepTau_1);
+   fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_tight_DeepTau_2", &crossTriggerDataEfficiencyWeight_tight_DeepTau_2, &b_crossTriggerDataEfficiencyWeight_tight_DeepTau_2);
+   fChain->SetBranchAddress("crossTriggerMCEfficiencyWeight_tight_DeepTau_1", &crossTriggerMCEfficiencyWeight_tight_DeepTau_1, &b_crossTriggerMCEfficiencyWeight_tight_DeepTau_1);
+   fChain->SetBranchAddress("crossTriggerMCEfficiencyWeight_tight_DeepTau_2", &crossTriggerMCEfficiencyWeight_tight_DeepTau_2, &b_crossTriggerMCEfficiencyWeight_tight_DeepTau_2);
+   fChain->SetBranchAddress("crossTriggerEMBEfficiencyWeight_tight_DeepTau_1", &crossTriggerEMBEfficiencyWeight_tight_DeepTau_1, &b_crossTriggerEMBEfficiencyWeight_tight_DeepTau_1);
+   fChain->SetBranchAddress("crossTriggerEMBEfficiencyWeight_tight_DeepTau_2", &crossTriggerEMBEfficiencyWeight_tight_DeepTau_2, &b_crossTriggerEMBEfficiencyWeight_tight_DeepTau_2);
+   fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_vloose_DeepTau_1", &crossTriggerDataEfficiencyWeight_vloose_DeepTau_1, &b_crossTriggerDataEfficiencyWeight_vloose_DeepTau_1);
+   fChain->SetBranchAddress("crossTriggerDataEfficiencyWeight_vloose_DeepTau_2", &crossTriggerDataEfficiencyWeight_vloose_DeepTau_2, &b_crossTriggerDataEfficiencyWeight_vloose_DeepTau_2);
+   fChain->SetBranchAddress("crossTriggerMCEfficiencyWeight_vloose_DeepTau_1", &crossTriggerMCEfficiencyWeight_vloose_DeepTau_1, &b_crossTriggerMCEfficiencyWeight_vloose_DeepTau_1);
+   fChain->SetBranchAddress("crossTriggerMCEfficiencyWeight_vloose_DeepTau_2", &crossTriggerMCEfficiencyWeight_vloose_DeepTau_2, &b_crossTriggerMCEfficiencyWeight_vloose_DeepTau_2);
+   fChain->SetBranchAddress("crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1", &crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1, &b_crossTriggerEMBEfficiencyWeight_vloose_DeepTau_1);
+   fChain->SetBranchAddress("crossTriggerEMBEfficiencyWeight_vloose_DeepTau_2", &crossTriggerEMBEfficiencyWeight_vloose_DeepTau_2, &b_crossTriggerEMBEfficiencyWeight_vloose_DeepTau_2);
+   fChain->SetBranchAddress("tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2", &tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2, &b_tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2);
+   fChain->SetBranchAddress("tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1", &tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1, &b_tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1);
+   fChain->SetBranchAddress("tauIDScaleFactorWeight_vloose_DeepTau2017v2p1VSjet_2", &tauIDScaleFactorWeight_vloose_DeepTau2017v2p1VSjet_2, &b_tauIDScaleFactorWeight_vloose_DeepTau2017v2p1VSjet_2);
+   fChain->SetBranchAddress("tauIDScaleFactorWeight_vloose_DeepTau2017v2p1VSjet_1", &tauIDScaleFactorWeight_vloose_DeepTau2017v2p1VSjet_1, &b_tauIDScaleFactorWeight_vloose_DeepTau2017v2p1VSjet_1);
 
-
-//    fChain->SetBranchAddress("byVLooseIsolationMVArun2v1DBnewDMwLT_2", &byVLooseIsolationMVArun2v1DBnewDMwLT_2, &b_byVLooseIsolationMVArun2v1DBnewDMwLT_2);
-//    fChain->SetBranchAddress("byLooseIsolationMVArun2v1DBnewDMwLT_2", &byLooseIsolationMVArun2v1DBnewDMwLT_2, &b_byLooseIsolationMVArun2v1DBnewDMwLT_2);
-//    fChain->SetBranchAddress("byMediumIsolationMVArun2v1DBnewDMwLT_2", &byMediumIsolationMVArun2v1DBnewDMwLT_2, &b_byMediumIsolationMVArun2v1DBnewDMwLT_2);
-//    fChain->SetBranchAddress("byTightIsolationMVArun2v1DBnewDMwLT_2", &byTightIsolationMVArun2v1DBnewDMwLT_2, &b_byTightIsolationMVArun2v1DBnewDMwLT_2);
-//    fChain->SetBranchAddress("byVTightIsolationMVArun2v1DBnewDMwLT_2", &byVTightIsolationMVArun2v1DBnewDMwLT_2, &b_byVTightIsolationMVArun2v1DBnewDMwLT_2);
-//    fChain->SetBranchAddress("byRerunMVAIdVLoose_2", &byRerunMVAIdVLoose_2, &b_byRerunMVAIdVLoose_2);
-//    fChain->SetBranchAddress("byRerunMVAIdLoose_2", &byRerunMVAIdLoose_2, &b_byRerunMVAIdLoose_2);
-//    fChain->SetBranchAddress("byRerunMVAIdMedium_2", &byRerunMVAIdMedium_2, &b_byRerunMVAIdMedium_2);
-//    fChain->SetBranchAddress("byRerunMVAIdTight_2", &byRerunMVAIdTight_2, &b_byRerunMVAIdTight_2);
-//    fChain->SetBranchAddress("byRerunMVAIdVTight_2", &byRerunMVAIdVTight_2, &b_byRerunMVAIdVTight_2);
-//    fChain->SetBranchAddress("byRerunMVAIdVVTight_2", &byRerunMVAIdVVTight_2, &b_byRerunMVAIdVVTight_2);
-//    fChain->SetBranchAddress("idMVANewDM_2", &idMVANewDM_2, &b_idMVANewDM_2);
    fChain->SetBranchAddress("chargedIsoPtSum_2", &chargedIsoPtSum_2, &b_chargedIsoPtSum_2);
    fChain->SetBranchAddress("neutralIsoPtSum_2", &neutralIsoPtSum_2, &b_neutralIsoPtSum_2);
    fChain->SetBranchAddress("puCorrPtSum_2", &puCorrPtSum_2, &b_puCorrPtSum_2);
@@ -1408,17 +1427,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("addtau_byMediumIsolationMVArun2v1DBoldDMwLT", &addtau_byMediumIsolationMVArun2v1DBoldDMwLT, &b_addtau_byMediumIsolationMVArun2v1DBoldDMwLT);
    fChain->SetBranchAddress("addtau_byTightIsolationMVArun2v1DBoldDMwLT", &addtau_byTightIsolationMVArun2v1DBoldDMwLT, &b_addtau_byTightIsolationMVArun2v1DBoldDMwLT);
    fChain->SetBranchAddress("addtau_byVTightIsolationMVArun2v1DBoldDMwLT", &addtau_byVTightIsolationMVArun2v1DBoldDMwLT, &b_addtau_byVTightIsolationMVArun2v1DBoldDMwLT);
-//    fChain->SetBranchAddress("addtau_byVLooseIsolationMVArun2v1DBnewDMwLT", &addtau_byVLooseIsolationMVArun2v1DBnewDMwLT, &b_addtau_byVLooseIsolationMVArun2v1DBnewDMwLT);
-//    fChain->SetBranchAddress("addtau_byLooseIsolationMVArun2v1DBnewDMwLT", &addtau_byLooseIsolationMVArun2v1DBnewDMwLT, &b_addtau_byLooseIsolationMVArun2v1DBnewDMwLT);
-//    fChain->SetBranchAddress("addtau_byMediumIsolationMVArun2v1DBnewDMwLT", &addtau_byMediumIsolationMVArun2v1DBnewDMwLT, &b_addtau_byMediumIsolationMVArun2v1DBnewDMwLT);
-//    fChain->SetBranchAddress("addtau_byTightIsolationMVArun2v1DBnewDMwLT", &addtau_byTightIsolationMVArun2v1DBnewDMwLT, &b_addtau_byTightIsolationMVArun2v1DBnewDMwLT);
-//    fChain->SetBranchAddress("addtau_byVTightIsolationMVArun2v1DBnewDMwLT", &addtau_byVTightIsolationMVArun2v1DBnewDMwLT, &b_addtau_byVTightIsolationMVArun2v1DBnewDMwLT);
-//    fChain->SetBranchAddress("addtau_NewMVAIDVLoose", &addtau_NewMVAIDVLoose, &b_addtau_NewMVAIDVLoose);
-//    fChain->SetBranchAddress("addtau_NewMVAIDLoose", &addtau_NewMVAIDLoose, &b_addtau_NewMVAIDLoose);
-//    fChain->SetBranchAddress("addtau_NewMVAIDMedium", &addtau_NewMVAIDMedium, &b_addtau_NewMVAIDMedium);
-//    fChain->SetBranchAddress("addtau_NewMVAIDTight", &addtau_NewMVAIDTight, &b_addtau_NewMVAIDTight);
-//    fChain->SetBranchAddress("addtau_NewMVAIDVTight", &addtau_NewMVAIDVTight, &b_addtau_NewMVAIDVTight);
-//    fChain->SetBranchAddress("addtau_NewMVAIDVVTight", &addtau_NewMVAIDVVTight, &b_addtau_NewMVAIDVVTight);
+
    fChain->SetBranchAddress("addtau_passesTauLepVetos", &addtau_passesTauLepVetos, &b_addtau_passesTauLepVetos);
    fChain->SetBranchAddress("addtau_decayMode", &addtau_decayMode, &b_addtau_decayMode);
    fChain->SetBranchAddress("addtau_d0", &addtau_d0, &b_addtau_d0);
@@ -1508,11 +1517,11 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("brawf_2", &brawf_2, &b_brawf_2);
    fChain->SetBranchAddress("bmva_2", &bmva_2, &b_bmva_2);
    fChain->SetBranchAddress("bcsv_2", &bcsv_2, &b_bcsv_2);
-   fChain->SetBranchAddress("m_sv", &m_sv, &b_m_sv);
+//    fChain->SetBranchAddress("m_sv", &m_sv, &b_m_sv);
 //    fChain->SetBranchAddress("m_sv_unc", &m_sv_unc, &b_m_sv_unc);
 //    fChain->SetBranchAddress("mt_sv", &mt_sv, &b_mt_sv);
 //    fChain->SetBranchAddress("mt_sv_unc", &mt_sv_unc, &b_mt_sv_unc);
-   fChain->SetBranchAddress("pt_sv", &pt_sv, &b_pt_sv);
+//    fChain->SetBranchAddress("pt_sv", &pt_sv, &b_pt_sv);
 //    fChain->SetBranchAddress("pt_sv_unc", &pt_sv_unc, &b_pt_sv_unc);
    Notify();
 }
