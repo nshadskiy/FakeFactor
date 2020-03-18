@@ -458,6 +458,8 @@ for x in range(0,len(categories)):
         ]
     )
 
+
+
     comb_frac_w_up = Node(
         name='ff_frac_w_up',
         formula='{frac_tt}*{ff_tt} + {frac_w_w_up}*{ff_w} + {frac_qcd_w_up}*{ff_qcd_os}',
@@ -566,6 +568,80 @@ for x in range(0,len(categories)):
          )
         }
     )
+
+    comb_corr_qcd_mvis_up = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_corr_qcd_mvis_up',
+             formula='{ff_qcd_os}*({mviscorr_qcd})',
+             leaves=[
+                    Leaf(
+                        name='mviscorr_qcd',
+                        file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                        object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
+                        vars=['mvis']
+                    ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_corr_qcd_mvis_down = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_corr_qcd_mvis_down',
+             formula='{ff_qcd_os}/({mviscorr_qcd})',
+             leaves=[
+                    Leaf(
+                        name='mviscorr_qcd',
+                        file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                        object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
+                        vars=['mvis']
+                    ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_corr_qcd_muiso_up = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_corr_qcd_muiso_up',
+             formula='{ff_qcd_os}*({isocorr_qcd})',
+             leaves=[
+                    Leaf(
+                        name='isocorr_qcd',
+                        file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MuIso{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                        object='QCD_SS_Data_FFSSMuMediumData_isomu_correction',
+                        vars=['mu_iso']
+                    ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_corr_qcd_muiso_down = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_corr_qcd_muiso_down',
+             formula='{ff_qcd_os}/({isocorr_qcd})',
+             leaves=[
+                    Leaf(
+                        name='isocorr_qcd',
+                        file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MuIso{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                        object='QCD_SS_Data_FFSSMuMediumData_isomu_correction',
+                        vars=['mu_iso']
+                    ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+
     comb_qcd_mvis_up = replace_nodes(
         comb,
         {'ff_qcd_os':
@@ -1127,6 +1203,82 @@ for x in range(0,len(categories)):
          )
         }
     )
+    comb_corr_w_lepPt_up = replace_nodes(
+        comb,
+        {'ff_w':
+         Node(
+             name='ff_corr_w_lepPt_up',
+             formula='{ff_w}*({lepPtcorr_w})',
+             leaves=[
+                    Leaf(
+                        name='lepPtcorr_w',
+                        file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_W_lepPt{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                        object='W_OS_Data_FFOSData_lepPt_correction',
+                        vars=['lep_pt']
+                    ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+
+    comb_corr_w_lepPt_down = replace_nodes(
+        comb,
+        {'ff_w':
+         Node(
+             name='ff_corr_w_lepPt_down',
+             formula='{ff_w}/({lepPtcorr_w})',
+             leaves=[
+                    Leaf(
+                        name='lepPtcorr_w',
+                        file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_W_lepPt{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                        object='W_OS_Data_FFOSData_lepPt_correction',
+                        vars=['lep_pt']
+                    ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_corr_w_mt_up = replace_nodes(
+        comb,
+        {'ff_w':
+         Node(
+             name='ff_corr_w_mt_up',
+             formula='{ff_w}*({mtcorr_w})',
+             leaves=[
+                    Leaf(
+                        name='mtcorr_w',
+                        file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_MC_W_MT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                        object='W_OS_MC_FFOSMC_mt_correction',
+                        vars=['mt']
+                    ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+
+    comb_corr_w_mt_down = replace_nodes(
+        comb,
+        {'ff_w':
+         Node(
+             name='ff_corr_w_mt_down',
+             formula='{ff_w}/({mtcorr_w})',
+             leaves=[
+                    Leaf(
+                        name='mtcorr_w',
+                        file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_MC_W_MT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                        object='W_OS_MC_FFOSMC_mt_correction',
+                        vars=['mt']
+                    ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+
+
     comb_w_mt_down = replace_nodes(
         comb,
         {'ff_w':
@@ -1437,6 +1589,43 @@ for x in range(0,len(categories)):
          )
         }
     )
+    comb_corr_tt_up = replace_nodes(
+        comb,
+        {'ff_tt':
+         Node(
+             name='ff_corr_tt_up',
+             formula='{ff_tt}*({mviscorr_tt})',
+             leaves=[
+                    Leaf(
+                        name='mviscorr_tt',
+                        file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_MC_TT_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                        object='TT_OS_MC_mvis_correction',
+                        vars=['mvis']
+                    ),
+                 comb.find('ff_tt')
+             ]
+         )
+        }
+    )
+    comb_corr_tt_down = replace_nodes(
+        comb,
+        {'ff_tt':
+         Node(
+             name='ff_corr_tt_down',
+             formula='{ff_tt}/({mviscorr_tt})',
+             leaves=[
+                    Leaf(
+                        name='mviscorr_tt',
+                        file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_MC_TT_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                        object='TT_OS_MC_mvis_correction',
+                        vars=['mvis']
+                    ),
+                 comb.find('ff_tt')
+             ]
+         )
+        }
+    )
+
     comb_tt_down = replace_nodes(
         comb,
         {'ff_tt':
@@ -1812,6 +2001,10 @@ for x in range(0,len(categories)):
     fill(ff_comb, comb_qcd_mvis_down,   sys='ff_qcd_mvis_down')
     fill(ff_comb, comb_qcd_muiso_up,   sys='ff_qcd_muiso_up')
     fill(ff_comb, comb_qcd_muiso_down,   sys='ff_qcd_muiso_down')
+    fill(ff_comb, comb_corr_qcd_mvis_up,   sys='ff_corr_qcd_mvis_up')
+    fill(ff_comb, comb_corr_qcd_mvis_down,   sys='ff_corr_qcd_mvis_down')
+    fill(ff_comb, comb_corr_qcd_muiso_up,   sys='ff_corr_qcd_muiso_up')
+    fill(ff_comb, comb_corr_qcd_muiso_down,   sys='ff_corr_qcd_muiso_down')
     fill(ff_comb, comb_qcd_mc_up,   sys='ff_qcd_mc_up')
     fill(ff_comb, comb_qcd_mc_down,   sys='ff_qcd_mc_down')
     fill(ff_comb, comb_w_mc_lepPt_up,   sys='ff_w_mc_lepPt_up')
@@ -1840,6 +2033,10 @@ for x in range(0,len(categories)):
     fill(ff_comb, comb_w_mc_down, sys='ff_w_mc_down')
     fill(ff_comb, comb_w_mt_up, sys='ff_w_mt_up')
     fill(ff_comb, comb_w_mt_down, sys='ff_w_mt_down')
+    fill(ff_comb, comb_corr_w_lepPt_up, sys='ff_corr_w_lepPt_up')
+    fill(ff_comb, comb_corr_w_lepPt_down, sys='ff_corr_w_lepPt_down')
+    fill(ff_comb, comb_corr_w_mt_up, sys='ff_corr_w_mt_up')
+    fill(ff_comb, comb_corr_w_mt_down, sys='ff_corr_w_mt_down')
 
     fill(ff_comb, comb_w_up_stat,   sys='ff_w_stat_up')
     fill(ff_comb, comb_w_down_stat,   sys='ff_w_stat_down')
@@ -1857,6 +2054,8 @@ for x in range(0,len(categories)):
     fill(ff_comb, comb_w_down_stat_dm1_njet1,   sys='ff_w_dm1_njet1_stat_down')
     fill(ff_comb, comb_tt_up,   sys='ff_tt_syst_up')
     fill(ff_comb, comb_tt_down, sys='ff_tt_syst_down')
+    fill(ff_comb, comb_corr_tt_up,   sys='ff_corr_tt_syst_up')
+    fill(ff_comb, comb_corr_tt_down, sys='ff_corr_tt_syst_down')
     fill(ff_comb, comb_tt_morphed_up,   sys='ff_tt_morphed_up')
     fill(ff_comb, comb_tt_morphed_down, sys='ff_tt_morphed_down')
     fill(ff_comb, comb_tt_scalefactor_up,   sys='ff_tt_sf_up')
