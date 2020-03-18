@@ -605,6 +605,42 @@ for x in range(0,len(categories)):
          )
         }
     )
+    comb_corr_qcd_mvis_osss_up = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_corr_qcd_mvis_osss_up',
+             formula='{ff_qcd_os}*({mvis_ossscorr_qcd_temp})',
+             leaves=[
+                    Leaf(
+                        name='OSSS_corr_qcd_temp',
+                        file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_OSSS{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                        object='QCD_SS_Data_FFSSMuMediumData_OSSS_correction',
+                        vars=['mvis']
+                    ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_corr_qcd_mvis_osss_down = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_corr_qcd_mvis_osss_down',
+             formula='{ff_qcd_os}/({mvis_ossscorr_qcd_temp})',
+             leaves=[
+                    Leaf(
+                        name='OSSS_corr_qcd_temp',
+                        file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_OSSS{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                        object='QCD_SS_Data_FFSSMuMediumData_OSSS_correction',
+                        vars=['mvis']
+                    ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
     comb_corr_qcd_muiso_up = replace_nodes(
         comb,
         {'ff_qcd_os':
@@ -671,6 +707,60 @@ for x in range(0,len(categories)):
                      name='sys_qcd_mvis_down',
                      file='{INDIR}/{CHANNEL}/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_QCD_MVis_Iso_SS2OS_morphed_mvis_down',
+                     vars=['mvis']
+                 ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_qcd_mvis_up = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_mvis_up',
+             formula='(1.+{sys_qcd_mvis_up})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='sys_qcd_mvis_up',
+                     file='{INDIR}/{CHANNEL}/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='uncertainties_QCD_MVis_Iso_SS2OS_morphed_mvis_up',
+                     vars=['mvis']
+                 ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_qcd_mvis_osss_up = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_mvis_osss_up',
+             formula='(1.+{sys_qcd_mvis_osss_up})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='sys_qcd_mvis_osss_up',
+                     file='{INDIR}/{CHANNEL}/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='uncertainties_QCD_MVis_Iso_SS2OS_morphed_mvis_osss_up',
+                     vars=['mvis']
+                 ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_qcd_mvis_osss_down = replace_nodes(
+        comb,
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_mvis_osss_down',
+             formula='(1.+{sys_qcd_mvis_osss_down})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='sys_qcd_mvis_osss_down',
+                     file='{INDIR}/{CHANNEL}/uncertainties_QCD_W{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='uncertainties_QCD_MVis_Iso_SS2OS_morphed_mvis_osss_down',
                      vars=['mvis']
                  ),
                  comb.find('ff_qcd_os')
@@ -1999,10 +2089,14 @@ for x in range(0,len(categories)):
 
     fill(ff_comb, comb_qcd_mvis_up,   sys='ff_qcd_mvis_up')
     fill(ff_comb, comb_qcd_mvis_down,   sys='ff_qcd_mvis_down')
+    fill(ff_comb, comb_qcd_mvis_osss_up,   sys='ff_qcd_mvis_osss_up')
+    fill(ff_comb, comb_qcd_mvis_osss_down,   sys='ff_qcd_mvis_osss_down')
     fill(ff_comb, comb_qcd_muiso_up,   sys='ff_qcd_muiso_up')
     fill(ff_comb, comb_qcd_muiso_down,   sys='ff_qcd_muiso_down')
     fill(ff_comb, comb_corr_qcd_mvis_up,   sys='ff_corr_qcd_mvis_up')
     fill(ff_comb, comb_corr_qcd_mvis_down,   sys='ff_corr_qcd_mvis_down')
+    fill(ff_comb, comb_corr_qcd_mvis_osss_up,   sys='ff_corr_qcd_mvis_osss_up')
+    fill(ff_comb, comb_corr_qcd_mvis_osss_down,   sys='ff_corr_qcd_mvis_osss_down')
     fill(ff_comb, comb_corr_qcd_muiso_up,   sys='ff_corr_qcd_muiso_up')
     fill(ff_comb, comb_corr_qcd_muiso_down,   sys='ff_corr_qcd_muiso_down')
     fill(ff_comb, comb_qcd_mc_up,   sys='ff_qcd_mc_up')

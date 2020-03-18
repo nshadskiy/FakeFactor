@@ -991,6 +991,11 @@ void combineQCDSystematics_morphed( TString fQCD_nonclosure, TString sys_nonclos
   TFile *f_otherLep=new TFile(fQCD_otherLep.ReplaceAll(".root",tight_cat+".root"));
   TGraphAsymmErrors *sys_otherLep_t_up=(TGraphAsymmErrors*)f_otherLep->Get(sys_otherLep+"_up");
   TGraphAsymmErrors *sys_otherLep_t_down=(TGraphAsymmErrors*)f_otherLep->Get(sys_otherLep+"_down");
+
+  TFile *f_OSSS=new TFile(fQCD_OSSS.ReplaceAll(".root",tight_cat+".root"));
+  TGraphAsymmErrors *sys_OSSS_t_up=(TGraphAsymmErrors*)f_OSSS->Get(sys_OSSS+"_up");
+  TGraphAsymmErrors *sys_OSSS_t_down=(TGraphAsymmErrors*)f_OSSS->Get(sys_OSSS+"_down");
+
   Float_t addUncertainty=0;
   if(useExtraOSSSuncertainty){
     if( CHAN==kMU )       addUncertainty=OSSSuncertainty_mt;
@@ -999,16 +1004,26 @@ void combineQCDSystematics_morphed( TString fQCD_nonclosure, TString sys_nonclos
   }
   TH1D *out_t_mvis_up = new TH1D(tout+"_mvis_up", tout+"_mvis_up", sys_nonclosure_t_up->GetN(), sys_nonclosure_t_up->GetX()[0], sys_nonclosure_t_up->GetX()[sys_nonclosure_t_up->GetN()-1]);
   TH1D *out_t_mvis_down = new TH1D(tout+"_mvis_down", tout+"_mvis_down", sys_nonclosure_t_down->GetN(), sys_nonclosure_t_down->GetX()[0], sys_nonclosure_t_down->GetX()[sys_nonclosure_t_down->GetN()-1]);
+
+  TH1D *out_t_mvis_osss_up = new TH1D(tout+"_mvis_osss_up", tout+"_mvis_osss_up", sys_OSSS_t_up->GetN(), sys_OSSS_t_up->GetX()[0], sys_OSSS_t_up->GetX()[sys_OSSS_t_up->GetN()-1]);
+  TH1D *out_t_mvis_osss_down = new TH1D(tout+"_mvis_osss_down", tout+"_mvis_osss_down", sys_OSSS_t_down->GetN(), sys_OSSS_t_down->GetX()[0], sys_OSSS_t_down->GetX()[sys_OSSS_t_down->GetN()-1]);
   
+
   TH1D *out_t_pt_up = new TH1D(tout+"_pt_up", tout+"_pt_up", sys_otherLep_t_up->GetN(), sys_otherLep_t_up->GetX()[0], sys_otherLep_t_up->GetX()[sys_otherLep_t_up->GetN()-1]);
   TH1D *out_t_pt_down = new TH1D(tout+"_pt_down", tout+"_pt_down", sys_otherLep_t_down->GetN(), sys_otherLep_t_down->GetX()[0], sys_otherLep_t_down->GetX()[sys_otherLep_t_down->GetN()-1]);
   
   double morphed_high; double morphed_low;
   double mvis_max = 250.0;
   Int_t n_morph_mvis = 0; Int_t i_morph_mvis = 0;
+  Int_t n_morph_mvis_osss = 0; Int_t i_morph_mvis_osss = 0;
+
   for(Int_t i=0; sys_nonclosure_t_up->GetX()[i] < mvis_max; i++){
     n_morph_mvis += 1;
     i_morph_mvis = i;
+  }
+  for(Int_t i=0; sys_OSSS_t_up->GetX()[i] < mvis_max; i++){
+    n_morph_mvis_osss += 1;
+    i_morph_mvis_osss = i;
   }
   double pt_max = 9999.0;
   if( CHAN!=kTAU) {
@@ -1034,6 +1049,16 @@ void combineQCDSystematics_morphed( TString fQCD_nonclosure, TString sys_nonclos
     out_t_mvis_up->SetBinContent(i,morphed_high);
     out_t_mvis_down->SetBinContent(i,morphed_low);
   }
+  for(Int_t i=0; i<=sys_OSSS_t_down->GetN(); i++){
+    morphed_high = (-sys_OSSS_t_down->GetY()[i])*float( n_morph_mvis_osss-i-1)/(n_morph_mvis_osss-1) + (sys_OSSS_t_up->GetY()[i])*float(i)/(n_morph_mvis_osss-1);
+    morphed_low = (sys_OSSS_t_up->GetY()[i])*float( n_morph_mvis_osss-i-1)/(n_morph_mvis_osss-1) + (-sys_OSSS_t_down->GetY()[i])*float(i)/(n_morph_mvis_osss-1);
+    if (i>i_morph_mvis_osss){
+      morphed_high = (-sys_OSSS_t_down->GetY()[i_morph_mvis_osss])*float( n_morph_mvis_osss-i_morph_mvis_osss-1)/(n_morph_mvis_osss-1) + (sys_OSSS_t_up->GetY()[i_morph_mvis_osss])*float(i_morph_mvis_osss)/(n_morph_mvis_osss-1);
+      morphed_low = (sys_OSSS_t_up->GetY()[i_morph_mvis_osss])*float( n_morph_mvis_osss-i_morph_mvis_osss-1)/(n_morph_mvis_osss-1) + (-sys_OSSS_t_down->GetY()[i_morph_mvis_osss])*float(i_morph_mvis_osss)/(n_morph_mvis_osss-1);
+    }
+    out_t_mvis_osss_up->SetBinContent(i,morphed_high);
+    out_t_mvis_osss_down->SetBinContent(i,morphed_low);
+  }
   for(Int_t i=0; i<=sys_otherLep_t_up->GetN(); i++){
     morphed_high = (-sys_otherLep_t_down->GetY()[i])*float( n_morph_pt-i-1)/(n_morph_pt-1) + (sys_otherLep_t_up->GetY()[i])*float(i)/(n_morph_pt-1);
     morphed_low = (sys_otherLep_t_up->GetY()[i])*float( n_morph_pt-i-1)/(n_morph_pt-1) + (-sys_otherLep_t_down->GetY()[i])*float(i)/(n_morph_pt-1);
@@ -1048,6 +1073,8 @@ void combineQCDSystematics_morphed( TString fQCD_nonclosure, TString sys_nonclos
   fout_f->cd();
   out_t_mvis_up->Write();
   out_t_mvis_down->Write();
+  out_t_mvis_osss_up->Write();
+  out_t_mvis_osss_down->Write();
   out_t_pt_up->Write();
   out_t_pt_down->Write();
 
