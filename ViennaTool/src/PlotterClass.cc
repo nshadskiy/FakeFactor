@@ -105,10 +105,10 @@ void PlotterClass::plotPieFractions_mutau_etau(TString channel, TString outfile,
 
   cpie->cd();
   TLatex cms1 = TLatex( 0.05, 0.955, "CMS" );
-  TString caption = "Supplementary";
+  TString caption = "Own Work";
   if(preliminary) caption = "Preliminary";
   TLatex cms2 = TLatex( 0.183, 0.955, caption );
-  //TLatex cms2 = TLatex( 0.183, 0.955, "Supplementary" );
+  //TLatex cms2 = TLatex( 0.183, 0.955, "Own Work" );
   cms1.SetNDC();
   cms1.SetTextSize(0.055);
   cms2.SetNDC();
@@ -203,7 +203,7 @@ void PlotterClass::plotPieFractions_tautau(TString channel, TString outfile, Int
   cpie->cd();
   TLatex cms1 = TLatex( 0.05, 0.91, "CMS" );
   //TLatex cms2 = TLatex( 0.173, 0.91, "Preliminary" );
-  TLatex cms2 = TLatex( 0.173, 0.91, "Supplementary" );
+  TLatex cms2 = TLatex( 0.173, 0.91, "Own Work" );
   cms1.SetNDC();
   cms1.SetTextSize(0.11);
   cms1.SetTextFont(62);
@@ -637,7 +637,7 @@ Int_t PlotterClass::plotFF(const TString FF_file_CR,const TString FF_file_SR,con
     if (ALLPLOTS){
       gPad->SaveAs(plotfile+tight_cat+".pdf");
       gPad->SaveAs(plotfile+tight_cat+".eps");
-      //      c1->SaveAs(imagefilename+".C");
+      gPad->SaveAs(plotfile+tight_cat+".C");
     }
   }
 
