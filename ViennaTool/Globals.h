@@ -120,7 +120,7 @@ const TString s_tight        ="tight";
 
 
 //Output directories
-const TString path_presel        = "/ceph/"+user+"/fakefactors/"+analysis+"/preselection/"+s_chan[CHAN]+"/";
+const TString path_presel        = "/ceph/"+user+"/osss-fakefactors/"+analysis+"/preselection/"+s_chan[CHAN]+"/";
 const TString path_ff            = "ViennaTool/fakefactor/";
 const TString path_ff_data       = path_ff+"data_"+s_chan[CHAN]+"/";
 const TString path_ff_mc         = path_ff+"mc_"+s_chan[CHAN]+"/";
@@ -556,7 +556,7 @@ const Int_t nbins_pt=25;     const Double_t hist_min_pt=20.;    const Double_t h
 const Int_t nbins_eta=20;    const Double_t hist_min_eta=-3.5;  const Double_t hist_max_eta=3.5;
 
 //binning constants: weight
-const Double_t w_mt_v[]={0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250};
+const Double_t w_mt_v[]={0,10,20,30,40,50,60,70,250};
 
 const Int_t    w_mt_n=(sizeof(w_mt_v)/sizeof(Double_t)) -1;
 

@@ -209,7 +209,7 @@ def main(args):
                         if do_qcd:
                             config["x_expressions"] = ["hh_{}_{}".format(wp[0],variable)] * (len(bkg_processes)-1) + ["hh_{}_{}_dataminusMC".format(wp[0],variable)] + ["hh_{}_{}".format(wp[0],variable)]
                         else:
-                            config["x_expressions"] = ["hh_{}_{}".format(wp[0],variable)]
+                            config["x_expressions"] = ["hh_{}_{}".format(wp[0],variable).replace("_SS","")]
                         if args.emb == False:
                             config["filename"] = "_".join(
                                 [channel, category, wp, era, variable]) + args.filename_prefix

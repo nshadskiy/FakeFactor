@@ -231,11 +231,7 @@ void FFCalculator::calcFFweights(const TString data_file, const std::vector<TStr
       for(Int_t icat=0; icat<nCAT; icat++) if(catMode[icat] & mode) {h_template_QCD=h_template_QCD+categories[icat];}
     }
     TH1D* h_template=(TH1D*)h_ss->Clone(h_template_QCD);
-    
-    //    TH1D* hqcd_OS_SS_factor;
-    //    hqcd_OS_SS_factor= new TH1D("factor","",nbins_mt,hist_min_mt,hist_max_mt);
     TH1D* hqcd_OS_SS_factor=(TH1D*)h_ss->Clone("factor");
-    //    for (int ib=1; ib<=nbins_mt; ib++){
     for (int ib=0; ib<=hqcd_OS_SS_factor->GetNbinsX(); ib++){
       hqcd_OS_SS_factor->SetBinContent(ib, 1.06);
       hqcd_OS_SS_factor->SetBinError(ib, 1.06/10);
@@ -869,22 +865,33 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
   TH1D* counter_histo_loose_CR = (TH1D*) counter_histo_proto.Clone("c_l"); 
   TH1D* weighted_bin_center_loose= (TH1D*) counter_histo_proto.Clone("bins_weighted");
   TH1D* counter_histo_tight_CR = (TH1D*) counter_histo_proto.Clone("c_t");
+
+
+  TH1D* counter_histo_loose_CR_SS = (TH1D*) counter_histo_proto.Clone("c_l_ss"); 
+  TH1D* counter_histo_tight_CR_SS = (TH1D*) counter_histo_proto.Clone("c_t_ss");
   
+
   TH1D* fakefactor_histo = (TH1D*) counter_histo_proto.Clone("c_f");
   
   std::vector<TH1D*> counter_histo_loose_CR_cont;
   std::vector<TH1D*> counter_histo_tight_CR_cont;
-  
+  std::vector<TH1D*> counter_histo_loose_CR_SS_cont;
+  std::vector<TH1D*> counter_histo_tight_CR_SS_cont;  
   
   for (unsigned i=0; i<pre_sub.size(); i++){
     TString tmp; tmp+=i;
     counter_histo_loose_CR_cont.push_back( (TH1D*) counter_histo_proto.Clone("cc"+tmp+"_l")  );
     counter_histo_tight_CR_cont.push_back( (TH1D*) counter_histo_proto.Clone("cc"+tmp+"_t")  );
+    counter_histo_loose_CR_SS_cont.push_back( (TH1D*) counter_histo_proto.Clone("cc"+tmp+"_l_ss")  );
+    counter_histo_tight_CR_SS_cont.push_back( (TH1D*) counter_histo_proto.Clone("cc"+tmp+"_t_ss")  );
   }
 
   TH1D* counter_histo_numer = (TH1D*) counter_histo_proto.Clone("numer");
   TH1D* counter_histo_denom = (TH1D*) counter_histo_proto.Clone("denom");
   
+  TH1D* counter_histo_numer_SS = (TH1D*) counter_histo_proto.Clone("numer_SS");
+  TH1D* counter_histo_denom_SS = (TH1D*) counter_histo_proto.Clone("denom_SS");
+
   int nT=0;
   int nL=0;
   Double_t bin_values[this->getNjets(mode)*this->getNtracks(mode)][this->getNpts(mode)]={{0}}; 
@@ -938,7 +945,22 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
         bin_counters[dm_index+this->getNtracks(mode)*njet_index][pT_index] += event_s->weight_sf;
       }
     }
-    
+    else if(mode & _W_JETS) {
+    if (this->isInCR(_SS,tau_index) )  {
+      nT=this->isTight(mode,tau_index); 
+      nL=this->isLoose(mode,tau_index); 
+      
+      if (nT) {
+        ccc_t++;
+        counter_histo_tight_CR_SS->Fill(    this->getBin(mode,tau_index),event_s->weight_sf);
+      }
+      else if (nL) {
+        ccc_l++;
+        counter_histo_loose_CR_SS->Fill(    this->getBin(mode,tau_index),event_s->weight_sf);
+
+      }
+    }    
+    }
   } //end loop over entries
 
   end  = std::chrono::system_clock::now();
@@ -1006,7 +1028,22 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
           bin_counters[dm_index+this->getNtracks(mode)*njet_index][pT_index]=bin_counters[dm_index+this->getNtracks(mode)*njet_index][pT_index]+event_s->weight_sf*(-1);
         }
       }
-      
+      else if (mode & _W_JETS) {
+      if (this->isInCR(_SS,tau_index) )  {
+        nT=this->isTight(mode,tau_index); 
+        nL=this->isLoose(mode,tau_index); 
+       
+        if (nT) {
+          ccc_t++;
+          counter_histo_tight_CR_SS_cont.at(is)->Fill(this->getBin(mode,tau_index),event_s->weight_sf);
+        }
+        else if (nL) {
+          counter_histo_loose_CR_SS_cont.at(is)->Fill(this->getBin(mode,tau_index),event_s->weight_sf);
+          ccc_l++;
+
+        }
+      }      
+      }
 
     } // end loop over entries
     if (DEBUG) std::cout<<std::endl<<"In contamination file "<<pre_sub.at(is)<<" "<< counter_histo_loose_CR_cont.at(is)->Integral(-1,-1) <<" loose "<<counter_histo_tight_CR_cont.at(is)->Integral(-1,-1)<<" tight."<<std::endl;
@@ -1019,44 +1056,36 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
     std::cout << "counter histo loose: " << counter_histo_loose_CR_cont.at(is)->GetEntries() << std::endl;
     std::cout << "compare to : " << ccc_l << std::endl;
     std::cout << "******************************************************" << std::endl;
+    
+  }
 
-    
-    
-    // start = std::chrono::system_clock::now(); 
-    
-    // tmp2+=is;   
-    // event_s->fChain->Draw( "1>>c"+tmp2+"_t", "weight_sf * "+cutstringgg + "*" + this->getWPCutString("tight"), "goff");
-    // event_s->fChain->Draw( "1>>c"+tmp2+"_l", "weight_sf * "+cutstringgg + "*" + this->getWPCutString("loose"), "goff");
-    // end  = std::chrono::system_clock::now();
-    // elapsed_seconds = end-start;
-    
-    // std::cout << "******************************************************" << std::endl;
-    // cout << "Elapsed time (NEW): " << elapsed_seconds.count() << endl;
-    // std::cout << "counter histo tight: " << counter_histo_tight_CR_cont.at(is)->GetEntries() << std::endl;
-    // std::cout << "compare to : " << ccc_t << std::endl;
-    // std::cout << "counter histo loose: " << counter_histo_loose_CR_cont.at(is)->GetEntries() << std::endl;
-    // std::cout << "compare to : " << ccc_l << std::endl;
-    // std::cout << "******************************************************" << std::endl;
-    
-  }// end of loop over backgrounds
-
-
-  // Maybe for later usage
-  // for (unsigned is=0; is<pre_sub.size(); is++){
-  //   loadFile(pre_sub.at(is),"Events");
-        // TString tmp2; tmp2+=is;
-        // std::cout << "value of tmp2 " << tmp2 << std::endl;
-        
-        // event_s->fChain->Draw( "1>>c"+tmp2+"_t", "weight_sf * "+cutstringgg + "*" + this->getWPCutString("tight"), "goff");
-        // event_s->fChain->Draw( "1>>c"+tmp2+"_l", "weight_sf * "+cutstringgg + "*" + this->getWPCutString("loose"), "goff");
-      
-  // }
 
 
 
 
   counter_histo_numer->Add(counter_histo_tight_CR);
   counter_histo_denom->Add(counter_histo_loose_CR);
+
+  counter_histo_numer_SS->Add(counter_histo_tight_CR_SS);
+  counter_histo_denom_SS->Add(counter_histo_loose_CR_SS);
+  std::cout << "QCD SUB TIGHT: Integral ss data before MC sub " << counter_histo_numer_SS->Integral() << std::endl;
+  std::cout << "QCD SUB LOOSE: Integral ss data before MC sub " << counter_histo_denom_SS->Integral() << std::endl;
+
+  for (unsigned is=0; is<pre_sub.size(); is++){
+    counter_histo_numer_SS->Add(counter_histo_tight_CR_SS_cont.at(is),-1.);
+    counter_histo_denom_SS->Add(counter_histo_loose_CR_SS_cont.at(is),-1.);
+  }
+
+  std::cout << "QCD SUB TIGHT: Integral ss data after MC sub " << counter_histo_numer_SS->Integral() << std::endl;
+  std::cout << "QCD SUB LOOSE: Integral ss data after MC sub " << counter_histo_denom_SS->Integral() << std::endl;
+
+  std::cout << "QCD SUB TIGHT: Actual integral before QCD sub " << counter_histo_numer->Integral() << std::endl;
+  std::cout << "QCD SUB LOOSE: Actual integral before QCD sub " << counter_histo_denom->Integral() << std::endl;
+
+  counter_histo_numer->Add(counter_histo_numer_SS,-1.);
+  counter_histo_denom->Add(counter_histo_denom_SS,-1.);
+  std::cout << "QCD SUB TIGHT: Actual integral after QCD sub " << counter_histo_numer->Integral() << std::endl;
+  std::cout << "QCD SUB LOOSE: Actual integral after QCD sub " << counter_histo_denom->Integral() << std::endl;
 
   TH1D* counter_histo_numer_mcup; TH1D* counter_histo_numer_mcdown; 
   TH1D* counter_histo_denom_mcup; TH1D* counter_histo_denom_mcdown; 
@@ -1767,7 +1796,9 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
 
   Int_t nentries = Int_t(event_s->fChain->GetEntries());
   
-  TString cr_file=compare_file;
+  TString cr_file=compare_file;   TString cr_ss_file=compare_file;
+  cr_ss_file=cr_ss_file.ReplaceAll("_lepPt","_lepPt_SS");
+
   if(mode & JET0 ) cr_file = cr_file.ReplaceAll("_data","_0jet_data");
   if(mode & JET1 ) cr_file = cr_file.ReplaceAll("_data","_1jet_data");
   TString sample;
@@ -1796,12 +1827,15 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
   }
   
   TFile compare(cr_file);
+  TFile compare_qcd(cr_ss_file);
+
   Double_t FF_value=0;
   if(subtractMC){
     TString ff_inputHist="hh_l"; 
     TH1D* compare_l              = (TH1D*) compare.Get(ff_inputHist+"_lepPt");
     TH1D* compare_l_MCsubtracted = (TH1D*) compare.Get(ff_inputHist+"_lepPt_MCsubtracted");
-    
+    TH1D* compare_l_qcd = (TH1D*) compare_qcd.Get("hh_l_lepPt_dataminusMC");
+    compare_l_MCsubtracted->Add(compare_l_qcd);
     TH1D* ratio_l                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l");
     TH1D* ratio_l_mcup                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l_mcup");
     ratio_l_mcup->Scale(1.07);
@@ -1822,6 +1856,9 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
 
     TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_lepPt");
     TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t"+tight_cat+"_lepPt_MCsubtracted");
+    TH1D* compare_t_qcd = (TH1D*) compare_qcd.Get("hh_t_lepPt_dataminusMC");
+    compare_t_MCsubtracted->Add(compare_t_qcd);
+
     TH1D* compare_t_MCsubtracted_mcup                = (TH1D*)compare_t_MCsubtracted->Clone("compare_t_MCsubtracted_mcup");
     TH1D* compare_t_MCsubtracted_mcdown                = (TH1D*)compare_t_MCsubtracted->Clone("compare_t_MCsubtracted_mcdown");
     compare_t_MCsubtracted_mcup->Scale(1.07);
@@ -1873,8 +1910,6 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
     compare_t->Add(compare_t_MCsubtracted,-1);
     output_h_mcup->Add(compare_t_MCsubtracted_mcup,-1);
     output_h_mcdown->Add(compare_t_MCsubtracted_mcdown,-1);
-       
-
     compare_t->Write();
     output_h->Divide(closure_h);
     output_h_mcup->Divide(closure_h_mcup);

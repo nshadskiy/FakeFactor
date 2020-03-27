@@ -45,7 +45,7 @@ void CallCRHisto_creation (TSelectionAnalyzer* Analyzer, int variable_bitcode, i
 }
 
 
-void ProduceMCsubtractedHistos (TString control_region, TString variable_name, TString AI_extension, TString Njet_extension, int variable_mask ) {
+void ProduceMCsubtractedHistos (TString control_region, TString variable_name, TString AI_extension, TString Njet_extension, int variable_mask, int sub_all ) {
   TString modes[] = {"l","t"};
   Int_t nmodes = 2;
   const TString *ssa=vsuff;
@@ -67,7 +67,7 @@ void ProduceMCsubtractedHistos (TString control_region, TString variable_name, T
     TH1D* dataminusMC = (TH1D*)inhist->Clone("hh_"+modes[imode]+"_"+variable_name+"_dataminusMC"); 
 
     for (int is=0; is<nSA; is++){ //loop over samples
-      if(control_region == ssa[is]) continue;
+      if((!sub_all) && (control_region == ssa[is])) continue;
       TFile tmp(path_sim+s_CR+"_"+control_region+"_"+variable_name+AI_extension+Njet_extension+"_"+ssa[is]+".root"  );
       TH1D *tmphist = (TH1D*)tmp.Get("hh_"+modes[imode]+"_"+variable_name);
 
@@ -145,7 +145,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   TString CF = COINFLIP==1 ? "" : "_DC"; // coinflip is =1 for mutau and etau channels. It is =0 for tautau
 
   TString presel_file = "";
-
+  
   for (int ic=0; ic<nCR; ic++){ //loop over CRs - Wjets, DY, TT, QCD 
     for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt, muiso
       CallCRHisto_creation (Analyzer, ivar[iv], icr[ic], scr[ic], tvarCR[iv]);  
@@ -169,7 +169,9 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   
   //get SS Wjet histogramms for SS mvis Wjets closure
   CallCRHisto_creation(Analyzer, MVIS, _W_JETS|_AI, s_Wjets, s_mvis+"_SS" );
-    
+  
+  CallCRHisto_creation(Analyzer, LEPPT, _W_JETS|_AI, s_Wjets, "lepPt_SS" );
+  
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //get Wjet SS histos for corrections
   Analyzer->getCRHisto(preselection_Wjets, MVIS|_W_JETS|_SS , path_sim+s_CR+"_Wjets_mvis_Wjets_SS_SR.root"  );
@@ -193,21 +195,23 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   // const int icr[nCR]=        {_W_JETS , _DY  , _TT  , _QCD};
   // const TString scr[nCR]=    {s_Wjets, s_DY , s_TT , s_QCD};
   // const TString tvarCR[nVARCR]={s_mt,s_mvis,s_pt,s_muiso}; defined in globals.h
-
+  
   TString modes[] = {"l","t"};
   Int_t nmodes = 2;
   
   for (int ij=0; ij<=2*(doNJetBinning); ij++){ //loop over inclusive, 0jet, 1jet //Check if Njet binning is implemented
-    ProduceMCsubtractedHistos(s_QCD  ,"lepPt",""   ,sjet[ij],0); //get QCD      lepPT MC subtracted CRs
-    ProduceMCsubtractedHistos(s_Wjets  ,"lepPt",""   ,sjet[ij],0); //get QCD      lepPT MC subtracted CRs
-    ProduceMCsubtractedHistos(s_QCD  ,s_mvis ,"_AI",sjet[ij],0); //get QCD   AI mvis  MC subtracted CRs
-    ProduceMCsubtractedHistos(s_Wjets,s_mvis ,"_SS",sjet[ij],0); //get Wjets SS mvis  MC subtracted CRs
-  }
+    ProduceMCsubtractedHistos(s_QCD  ,"lepPt",""   ,sjet[ij],0,0); //get QCD      lepPT MC subtracted CRs
+    ProduceMCsubtractedHistos(s_Wjets  ,"lepPt",""   ,sjet[ij],0,0); //get QCD      lepPT MC subtracted CRs
+    ProduceMCsubtractedHistos(s_QCD  ,s_mvis ,"_AI",sjet[ij],0,0); //get QCD   AI mvis  MC subtracted CRs
+    ProduceMCsubtractedHistos(s_Wjets,s_mvis ,"_SS",sjet[ij],0,0); //get Wjets SS mvis  MC subtracted CRs
+    ProduceMCsubtractedHistos(s_Wjets,"lepPt" ,"_SS",sjet[ij],0,1); //get Wjets SS mvis  MC subtracted CRs
 
+  }
+  
   for (int ic=0; ic<nCR; ic++){ //loop over CRs - Wjets, DY, TT and QCD
     for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt, muiso
       for (int ij=0; ij<=2*(doNJetBinning); ij++){ //loop over inclusive, 0jet, 1jet
-        ProduceMCsubtractedHistos(scr[ic],tvarCR[iv],"",sjet[ij],ivar[iv]);
+        ProduceMCsubtractedHistos(scr[ic],tvarCR[iv],"",sjet[ij],ivar[iv],0);
       }
     }
   }
@@ -263,7 +267,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
     }
   }
   cr.clear();
-
+  
   //end of plots
   
   delete Analyzer;
