@@ -5,19 +5,18 @@
 #define kTAU         2
 ///////////////////////////////////////////////////
 #define EMB          1  
-#define selCHAN      kTAU
-const int CHAN     = kTAU;
+#define selCHAN      kMU
+const int CHAN     = kMU;
 // FakeFactor_2016_DeepTauIDv2_v0
-const TString analysis      ="ff_2018_v15";
-const TString output_folder ="/home/jandrej/ff_2018_v15";
+const TString analysis      ="2018";
+const TString output_folder ="/ceph/jbechtel/osss-fakefactors/2017";
 const TString ver = "2018"; // first time nanoAODv5 with deepTauIDv2 
 
-
 const TString _NtupleTreeName = "TauCheck"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
-const TString _NtupleTreeName_KIT = "tt_nominal/ntuple"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
+const TString _NtupleTreeName_KIT = "mt_nominal/ntuple"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
 const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; //obsolete
 ///////////////////////////////////////////////////
-const TString user="jandrej";    
+const TString user="jbechtel";    
 const Double_t luminosity=59.74; //according to GOLDEN JSON see https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM    
 const TString ERA = "2018"; // needed for plotting
 const int use_svfit = 0; //set to 1 to change input directory name accordingly

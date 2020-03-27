@@ -21,8 +21,8 @@ void TSelectionAnalyzer::calcBgEstSim(const TString preselection,const Int_t mod
   if (mode & _SS ) suff=" (SS) ";
 
   if (mode & MT) {
-    tightSR =     new TH1D("hh_t_mt","Tight events in SR"+suff,nbins_mt,hist_min_mt,hist_max_mt);
-    looseSR =     new TH1D("hh_l_mt","Loose events in SR"+suff,nbins_mt,hist_min_mt,hist_max_mt);
+    tightSR =     new TH1D("hh_t_mt","Tight events in SR"+suff,w_mt_n,w_mt_v);
+    looseSR =     new TH1D("hh_l_mt","Loose events in SR"+suff,w_mt_n,w_mt_v);
   }
   else if (mode & MVIS && mode & _AI) {
     tightSR = new TH1D("hh_t_mvis","Tight events in SR"+suff,w_mvis_n,w_mvis_v);
@@ -101,24 +101,23 @@ void TSelectionAnalyzer::getCRHisto(TString preselection,Int_t mode,TString outp
 {
   loadFile(preselection,"Events");
 
-  const Int_t FI=1;
   TH1D* tightCR,*looseCR;
   
   if (mode & MT) {
-    tightCR = new TH1D("hh_t_mt","",FI*nbins_mt,hist_min_mt,hist_max_mt);
-    looseCR = new TH1D("hh_l_mt","",FI*nbins_mt,hist_min_mt,hist_max_mt);
+    tightCR = new TH1D("hh_t_mt","",w_mt_n,w_mt_v);
+    looseCR = new TH1D("hh_l_mt","",w_mt_n,w_mt_v);
   }
   else if (mode & MVIS) {
     tightCR = new TH1D("hh_t_mvis","",w_mvis_n,w_mvis_v);
     looseCR = new TH1D("hh_l_mvis","",w_mvis_n,w_mvis_v);
   }
   else if (mode & PT) {
-    tightCR = new TH1D("hh_t_pt","",FI*nbins_pt,hist_min_pt,hist_max_pt);
-    looseCR = new TH1D("hh_l_pt","",FI*nbins_pt,hist_min_pt,hist_max_pt);
+    tightCR = new TH1D("hh_t_pt","",nbins_pt,hist_min_pt,hist_max_pt);
+    looseCR = new TH1D("hh_l_pt","",nbins_pt,hist_min_pt,hist_max_pt);
   }
   else if (mode & ETA2) {
-    tightCR = new TH1D("hh_t_eta","",FI*nbins_eta,hist_min_eta,hist_max_eta);
-    looseCR = new TH1D("hh_l_eta","",FI*nbins_eta,hist_min_eta,hist_max_eta);
+    tightCR = new TH1D("hh_t_eta","",nbins_eta,hist_min_eta,hist_max_eta);
+    looseCR = new TH1D("hh_l_eta","",nbins_eta,hist_min_eta,hist_max_eta);
   }
   else if (mode & MUISO) {
     tightCR = new TH1D("hh_t_muiso","",w_muiso_n,w_muiso_v);
