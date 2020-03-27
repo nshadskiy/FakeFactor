@@ -1,6 +1,7 @@
 #!/bin/bash
 user=$USER
-fftype=ff_v14_KIT_emb
+fftype=2016
+
 
 line=" -------------------------------------------"
 echo "###### START of BuildStructure.sh ######"
@@ -12,22 +13,23 @@ echo $line
 
 echo "Buidling folder structure"
 
-if [ -d "/ceph/$user/$fftype/preselection" ]; then
-    if [ ! -d "/ceph/$user/$fftype/preselection/mt" ]; then
-        mkdir -p /ceph/$user/$fftype/preselection/mt
+if [ -d "/ceph/$user/osss-fakefactors/$fftype/preselection" ]; then
+    if [ ! -d "/ceph/$user/osss-fakefactors/$fftype/preselection/mt" ]; then
+        mkdir -p /ceph/$user/osss-fakefactors/$fftype/preselection/mt
     fi
-    if [ ! -d "/ceph/$user/$fftype/preselection/et" ]; then
-        mkdir -p /ceph/$user/$fftype/preselection/et
+    if [ ! -d "/ceph/$user/osss-fakefactors/$fftype/preselection/et" ]; then
+        mkdir -p /ceph/$user/osss-fakefactors/$fftype/preselection/et
     fi
-    if [ ! -d "/ceph/$user/$fftype/preselection/tt" ]; then
-        mkdir -p /ceph/$user/$fftype/preselection/tt
+    if [ ! -d "/ceph/$user/osss-fakefactors/$fftype/preselection/tt" ]; then
+        mkdir -p /ceph/$user/osss-fakefactors/$fftype/preselection/tt
     fi
 else
-    mkdir -p /ceph/$user/$fftype/preselection/mt
-    mkdir -p /ceph/$user/$fftype/preselection/et
-    mkdir -p /ceph/$user/$fftype/preselection/tt
+    mkdir -p /ceph/$user/osss-fakefactors/$fftype/preselection/mt
+    mkdir -p /ceph/$user/osss-fakefactors/$fftype/preselection/et
+    mkdir -p /ceph/$user/osss-fakefactors/$fftype/preselection/tt
 fi
-mkdir -p /ceph/$user/$fftype/preselection/mt
+mkdir -p /ceph/$user/osss-fakefactors/$fftype/preselection/mt
+
 
 if [ -d "sim" ]; then
     if [ ! -d "sim/mt" ]; then

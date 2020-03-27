@@ -221,7 +221,7 @@ Int_t GlobalClass::isInSR(const Int_t mode, const Int_t ind)
 
   //mt
   if( CHAN!=kTAU ){
-    if ( !(event_s->alltau_mt->at(ind)<MT_CUT || (mode & NO_SR) ) ) return 0;
+    if ( !(event_s->alltau_mt->at(ind)<40 || (mode & NO_SR) ) ) return 0;
   }
 
   //lep iso
@@ -261,10 +261,10 @@ TString GlobalClass::getSRCutString(const Int_t mode, const Int_t categoryMode){
 
   s_mode += " * (passesDLVeto > 0.5) * (passes3LVeto > 0.5)";
 
-  if( (inclusive_selection && (CHAN==kMU || CHAN==kEL)) || categoryMode & _DUMMYCAT ) s_mode += " * (alltau_mt[tau_iso_ind] < " + to_string(MT_CUT) + ")";
+  if( (inclusive_selection && (CHAN==kMU || CHAN==kEL)) || categoryMode & _DUMMYCAT ) s_mode += " * (alltau_mt[tau_iso_ind] < " + to_string(40) + ")";
 
   if( CHAN != kTAU ){
-    if( !(mode & NO_SR) ) s_mode += " * (alltau_mt[tau_iso_ind] < "+ to_string(MT_CUT) +")";
+    if( !(mode & NO_SR) ) s_mode += " * (alltau_mt[tau_iso_ind] < "+ to_string(40) +")";
   }
 
   if( CHAN == kTAU ){
@@ -311,7 +311,7 @@ TString GlobalClass::getCRCutString(const Int_t mode){
     if( !(mode & NO_SR) ) s_mode += " * (alltau_mt[0] > 70)";
     if( CHAN == kTAU ) s_mode += " * (lep_iso > "+to_string(TAU1_ISO_CUT)+")";
     else s_mode += " * (lep_iso < "+to_string(isolation)+")";
-    if( CALC_SS_SR ) s_mode += "* (lep_q*alltau_q[0]>0.0)";
+    if( mode & _AI ) s_mode += "* (lep_q*alltau_q[0]>0.0)";
     else s_mode += "* (lep_q*alltau_q[0]<0.0)";
   }
   else if( mode & _QCD ){
@@ -327,7 +327,7 @@ TString GlobalClass::getCRCutString(const Int_t mode){
         s_mode += " * (lep_q*alltau_q[0]>0.0) * (passesDLVeto > 0.5) * (passes3LVeto > 0.5)";
       }
     }else{
-      s_mode = "(alltau_mt[0] < "+to_string(MT_CUT)+")";
+      s_mode = "(alltau_mt[0] < "+to_string(40)+")";
       s_mode += " * (lep_q * alltau_q[0] >= 0) * (passesDLVeto > 0.5) * (passes3LVeto > 0.5) ";
       if( !CALC_SS_SR * !(mode & _AI) ){
         if( !(mode & MUISO) ) s_mode += " * (lep_iso > "+to_string(lep_iso_min)+") * (lep_iso < "+to_string(lep_iso_max)+") ";
@@ -392,9 +392,17 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
        ( ( event_s->lep_q*event_s->alltau_q->at(ind)<0 && !CALC_SS_SR ) || ( event_s->lep_q*event_s->alltau_q->at(ind)>=0 && CALC_SS_SR ) ) //for SS region check
        )
     returnVal=1;
+  else if  ((mode & _SS)                   && 
+       ( (event_s->alltau_mt->at(ind)>70) ||(mode & NO_SR)) && // !(mode & _AI) && 
+       event_s->passesDLVeto              &&
+       event_s->passes3LVeto              &&
+       event_s->lep_iso < isolation     &&
+       event_s->bpt_1<20                  &&
+       (( event_s->lep_q*event_s->alltau_q->at(ind)>=0) ))
+    returnVal=1;
   else if ((mode & _DY)                   &&
 	   //	   event_s->lep_q*event_s->alltau_q->at(ind)<0. && //REMOVE? (orig: with)
-	   //	   event_s->alltau_mt->at(ind)<MT_CUT   && //X (orig: with)
+	   //	   event_s->alltau_mt->at(ind)<40   && //X (orig: with)
            event_s->lep_iso < isolation        &&
 	   event_s->alltau_dRToLep->at(ind) > DR_TAU_LEP_CUT    &&
 	   //TEST  fabs( event_s->alltau_mvis->at(ind)  - (MZ-1.2) )>10 &&  //1.2 because reco distribution has more entries below the peak
@@ -429,10 +437,10 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
            )
     returnVal=1;
   else if ((mode & _QCD)                  &&
-	   (  ( !CALC_SS_SR && !(mode & _AI) && event_s->alltau_mt->at(ind)<MT_CUT && event_s->lep_q*event_s->alltau_q->at(ind)>0.  && ( ( event_s->lep_iso > lep_iso_min && event_s->lep_iso<lep_iso_max) || ( mode & MUISO ) ) ) || //TRY
-	      (  (CALC_SS_SR) && event_s->alltau_mt->at(ind)<MT_CUT   && event_s->lep_q*event_s->alltau_q->at(ind)<0. && ( ( event_s->lep_iso > antiIso_min && event_s->lep_iso<antiIso_max ) || ( mode & MUISO) )   ) || //TRY
-              (  mode & _AI && event_s->alltau_mt->at(ind)<MT_CUT   &&   ( event_s->lep_iso > antiIso_min && event_s->lep_iso<antiIso_max )                     ) ) && //TRY
-	   //	   (  ( !CALC_SS_SR && event_s->alltau_mt->at(ind)<MT_CUT   && ( event_s->lep_iso<LEP_ISO_CUT || ( mode & MUISO ) ) ) || //DEFAULT
+	   (  ( !CALC_SS_SR && !(mode & _AI) && event_s->alltau_mt->at(ind)<40 && event_s->lep_q*event_s->alltau_q->at(ind)>0.  && ( ( event_s->lep_iso > lep_iso_min && event_s->lep_iso<lep_iso_max) || ( mode & MUISO ) ) ) || //TRY
+	      (  (CALC_SS_SR) && event_s->alltau_mt->at(ind)<40   && event_s->lep_q*event_s->alltau_q->at(ind)<0. && ( ( event_s->lep_iso > antiIso_min && event_s->lep_iso<antiIso_max ) || ( mode & MUISO) )   ) || //TRY
+              (  mode & _AI && event_s->alltau_mt->at(ind)<40   &&   ( event_s->lep_iso > antiIso_min && event_s->lep_iso<antiIso_max )                     ) ) && //TRY
+	   //	   (  ( !CALC_SS_SR && event_s->alltau_mt->at(ind)<40   && ( event_s->lep_iso<LEP_ISO_CUT || ( mode & MUISO ) ) ) || //DEFAULT
 	   //	      (  CALC_SS_SR                                     && event_s->lep_iso>LEP_ISO_CUT )   ) && //DEFAULT
            (event_s->lep_q*event_s->alltau_q->at(ind)>=0.) &&
             event_s->passesDLVeto             &&
@@ -867,11 +875,11 @@ Int_t GlobalClass::getPInd( Int_t dm ){
 Int_t GlobalClass::fulfillCategory(Int_t categoryMode, Int_t ind){
 
   if( inclusive_selection && (CHAN==kMU || CHAN==kEL) ){
-    if(event_s->alltau_mt->at(ind) > MT_CUT) return 0; 
+    if(event_s->alltau_mt->at(ind) > 40) return 0; 
   }
   
   if ( categoryMode & _DUMMYCAT ){
-    if(event_s->alltau_mt->at(ind) > MT_CUT) return 0; 
+    if(event_s->alltau_mt->at(ind) > 40) return 0; 
   }  
     
   return 1;
