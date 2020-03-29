@@ -549,9 +549,9 @@ const Int_t N_j_TT_CR = sizeof(Njet_cuts_TT_CR)/sizeof(Int_t);
 const Int_t N_j_QCD = sizeof(Njet_cuts_QCD)/sizeof(Int_t);
 
 const Int_t nbins_svfit=35;  const Double_t hist_min_svfit=0.;  const Double_t hist_max_svfit=350.;
-const Int_t nbins_lepPt=20;  const Double_t hist_min_lepPt=20.; const Double_t hist_max_lepPt=120.;
+// const Int_t nbins_lepPt=20;  const Double_t hist_min_lepPt=20.; const Double_t hist_max_lepPt=120.;
 const Int_t nbins_mt=25;     const Double_t hist_min_mt=0.;     const Double_t hist_max_mt=250.;
-const Int_t nbins_mvis=15;   const Double_t hist_min_mvis=0.;   const Double_t hist_max_mvis=250.;
+const Int_t nbins_mvis=15;   const Double_t hist_min_mvis=0.;   const Double_t hist_max_mvis=500.;
 const Int_t nbins_pt=25;     const Double_t hist_min_pt=20.;    const Double_t hist_max_pt=100.;
 const Int_t nbins_eta=20;    const Double_t hist_min_eta=-3.5;  const Double_t hist_max_eta=3.5;
 
@@ -565,12 +565,22 @@ const Double_t w_mttot_v[]={0,70,100,120,140,170,200,270,1000};
 const Int_t    w_pt_n=(sizeof(w_pt_v)/sizeof(Double_t)) -1;
 const Int_t    w_mttot_n=(sizeof(w_mttot_v)/sizeof(Double_t)) -1;
 
-const Double_t w_mvis_v[]={0,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450};
+const Double_t w_mvis_v[]={0,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450,1000};
 const Int_t w_mvis_n=(sizeof(w_mvis_v)/sizeof(Double_t)) -1;
 
 // const Double_t w_lepPt_v[]={33,36,40,45,50,55,60,65,70,75,80,85,90,95,100,110,120,200};
-const Double_t w_lepPt_v[]={20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120};
+#if(selCHAN == kEL)
+const Double_t w_lepPt_v[]={26,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,110,120,250};
 const Int_t w_lepPt_n=(sizeof(w_lepPt_v)/sizeof(Double_t)) -1;
+#endif
+#if(selCHAN == kMU)
+const Double_t w_lepPt_v[]={23,26,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,110,120,250};
+const Int_t w_lepPt_n=(sizeof(w_lepPt_v)/sizeof(Double_t)) -1;
+#endif
+#if(selCHAN == kTAU)
+const Double_t w_lepPt_v[]={40,45,50,55,60,65,70,75,80,85,90,95,100,110,120,250};
+const Int_t w_lepPt_n=(sizeof(w_lepPt_v)/sizeof(Double_t)) -1;
+#endif
 
 const Double_t w_muiso_v[]={0.00,0.02,0.05,0.1,0.15,0.2,0.25,0.3,0.4,0.5,0.7};
 const Int_t w_muiso_n=(sizeof(w_muiso_v)/sizeof(Double_t)) -1;
@@ -585,17 +595,17 @@ const Int_t    w_njets_n=sizeof(w_njets_v)/sizeof(Int_t) -1;
 const Int_t nbins_weight=(CHAN!=kTAU) ? w_pt_n*w_dm_n : w_mttot_n*w_dm_n; const Double_t min_weight=-0.5;    const Double_t max_weight=nbins_weight-0.5;
 
 const unsigned nVAR=5;
-const Int_t nbins[nVAR]={nbins_mt,nbins_mvis,nbins_pt,nbins_lepPt,w_muiso_n};
-const Double_t hist_min[nVAR]={hist_min_mt,hist_min_mvis,hist_min_pt,hist_min_lepPt,hist_min_pt}; //pt bin is placeholder for muiso
-const Double_t hist_max[nVAR]={hist_max_mt,hist_max_mvis,hist_max_pt,hist_max_lepPt,hist_max_pt}; //pt bin is placeholder for muiso
+const Int_t nbins[nVAR]={nbins_mt,w_mvis_n,nbins_pt,w_lepPt_n,w_muiso_n};
+// const Double_t hist_min[nVAR]={hist_min_mt,hist_min_mvis,hist_min_pt,hist_min_lepPt,hist_min_pt}; //pt bin is placeholder for muiso
+// const Double_t hist_max[nVAR]={hist_max_mt,hist_max_mvis,hist_max_pt,hist_max_lepPt,hist_max_pt}; //pt bin is placeholder for muiso
 const TString tvar[nVAR]={s_mt,s_mvis,s_pt,s_lepPt,s_muiso};
 const TString tvar_l[nVAR]={"m_{T} [GeV]","m_{vis} [GeV]","p_{T} [GeV]","p_{T}(lep) [GeV]","#mu_{iso}"};
 
 // used in CRHisto.C
 const unsigned nVARCR=4;
-const Int_t nbinsCR[nVARCR]={nbins_mt,nbins_mvis,nbins_pt,w_muiso_n};
-const Double_t hist_minCR[nVARCR]={hist_min_mt,hist_min_mvis,hist_min_pt,hist_min_pt}; //pt bin is placeholder for muiso
-const Double_t hist_maxCR[nVARCR]={hist_max_mt,hist_max_mvis,hist_max_pt,hist_max_pt}; //pt bin is placeholder for muiso
+// const Int_t nbinsCR[nVARCR]={nbins_mt,nbins_mvis,nbins_pt,w_muiso_n};
+// const Double_t hist_minCR[nVARCR]={hist_min_mt,hist_min_mvis,hist_min_pt,hist_min_pt}; //pt bin is placeholder for muiso
+// const Double_t hist_maxCR[nVARCR]={hist_max_mt,hist_max_mvis,hist_max_pt,hist_max_pt}; //pt bin is placeholder for muiso
 const TString tvarCR[nVARCR]={s_mt,s_mvis,s_pt,s_muiso};
 const TString tvarCR_l[nVARCR]={"m_{T} [GeV]","m_{vis} [GeV]","p_{T} [GeV]","#mu_{iso}"};
 

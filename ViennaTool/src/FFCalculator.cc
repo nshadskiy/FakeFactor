@@ -1808,8 +1808,7 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
   if(!subtractMC) sample+="_MC";
   
   TH1D *closure_h;
-  if(mode & _TT) closure_h= new TH1D("closure"+sample,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
-  else closure_h= new TH1D("closure"+sample,"",w_lepPt_n,w_lepPt_v);
+  closure_h= new TH1D("closure"+sample,"",w_lepPt_n,w_lepPt_v);
   
   TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
   TH1D *output_h = new TH1D("nonclosure_lepPt","",w_lepPt_n,w_lepPt_v);
@@ -2107,8 +2106,7 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   
   TH1D *closure_h;
   Double_t FF_value=0;
-  if(mode & _TT) closure_h= new TH1D("closure"+sample,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
-  else closure_h= new TH1D("closure"+sample,"",w_lepPt_n,w_lepPt_v);
+  closure_h= new TH1D("closure"+sample,"",w_lepPt_n,w_lepPt_v);
   
   TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
   TH1D *output_h = new TH1D("nonclosure_lepPt","",w_lepPt_n,w_lepPt_v);
