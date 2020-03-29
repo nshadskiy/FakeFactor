@@ -1493,8 +1493,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
 
   
   TH1D *closure_h;
-  if(mode & _TT) closure_h= new TH1D("closure"+sample,"",nbins_mvis,hist_min_mvis,hist_max_mvis); // closure plot 15 bins between [0,250]
-  else closure_h= new TH1D("closure"+sample,"",w_mvis_n,w_mvis_v); // closure plot with binning {0,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450}
+  closure_h= new TH1D("closure"+sample,"",w_mvis_n,w_mvis_v); // closure plot with binning {0,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450}
   
   
   TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE"); //can be simplified. 
@@ -1808,8 +1807,7 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
   if(!subtractMC) sample+="_MC";
   
   TH1D *closure_h;
-  if(mode & _TT) closure_h= new TH1D("closure"+sample,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
-  else closure_h= new TH1D("closure"+sample,"",w_lepPt_n,w_lepPt_v);
+  closure_h= new TH1D("closure"+sample,"",w_lepPt_n,w_lepPt_v);
   
   TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
   TH1D *output_h = new TH1D("nonclosure_lepPt","",w_lepPt_n,w_lepPt_v);
@@ -1835,7 +1833,10 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
     TH1D* compare_l              = (TH1D*) compare.Get(ff_inputHist+"_lepPt");
     TH1D* compare_l_MCsubtracted = (TH1D*) compare.Get(ff_inputHist+"_lepPt_MCsubtracted");
     TH1D* compare_l_qcd = (TH1D*) compare_qcd.Get("hh_l_lepPt_dataminusMC");
+    std::cout << "compare_l_MCsubtracted before qcd " << compare_l_MCsubtracted->Integral() << std::endl;
     compare_l_MCsubtracted->Add(compare_l_qcd);
+    std::cout << "compare_l_MCsubtracted after qcd " << compare_l_MCsubtracted->Integral() << std::endl;
+
     TH1D* ratio_l                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l");
     TH1D* ratio_l_mcup                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l_mcup");
     ratio_l_mcup->Scale(1.07);
@@ -1977,8 +1978,8 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
   }
 
   Double_t fitWidth;
-  if(mode & _QCD) fitWidth=1.0; else if(mode & _W_JETS) fitWidth=1.0; else fitWidth=1.0;
-  if(CHAN==kTAU) fitWidth=1.0;
+  if(mode & _QCD) fitWidth=0.8; else if(mode & _W_JETS) fitWidth=0.8; else fitWidth=0.8;
+  if(CHAN==kTAU) fitWidth=0.8;
   cout << "FitWidth: " << fitWidth << endl;
 
   // NOMINAL  
@@ -2107,8 +2108,7 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   
   TH1D *closure_h;
   Double_t FF_value=0;
-  if(mode & _TT) closure_h= new TH1D("closure"+sample,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
-  else closure_h= new TH1D("closure"+sample,"",w_lepPt_n,w_lepPt_v);
+  closure_h= new TH1D("closure"+sample,"",w_lepPt_n,w_lepPt_v);
   
   TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
   TH1D *output_h = new TH1D("nonclosure_lepPt","",w_lepPt_n,w_lepPt_v);
