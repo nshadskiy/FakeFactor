@@ -1666,8 +1666,8 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
     output_fit_mcup->Write();  output_fit_mcdown->Write();
   }
   Double_t fitWidth;
-  if(mode & _QCD) fitWidth=0.8; else if(mode & _W_JETS) fitWidth=0.8; else fitWidth=0.8;
-  if(CHAN==kTAU) fitWidth=0.8;
+  if(mode & _QCD) fitWidth=1.0; else if(mode & _W_JETS) fitWidth=1.0; else fitWidth=1.0;
+  if(CHAN==kTAU) fitWidth=1.0;
   cout << "FitWidth: " << fitWidth << endl;
 
   // NOMINAL  
@@ -2851,7 +2851,7 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   cout << nentries << endl;
   TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
   
-  TString compare_file="ViennaTool/sim/mt/CR_Wjets_mvis_nosr_Wjets.root";
+  TString compare_file=CR_file;
   if(mode & JET0 ) compare_file = compare_file.ReplaceAll("mt_Wjets","mt_0jet_Wjets");
   if(mode & JET1 ) compare_file = compare_file.ReplaceAll("mt_Wjets","mt_1jet_Wjets");
   TH1D *output_h = new TH1D("mt_corr","",w_mvis_n,w_mvis_v);
@@ -2913,7 +2913,7 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   gsk.set_doIgnoreZeroBins(1);
   gsk.set_kernelDistance( "lin" );
   gsk.set_doWidthInBins(1);
-  gsk.setWidth(0.8);
+  gsk.setWidth(1.2);
   /*
   Double_t lastBin;
   // linear fit cut-off
