@@ -150,7 +150,9 @@ const Double_t MT_CUT=40;
 #if(selCHAN == kMU)
 const Double_t MT_CUT=50;
 #endif
-
+#if(selCHAN == kTAU)
+const Double_t MT_CUT=-1;
+#endif
 
 const Double_t MZ=91.2; // used in preselection for Z candidate selection
 const Double_t QCD_SS_TO_OS=1.06;
