@@ -1493,7 +1493,8 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
 
   
   TH1D *closure_h;
-  closure_h= new TH1D("closure"+sample,"",w_mvis_n,w_mvis_v); // closure plot with binning {0,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450}
+  if(mode & _TT) closure_h= new TH1D("closure"+sample,"",nbins_mvis,hist_min_mvis,hist_max_mvis); // closure plot 15 bins between [0,250]
+  else closure_h= new TH1D("closure"+sample,"",w_mvis_n,w_mvis_v); // closure plot with binning {0,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450}
   
   
   TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE"); //can be simplified. 
@@ -1692,6 +1693,21 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   gsk.set_doErrors(1);
   gsk.getContSmoothHisto();
   TGraphAsymmErrors *g=   gsk.returnSmoothedGraph();
+  Double_t x200; Double_t y200;
+  if(CHAN==kMU)g->GetPoint(250*4,x200,y200);
+  if(CHAN==kEL)g->GetPoint(250*4,x200,y200); // TODO CHANGE (110*4,x200,y200)
+  for(int i=0; i<g->GetN(); i++){
+    Double_t x; Double_t y;
+    if(CHAN==kMU && i>250*4){
+      g->GetPoint(i,x,y);
+      g->SetPoint(i,x,y200);
+    }
+    else if(CHAN==kEL && i>250*4){ //CHANGE 110
+      g->GetPoint(i,x,y);
+      g->SetPoint(i,x,y200);
+    }
+    
+  }
   g->SetTitle("nonclosure"+sample);
   g->SetName("nonclosure"+sample);
   g->Write();
@@ -1715,7 +1731,20 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
     //gsk_mcup.set_lastBinFrom(185);
     gsk_mcup.getContSmoothHisto();
     TGraphAsymmErrors *g_mcup=   gsk_mcup.returnSmoothedGraph();
-
+    if(CHAN==kMU)g_mcup->GetPoint(250*4,x200,y200);
+    if(CHAN==kEL)g_mcup->GetPoint(250*4,x200,y200); // TODO CHANGE (110*4,x200,y200)
+    for(int i=0; i<g_mcup->GetN(); i++){
+      Double_t x; Double_t y;
+      if(CHAN==kMU && i>250*4){
+        g_mcup->GetPoint(i,x,y);
+        g_mcup->SetPoint(i,x,y200);
+      }
+      else if(CHAN==kEL && i>250*4){ //CHANGE 110
+        g_mcup->GetPoint(i,x,y);
+        g_mcup->SetPoint(i,x,y200);
+      }
+      
+    }
     g_mcup->SetTitle("nonclosure_mcup"+sample);
     g_mcup->SetName("nonclosure_mcup"+sample);
     g_mcup->Write();
@@ -1739,7 +1768,20 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
     //gsk_mcdown.set_lastBinFrom(185);
     gsk_mcdown.getContSmoothHisto();
     TGraphAsymmErrors *g_mcdown=   gsk_mcdown.returnSmoothedGraph();
-
+    if(CHAN==kMU)g_mcdown->GetPoint(250*4,x200,y200);
+    if(CHAN==kEL)g_mcdown->GetPoint(250*4,x200,y200); // TODO CHANGE (110*4,x200,y200)
+    for(int i=0; i<g_mcdown->GetN(); i++){
+      Double_t x; Double_t y;
+      if(CHAN==kMU && i>250*4){
+        g_mcdown->GetPoint(i,x,y);
+        g_mcdown->SetPoint(i,x,y200);
+      }
+      else if(CHAN==kEL && i>250*4){ //CHANGE 110
+        g_mcdown->GetPoint(i,x,y);
+        g_mcdown->SetPoint(i,x,y200);
+      }
+      
+    }
     g_mcdown->SetTitle("nonclosure_mcdown"+sample);
     g_mcdown->SetName("nonclosure_mcdown"+sample);
     g_mcdown->Write();
@@ -1807,7 +1849,8 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
   if(!subtractMC) sample+="_MC";
   
   TH1D *closure_h;
-  closure_h= new TH1D("closure"+sample,"",w_lepPt_n,w_lepPt_v);
+  if(mode & _TT) closure_h= new TH1D("closure"+sample,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+  else closure_h= new TH1D("closure"+sample,"",w_lepPt_n,w_lepPt_v);
   
   TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
   TH1D *output_h = new TH1D("nonclosure_lepPt","",w_lepPt_n,w_lepPt_v);
@@ -1833,10 +1876,7 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
     TH1D* compare_l              = (TH1D*) compare.Get(ff_inputHist+"_lepPt");
     TH1D* compare_l_MCsubtracted = (TH1D*) compare.Get(ff_inputHist+"_lepPt_MCsubtracted");
     TH1D* compare_l_qcd = (TH1D*) compare_qcd.Get("hh_l_lepPt_dataminusMC");
-    std::cout << "compare_l_MCsubtracted before qcd " << compare_l_MCsubtracted->Integral() << std::endl;
     compare_l_MCsubtracted->Add(compare_l_qcd);
-    std::cout << "compare_l_MCsubtracted after qcd " << compare_l_MCsubtracted->Integral() << std::endl;
-
     TH1D* ratio_l                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l");
     TH1D* ratio_l_mcup                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l_mcup");
     ratio_l_mcup->Scale(1.07);
@@ -1978,8 +2018,8 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
   }
 
   Double_t fitWidth;
-  if(mode & _QCD) fitWidth=0.8; else if(mode & _W_JETS) fitWidth=0.8; else fitWidth=0.8;
-  if(CHAN==kTAU) fitWidth=0.8;
+  if(mode & _QCD) fitWidth=1.0; else if(mode & _W_JETS) fitWidth=1.0; else fitWidth=1.0;
+  if(CHAN==kTAU) fitWidth=1.0;
   cout << "FitWidth: " << fitWidth << endl;
 
   // NOMINAL  
@@ -2108,7 +2148,8 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   
   TH1D *closure_h;
   Double_t FF_value=0;
-  closure_h= new TH1D("closure"+sample,"",w_lepPt_n,w_lepPt_v);
+  if(mode & _TT) closure_h= new TH1D("closure"+sample,"",nbins_lepPt,hist_min_lepPt,hist_max_lepPt);
+  else closure_h= new TH1D("closure"+sample,"",w_lepPt_n,w_lepPt_v);
   
   TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
   TH1D *output_h = new TH1D("nonclosure_lepPt","",w_lepPt_n,w_lepPt_v);
@@ -2810,14 +2851,14 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   cout << nentries << endl;
   TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
   
-  TString compare_file=CR_file;
+  TString compare_file="ViennaTool/sim/et/CR_Wjets_mvis_nosr_Wjets.root";
   if(mode & JET0 ) compare_file = compare_file.ReplaceAll("mt_Wjets","mt_0jet_Wjets");
   if(mode & JET1 ) compare_file = compare_file.ReplaceAll("mt_Wjets","mt_1jet_Wjets");
-  TH1D *output_h = new TH1D("mt_corr","",w_mt_n,w_mt_v);
-  TH1D *closure_h = new TH1D("closure","",w_mt_n,w_mt_v);
+  TH1D *output_h = new TH1D("mt_corr","",w_mvis_n,w_mvis_v);
+  TH1D *closure_h = new TH1D("closure","",w_mvis_n,w_mvis_v);
   Double_t FF_value=0;
   TFile compare(compare_file);
-  TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_mt");
+  TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_mvis");
   TFile FF_lookup(raw_ff);
   TH1D* FF_lookup_h = nullptr;
   if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t"+tight_cat);
@@ -2848,7 +2889,7 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
         // closure_h->Fill(event_s->alltau_mt->at(tau_ind),FF_value*nonclosure_h->GetBinContent( this->getWeightIndex_mvis(event_s->alltau_mvis->at(tau_ind) )+1 )*event_s->weight_sf );
         
         // lep pT case:
-        closure_h->Fill(event_s->alltau_mt->at(tau_ind),FF_value * nonclosure_h->GetBinContent( this->getWeightIndex_lepPt(event_s->lep_pt)+1 ) *event_s->weight_sf );
+        closure_h->Fill(event_s->alltau_mvis->at(tau_ind),FF_value * nonclosure_h->GetBinContent( this->getWeightIndex_lepPt(event_s->lep_pt)+1 ) *event_s->weight_sf );
       }
   }
 
@@ -2872,7 +2913,7 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   gsk.set_doIgnoreZeroBins(1);
   gsk.set_kernelDistance( "lin" );
   gsk.set_doWidthInBins(1);
-  gsk.setWidth(1.);
+  gsk.setWidth(1.2);
   /*
   Double_t lastBin;
   // linear fit cut-off
@@ -2887,6 +2928,21 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   gsk.set_doErrors(1);
   gsk.getContSmoothHisto();
   TGraphAsymmErrors *g=   gsk.returnSmoothedGraph();
+  Double_t x200; Double_t y200;
+  if(CHAN==kMU)g->GetPoint(300*4,x200,y200);
+  if(CHAN==kEL)g->GetPoint(300*4,x200,y200); // TODO CHANGE (110*4,x200,y200)
+  for(int i=0; i<g->GetN(); i++){
+    Double_t x; Double_t y;
+    if(CHAN==kMU && i>300*4){
+      g->GetPoint(i,x,y);
+      g->SetPoint(i,x,y200);
+    }
+    else if(CHAN==kEL && i>300*4){ //CHANGE 110
+      g->GetPoint(i,x,y);
+      g->SetPoint(i,x,y200);
+    }
+    
+  }
   g->SetTitle("mt_corr"+sample);
   g->SetName("mt_corr"+sample);
   g->Write();

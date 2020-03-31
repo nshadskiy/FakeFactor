@@ -235,6 +235,130 @@ for category in categories:
             #)
         ]
     )
+
+    comb_onlyqcd = Node(
+        name='ff_onlyqcd',
+        formula='{frac_qcd}*{ff_qcd_os}/{frac_qcd}+0.0*{frac_tt}*{ff_tt}+0.0*{frac_w}*{ff_w}',
+        leaves=[
+            # Individual fake factors
+            qcd_os,
+            w,
+            tt,
+            # Fractions
+            Leaf(
+                name='frac_qcd',
+                file='{INDIR}/constant.root'.format(INDIR=indir),
+                object='constant',
+                vars=['frac_qcd']
+            ),
+            Leaf(
+                name='frac_w',
+                file='{INDIR}/constant.root'.format(INDIR=indir),
+                object='constant',
+                vars=['frac_w']
+            ),
+            Leaf(
+                name='frac_tt',
+                file='{INDIR}/constant.root'.format(INDIR=indir),
+                object='constant',
+                vars=['frac_tt'] 
+            ),
+            #Leaf(
+            #    name='mcfrac',
+            #    file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/MCcount.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category),
+            #    object='MCcount',
+            #    vars=['MCcount'] 
+            #)
+        ]
+    )
+    comb_fracw = Node(
+        name='ff_fracw',
+        formula='0*{frac_tt}*{ff_tt} + {frac_w}*{ff_w}/{ff_w} + 0*{frac_qcd}*{ff_qcd_os}',
+        leaves=[
+            # Individual fake factors
+            qcd_os,
+            w,
+            tt,
+            # Fractions
+            Leaf(
+                name='frac_qcd',
+                file='{INDIR}/constant.root'.format(INDIR=indir),
+                object='constant',
+                vars=['frac_qcd']
+            ),
+            Leaf(
+                name='frac_w',
+                file='{INDIR}/constant.root'.format(INDIR=indir),
+                object='constant',
+                vars=['frac_w']
+            ),
+            Leaf(
+                name='frac_tt',
+                file='{INDIR}/constant.root'.format(INDIR=indir),
+                object='constant',
+                vars=['frac_tt']
+            ),
+        ]
+    )
+    comb_fracqcd = Node(
+        name='ff_fracqcd',
+        formula='0*{frac_tt}*{ff_tt} + 0*{frac_w}*{ff_w} + {frac_qcd}*{ff_qcd_os}/{ff_qcd_os}',
+        leaves=[
+            # Individual fake factors
+            qcd_os,
+            w,
+            tt,
+            # Fractions
+            Leaf(
+                name='frac_qcd',
+                file='{INDIR}/constant.root'.format(INDIR=indir),
+                object='constant',
+                vars=['frac_qcd']
+            ),
+            Leaf(
+                name='frac_w',
+                file='{INDIR}/constant.root'.format(INDIR=indir),
+                object='constant',
+                vars=['frac_w']
+            ),
+            Leaf(
+                name='frac_tt',
+                file='{INDIR}/constant.root'.format(INDIR=indir),
+                object='constant',
+                vars=['frac_tt']
+            ),
+        ]
+    )
+    comb_fractt = Node(
+        name='ff_fractt',
+        formula='{frac_tt}*{ff_tt}/{ff_tt} + 0*{frac_w}*{ff_w} + 0*{frac_qcd}*{ff_qcd_os}',
+        leaves=[
+            # Individual fake factors
+            qcd_os,
+            w,
+            tt,
+            # Fractions
+            Leaf(
+                name='frac_qcd',
+                file='{INDIR}/constant.root'.format(INDIR=indir),
+                object='constant',
+                vars=['frac_qcd']
+            ),
+            Leaf(
+                name='frac_w',
+                file='{INDIR}/constant.root'.format(INDIR=indir),
+                object='constant',
+                vars=['frac_w']
+            ),
+            Leaf(
+                name='frac_tt',
+                file='{INDIR}/constant.root'.format(INDIR=indir),
+                object='constant',
+                vars=['frac_tt']
+            ),
+        ]
+    )
+
     comb_w_up = replace_nodes(
         comb,
         {'ff_w':
@@ -952,6 +1076,10 @@ for category in categories:
     fill(ff_qcd_os, qcd_os_up_stat,   sys='ff_qcd_stat_up')
     fill(ff_qcd_os, qcd_os_down_stat, sys='ff_qcd_stat_down')
     fill(ff_comb  , comb)
+    fill(ff_comb  , comb_onlyqcd, sys='ff_onlyqcd')
+    fill(ff_comb  , comb_fracw, sys='ff_fracw')
+    fill(ff_comb  , comb_fracqcd, sys='ff_fracqcd')
+    fill(ff_comb  , comb_fractt, sys='ff_fractt')
     fill(ff_comb, comb_w_up,   sys='ff_w_syst_up')
     fill(ff_comb, comb_w_down,   sys='ff_w_syst_down')
     fill(ff_comb, comb_w_frac_up,   sys='ff_w_frac_syst_up')
