@@ -5,15 +5,15 @@
 #define kTAU         2
 ///////////////////////////////////////////////////
 #define EMB          1  
-#define selCHAN      kMU
-const int CHAN     = kMU;
+#define selCHAN      kEL
+const int CHAN     = kEL;
 // FakeFactor_2016_DeepTauIDv2_v0
 const TString analysis      ="2017";
 const TString output_folder ="/ceph/jbechtel/osss-fakefactors/2017";
 const TString ver = "2017"; // first time nanoAODv5 with deepTauIDv2 
 
 const TString _NtupleTreeName = "TauCheck"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
-const TString _NtupleTreeName_KIT = "mt_nominal/ntuple"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
+const TString _NtupleTreeName_KIT = "et_nominal/ntuple"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
 const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; //obsolete
 ///////////////////////////////////////////////////
 const TString user="jbechtel";    
@@ -144,7 +144,13 @@ const Double_t TAU_ETA_CUT=2.3; // used for m_Z candidate finding in preselectio
 const Double_t TAU_PT_CUT=20.;
 const Double_t TAU_ETA_CUT_TT=2.1;
 const Double_t TAU_PT_CUT_TT=40.;
-const Double_t MT_CUT=50; 
+#if(selCHAN == kEL)
+const Double_t MT_CUT=40; 
+#endif
+#if(selCHAN == kMU)
+const Double_t MT_CUT=50;
+#endif
+
 
 const Double_t MZ=91.2; // used in preselection for Z candidate selection
 const Double_t QCD_SS_TO_OS=1.06;
