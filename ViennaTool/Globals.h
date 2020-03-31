@@ -420,6 +420,7 @@ const TString SS_SR_VV_L_pt_sim      =path_sim + s_SS_SR+"_VV_L_"+s_pt+".root";
 
 // Control region histograms
 const TString CR_Wjets_mt_Wjets    = path_sim + s_CR+"_Wjets_"+s_mt+"_Wjets.root";
+const TString CR_Wjets_mvis_nosr_Wjets    = path_sim + s_CR+"_Wjets_mvis_nosr_Wjets.root";
 const TString CR_Wjets_mvis_Wjets    = path_sim + s_CR+"_Wjets_"+s_mvis+"_Wjets.root";
 const TString CR_Wjets_lepPt_Wjets    = path_sim + s_CR+"_Wjets_"+s_lepPt+"_Wjets.root";
 const TString CR_Wjets_mt_DY   = path_sim + s_CR+"_Wjets_"+s_mt+"_DY.root";

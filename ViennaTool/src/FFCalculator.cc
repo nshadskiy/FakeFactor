@@ -2851,7 +2851,7 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   cout << nentries << endl;
   TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE");
   
-  TString compare_file="ViennaTool/sim/et/CR_Wjets_mvis_nosr_Wjets.root";
+  TString compare_file=CR_file;
   if(mode & JET0 ) compare_file = compare_file.ReplaceAll("mt_Wjets","mt_0jet_Wjets");
   if(mode & JET1 ) compare_file = compare_file.ReplaceAll("mt_Wjets","mt_1jet_Wjets");
   TH1D *output_h = new TH1D("mt_corr","",w_mvis_n,w_mvis_v);
