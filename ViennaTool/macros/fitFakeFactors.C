@@ -422,6 +422,7 @@ void fitFakeFactors(){
 
         if(ALLPLOTS) c2->SaveAs(pi+"ff_"+ending+".png");
         c2->SaveAs(pi+"ff_"+ending+".pdf");
+        c2->SaveAs(pi+"ff_"+ending+".C");
 
         c2->cd();
         cf.set_fitFromBin( 1+cat*nbins );
