@@ -121,7 +121,7 @@ const TString s_tight        ="tight";
 
 
 //Output directories
-const TString path_presel        = "/ceph/"+user+"/osss-fakefactors/"+analysis+"/preselection/"+s_chan[CHAN]+"/";
+const TString path_presel        = "/ceph/"+user+"/auto-fakefactors/"+analysis+"/preselection/"+s_chan[CHAN]+"/";
 const TString path_ff            = "ViennaTool/fakefactor/";
 const TString path_ff_data       = path_ff+"data_"+s_chan[CHAN]+"/";
 const TString path_ff_mc         = path_ff+"mc_"+s_chan[CHAN]+"/";
@@ -536,7 +536,7 @@ const Int_t Njet_cuts_DY[] = {0,1};
 //const Int_t Njet_cuts_TT[] = {0};
 const Int_t Njet_cuts_TT_SR[] = {0};
 const Int_t Njet_cuts_TT_CR[] = {0};
-const Int_t Njet_cuts_QCD[] = {0,1};
+const Int_t Njet_cuts_QCD[] = {0,1,2};
 
 /*const Int_t Njet_cuts_Wjets[] = {0};
 const Int_t Njet_cuts_DY[] = {0};

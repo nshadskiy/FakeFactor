@@ -295,6 +295,8 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
   TH3D *hout_err_low              = new TH3D( hnout+"_error_low",                "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
   TH3D *hout_err_dm0_njet0_low    = new TH3D( hnout+"_error_dm0_njet0_low",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
   TH3D *hout_err_dm0_njet1_low    = new TH3D( hnout+"_error_dm0_njet1_low",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout_err_dm0_njet2_low    = new TH3D( hnout+"_error_dm0_njet2_low",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+
   TH3D *hout_err_dm1_njet0_low    = new TH3D( hnout+"_error_dm1_njet0_low",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
   TH3D *hout_err_dm1_njet1_low    = new TH3D( hnout+"_error_dm1_njet1_low",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
   TH3D *hout_err_high             = new TH3D( hnout+"_error_high",               "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
@@ -302,6 +304,7 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
   TH3D *hout_err_dm0_njet1_high   = new TH3D( hnout+"_error_dm0_njet1_high",     "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
   TH3D *hout_err_dm1_njet0_high   = new TH3D( hnout+"_error_dm1_njet0_high",     "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
   TH3D *hout_err_dm1_njet1_high   = new TH3D( hnout+"_error_dm1_njet1_high",     "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout_err_dm0_njet2_high   = new TH3D( hnout+"_error_dm0_njet2_high",     "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
 
   TH3D *hout_err_mc_low    = new TH3D( hnout+"_error_mc_low",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
   TH3D *hout_err_mc_high   = new TH3D( hnout+"_error_mc_high",     "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
@@ -333,6 +336,9 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
   TH3D *hout_err_dm1_njet1_morphed_high    = new TH3D( hnout+"_error_dm1_njet1_morphed_high",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
 
 
+  TH3D *hout_err_dm0_njet2_morphed_low    = new TH3D( hnout+"_error_dm0_njet2_morphed_low",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+  TH3D *hout_err_dm0_njet2_morphed_high    = new TH3D( hnout+"_error_dm0_njet2_morphed_high",      "",  N_D1 , d1,  N_D2 ,  d2 , N_D3 , d3 );
+
 
   TString replaceString=hnout;
   replaceString.ReplaceAll("_3d","");
@@ -341,6 +347,8 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
   if(fit_pT_bins){
     Double_t err_dm0njet0=0;
     Double_t err_dm0njet1=0;
+    Double_t err_dm0njet2=0;
+
     Double_t err_dm1njet0=0;
     Double_t err_dm1njet1=0;
     if(useExtraFitUncertainties){
@@ -348,6 +356,7 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
         if(fn.Contains("_QCD")){
           err_dm0njet0=QCD_fitErr_dm0njet0_mt; 
           err_dm0njet1=QCD_fitErr_dm0njet1_mt; 
+          err_dm0njet2=QCD_fitErr_dm0njet2_mt; 
           err_dm1njet0=QCD_fitErr_dm1njet0_mt; 
           err_dm1njet1=QCD_fitErr_dm1njet1_mt; 
         } else if(fn.Contains("_Wjets")){
@@ -361,6 +370,7 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
         if(fn.Contains("_QCD")){
           err_dm0njet0=QCD_fitErr_dm0njet0_et; 
           err_dm0njet1=QCD_fitErr_dm0njet1_et; 
+          err_dm0njet2=QCD_fitErr_dm0njet2_et; 
           err_dm1njet0=QCD_fitErr_dm1njet0_et; 
           err_dm1njet1=QCD_fitErr_dm1njet1_et; 
         } else if(fn.Contains("_Wjets")){
@@ -374,6 +384,7 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
         if(fn.Contains("_QCD")){
           err_dm0njet0=QCD_fitErr_dm0njet0_tt; 
           err_dm0njet1=QCD_fitErr_dm0njet1_tt; 
+          err_dm0njet2=QCD_fitErr_dm0njet2_tt; 
           err_dm1njet0=QCD_fitErr_dm1njet0_tt; 
           err_dm1njet1=QCD_fitErr_dm1njet1_tt; 
         }
@@ -595,6 +606,60 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
             hout_err_dm1_njet0_morphed_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
             hout_err_dm1_njet1_morphed_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
           }
+
+
+          if(idm==0 && ijet==2){
+            std::cout << "HERE ijet " << ijet << std::endl; 
+            std::cout << "morphed high " << morphed_high << std::endl; 
+            std::cout << "morphed low " << morphed_low << std::endl; 
+            std::cout << "stat " << TMath::Sqrt( TMath::Power(err_high/cont,2) + TMath::Power(err_dm0njet2,2)) << std::endl; 
+
+            hout_err_dm0_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm0_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+
+            hout_err_dm0_njet0_param1_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm0_njet1_param1_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm0_njet0_param2_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm0_njet1_param2_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm1_njet0_param1_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm1_njet1_param1_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm1_njet0_param2_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm1_njet1_param2_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+
+            hout_err_dm0_njet0_morphed_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm0_njet1_morphed_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm1_njet0_morphed_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm1_njet1_morphed_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+
+            hout_err_dm0_njet2_morphed_high->SetBinContent(ipt+1 , idm+1 , ijet+1 , morphed_high );
+            hout_err_dm0_njet2_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , TMath::Sqrt( TMath::Power(err_high/cont,2) + TMath::Power(err_dm0njet2,2) ) );
+
+            hout_err_dm0_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm0_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet0_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+            hout_err_dm1_njet1_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
+
+            hout_err_dm0_njet0_param1_low->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm0_njet1_param1_low->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm0_njet0_param2_low->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm0_njet1_param2_low->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm1_njet0_param1_low->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm1_njet1_param1_low->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm1_njet0_param2_low->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm1_njet1_param2_low->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+
+            hout_err_dm0_njet0_morphed_low->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm0_njet1_morphed_low->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm1_njet0_morphed_low->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+            hout_err_dm1_njet1_morphed_low->SetBinContent(ipt+1 , idm+1 , ijet+1 , 0 );
+
+            hout_err_dm0_njet2_morphed_low->SetBinContent(ipt+1 , idm+1 , ijet+1 , morphed_low );
+            hout_err_dm0_njet2_low->SetBinContent(       ipt+1 , idm+1 , ijet+1 , TMath::Sqrt( TMath::Power(err_high/cont,2) + TMath::Power(err_dm0njet2,2) ) );
+
+          }
+
           if(idm==1 && ijet==0){
             hout_err_dm0_njet0_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
             hout_err_dm0_njet1_high->SetBinContent(       ipt+1 , idm+1 , ijet+1 , 0        );
@@ -676,10 +741,14 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
   if(fit_pT_bins){
     hout_err_dm0_njet0_low->Write();
     hout_err_dm0_njet1_low->Write();
+    hout_err_dm0_njet2_low->Write();
+
     hout_err_dm1_njet0_low->Write();
     hout_err_dm1_njet1_low->Write();
     hout_err_dm0_njet0_high->Write();
     hout_err_dm0_njet1_high->Write();
+    hout_err_dm0_njet2_high->Write();
+
     hout_err_dm1_njet0_high->Write();
     hout_err_dm1_njet1_high->Write();
     hout_err_dm0_njet0_param1_low->Write();
@@ -700,10 +769,13 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
     hout_err_dm1_njet1_param2_high->Write();
     hout_err_dm0_njet0_morphed_low->Write();
     hout_err_dm0_njet1_morphed_low->Write();
+    hout_err_dm0_njet2_morphed_low->Write();
     hout_err_dm1_njet0_morphed_low->Write();
     hout_err_dm1_njet1_morphed_low->Write();
     hout_err_dm0_njet0_morphed_high->Write();
     hout_err_dm0_njet1_morphed_high->Write();
+    hout_err_dm0_njet2_morphed_high->Write();
+
     hout_err_dm1_njet0_morphed_high->Write();
     hout_err_dm1_njet1_morphed_high->Write();
   }
