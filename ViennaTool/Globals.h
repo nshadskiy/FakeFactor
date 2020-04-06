@@ -121,7 +121,7 @@ const TString s_tight        ="tight";
 
 
 //Output directories
-const TString path_presel        = "/ceph/"+user+"/osss-fakefactors/"+analysis+"/preselection/"+s_chan[CHAN]+"/";
+const TString path_presel        = "/ceph/"+user+"/auto-fakefactors/"+analysis+"/preselection/"+s_chan[CHAN]+"/";
 const TString path_ff            = "ViennaTool/fakefactor/";
 const TString path_ff_data       = path_ff+"data_"+s_chan[CHAN]+"/";
 const TString path_ff_mc         = path_ff+"mc_"+s_chan[CHAN]+"/";
@@ -536,7 +536,7 @@ const Int_t Njet_cuts_DY[] = {0,1};
 //const Int_t Njet_cuts_TT[] = {0};
 const Int_t Njet_cuts_TT_SR[] = {0};
 const Int_t Njet_cuts_TT_CR[] = {0};
-const Int_t Njet_cuts_QCD[] = {0,1};
+const Int_t Njet_cuts_QCD[] = {0,1,2};
 
 /*const Int_t Njet_cuts_Wjets[] = {0};
 const Int_t Njet_cuts_DY[] = {0};
@@ -571,11 +571,11 @@ const Double_t w_mvis_v[]={0,30,40,50,60,70,80,90,100,110,120,130,140,150,160,17
 const Int_t w_mvis_n=(sizeof(w_mvis_v)/sizeof(Double_t)) -1;
 
 #if(selCHAN == kEL)
-const Double_t w_lepPt_v[]={25,30,33,35,40,45,50,55,60,65,70,75,80,85,90,95,100,110,120,250};
+const Double_t w_lepPt_v[]={23,26,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,110,120,250};
 const Int_t w_lepPt_n=(sizeof(w_lepPt_v)/sizeof(Double_t)) -1;
 #endif
 #if(selCHAN == kMU)
-const Double_t w_lepPt_v[]={21,25,28,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,110,120,250};
+const Double_t w_lepPt_v[]={25,28,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,110,120,250};
 const Int_t w_lepPt_n=(sizeof(w_lepPt_v)/sizeof(Double_t)) -1;
 #endif
 #if(selCHAN == kTAU)

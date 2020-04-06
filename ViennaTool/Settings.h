@@ -9,7 +9,7 @@
 const int CHAN     = kMU;
 // FakeFactor_2016_DeepTauIDv2_v0
 const TString analysis      ="2018";
-const TString output_folder ="/ceph/jbechtel/osss-fakefactors/2018";
+const TString output_folder ="/ceph/jbechtel/auto-fakefactors/2018";
 const TString ver = "2018"; // first time nanoAODv5 with deepTauIDv2 
 
 const TString _NtupleTreeName = "TauCheck"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
@@ -184,3 +184,6 @@ const int useWToDYUncertainty = 1;
 const Double_t WToDYUncertainty_mt = 0.05;
 const Double_t WToDYUncertainty_et = 0.05;
 
+const Double_t QCD_fitErr_dm0njet2_mt = 0.04;
+const Double_t QCD_fitErr_dm0njet2_et = 0.04;
+const Double_t QCD_fitErr_dm0njet2_tt = 0.04;

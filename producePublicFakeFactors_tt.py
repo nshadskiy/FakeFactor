@@ -925,6 +925,42 @@ for category in categories:
          )
         }
     )
+    comb_qcd_up_stat_dm0_njet2 = replace_nodes(
+        comb, 
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_os_up_stat_dm0_njet2',
+             formula='(1.+{stat_qcd_up_dm0_njet2})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_up_dm0_njet2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet2_high',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 qcd_os.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_qcd_down_stat_dm0_njet2 = replace_nodes(
+        comb, 
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_os_down_stat_dm0_njet2',
+             formula='max(0.,1.-{stat_qcd_down_dm0_njet2})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_down_dm0_njet2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet1_low',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 qcd_os.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
     comb_qcd_up_stat_dm1_njet0 = replace_nodes(
         comb, 
         {'ff_qcd_os':
@@ -1069,7 +1105,42 @@ for category in categories:
          )
         }
     )
-    
+    comb_qcd_up_stat_dm0_njet2_morphed = replace_nodes(
+        comb, 
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_up_stat_dm0_njet2_morphed',
+             formula='(1.+{stat_qcd_up_dm0_njet2_morphed})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_up_dm0_njet2_morphed',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet2_morphed_high',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )   
+    comb_qcd_down_stat_dm0_njet2_morphed = replace_nodes(
+        comb, 
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_down_stat_dm0_njet2_morphed',
+             formula='max(0.,1.+{stat_qcd_down_dm0_njet2_morphed})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_down_dm0_njet2_morphed',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dm0_njet2_morphed_low',
+                     vars=['tau_pt','tau_decay','njets']
+                 ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
     fill(ff_qcd_os, qcd_os)
     fill(ff_qcd_os, qcd_os_up,   sys='ff_qcd_syst_up')
     fill(ff_qcd_os, qcd_os_down, sys='ff_qcd_syst_down')
@@ -1110,6 +1181,8 @@ for category in categories:
     fill(ff_comb, comb_qcd_down_stat_dm0_njet0,   sys='ff_qcd_dm0_njet0_stat_down')
     fill(ff_comb, comb_qcd_up_stat_dm0_njet1,   sys='ff_qcd_dm0_njet1_stat_up')
     fill(ff_comb, comb_qcd_down_stat_dm0_njet1,   sys='ff_qcd_dm0_njet1_stat_down')
+    fill(ff_comb, comb_qcd_up_stat_dm0_njet2,   sys='ff_qcd_dm0_njet2_stat_up')
+    fill(ff_comb, comb_qcd_down_stat_dm0_njet2,   sys='ff_qcd_dm0_njet2_stat_down')
     fill(ff_comb, comb_qcd_up_stat_dm1_njet0,   sys='ff_qcd_dm1_njet0_stat_up')
     fill(ff_comb, comb_qcd_down_stat_dm1_njet0,   sys='ff_qcd_dm1_njet0_stat_down')
     fill(ff_comb, comb_qcd_up_stat_dm1_njet1,   sys='ff_qcd_dm1_njet1_stat_up')
@@ -1118,7 +1191,8 @@ for category in categories:
     fill(ff_comb, comb_qcd_down_stat_dm0_njet0_morphed,   sys='ff_qcd_dm0_njet0_morphed_stat_down')
     fill(ff_comb, comb_qcd_up_stat_dm0_njet1_morphed,   sys='ff_qcd_dm0_njet1_morphed_stat_up')
     fill(ff_comb, comb_qcd_down_stat_dm0_njet1_morphed,   sys='ff_qcd_dm0_njet1_morphed_stat_down')
-    
+    fill(ff_comb, comb_qcd_up_stat_dm0_njet2_morphed,   sys='ff_qcd_dm0_njet2_morphed_stat_up')
+    fill(ff_comb, comb_qcd_down_stat_dm0_njet2_morphed,   sys='ff_qcd_dm0_njet2_morphed_stat_down')    
     
     file = ROOT.TFile.Open("{INDIR}/{CHANNEL}/{CATEGORY}/fakeFactors_{ISOLATION}.root".format(INDIR=indir,CHANNEL=channel,CATEGORY=category, ISOLATION=isolation), "recreate")
     # Write meta-data
