@@ -359,8 +359,8 @@ void fitFakeFactors(){
         TString paper; 
         Double_t yvalue = 0.78;          
         
-        if( modes.at(imode) & _TT ) {paper="#splitline{Simulation}{Supplementary}"; yvalue=0.765;}
-        else paper="Supplementary";
+        if( modes.at(imode) & _TT ) {paper="#splitline{Simulation}{Preliminary}"; yvalue=0.765;}
+        else paper="Preliminary";
         if( modes.at(imode) & _TT ) {preliminary="#splitline{Simulation}{Preliminary}"; yvalue=0.765;}
         else preliminary="Preliminary";
         TLatex cms2 = TLatex( 0.19, yvalue, paper );
