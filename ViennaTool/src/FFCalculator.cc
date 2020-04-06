@@ -701,7 +701,7 @@ void FFCalculator::calcWeightFromFit(const TString fname, const TString m_path_i
       gPad->SaveAs(fracstring);
       
       if(CHAN != kTAU)hs_split[is]->GetXaxis()->SetTitle(labelPt);
-      else hs_split[is]->GetXaxis()->SetTitle("m_{T,tot} [GeV]");
+      else hs_split[is]->GetXaxis()->SetTitle("m_{T,tot} (GeV)");
       hs_split[is]->GetYaxis()->SetTitle("Fraction");
       hs_split[is]->Draw();
       leg->Draw();
@@ -1802,7 +1802,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   g->Draw("same LP");
 
   output_h->Draw("E same");
-  output_h->SetXTitle("m_{vis}[GeV]");
+  output_h->SetXTitle("m_{vis}(GeV)");
   output_h->SetTitle("nonclosure m_{vis}");
 
   output_h->SetYTitle("Ratio");
@@ -2109,7 +2109,7 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
   g->Draw("same LP");
 
   output_h->Draw("E same");
-  output_h->SetXTitle("m_{vis}[GeV]");
+  output_h->SetXTitle("m_{vis}(GeV)");
   output_h->SetTitle("nonclosure m_{vis}");
 
   output_h->SetYTitle("Ratio");
@@ -2392,9 +2392,9 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   g->Draw("same LP");
   
   output_h->Draw("E same");
-  output_h->SetXTitle("p_T [GeV]");
+  output_h->SetXTitle("p_T (GeV)");
   output_h->SetTitle("nonclosure p_T");
-  //output_h->SetXTitle("Z_{p}^{T}[GeV]");
+  //output_h->SetXTitle("Z_{p}^{T}(GeV)");
   output_h->SetYTitle("Ratio");
   output_h->SetMaximum(2.);
   output_h->SetMinimum(0.);
@@ -2830,7 +2830,7 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
   g->Draw("same LP");
   output_h->Draw("E same");
   output_h->SetTitle("OS/SS ratio");
-  output_h->SetXTitle("m_{vis}[GeV]");
+  output_h->SetXTitle("m_{vis}(GeV)");
   output_h->SetYTitle("Ratio");
   output_h->SetMaximum(2.);
   output_h->SetMinimum(0.);
@@ -2965,7 +2965,7 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   g->Draw("same LP");
   output_h->Draw("E same");
   output_h->SetTitle("m_{T} correction");
-  output_h->SetXTitle("m_{T}[GeV]");
+  output_h->SetXTitle("m_{T}(GeV)");
   output_h->SetYTitle("Ratio");
   output_h->SetMaximum(2.);
   output_h->SetMinimum(0.);
