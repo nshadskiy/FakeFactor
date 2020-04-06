@@ -485,9 +485,9 @@ const TString SS_SR_data_mvis  = SS_SR_data+"_"+s_mvis+".root";
 const TString SS_SR_data_pt    = SS_SR_data+"_"+s_pt+".root";
 
 // x Axis label
-const TString labelMt="m_{T} [GeV]";
-const TString labelMvis="m_{vis} [GeV]";
-const TString labelPt="p_{T} [GeV]";
+const TString labelMt="m_{T} (GeV)";
+const TString labelMvis="m_{vis} (GeV)";
+const TString labelPt="p_{T} (GeV)";
 const TString labelIso="rel. muon isolation";
 const TString labelNb="number of b-tags";
 const TString labelDRb="#Delta R(#tau,b)";
@@ -599,7 +599,7 @@ const Int_t nbins[nVAR]={nbins_mt,nbins_mvis,nbins_pt,nbins_lepPt,w_muiso_n};
 const Double_t hist_min[nVAR]={hist_min_mt,hist_min_mvis,hist_min_pt,hist_min_lepPt,hist_min_pt}; //pt bin is placeholder for muiso
 const Double_t hist_max[nVAR]={hist_max_mt,hist_max_mvis,hist_max_pt,hist_max_lepPt,hist_max_pt}; //pt bin is placeholder for muiso
 const TString tvar[nVAR]={s_mt,s_mvis,s_pt,s_lepPt,s_muiso};
-const TString tvar_l[nVAR]={"m_{T} [GeV]","m_{vis} [GeV]","p_{T} [GeV]","p_{T}(lep) [GeV]","#mu_{iso}"};
+const TString tvar_l[nVAR]={"m_{T} (GeV)","m_{vis} (GeV)","p_{T} (GeV)","p_{T}(lep) (GeV)","#mu_{iso}"};
 
 // used in CRHisto.C
 const unsigned nVARCR=4;
@@ -607,7 +607,7 @@ const unsigned nVARCR=4;
 // const Double_t hist_minCR[nVARCR]={hist_min_mt,hist_min_mvis,hist_min_pt,hist_min_pt}; //pt bin is placeholder for muiso
 // const Double_t hist_maxCR[nVARCR]={hist_max_mt,hist_max_mvis,hist_max_pt,hist_max_pt}; //pt bin is placeholder for muiso
 const TString tvarCR[nVARCR]={s_mt,s_mvis,s_pt,s_muiso};
-const TString tvarCR_l[nVARCR]={"m_{T} [GeV]","m_{vis} [GeV]","p_{T} [GeV]","#mu_{iso}"};
+const TString tvarCR_l[nVARCR]={"m_{T} (GeV)","m_{vis} (GeV)","p_{T} (GeV)","#mu_{iso}"};
 
 
 //plotting constants

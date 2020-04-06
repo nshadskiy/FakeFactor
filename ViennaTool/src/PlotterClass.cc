@@ -105,10 +105,10 @@ void PlotterClass::plotPieFractions_mutau_etau(TString channel, TString outfile,
 
   cpie->cd();
   TLatex cms1 = TLatex( 0.05, 0.955, "CMS" );
-  TString caption = "Own Work";
+  TString caption = "Preliminary";
   if(preliminary) caption = "Preliminary";
   TLatex cms2 = TLatex( 0.183, 0.955, caption );
-  //TLatex cms2 = TLatex( 0.183, 0.955, "Own Work" );
+  //TLatex cms2 = TLatex( 0.183, 0.955, "Preliminary" );
   cms1.SetNDC();
   cms1.SetTextSize(0.055);
   cms2.SetNDC();
@@ -203,7 +203,7 @@ void PlotterClass::plotPieFractions_tautau(TString channel, TString outfile, Int
   cpie->cd();
   TLatex cms1 = TLatex( 0.05, 0.91, "CMS" );
   //TLatex cms2 = TLatex( 0.173, 0.91, "Preliminary" );
-  TLatex cms2 = TLatex( 0.173, 0.91, "Own Work" );
+  TLatex cms2 = TLatex( 0.173, 0.91, "Preliminary" );
   cms1.SetNDC();
   cms1.SetTextSize(0.11);
   cms1.SetTextFont(62);
@@ -953,7 +953,7 @@ void PlotterClass::plotCompBgStackedAgainstData(TString compareFile,TString comp
   if(mode&_COMPARE){for(int i=0; i<size;i++) u_color[i] = vcolor_compare[i];}
   if(mode&_COMPARE2){for(int i=0; i<size;i++) u_color[i] = vcolor_compare2[i];}
   TH1D* hsum= (TH1D*) hproc.at(0)->Clone();
-  hsum->SetXTitle("mvis [GeV]");
+  hsum->SetXTitle("mvis (GeV)");
   THStack* hs = new THStack("hs","");
   for (unsigned i=0; i<proc_bkg.size(); i++){
     hproc.at(i)->SetFillColor(u_color[i]);
