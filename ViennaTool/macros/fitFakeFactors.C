@@ -98,7 +98,7 @@ CustomFit SetCustomFit(CustomFit cf, Int_t mode_i, Int_t idm, Int_t ijet) {
   //////////////////////////////////////////////
   else if( CHAN==kTAU ){ //use default p0 for 1p0j, only //THIS IS USED FOR "TIGHT WP"  #&& !(ijet == 0 && idm == 0) 
     //	  else if( CHAN==kTAU && ijet == 1 ){ //use default p0 for 1p1j/3p1j //THIS IS USED FOR "VERY TIGHT WP"
-    cf.set_fitFunc( "pol3(0)" );
+    cf.set_fitFunc( "pol5(0)" );
     cf.set_err_scale( 3.0 );
     
     if(mode_i & _AI) cf.set_histMaxFrac( 80.0/500.0 ); 
