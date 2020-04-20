@@ -531,11 +531,11 @@ const Int_t N_t_DY = sizeof(Decay_cuts_DY)/sizeof(Int_t);
 const Int_t N_t_TT = sizeof(Decay_cuts_TT)/sizeof(Int_t);
 const Int_t N_t_QCD = sizeof(Decay_cuts_QCD)/sizeof(Int_t);
 
-const Int_t Njet_cuts_Wjets[] = {0,1};
+const Int_t Njet_cuts_Wjets[] = {0,1,2};
 const Int_t Njet_cuts_DY[] = {0,1};
 //const Int_t Njet_cuts_TT[] = {0};
-const Int_t Njet_cuts_TT_SR[] = {0};
-const Int_t Njet_cuts_TT_CR[] = {0};
+const Int_t Njet_cuts_TT_SR[] = {0,2};
+const Int_t Njet_cuts_TT_CR[] = {0,2};
 const Int_t Njet_cuts_QCD[] = {0,1,2};
 
 /*const Int_t Njet_cuts_Wjets[] = {0};

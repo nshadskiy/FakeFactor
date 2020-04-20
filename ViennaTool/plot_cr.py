@@ -130,7 +130,7 @@ logvars = ["nbtag","njets","jpt_1","jpt_2"]
 def main(args):
     do_qcd = args.plot_qcd
     if args.emb:
-        bkg_processes_names = ["emb", "zll","zj", "ttl", "ttj","vvl", "vvj", "w"]
+        bkg_processes_names = ["emb", "zll","zj", "ttl", "ttj","vvl", "vvj", "w" ]
         bkg_processes = ["EMB", "DY_L", "DY_J","TT_L", "TT_J","VV_L", "VV_J", "Wjets"]
         if do_qcd:
             bkg_processes_names.append("qcd")
@@ -154,6 +154,8 @@ def main(args):
     y_log = args.y_log
     variables = args.variables
     categories = ["QCD","Wjets","TT"]
+    if do_qcd:
+        categories = ["Wjets"]
     variables = args.variables#["mvis","mt","muiso","pt","lepPt"]
     working_points = ["tight","loose"] 
     if args.www:
@@ -182,18 +184,11 @@ def main(args):
                     for wp in working_points:
                         config = deepcopy(config_template)
                         config["files"] = []
-                        if args.chi2:
-                            config["analysis_modules"].append("AddHistograms")
-                            config["analysis_modules"].append("Chi2Test")
-                            config["add_nicks"] = [" ".join(bkg_processes_names)]
-                            config["add_result_nicks"] = ["tot_background_noplot"]
-                            config["chi2test_nicks"] = ["tot_background_noplot data"]
-                            config["chi2test_compare"] = ["UU CHI2/NDF"]
                         for bkg_process in bkg_processes + ["data"]:
                             if bkg_process is not "QCD":
                                 config["files"].append("sim/{}/CR_{}_{}_{}.root".format(channel,category,variable,bkg_process))
                             else:
-                                config["files"].append("sim/{}/CR_{}_{}_data_MCsubtracted.root".format(channel,category,variable))                                
+                                config["files"].append("sim/{}/CR_{}_{}_SS_data_MCsubtracted.root".format(channel,category,variable))                                
                         config["lumis"] = [lumi]
                         config["year"] = era.strip("Run")
                         config["output_dir"] = output_dir+"/"+channel
@@ -218,13 +213,27 @@ def main(args):
                                 [channel, category, wp, era, variable,"emb"]) + args.filename_prefix
                         if y_log:
                             config["filename"] += "_log"
-                        if args.ff:
-                            config["filename"] = config["filename"]+"_ff"
+                        if do_qcd:
+                            config["filename"] = config["filename"]+"_withQCD"
                         if not args.x_label == None:
                             config["x_label"] = args.x_label
                         else:
                             config["x_label"] = "_".join([channel, variable])
-                        config["title"] = "{} {} {}".format(channel,category,wp)#"_".join(["channel", channel])
+                        if variable == "pt":
+                            config["x_label"] = "#tau_{h} p_{T} (GeV)"
+                        elif variable == "lepPt":
+                            if channel == "mt":
+                                config["x_label"] = "Muon p_{T} (GeV)"
+                            elif channel == "et":
+                                config["x_label"] = "Electron p_{T} (GeV)"   
+                        elif variable == "mvis":
+                            config["x_label"] = "m_{vis} (GeV)"
+                                                         
+                        channel_dict = {}
+                        channel_dict["mt"] = "#mu#tau_{h}"
+                        channel_dict["et"] = "e#tau_{h}"
+                        channel_dict["tt"] = "#tau_{h}#tau_{h}"
+                        config["title"] = "{} {} {}".format(channel_dict[channel],category,wp)#"_".join(["channel", channel])
                         config["stacks"] = ["mc"] * len(bkg_processes_names) + ["data","ratio_A","ratio_B"]
                         config["ratio_denominator_nicks"] = [" ".join(bkg_processes_names)] * 2
                         config["ratio_numerator_nicks"] = [" ".join(bkg_processes_names)] + ["data"]
