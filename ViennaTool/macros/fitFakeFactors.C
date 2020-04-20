@@ -349,6 +349,14 @@ void fitFakeFactors(){
         
         // TString jetMode=""; { if(modes.at(imode) & _TT ) jetMode+="#geq 0jet"; else if(ijet==0) jetMode+="0jet"; else if(ijet==1) jetMode+="1jet"; else jetMode+="#geq2jet";}
         TString jetMode=""; { if(ijet==0) jetMode+="0jet"; else if(ijet==1) jetMode+="1jet"; else jetMode+="#geq2jet";}
+        if(modes.at(imode) & _TT ) {
+          if(ijet==0) {
+            jetMode="[0-1] jet";
+          }
+          else if (ijet==1) {
+            jetMode="#geq2jet";
+          }
+        }
         TString channel=""; { if(CHAN == kMU) channel+="#mu^{}#tau_{h}"; else if(CHAN == kEL) channel+="e#tau_{h}"; else channel+="#tau_{h}#tau_{h}";}
         
         ChannelJetcat.DrawLatex(0.16,0.915,"channel: "+channel+", jet cat: "+jetMode);
