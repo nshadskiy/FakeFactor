@@ -152,10 +152,9 @@ void CRHisto(int doCalc, int nCR, int nQU) {
     }
   }
 
-
-
   CallCRHisto_creation(Analyzer, 0, _W_JETS|MVIS|NO_SR, s_Wjets, "mvis_nosr" );
-
+  CallCRHisto_creation(Analyzer, 0, _W_JETS|MVIS|NO_SR|MT70, s_Wjets, "mvis_mt70" );
+  
   //pick only QCD control region - produces ViennaTool/sim/channel/CR_QCD_lepPt_*.root but not the MCsubtracted one
   CallCRHisto_creation(Analyzer, 0, _QCD|LEPPT, s_QCD, "lepPt" );
   CallCRHisto_creation(Analyzer, 0, _W_JETS|LEPPT, s_Wjets, "lepPt" );

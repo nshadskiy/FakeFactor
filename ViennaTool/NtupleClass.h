@@ -1174,7 +1174,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("q_1", &q_1, &b_q_1);
    fChain->SetBranchAddress("d0_1", &d0_1, &b_d0_1);
    fChain->SetBranchAddress("dZ_1", &dZ_1, &b_dZ_1);
-   fChain->SetBranchAddress("mt_1", &mt_1, &b_mt_1);
+   fChain->SetBranchAddress("mt_1_puppi", &mt_1, &b_mt_1);
    fChain->SetBranchAddress("pfmt_1", &pfmt_1, &b_pfmt_1);
    fChain->SetBranchAddress("iso_1", &iso_1, &b_iso_1);
    fChain->SetBranchAddress("againstElectronLooseMVA6_1", &againstElectronLooseMVA6_1, &b_againstElectronLooseMVA6_1);
