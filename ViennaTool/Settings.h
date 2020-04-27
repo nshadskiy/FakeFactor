@@ -9,7 +9,7 @@
 const int CHAN     = kMU;
 // FakeFactor_2016_DeepTauIDv2_v0
 const TString analysis      ="2016";
-const TString output_folder ="/ceph/jbechtel/auto-fakefactors/2016";
+const TString output_folder ="/ceph/jbechtel/auto-puppi-fakefactors/2016";
 const TString ver = "2016"; // first time nanoAODv5 with deepTauIDv2 
 
 

@@ -2884,8 +2884,7 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   for (Int_t jentry=0; jentry<nentries;jentry++) {
       event_s->GetEntry(jentry);
       if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl; }
-      
-      if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+      if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) && event_s->alltau_mt->at(tau_ind)<70){
         if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
         else if( raw_ff.Contains("_fitted") ){
           FF_value = this->getFittedBinContent( mode, fittedFFs );

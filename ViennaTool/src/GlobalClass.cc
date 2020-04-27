@@ -224,6 +224,12 @@ Int_t GlobalClass::isInSR(const Int_t mode, const Int_t ind)
     if ( !(event_s->alltau_mt->at(ind)<MT_CUT || (mode & NO_SR) ) ) return 0;
   }
 
+  if( CHAN!=kTAU ){
+    if((mode & MT70)) {
+      if ( !(event_s->alltau_mt->at(ind)<70  ) ) return 0;
+    }
+  }
+
   //lep iso
   // cout << event_s->lep_iso << endl;
   if ( CHAN == kTAU ){
@@ -266,7 +272,9 @@ TString GlobalClass::getSRCutString(const Int_t mode, const Int_t categoryMode){
   if( CHAN != kTAU ){
     if( !(mode & NO_SR) ) s_mode += " * (alltau_mt[tau_iso_ind] < "+ to_string(MT_CUT) +")";
   }
-
+  if( CHAN != kTAU ){
+    if( (mode & MT70) ) s_mode += " * (alltau_mt[tau_iso_ind] < "+ to_string(70) +")";
+  }
   if( CHAN == kTAU ){
     if ( mode & _AI ) s_mode += " * (lep_iso < "+to_string(TAU1_ISO_CUT) +")";
     else s_mode += " * (lep_iso > "+to_string(TAU1_ISO_CUT) +")";
@@ -309,6 +317,8 @@ TString GlobalClass::getCRCutString(const Int_t mode){
   else if( mode & _W_JETS){
     s_mode = "(passesDLVeto > 0.5) * (passes3LVeto > 0.5) * (bpt_1 < 20)";
     if( !(mode & NO_SR) ) s_mode += " * (alltau_mt[0] > 70)";
+    if( (mode & MT70) ) s_mode += " * (alltau_mt[0] < 70)";
+
     if( CHAN == kTAU ) s_mode += " * (lep_iso > "+to_string(TAU1_ISO_CUT)+")";
     else s_mode += " * (lep_iso < "+to_string(isolation)+")";
     if( mode & _AI ) s_mode += "* (lep_q*alltau_q[0]>0.0)";
