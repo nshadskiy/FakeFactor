@@ -102,10 +102,10 @@ void calcCorrections() {
     Analyzer->loadFile(preselection_Wjets,"Events");
     
     if (usePt_nonclosure_Wjets) {
-      Analyzer->calc_mtcorr(     _W_JETS|NO_SR,                         p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mvis_nosr_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure_lepPt,      p+FF_corr_Wjets_MC_noGen_mtcorr,"",0);
+      Analyzer->calc_mtcorr(     _W_JETS|NO_SR,                         p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mvis_mt70_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure_lepPt,      p+FF_corr_Wjets_MC_noGen_mtcorr,"",0);
     }
     else {
-      Analyzer->calc_mtcorr(   _W_JETS|NO_SR,                         p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mvis_nosr_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure,               p+FF_corr_Wjets_MC_noGen_mtcorr,"",0);
+      Analyzer->calc_mtcorr(   _W_JETS|NO_SR,                         p+FF_corr_Wjets_MC_noGen_fitted,        CR_Wjets_mvis_mt70_Wjets, p+FF_corr_Wjets_MC_noGen_nonclosure,               p+FF_corr_Wjets_MC_noGen_mtcorr,"",0);
     }
  
     if( doNJetBinning ){

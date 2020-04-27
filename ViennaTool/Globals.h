@@ -25,6 +25,7 @@
 #define SR       16777216      
 #define _AI      33554432
 #define LEPPT   268435456
+#define MT70    536870912
 #define SVFIT  1073741824
 
 //int max:     2147483648
@@ -121,7 +122,7 @@ const TString s_tight        ="tight";
 
 
 //Output directories
-const TString path_presel        = "/ceph/"+user+"/auto-fakefactors/"+analysis+"/preselection/"+s_chan[CHAN]+"/";
+const TString path_presel        = "/ceph/"+user+"/auto-puppi-fakefactors/"+analysis+"/preselection/"+s_chan[CHAN]+"/";
 const TString path_ff            = "ViennaTool/fakefactor/";
 const TString path_ff_data       = path_ff+"data_"+s_chan[CHAN]+"/";
 const TString path_ff_mc         = path_ff+"mc_"+s_chan[CHAN]+"/";
@@ -421,6 +422,8 @@ const TString SS_SR_VV_L_pt_sim      =path_sim + s_SS_SR+"_VV_L_"+s_pt+".root";
 // Control region histograms
 const TString CR_Wjets_mt_Wjets    = path_sim + s_CR+"_Wjets_"+s_mt+"_Wjets.root";
 const TString CR_Wjets_mvis_nosr_Wjets    = path_sim + s_CR+"_Wjets_mvis_nosr_Wjets.root";
+const TString CR_Wjets_mvis_mt70_Wjets    = path_sim + s_CR+"_Wjets_mvis_mt70_Wjets.root";
+
 const TString CR_Wjets_mvis_Wjets    = path_sim + s_CR+"_Wjets_"+s_mvis+"_Wjets.root";
 const TString CR_Wjets_lepPt_Wjets    = path_sim + s_CR+"_Wjets_"+s_lepPt+"_Wjets.root";
 const TString CR_Wjets_mt_DY   = path_sim + s_CR+"_Wjets_"+s_mt+"_DY.root";

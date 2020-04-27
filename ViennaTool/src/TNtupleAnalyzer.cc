@@ -146,12 +146,12 @@ void TNtupleAnalyzer::GetWeights(const TString preselectionFile) {
     if( CHAN == kTAU ){ // CHANGE IF TAU WP CHANGES! https://twiki.cern.ch/twiki/bin/view/CMS/TauIDRecommendation13TeV#Tau_ID_SF_for_CMSSW_9_4_X_or_hig
           if(event->gen_match_1 == 5 && event->byTightDeepTau2017v2p1VSjet_1) weight *= event->tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1;
           else if(event->gen_match_1 == 5 && event->byVLooseDeepTau2017v2p1VSjet_1 ) weight *= event->tauIDScaleFactorWeight_vloose_DeepTau2017v2p1VSjet_1;
-          if(event->gen_match_2 == 5 && event->byTightDeepTau2017v2p1VSjet_2) weight *= event->tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1;
-          else if(event->gen_match_2 == 5 && event->byVLooseDeepTau2017v2p1VSjet_2 ) weight *= event->tauIDScaleFactorWeight_vloose_DeepTau2017v2p1VSjet_1;
+          if(event->gen_match_2 == 5 && event->byTightDeepTau2017v2p1VSjet_2) weight *= event->tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2;
+          else if(event->gen_match_2 == 5 && event->byVLooseDeepTau2017v2p1VSjet_2 ) weight *= event->tauIDScaleFactorWeight_vloose_DeepTau2017v2p1VSjet_2;
     }
     if( CHAN != kTAU ){
-        if(event->gen_match_2 == 5 && event->byTightDeepTau2017v2p1VSjet_2) weight *= event->tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_1;
-        else if(event->gen_match_2 == 5 && event->byVLooseDeepTau2017v2p1VSjet_2 ) weight *= event->tauIDScaleFactorWeight_vloose_DeepTau2017v2p1VSjet_1;
+        if(event->gen_match_2 == 5 && event->byTightDeepTau2017v2p1VSjet_2) weight *= event->tauIDScaleFactorWeight_tight_DeepTau2017v2p1VSjet_2;
+        else if(event->gen_match_2 == 5 && event->byVLooseDeepTau2017v2p1VSjet_2 ) weight *= event->tauIDScaleFactorWeight_vloose_DeepTau2017v2p1VSjet_2;
     }
   }
   weight_sf=weight;
