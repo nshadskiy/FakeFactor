@@ -43,8 +43,7 @@ void calcCorrections() {
   if(CHAN!=kTAU){
  
     Analyzer->loadFile(m_preselection_data,"Events");
-    Analyzer->calc_nonclosure(_QCD,                               p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure,"",0);
-    
+    Analyzer->calc_nonclosure_QCD_lepPt(_QCD,                               p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_lepPt_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure,"",0);
     if (usePt_nonclosure_Wjets ) {
       Analyzer->calc_nonclosure_W_lepPt(_W_JETS,   p+FF_corr_Wjets_MCsum_noGen_fitted,    CR_Wjets_lepPt_data_MCsubtracted, p+FF_corr_Wjets_MCsum_noGen_nonclosure, "",0);
     }
