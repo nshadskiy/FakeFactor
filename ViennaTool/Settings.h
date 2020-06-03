@@ -9,7 +9,7 @@
 const int CHAN     = kMU;
 // FakeFactor_2016_DeepTauIDv2_v0
 const TString analysis      ="2016";
-const TString output_folder ="/ceph/jbechtel/auto-puppi-fakefactors/2016";
+const TString output_folder ="/ceph/jandrej/auto-puppi-fakefactors/2016";
 const TString ver = "2016"; // first time nanoAODv5 with deepTauIDv2 
 
 
@@ -17,7 +17,7 @@ const TString _NtupleTreeName = "TauCheck"; // name of the TTree in the Analysis
 const TString _NtupleTreeName_KIT = "mt_nominal/ntuple"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
 const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; //obsolete
 ///////////////////////////////////////////////////
-const TString user="jbechtel";    
+const TString user="jandrej";    
 const Double_t luminosity=35.87; //according to GOLDEN JSON see https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM    
 const TString ERA = "2016"; // needed for plotting
 const int use_svfit = 0; //set to 1 to change input directory name accordingly
