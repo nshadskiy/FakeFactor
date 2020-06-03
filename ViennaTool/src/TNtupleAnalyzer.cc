@@ -29,7 +29,7 @@ void TNtupleAnalyzer::loadFile(TString filename, TString chain)
   else this->curr_sample="unknown";
   std::cout << "Loading file " << filename << "..." << endl;
   int nev=0;
-  if (chain==_NtupleTreeName || chain==_NtupleTreeName_KIT)
+  if (chain==_NtupleTreeName || chain==_NtupleTreeName_KIT || true)
   {  
     event = new NtupleClass(tchain); 
     if (DEBUG) {
