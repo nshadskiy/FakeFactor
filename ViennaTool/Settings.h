@@ -5,18 +5,18 @@
 #define kTAU         2
 ///////////////////////////////////////////////////
 #define EMB          1  
-#define selCHAN      kMU
-const int CHAN     = kMU;
+#define selCHAN      kEL
+const int CHAN     = kEL;
 // FakeFactor_2016_DeepTauIDv2_v0
 const TString analysis      ="2017";
-const TString output_folder ="/ceph/jbechtel/auto-puppi-fakefactors/2017";
+const TString output_folder ="/ceph/jandrej/auto-puppi-fakefactors/2017";
 const TString ver = "2017"; // first time nanoAODv5 with deepTauIDv2 
 
 const TString _NtupleTreeName = "TauCheck"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
 const TString _NtupleTreeName_KIT = "mt_nominal/ntuple"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
 const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; //obsolete
 ///////////////////////////////////////////////////
-const TString user="jbechtel";    
+const TString user="jandrej";    
 const Double_t luminosity=41.529; //according to GOLDEN JSON see https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM    
 const TString ERA = "2017"; // needed for plotting
 const int use_svfit = 0; //set to 1 to change input directory name accordingly
@@ -71,10 +71,10 @@ const int fit_pT_bins = 1; //use fitted pT bins as input for ff
 // _VVTIGHT        128
 // A WP condition is met if: (Fulfill && !Fail)
 // settings for tight vs vloose&(!tight):
-const int wpTightFulfill = 32; 
+const int wpTightFulfill = 64; 
 const int wpTightFail    = 0;
-const int wpLooseFulfill = 4;
-const int wpLooseFail    = 32;
+const int wpLooseFulfill  = 2;
+const int wpLooseFail    = 64;
 ///////////////////////////////////////////////////
 //MUTAU Settings
 #if(selCHAN==kMU)
