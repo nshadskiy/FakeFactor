@@ -57,11 +57,11 @@ done
 wait
 fi
 
-# for process in DY VV TT
-# do
-# cp -rs ${output}/preselection/${chan}/preselection_${process}_J_EMB.root  ${output}/preselection/${chan}/preselection_${process}_J.root
-# cp -rs ${output}/preselection/${chan}/preselection_${process}_L_EMB.root  ${output}/preselection/${chan}/preselection_${process}_L.root
-# done
+for process in DY VV TT
+do
+cp -rs ${output}/preselection/${chan}/preselection_${process}_J_EMB.root  ${output}/preselection/${chan}/preselection_${process}_J.root
+cp -rs ${output}/preselection/${chan}/preselection_${process}_L_EMB.root  ${output}/preselection/${chan}/preselection_${process}_L.root
+done
 
 ./SRHisto &
 ./CRHisto &
@@ -78,10 +78,9 @@ python plotCorrections.py --channel $channel  --doNjetBinning $njetbinning --use
 
 ./convert_inputs
 
-if [ ! -d ${output}/${chan}/ ]; then
-	mkdir -p ${output}/${chan}/
-fi
-rsync -vhrP ViennaTool/fakefactor/data_${chan}/FF_corr_* ${output}/${chan}/.
+
+rsync -vhrP ViennaTool/fakefactor/data_${chan}/FF* ${output}/${chan}/.
+rsync -vhrP ViennaTool/sim/${chan}/* ${output}/${chan}/sim/.
 
 python cpTDHaftPublic.py --destination $output --channel $channel --doNjetBinning $njetbinning
 
