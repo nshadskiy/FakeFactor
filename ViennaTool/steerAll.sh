@@ -81,6 +81,8 @@ python plotCorrections.py --channel $channel  --doNjetBinning $njetbinning --use
 
 rsync -vhrP ViennaTool/fakefactor/data_${chan}/FF* ${output}/${chan}/.
 rsync -vhrP ViennaTool/sim/${chan}/* ${output}/${chan}/sim/.
+rsync -vhrP ViennaTool/Images_EMB/data_${chan}/ff_*. ${output}/${chan}/Images_EMB/.
+rsync -vhrP ViennaTool/Images_EMB/data_${chan}/corr_*. ${output}/${chan}/Images_EMB/.
 
 python cpTDHaftPublic.py --destination $output --channel $channel --doNjetBinning $njetbinning
 
