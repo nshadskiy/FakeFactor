@@ -34,9 +34,11 @@ echo doNjetBinning: $njetbinning
 echo NTuples: $ntuples
 echo savework: $saveWork
 
-sed s/fftype=.*/fftype=$analysis/g BuildStructure.sh # >/tmp/BuildStructure$USER.sh
-#yes | mv /tmp/BuildStructure$USER.sh BuildStructure.sh
 
+sed -i 's#fftype=.*#fftype='$analysis'#g' BuildStructure.sh
+# sed s/fftype=.*/fftype=$analysis/g BuildStructure.sh >/tmp/BuildStructure$USER.sh
+#yes | mv /tmp/BuildStructure$USER.sh BuildStructure.sh
+exit
 
 f_tocheck='ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf'
 if [ "$channel" != " kTAU" ]; then ff_tocheck+=' ff_Wjets_dm?_njet?_??.pdf ff_Wjets_MC_dm?_njet?_??.pdf ff_TT_dm?_njet?_??.pdf'; fi
