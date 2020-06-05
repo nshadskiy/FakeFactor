@@ -34,8 +34,9 @@ echo doNjetBinning: $njetbinning
 echo NTuples: $ntuples
 echo savework: $saveWork
 
-sed s/fftype=.*/fftype=$analysis/g BuildStructure.sh >/tmp/BuildStructure$USER.sh
-yes | mv /tmp/BuildStructure$USER.sh BuildStructure.sh
+sed -i 's#fftype=.*#fftype='$analysis'#g' BuildStructure.sh
+#sed s/fftype=.*/fftype=$analysis/g BuildStructure.sh >/tmp/BuildStructure$USER.sh
+#yes | mv /tmp/BuildStructure$USER.sh BuildStructure.sh
 
 
 f_tocheck='ff_QCD_dm?_njet?_??.pdf ff_QCD_AI_dm?_njet?_??.pdf'
