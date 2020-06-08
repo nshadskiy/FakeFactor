@@ -171,6 +171,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   CallCRHisto_creation(Analyzer, MVIS, _W_JETS|_AI, s_Wjets, s_mvis+"_SS" );
   
   CallCRHisto_creation(Analyzer, LEPPT, _W_JETS|_AI, s_Wjets, "lepPt_SS" );
+  CallCRHisto_creation(Analyzer, PT, _W_JETS|_AI, s_Wjets, "pt_SS" );
   
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //get Wjet SS histos for corrections
@@ -203,9 +204,10 @@ void CRHisto(int doCalc, int nCR, int nQU) {
     ProduceMCsubtractedHistos(s_QCD  ,"lepPt",""   ,sjet[ij],0,0); //get QCD      lepPT MC subtracted CRs
     ProduceMCsubtractedHistos(s_Wjets  ,"lepPt",""   ,sjet[ij],0,0); //get QCD      lepPT MC subtracted CRs
     ProduceMCsubtractedHistos(s_QCD  ,s_mvis ,"_AI",sjet[ij],0,0); //get QCD   AI mvis  MC subtracted CRs
-    ProduceMCsubtractedHistos(s_Wjets,s_mvis ,"_SS",sjet[ij],0,0); //get Wjets SS mvis  MC subtracted CRs
+    ProduceMCsubtractedHistos(s_Wjets,s_mvis ,"_SS",sjet[ij],0,1); //get Wjets SS mvis  MC subtracted CRs
     ProduceMCsubtractedHistos(s_Wjets,"lepPt" ,"_SS",sjet[ij],0,1); //get Wjets SS mvis  MC subtracted CRs
-
+    ProduceMCsubtractedHistos(s_Wjets,"pt" ,"_SS",sjet[ij],0,1); //get Wjets SS mvis  MC subtracted CRs
+  
   }
   
   for (int ic=0; ic<nCR; ic++){ //loop over CRs - Wjets, DY, TT and QCD
