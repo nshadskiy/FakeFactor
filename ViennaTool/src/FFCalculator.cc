@@ -1145,8 +1145,9 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
   std::cout << "QCD SUB LOOSE: Actual integral before QCD sub " << counter_histo_denom->Integral() << std::endl;
 
   if ( (mode & _W_JETS) && (pre_sub.size() > 0) ) { // if W+jets MC FF is calculated then there is no QCD to subtract
-    counter_histo_numer->Add(counter_histo_numer_SS,-1.);
-    counter_histo_denom->Add(counter_histo_denom_SS,-1.);
+    // counter_histo_numer->Add(counter_histo_numer_SS,-1.);
+    // counter_histo_denom->Add(counter_histo_denom_SS,-1.);
+    std::cout << "QCD is neglected - no subtraction" << std::endl;
   }
   else {
     std::cout << "do NOT subtract in the case of W+jets MC the QCD contribution" << std::endl;
