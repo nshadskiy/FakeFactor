@@ -969,6 +969,8 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
     }
   } //end loop over entries
 
+  TH1D* counter_histo_tight_CR_SS_Data = (TH1D*) counter_histo_tight_CR_SS->Clone("numer_SS_Data");
+  TH1D* counter_histo_loose_CR_SS_Data = (TH1D*) counter_histo_loose_CR_SS->Clone("denom_SS_Data");
   
   end  = std::chrono::system_clock::now();
   elapsed_seconds = end-start;
@@ -1041,12 +1043,12 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
         nL=this->isLoose(mode,tau_index); 
        
         if (nT) {
-          ccc_t++;
+          // ccc_t++;
           counter_histo_tight_CR_SS_cont.at(is)->Fill(this->getBin(mode,tau_index),event_s->weight_sf);
         }
         else if (nL) {
           counter_histo_loose_CR_SS_cont.at(is)->Fill(this->getBin(mode,tau_index),event_s->weight_sf);
-          ccc_l++;
+          // ccc_l++;
 
         }
       }      
@@ -1173,7 +1175,31 @@ void FFCalculator::calcFFCorr(const Int_t mode, const TString pre_main, const st
     counter_histo_numer_mcdown->Add(counter_histo_tight_CR_cont.at(is),-1./1.07);
     counter_histo_denom_mcdown->Add(counter_histo_loose_CR_cont.at(is),-1./1.07);
   }
+  
+  if ( (mode & _W_JETS) && (pre_sub.size() > 0) ) { // if W+jets MC FF is calculated then there is no QCD to subtract
+    counter_histo_numer_mcup->Add(counter_histo_numer_SS,(1.-1.07));
+    counter_histo_numer_mcup->Add(counter_histo_tight_CR_SS_Data,-1.*((1.-1.07)));
+    
+    counter_histo_denom_mcup->Add(counter_histo_denom_SS,(1.-1.07));
+    counter_histo_denom_mcup->Add(counter_histo_loose_CR_SS_Data,-1.*((1.-1.07)));
+    
+    counter_histo_numer_mcdown->Add(counter_histo_numer_SS,(1.-1./1.07));
+    counter_histo_numer_mcdown->Add(counter_histo_tight_CR_SS_Data,-1.*((1.-1./1.07)));
+    
+    counter_histo_denom_mcdown->Add(counter_histo_denom_SS,(1.-1./1.07));
+    counter_histo_denom_mcdown->Add(counter_histo_loose_CR_SS_Data,-1.*((1.-1./1.07)));
+  }
 
+  for (int i = 0; i < counter_histo_numer->GetNbinsX(); i++) {
+    std::cout << "mc up: " <<counter_histo_numer_mcup->GetBinContent(i+1) << std::endl;
+    std::cout << "nominal: " << counter_histo_numer->GetBinContent(i+1) << std::endl;
+    std::cout << "mc down: " <<counter_histo_numer_mcdown->GetBinContent(i+1) << std::endl;
+    std::cout << "SS yield: " <<counter_histo_numer_SS->GetBinContent(i+1) << std::endl;
+    std::cout << "Data yield: " <<counter_histo_tight_CR_SS_Data->GetBinContent(i+1) << std::endl;
+
+    
+    
+  }
   TString ff_file=FF_file; 
   TFile f(ff_file,"RECREATE");
   f.cd();
