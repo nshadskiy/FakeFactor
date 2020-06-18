@@ -315,7 +315,7 @@ TString GlobalClass::getCRCutString(const Int_t mode){
     s_mode = "(n_iso_lep >= 1)*(passes3LVeto < 0.5 )*(alltau_dRToLep[0] > "+to_string(DR_TAU_LEP_CUT)+")*(alltau_dRToOtherLep[0] > "+to_string(DR_TAU_LEP_CUT)+")*(njets>1)*(bpt_1>=20)";
   }
   else if( mode & _W_JETS){
-    s_mode = "(passesDLVeto > 0.5) * (passes3LVeto > 0.5) * (bpt_1 < 20)";
+    s_mode = "(passesDLVeto > 0.5) * (passes3LVeto > 0.5) * (bpt_1 < 20) * (alltau_dRToLep[0] <= 3)";
     if( !(mode & NO_SR) ) s_mode += " * (alltau_mt[0] > 70)";
     if( (mode & MT70) ) s_mode += " * (alltau_mt[0] < 70)";
 
@@ -400,6 +400,7 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
        event_s->lep_iso < isolation     &&
        event_s->bpt_1<20                  &&
        ( ( event_s->lep_q*event_s->alltau_q->at(ind)<0 && !CALC_SS_SR ) || ( event_s->lep_q*event_s->alltau_q->at(ind)>=0 && CALC_SS_SR ) ) //for SS region check
+       && event_s->alltau_dRToLep->at(ind) <= 3
        )
     returnVal=1;
   else if  ((mode & _SS)                   && 
@@ -408,7 +409,9 @@ Int_t GlobalClass::isInCR(const Int_t mode, const Int_t ind)
        event_s->passes3LVeto              &&
        event_s->lep_iso < isolation     &&
        event_s->bpt_1<20                  &&
-       (( event_s->lep_q*event_s->alltau_q->at(ind)>=0) ))
+       (( event_s->lep_q*event_s->alltau_q->at(ind)>=0) )
+       && event_s->alltau_dRToLep->at(ind) <= 3
+       )
     returnVal=1;
   else if ((mode & _DY)                   &&
 	   //	   event_s->lep_q*event_s->alltau_q->at(ind)<0. && //REMOVE? (orig: with)
