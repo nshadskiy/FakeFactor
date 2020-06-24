@@ -29,6 +29,11 @@ void CustomFit::fitHisto(){
   this->g_fit_input=this->makeFitGraph( h_in ); // TGraphAsymmErrors translation of TH1D h_in
 
   this->f_fit = new TF1("f1",this->fitFunc,fitMin,fitMax); // 1-Dim function 
+  // f_fit->SetParLimits(0,0,1);
+  // f_fit->SetParLimits(1,-0.01,0.01);
+  // f_fit->ExcludeBin(1);
+  // f_fit->ExcludeBin(2);
+  
   
   TFitResultPtr r = g_fit_input->Fit(f_fit,"SN"); // "N"-option : Do not store the graphics function, do not draw
                                                   // “S”-option : The result of the fit is returned in the TFitResultPtr
@@ -36,7 +41,7 @@ void CustomFit::fitHisto(){
 
 
   
-  
+  std::cout << "I am here" << std::endl;
   this->grint = new TGraphErrors(this->histo_bins);
   float k = pow(this->fitMax/this->fitMin, 1./(this->histo_bins -1));
   
@@ -282,8 +287,15 @@ TGraphAsymmErrors* CustomFit::makeFitGraph(TH1D* h_in){
   for (int i=0; i<nbins; i++){
     x[i]=bin_centers.at(i);
     y[i]=h_in->GetBinContent( this->fitFromBin+i );
-    ey_u[i]=h_in->GetBinErrorUp( this->fitFromBin+i );
-    ey_d[i]=h_in->GetBinErrorLow( this->fitFromBin+i );
+    if (y[i]<=0 || i == nbins-1) { //exclude the last bin from the fit (it is the overflow bin with some weird behavior)
+      ey_u[i]=0.;
+      ey_d[i]=0.;
+    }
+    else {
+      ey_u[i]=h_in->GetBinErrorUp( this->fitFromBin+i );
+      ey_d[i]=h_in->GetBinErrorLow( this->fitFromBin+i );
+    }
+
   }
 
   g=new TGraphAsymmErrors( bin_centers.size() , x , y , 0 , 0 , ey_d , ey_u );
