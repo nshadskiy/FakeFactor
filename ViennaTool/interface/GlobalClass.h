@@ -53,6 +53,7 @@ class GlobalClass{
   Int_t getTrackIndex(const Int_t mode, const Int_t ind=0);
   Int_t getPtIndex(const Int_t mode, const Int_t ind=0);
   Int_t getNjetIndex(const Int_t mode, const Int_t ind=0);
+  Int_t getdRIndex(const Int_t mode, const Int_t ind=0);
   Int_t getEtaIndex(const Int_t mode, const Int_t ind=0);
   Int_t getMtIndex(const Int_t mode, const Int_t ind=0);
   Int_t getIndex(const Double_t* a, const Int_t a_size, const Double_t val);
@@ -64,6 +65,7 @@ class GlobalClass{
   Int_t getNpts(const Int_t mode, const Int_t ind=0);
   Int_t getNtracks(const Int_t mode, const Int_t ind=0);
   Int_t getNjets(const Int_t mode, const Int_t ind=0);
+  Int_t getdR(const Int_t mode, const Int_t ind=0);
   
   
   
@@ -79,6 +81,7 @@ class GlobalClass{
   Int_t* decay_cuts_Wjets,*decay_cuts_DY,*decay_cuts_TT,*decay_cuts_QCD;
   Double_t* mt_cuts_Wjets,*mt_cuts_DY,*mt_cuts_TT,*mt_cuts_QCD;
   Int_t* njet_cuts_Wjets,*njet_cuts_DY,*njet_cuts_TT_SR,*njet_cuts_TT_CR,*njet_cuts_QCD;
+  Double_t* ndRTauLep_cuts_Wjets,*ndRTauLep_cuts_DY,*ndRTauLep_cuts_TT_SR,*ndRTauLep_cuts_TT_CR,*ndRTauLep_cuts_QCD;
   //Int_t* njet_cuts_Wjets,*njet_cuts_DY,*njet_cuts_TT,*njet_cuts_QCD;
   //Int_t n_p_Wjets,n_p_DY,n_p_TT,n_p_QCD,n_p_QCD_AI;
   Int_t n_p_Wjets,n_p_DY,n_p_TT_SR,n_p_TT_CR,n_p_QCD,n_p_QCD_AI;
@@ -87,6 +90,8 @@ class GlobalClass{
   Int_t n_m_Wjets,n_m_DY,n_m_TT,n_m_QCD;
   //Int_t n_j_Wjets,n_j_DY,n_j_TT,n_j_QCD;
   Int_t n_j_Wjets,n_j_DY,n_j_TT_SR,n_j_TT_CR,n_j_QCD;
+  Int_t n_dR_Wjets,n_dR_DY,n_dR_TT_SR,n_dR_TT_CR,n_dR_QCD;
+  
 
   //use for mtll correction
   Double_t corr_array[nFIT_BINS];
