@@ -30,11 +30,13 @@ void calcCorrections() {
                                             N_t_Wjets,N_t_DY,N_t_TT,N_t_QCD,
                                             N_m_Wjets,N_m_DY,N_m_TT,N_m_QCD,
                                             N_j_Wjets,N_j_DY,N_j_TT_SR,N_j_TT_CR,N_j_QCD,
+                                            N_dR_Wjets,N_dR_DY,N_dR_TT_SR,N_dR_TT_CR,N_dR_QCD,
                                             Pt_cuts_Wjets,Pt_cuts_DY,Pt_cuts_TT_SR,Pt_cuts_TT_CR,Pt_cuts_QCD,Pt_cuts_QCD_AI,
                                             Eta_cuts_Wjets,Eta_cuts_DY,Eta_cuts_TT,Eta_cuts_QCD,
                                             Decay_cuts_Wjets,Decay_cuts_DY,Decay_cuts_TT,Decay_cuts_QCD,
                                             Mt_cuts_Wjets,Mt_cuts_DY,Mt_cuts_TT,Mt_cuts_QCD,
-                                            Njet_cuts_Wjets,Njet_cuts_DY,Njet_cuts_TT_SR,Njet_cuts_TT_CR,Njet_cuts_QCD
+                                            Njet_cuts_Wjets,Njet_cuts_DY,Njet_cuts_TT_SR,Njet_cuts_TT_CR,Njet_cuts_QCD,
+                                            dRTauLep_cuts_Wjets,dRTauLep_cuts_DY,dRTauLep_cuts_TT_SR,dRTauLep_cuts_TT_CR,dRTauLep_cuts_QCD
                                             );
 
   Analyzer->init();

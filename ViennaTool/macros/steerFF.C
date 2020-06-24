@@ -37,15 +37,16 @@ void CalcFF() {
                                             N_t_Wjets,N_t_DY,N_t_TT,N_t_QCD,
                                             N_m_Wjets,N_m_DY,N_m_TT,N_m_QCD,
                                             N_j_Wjets,N_j_DY,N_j_TT_SR,N_j_TT_CR,N_j_QCD,
+                                            N_dR_Wjets,N_dR_DY,N_dR_TT_SR,N_dR_TT_CR,N_dR_QCD,
                                             Pt_cuts_Wjets,Pt_cuts_DY,Pt_cuts_TT_SR,Pt_cuts_TT_CR,Pt_cuts_QCD,Pt_cuts_QCD_AI,
                                             Eta_cuts_Wjets,Eta_cuts_DY,Eta_cuts_TT,Eta_cuts_QCD,
                                             Decay_cuts_Wjets,Decay_cuts_DY,Decay_cuts_TT,Decay_cuts_QCD,
                                             Mt_cuts_Wjets,Mt_cuts_DY,Mt_cuts_TT,Mt_cuts_QCD,
-                                            Njet_cuts_Wjets,Njet_cuts_DY,Njet_cuts_TT_SR,Njet_cuts_TT_CR,Njet_cuts_QCD
+                                            Njet_cuts_Wjets,Njet_cuts_DY,Njet_cuts_TT_SR,Njet_cuts_TT_CR,Njet_cuts_QCD,
+                                            dRTauLep_cuts_Wjets,dRTauLep_cuts_DY,dRTauLep_cuts_TT_SR,dRTauLep_cuts_TT_CR,dRTauLep_cuts_QCD
                                             );
   
   Analyzer->init();
-  
   std::vector<TString> wf; 
   wf.push_back(p+a_weight[0]); wf.push_back(p+a_weight[1]); wf.push_back(p+a_weight[2]); // This is old code where fractions were computed directly inside the FF framework
   
@@ -195,3 +196,15 @@ int main(int argc, char* argv[]) {
   // std::cout << "Njet_cuts_TT_SR: " << Njet_cuts_TT_SR << std::endl;
   // std::cout << "Njet_cuts_TT_CR: " << Njet_cuts_TT_CR << std::endl;
   // std::cout << "Njet_cuts_QCD: " << Njet_cuts_QCD << std::endl;
+
+  // std::cout << "dRTauLep_cuts_Wjets: " << dRTauLep_cuts_Wjets << std::endl;
+  //   std::cout << "dRTauLep_cuts_DY: " << dRTauLep_cuts_DY << std::endl;
+  //   std::cout << "dRTauLep_cuts_TT_SR: " << dRTauLep_cuts_TT_SR << std::endl;
+  //   std::cout << "dRTauLep_cuts_TT_CR: " << dRTauLep_cuts_TT_CR << std::endl;
+  //   std::cout << "dRTauLep_cuts_QCD: " << dRTauLep_cuts_QCD << std::endl;
+
+  //   std::cout << "N_dR_Wjets: " << N_dR_Wjets << std::endl;
+  //   std::cout << "N_dR_DY: " << N_dR_DY << std::endl;
+  //   std::cout << "N_dR_TT_SR: " << N_dR_TT_SR << std::endl;
+  //   std::cout << "N_dR_TT_CR: " << N_dR_TT_CR << std::endl;
+  //   std::cout << "N_dR_QCD: " << N_dR_QCD << std::endl;  

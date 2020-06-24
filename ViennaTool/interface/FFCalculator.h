@@ -29,12 +29,13 @@ class FFCalculator : public GlobalClass, public PlotterClass{
                Int_t N_m_Wjets,Int_t N_m_DY,Int_t N_m_TT,Int_t N_m_QCD,
                //Int_t N_j_Wjets,Int_t N_j_DY,Int_t N_j_TT,Int_t N_j_QCD,
                Int_t N_j_Wjets,Int_t N_j_DY,Int_t N_j_TT_SR,Int_t N_j_TT_CR,Int_t N_j_QCD,
+               Int_t N_dR_Wjets,Int_t N_dR_DY,Int_t N_dR_TT_SR,Int_t N_dR_TT_CR,Int_t N_dR_QCD,
                const Double_t Pt_cuts_Wjets[], const Double_t Pt_cuts_DY[], const Double_t Pt_cuts_TT_SR[], const Double_t Pt_cuts_TT_CR[], const Double_t Pt_cuts_QCD[], const Double_t Pt_cuts_QCD_AI[],
                const Double_t Eta_cuts_Wjets[],const Double_t Eta_cuts_DY[],const Double_t Eta_cuts_TT[],const Double_t Eta_cuts_QCD[],
                const Int_t Decay_cuts_Wjets[],const Int_t Decay_cuts_DY[],const Int_t Decay_cuts_TT[],const Int_t Decay_cuts_QCD[],
                const Double_t Mt_cuts_Wjets[],const Double_t Mt_cuts_DY[],const Double_t Mt_cuts_TT[],const Double_t Mt_cuts_QCD[],
-               const Int_t Njet_cuts_Wjets[], const Int_t Njet_cuts_DY[], const Int_t Njet_cuts_TT_SR[], const Int_t Njets_cuts_TT_CR[], const Int_t Njet_cuts_QCD[]
-               
+               const Int_t Njet_cuts_Wjets[], const Int_t Njet_cuts_DY[], const Int_t Njet_cuts_TT_SR[], const Int_t Njets_cuts_TT_CR[], const Int_t Njet_cuts_QCD[],
+               const Double_t dRTauLep_cuts_Wjets[],const Double_t dRTauLep_cuts_DY[],const Double_t dRTauLep_cuts_TT_SR[],const Double_t dRTauLep_cuts_TT_CR[],const Double_t dRTauLep_cuts_QCD[]    
                   );
   ~FFCalculator();
 
