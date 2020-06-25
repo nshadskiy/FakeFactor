@@ -1662,13 +1662,13 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   
   // fill the fits to the raw FFs in the vector fittedFFs. ToDo: Why is dm1 also needed - without it get segfault
   vector<TGraphAsymmErrors*> fittedFFs;
-  TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"+tight_cat); fittedFFs.push_back(dm0njet0);
-  TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"+tight_cat); fittedFFs.push_back(dm1njet0);
-  TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"+tight_cat); fittedFFs.push_back(dm0njet1);
-  TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"+tight_cat); fittedFFs.push_back(dm1njet1);
+  TGraphAsymmErrors *dm0njet0dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0dR0"+tight_cat); fittedFFs.push_back(dm0njet0dR0);
+  TGraphAsymmErrors *dm1njet0dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0dR0"+tight_cat); fittedFFs.push_back(dm1njet0dR0);
+  TGraphAsymmErrors *dm0njet1dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1dR0"+tight_cat); fittedFFs.push_back(dm0njet1dR0);
+  TGraphAsymmErrors *dm1njet1dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1dR0"+tight_cat); fittedFFs.push_back(dm1njet1dR0);
   
-  TGraphAsymmErrors *dm0njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2"+tight_cat); fittedFFs.push_back(dm0njet2);
-  TGraphAsymmErrors *dm1njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2"+tight_cat); fittedFFs.push_back(dm1njet2);
+  TGraphAsymmErrors *dm0njet2dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2dR0"+tight_cat); fittedFFs.push_back(dm0njet2dR0);
+  TGraphAsymmErrors *dm1njet2dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2dR0"+tight_cat); fittedFFs.push_back(dm1njet2dR0);
 
   
   TFile compare(cr_file);
@@ -2021,13 +2021,13 @@ void FFCalculator::calc_nonclosure_QCD_lepPt(const Int_t mode, const TString raw
   
   // fill the fits to the raw FFs in the vector fittedFFs. ToDo: Why is dm1 also needed - without it get segfault
   vector<TGraphAsymmErrors*> fittedFFs;
-  TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"+tight_cat); fittedFFs.push_back(dm0njet0);
-  TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"+tight_cat); fittedFFs.push_back(dm1njet0);
-  TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"+tight_cat); fittedFFs.push_back(dm0njet1);
-  TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"+tight_cat); fittedFFs.push_back(dm1njet1);
+  TGraphAsymmErrors *dm0njet0dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0dR0"+tight_cat); fittedFFs.push_back(dm0njet0dR0);
+  TGraphAsymmErrors *dm1njet0dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0dR0"+tight_cat); fittedFFs.push_back(dm1njet0dR0);
+  TGraphAsymmErrors *dm0njet1dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1dR0"+tight_cat); fittedFFs.push_back(dm0njet1dR0);
+  TGraphAsymmErrors *dm1njet1dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1dR0"+tight_cat); fittedFFs.push_back(dm1njet1dR0);
   
-  TGraphAsymmErrors *dm0njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2"+tight_cat); fittedFFs.push_back(dm0njet2);
-  TGraphAsymmErrors *dm1njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2"+tight_cat); fittedFFs.push_back(dm1njet2);
+  TGraphAsymmErrors *dm0njet2dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2dR0"+tight_cat); fittedFFs.push_back(dm0njet2dR0);
+  TGraphAsymmErrors *dm1njet2dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2dR0"+tight_cat); fittedFFs.push_back(dm1njet2dR0);
 
   
   TFile compare(cr_file);
@@ -2392,12 +2392,22 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
   if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t"+tight_cat);
   vector<TGraphAsymmErrors*> fittedFFs;
   if( raw_ff.Contains("_fitted") ){
-    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"+tight_cat); fittedFFs.push_back(dm0njet0);
-    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"+tight_cat); fittedFFs.push_back(dm1njet0);
-    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"+tight_cat); fittedFFs.push_back(dm0njet1);
-    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"+tight_cat); fittedFFs.push_back(dm1njet1);
-    TGraphAsymmErrors *dm0njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2"+tight_cat); fittedFFs.push_back(dm0njet2);
-    TGraphAsymmErrors *dm1njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2"+tight_cat); fittedFFs.push_back(dm1njet2);  
+
+    TGraphAsymmErrors *dm0njet0dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0dR0"+tight_cat); fittedFFs.push_back(dm0njet0dR0);
+    TGraphAsymmErrors *dm1njet0dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0dR0"+tight_cat); fittedFFs.push_back(dm1njet0dR0);
+    TGraphAsymmErrors *dm0njet1dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1dR0"+tight_cat); fittedFFs.push_back(dm0njet1dR0);
+    TGraphAsymmErrors *dm1njet1dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1dR0"+tight_cat); fittedFFs.push_back(dm1njet1dR0);
+    TGraphAsymmErrors *dm0njet2dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2dR0"+tight_cat); fittedFFs.push_back(dm0njet2dR0);
+    TGraphAsymmErrors *dm1njet2dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2dR0"+tight_cat); fittedFFs.push_back(dm1njet2dR0);  
+  
+
+    TGraphAsymmErrors *dm0njet0dR1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0dR1"+tight_cat); fittedFFs.push_back(dm0njet0dR1);
+    TGraphAsymmErrors *dm1njet0dR1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0dR1"+tight_cat); fittedFFs.push_back(dm1njet0dR1);
+    TGraphAsymmErrors *dm0njet1dR1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1dR1"+tight_cat); fittedFFs.push_back(dm0njet1dR1);
+    TGraphAsymmErrors *dm1njet1dR1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1dR1"+tight_cat); fittedFFs.push_back(dm1njet1dR1);
+    TGraphAsymmErrors *dm0njet2dR1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2dR1"+tight_cat); fittedFFs.push_back(dm0njet2dR1);
+    TGraphAsymmErrors *dm1njet2dR1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2dR1"+tight_cat); fittedFFs.push_back(dm1njet2dR1);  
+  
   }
   
   TFile compare(cr_file);
@@ -2722,12 +2732,12 @@ void FFCalculator::calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff,
   if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t"+tight_cat);
   vector<TGraphAsymmErrors*> fittedFFs;
   if( raw_ff.Contains("_fitted") ){
-    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"+tight_cat); fittedFFs.push_back(dm0njet0);
-    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"+tight_cat); fittedFFs.push_back(dm1njet0);
-    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"+tight_cat); fittedFFs.push_back(dm0njet1);
-    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"+tight_cat); fittedFFs.push_back(dm1njet1);
-    TGraphAsymmErrors *dm0njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2"+tight_cat); fittedFFs.push_back(dm0njet2);
-    TGraphAsymmErrors *dm1njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2"+tight_cat); fittedFFs.push_back(dm1njet2);
+    TGraphAsymmErrors *dm0njet0dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0dR0"+tight_cat); fittedFFs.push_back(dm0njet0dR0);
+    TGraphAsymmErrors *dm1njet0dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0dR0"+tight_cat); fittedFFs.push_back(dm1njet0dR0);
+    TGraphAsymmErrors *dm0njet1dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1dR0"+tight_cat); fittedFFs.push_back(dm0njet1dR0);
+    TGraphAsymmErrors *dm1njet1dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1dR0"+tight_cat); fittedFFs.push_back(dm1njet1dR0);
+    TGraphAsymmErrors *dm0njet2dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2dR0"+tight_cat); fittedFFs.push_back(dm0njet2dR0);
+    TGraphAsymmErrors *dm1njet2dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2dR0"+tight_cat); fittedFFs.push_back(dm1njet2dR0);
   }
   TFile nonclosure(nonclosure_corr);
   if(nonclosure.IsZombie()) cout << nonclosure_corr << " does not exist" << endl;
@@ -2994,12 +3004,12 @@ void FFCalculator::calc_muisocorr(const Int_t mode, const TString raw_ff, const 
   if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t"+tight_cat);
   vector<TGraphAsymmErrors*> fittedFFs;
   if( raw_ff.Contains("_fitted") ){
-    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"+tight_cat); fittedFFs.push_back(dm0njet0);
-    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"+tight_cat); fittedFFs.push_back(dm1njet0);
-    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"+tight_cat); fittedFFs.push_back(dm0njet1);
-    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"+tight_cat); fittedFFs.push_back(dm1njet1);
-    TGraphAsymmErrors *dm0njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2"+tight_cat); fittedFFs.push_back(dm0njet2);
-    TGraphAsymmErrors *dm1njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2"+tight_cat); fittedFFs.push_back(dm1njet2);
+    TGraphAsymmErrors *dm0njet0dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0dR0"+tight_cat); fittedFFs.push_back(dm0njet0dR0);
+    TGraphAsymmErrors *dm1njet0dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0dR0"+tight_cat); fittedFFs.push_back(dm1njet0dR0);
+    TGraphAsymmErrors *dm0njet1dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1dR0"+tight_cat); fittedFFs.push_back(dm0njet1dR0);
+    TGraphAsymmErrors *dm1njet1dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1dR0"+tight_cat); fittedFFs.push_back(dm1njet1dR0);
+    TGraphAsymmErrors *dm0njet2dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2dR0"+tight_cat); fittedFFs.push_back(dm0njet2dR0);
+    TGraphAsymmErrors *dm1njet2dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2dR0"+tight_cat); fittedFFs.push_back(dm1njet2dR0);
   }
   TFile nonclosure(nonclosure_corr.ReplaceAll(".root",tight_cat+".root"));
   if(nonclosure.IsZombie()) cout << nonclosure_corr << " does not exist" << endl;
@@ -3231,12 +3241,12 @@ void FFCalculator::calc_OSSScorr(const Int_t mode, const TString raw_ff, const T
   TH1D* FF_lookup_h = nullptr;
   
   vector<TGraphAsymmErrors*> fittedFFs;
-  TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"+tight_cat); fittedFFs.push_back(dm0njet0);
-  TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"+tight_cat); fittedFFs.push_back(dm1njet0);
-  TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"+tight_cat); fittedFFs.push_back(dm0njet1);
-  TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"+tight_cat); fittedFFs.push_back(dm1njet1);
-  TGraphAsymmErrors *dm0njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2"+tight_cat); fittedFFs.push_back(dm0njet2);
-  TGraphAsymmErrors *dm1njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2"+tight_cat); fittedFFs.push_back(dm1njet2);
+  TGraphAsymmErrors *dm0njet0dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0dR0"+tight_cat); fittedFFs.push_back(dm0njet0dR0);
+  TGraphAsymmErrors *dm1njet0dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0dR0"+tight_cat); fittedFFs.push_back(dm1njet0dR0);
+  TGraphAsymmErrors *dm0njet1dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1dR0"+tight_cat); fittedFFs.push_back(dm0njet1dR0);
+  TGraphAsymmErrors *dm1njet1dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1dR0"+tight_cat); fittedFFs.push_back(dm1njet1dR0);
+  TGraphAsymmErrors *dm0njet2dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2dR0"+tight_cat); fittedFFs.push_back(dm0njet2dR0);
+  TGraphAsymmErrors *dm1njet2dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2dR0"+tight_cat); fittedFFs.push_back(dm1njet2dR0);
 
   TFile nonclosure(nonclosure_corr.ReplaceAll(".root",tight_cat+".root"));
   if(nonclosure.IsZombie()) cout << nonclosure_corr << " does not exist" << endl;
@@ -3428,12 +3438,21 @@ void FFCalculator::calc_mtcorr(const Int_t mode, const TString raw_ff, const TSt
   if( !raw_ff.Contains("_fitted") ) FF_lookup_h = (TH1D*) FF_lookup.Get("c_t"+tight_cat);
   vector<TGraphAsymmErrors*> fittedFFs;
   if( raw_ff.Contains("_fitted") ){
-    TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"+tight_cat); fittedFFs.push_back(dm0njet0);
-    TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"+tight_cat); fittedFFs.push_back(dm1njet0);
-    TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"+tight_cat); fittedFFs.push_back(dm0njet1);
-    TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"+tight_cat); fittedFFs.push_back(dm1njet1);
-    TGraphAsymmErrors *dm0njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2"+tight_cat); fittedFFs.push_back(dm0njet2);
-    TGraphAsymmErrors *dm1njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2"+tight_cat); fittedFFs.push_back(dm1njet2); 
+    TGraphAsymmErrors *dm0njet0dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0dR0"+tight_cat); fittedFFs.push_back(dm0njet0dR0);
+    TGraphAsymmErrors *dm1njet0dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0dR0"+tight_cat); fittedFFs.push_back(dm1njet0dR0);
+    TGraphAsymmErrors *dm0njet1dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1dR0"+tight_cat); fittedFFs.push_back(dm0njet1dR0);
+    TGraphAsymmErrors *dm1njet1dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1dR0"+tight_cat); fittedFFs.push_back(dm1njet1dR0);
+    TGraphAsymmErrors *dm0njet2dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2dR0"+tight_cat); fittedFFs.push_back(dm0njet2dR0);
+    TGraphAsymmErrors *dm1njet2dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2dR0"+tight_cat); fittedFFs.push_back(dm1njet2dR0); 
+
+    TGraphAsymmErrors *dm0njet0dR1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0dR1"+tight_cat); fittedFFs.push_back(dm0njet0dR1);
+    TGraphAsymmErrors *dm1njet0dR1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0dR1"+tight_cat); fittedFFs.push_back(dm1njet0dR1);
+    TGraphAsymmErrors *dm0njet1dR1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1dR1"+tight_cat); fittedFFs.push_back(dm0njet1dR1);
+    TGraphAsymmErrors *dm1njet1dR1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1dR1"+tight_cat); fittedFFs.push_back(dm1njet1dR1);
+    TGraphAsymmErrors *dm0njet2dR1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2dR1"+tight_cat); fittedFFs.push_back(dm0njet2dR1);
+    TGraphAsymmErrors *dm1njet2dR1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2dR1"+tight_cat); fittedFFs.push_back(dm1njet2dR1); 
+  
+  
   }
   TFile nonclosure(nonclosure_corr);
   TH1D* nonclosure_h = (TH1D*) nonclosure.Get("nonclosure_fit_smoothed");
