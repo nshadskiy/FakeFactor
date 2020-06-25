@@ -557,22 +557,32 @@ Int_t GlobalClass::getWeightBin(const Int_t ind){
 
 Double_t GlobalClass::getFittedBinContent( const Int_t mode, vector<TGraphAsymmErrors*> fittedFFs, const Int_t ind){
   
-  Int_t i_t=this->getTrackIndex(mode,ind);
-  Int_t i_j=this->getNjetIndex(mode,ind);
+  Int_t i_t  =this->getTrackIndex(mode,ind);
+  Int_t i_j  =this->getNjetIndex(mode,ind);
+  Int_t i_dR =this->getdRIndex(mode,ind);
   // std::cout<< "tracker index: " << i_t << std::endl;
   // std::cout<< "Njet index: " << i_j << std::endl;
+  // std::cout<< "dR index: " << i_dR << std::endl;
   
   TGraphAsymmErrors *tmp = nullptr;
-  if( i_t == 0 && i_j == 0 ) tmp = fittedFFs.at(0);
-  if( i_t == 1 && i_j == 0 ) tmp = fittedFFs.at(1);
-  if( i_t == 0 && i_j == 1 ) tmp = fittedFFs.at(2);
-  if( i_t == 1 && i_j == 1 ) tmp = fittedFFs.at(3);
-  if( i_t == 0 && i_j == 2 ) tmp = fittedFFs.at(4);
-  if( i_t == 1 && i_j == 2 ) tmp = fittedFFs.at(5);
+  if( i_t == 0 && i_j == 0 && i_dR==0 ) tmp = fittedFFs.at(0);
+  if( i_t == 1 && i_j == 0 && i_dR==0 ) tmp = fittedFFs.at(1);
+  if( i_t == 0 && i_j == 1 && i_dR==0 ) tmp = fittedFFs.at(2);
+  if( i_t == 1 && i_j == 1 && i_dR==0 ) tmp = fittedFFs.at(3);
+  if( i_t == 0 && i_j == 2 && i_dR==0 ) tmp = fittedFFs.at(4);
+  if( i_t == 1 && i_j == 2 && i_dR==0 ) tmp = fittedFFs.at(5);
+
+  if( i_t == 0 && i_j == 0 && i_dR==1 ) tmp = fittedFFs.at(6);
+  if( i_t == 1 && i_j == 0 && i_dR==1 ) tmp = fittedFFs.at(7);
+  if( i_t == 0 && i_j == 1 && i_dR==1 ) tmp = fittedFFs.at(8);
+  if( i_t == 1 && i_j == 1 && i_dR==1 ) tmp = fittedFFs.at(9);
+  if( i_t == 0 && i_j == 2 && i_dR==1 ) tmp = fittedFFs.at(10);
+  if( i_t == 1 && i_j == 2 && i_dR==1 ) tmp = fittedFFs.at(11);
 
   double x=0; double y=0; double cont=0;
   for (int ipt=0; ipt<fitBins; ipt++){
     tmp->GetPoint( ipt + 1,x,y );
+
     if( event_s->alltau_pt->at(ind) < x && y>0 && y<100 ) return y;
   }
 
