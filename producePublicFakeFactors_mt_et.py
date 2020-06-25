@@ -1287,6 +1287,42 @@ for x in range(0,len(categories)):
          )
         }
     )
+    comb_qcd_up_stat_dr0_njet1_morphed = replace_nodes(
+        comb, 
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_os_up_stat_dr0_njet1_morphed',
+             formula='(1.+{stat_qcd_up_dr0_njet1_morphed})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_up_dr0_njet1_morphed',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dr0_njet1_morphed_high',
+                     vars=['tau_pt','tau_dr','njets']
+                 ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )   
+    comb_qcd_down_stat_dr0_njet1_morphed = replace_nodes(
+        comb, 
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_os_down_stat_dr0_njet1_morphed',
+             formula='max(0.,1.+{stat_qcd_down_dr0_njet1_morphed})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_down_dr0_njet1_morphed',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dr0_njet1_morphed_low',
+                     vars=['tau_pt','tau_dr','njets']
+                 ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
     comb_qcd_up_stat_dr0_njet2_morphed = replace_nodes(
         comb, 
         {'ff_qcd_os':
@@ -1324,17 +1360,17 @@ for x in range(0,len(categories)):
         }
     )
 
-    comb_qcd_up_stat_dr0_njet1_morphed = replace_nodes(
+    comb_qcd_up_stat_dr1_njet1_morphed = replace_nodes(
         comb, 
         {'ff_qcd_os':
          Node(
-             name='ff_qcd_os_up_stat_dr0_njet1_morphed',
-             formula='(1.+{stat_qcd_up_dr0_njet1_morphed})*{ff_qcd_os}',
+             name='ff_qcd_os_up_stat_dr1_njet1_morphed',
+             formula='(1.+{stat_qcd_up_dr1_njet1_morphed})*{ff_qcd_os}',
              leaves=[
                  Leaf(
-                     name='stat_qcd_up_dr0_njet1_morphed',
+                     name='stat_qcd_up_dr1_njet1_morphed',
                      file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
-                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dr0_njet1_morphed_high',
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dr1_njet1_morphed_high',
                      vars=['tau_pt','tau_dr','njets']
                  ),
                  comb.find('ff_qcd_os')
@@ -1342,17 +1378,17 @@ for x in range(0,len(categories)):
          )
         }
     )   
-    comb_qcd_down_stat_dr0_njet1_morphed = replace_nodes(
+    comb_qcd_down_stat_dr1_njet1_morphed = replace_nodes(
         comb, 
         {'ff_qcd_os':
          Node(
-             name='ff_qcd_os_down_stat_dr0_njet1_morphed',
-             formula='max(0.,1.+{stat_qcd_down_dr0_njet1_morphed})*{ff_qcd_os}',
+             name='ff_qcd_os_down_stat_dr1_njet1_morphed',
+             formula='max(0.,1.+{stat_qcd_down_dr1_njet1_morphed})*{ff_qcd_os}',
              leaves=[
                  Leaf(
-                     name='stat_qcd_down_dr0_njet1_morphed',
+                     name='stat_qcd_down_dr1_njet1_morphed',
                      file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
-                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dr0_njet1_morphed_low',
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dr1_njet1_morphed_low',
                      vars=['tau_pt','tau_dr','njets']
                  ),
                  comb.find('ff_qcd_os')
@@ -1360,6 +1396,80 @@ for x in range(0,len(categories)):
          )
         }
     )
+    comb_qcd_up_stat_dr1_njet0_morphed = replace_nodes(
+        comb, 
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_os_up_stat_dr1_njet0_morphed',
+             formula='(1.+{stat_qcd_up_dr1_njet0_morphed})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_up_dr1_njet0_morphed',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dr1_njet0_morphed_high',
+                     vars=['tau_pt','tau_dr','njets']
+                 ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )   
+    comb_qcd_down_stat_dr1_njet0_morphed = replace_nodes(
+        comb, 
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_os_down_stat_dr1_njet0_morphed',
+             formula='max(0.,1.+{stat_qcd_down_dr1_njet0_morphed})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_down_dr1_njet0_morphed',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dr1_njet0_morphed_low',
+                     vars=['tau_pt','tau_dr','njets']
+                 ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+    comb_qcd_up_stat_dr1_njet2_morphed = replace_nodes(
+        comb, 
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_os_up_stat_dr1_njet2_morphed',
+             formula='(1.+{stat_qcd_up_dr1_njet2_morphed})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_up_dr1_njet2_morphed',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dr1_njet2_morphed_high',
+                     vars=['tau_pt','tau_dr','njets']
+                 ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )   
+    comb_qcd_down_stat_dr1_njet2_morphed = replace_nodes(
+        comb, 
+        {'ff_qcd_os':
+         Node(
+             name='ff_qcd_os_down_stat_dr1_njet2_morphed',
+             formula='max(0.,1.+{stat_qcd_down_dr1_njet2_morphed})*{ff_qcd_os}',
+             leaves=[
+                 Leaf(
+                     name='stat_qcd_down_dr1_njet2_morphed',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_QCD_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_QCDSS_3D_SS_Iso_Medium_SS_InvertIso_Medium_tau_pt_vs_decayMode_error_dr1_njet2_morphed_low',
+                     vars=['tau_pt','tau_dr','njets']
+                 ),
+                 comb.find('ff_qcd_os')
+             ]
+         )
+        }
+    )
+
+
     ###############################################################################################################################
     comb_w_up = replace_nodes(
         comb,
@@ -1919,6 +2029,151 @@ for x in range(0,len(categories)):
          )
         }
     )
+    comb_w_up_stat_dr1_njet2 = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_up_stat_dr1_njet2',
+             formula='(1.+{stat_w_up_dr1_njet2})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_up_dr1_njet2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dr1_njet2_high',
+                     vars=['tau_pt','tau_dr','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_down_stat_dr1_njet2 = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_down_stat_dr1_njet2',
+             formula='max(0.,1.-{stat_w_down_dr1_njet2})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_down_dr1_njet2',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dr1_njet2_low',
+                     vars=['tau_pt','tau_dr','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_up_stat_dr1_njet0_morphed = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_up_stat_dr1_njet0_morphed',
+             formula='(1.+{stat_w_up_dr1_njet0_morphed})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_up_dr1_njet0_morphed',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dr1_njet0_morphed_high',
+                     vars=['tau_pt','tau_dr','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )   
+    comb_w_down_stat_dr1_njet0_morphed = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_down_stat_dr1_njet0_morphed',
+             formula='max(0.,1.+{stat_w_down_dr1_njet0_morphed})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_down_dr1_njet0_morphed',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dr1_njet0_morphed_low',
+                     vars=['tau_pt','tau_dr','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+
+    comb_w_up_stat_dr1_njet1_morphed = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_up_stat_dr1_njet1_morphed',
+             formula='(1.+{stat_w_up_dr1_njet1_morphed})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_up_dr1_njet1_morphed',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dr1_njet1_morphed_high',
+                     vars=['tau_pt','tau_dr','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )   
+    comb_w_down_stat_dr1_njet1_morphed = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_down_stat_dr1_njet1_morphed',
+             formula='max(0.,1.+{stat_w_down_dr1_njet1_morphed})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_down_dr1_njet1_morphed',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dr1_njet1_morphed_low',
+                     vars=['tau_pt','tau_dr','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
+    comb_w_up_stat_dr1_njet2_morphed = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_up_stat_dr1_njet2_morphed',
+             formula='(1.+{stat_w_up_dr1_njet2_morphed})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_up_dr1_njet2_morphed',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dr1_njet2_morphed_high',
+                     vars=['tau_pt','tau_dr','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )   
+    comb_w_down_stat_dr1_njet2_morphed = replace_nodes(
+        comb, 
+        {'ff_w':
+         Node(
+             name='ff_w_down_stat_dr1_njet2_morphed',
+             formula='max(0.,1.+{stat_w_down_dr1_njet2_morphed})*{ff_w}',
+             leaves=[
+                 Leaf(
+                     name='stat_w_down_dr1_njet2_morphed',
+                     file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/FakeFactors_Data_W_3D{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                     object='FakeFactors_Data_HighMT_3D_Iso_Medium_InvertIso_Medium_tau_pt_vs_decayMode_error_dr1_njet2_morphed_low',
+                     vars=['tau_pt','tau_dr','njets']
+                 ),
+                 comb.find('ff_w')
+             ]
+         )
+        }
+    )
     comb_w_up_stat = replace_nodes(
         comb, 
         {'ff_w':
@@ -2451,6 +2706,18 @@ for x in range(0,len(categories)):
     fill(ff_comb, comb_w_down_stat_dr0_njet2_morphed,   sys='ff_w_dr0_njet2_morphed_stat_down')
     fill(ff_comb, comb_w_up_stat_dr0_njet1_morphed,   sys='ff_w_dr0_njet1_morphed_stat_up')
     fill(ff_comb, comb_w_down_stat_dr0_njet1_morphed,   sys='ff_w_dr0_njet1_morphed_stat_down')
+    fill(ff_comb, comb_w_up_stat_dr1_njet0,   sys='ff_w_dr1_njet0_stat_up')
+    fill(ff_comb, comb_w_down_stat_dr1_njet0,   sys='ff_w_dr1_njet0_stat_down')
+    fill(ff_comb, comb_w_up_stat_dr1_njet1,   sys='ff_w_dr1_njet1_stat_up')
+    fill(ff_comb, comb_w_down_stat_dr1_njet1,   sys='ff_w_dr1_njet1_stat_down')
+    fill(ff_comb, comb_w_up_stat_dr1_njet2,   sys='ff_w_dr1_njet2_stat_up')
+    fill(ff_comb, comb_w_down_stat_dr1_njet2,   sys='ff_w_dr1_njet2_stat_down')
+    fill(ff_comb, comb_w_up_stat_dr1_njet0_morphed,   sys='ff_w_dr1_njet0_morphed_stat_up')
+    fill(ff_comb, comb_w_down_stat_dr1_njet0_morphed,   sys='ff_w_dr1_njet0_morphed_stat_down')
+    fill(ff_comb, comb_w_up_stat_dr1_njet2_morphed,   sys='ff_w_dr1_njet2_morphed_stat_up')
+    fill(ff_comb, comb_w_down_stat_dr1_njet2_morphed,   sys='ff_w_dr1_njet2_morphed_stat_down')
+    fill(ff_comb, comb_w_up_stat_dr1_njet1_morphed,   sys='ff_w_dr1_njet1_morphed_stat_up')
+    fill(ff_comb, comb_w_down_stat_dr1_njet1_morphed,   sys='ff_w_dr1_njet1_morphed_stat_down')
     fill(ff_comb, comb_w_up_stat_dr1_njet0,   sys='ff_w_dr1_njet0_stat_up')
     fill(ff_comb, comb_w_down_stat_dr1_njet0,   sys='ff_w_dr1_njet0_stat_down')
     fill(ff_comb, comb_w_up_stat_dr1_njet1,   sys='ff_w_dr1_njet1_stat_up')

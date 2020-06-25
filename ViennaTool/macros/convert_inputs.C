@@ -686,6 +686,8 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
 
     hout_err_dr1_njet0_low->Write();
     hout_err_dr1_njet1_low->Write();
+    hout_err_dr1_njet2_low->Write();
+
     hout_err_dr0_njet0_high->Write();
     hout_err_dr0_njet1_high->Write();
     hout_err_dr0_njet2_high->Write();
@@ -699,6 +701,8 @@ void make_3Dhisto( TString fn , const TString hn , const TString hnout , const T
     hout_err_dr0_njet2_morphed_low->Write();
     hout_err_dr1_njet0_morphed_low->Write();
     hout_err_dr1_njet1_morphed_low->Write();
+    hout_err_dr1_njet2_morphed_low->Write();
+
     hout_err_dr0_njet0_morphed_high->Write();
     hout_err_dr0_njet1_morphed_high->Write();
     hout_err_dr0_njet2_morphed_high->Write();
