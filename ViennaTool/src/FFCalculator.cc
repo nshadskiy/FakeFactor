@@ -1670,7 +1670,9 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
   TGraphAsymmErrors *dm0njet2dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2dR0"+tight_cat); fittedFFs.push_back(dm0njet2dR0);
   TGraphAsymmErrors *dm1njet2dR0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2dR0"+tight_cat); fittedFFs.push_back(dm1njet2dR0);
 
-  
+  TGraphAsymmErrors *dm0njet2dR1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2dR1"+tight_cat); fittedFFs.push_back(dm0njet2dR1);
+  TGraphAsymmErrors *dm1njet2dR1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2dR1"+tight_cat); fittedFFs.push_back(dm1njet2dR1);
+
   TFile compare(cr_file);
   Double_t FF_value=0;
 
