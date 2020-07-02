@@ -31,10 +31,9 @@ for x in range(0,len(categories)):
     category=categories[x]
     print 'Fake factor input file for channel {0} and category {1}'.format(channel,category)
     # Individual fake factors
-    ff_qcd_os = FakeFactor(vars=['tau_pt', 'tau_decay', 'njets', 'mvis', 'mt', 'mu_iso'])
-    ff_qcd_ss = FakeFactor(vars=['tau_pt', 'tau_decay', 'mvis', 'mu_iso'])
+    ff_qcd_os = FakeFactor(vars=['tau_pt', 'tau_decay', 'njets', 'mvis', 'lep_pt', 'mt', 'mu_iso'])
     ff_w      = FakeFactor(vars=['tau_pt', 'tau_decay', 'njets', 'lep_pt', 'mvis'])
-    ff_tt     = FakeFactor(vars=['tau_pt', 'tau_decay', 'njets', 'mvis', 'mt'])
+    ff_tt     = FakeFactor(vars=['tau_pt', 'tau_decay', 'njets', 'lep_pt', 'mt'])
     # Combined fake factor
     ff_comb   = FakeFactor(vars=['tau_pt', 'tau_decay', 'njets', 'mvis', 'lep_pt', 'mt', 'mu_iso', 'frac_qcd', 'frac_w', 'frac_tt', 'frac_w_w_up', 'frac_w_w_down', 'frac_qcd_w_up', 'frac_qcd_w_down'])
     
@@ -59,7 +58,7 @@ for x in range(0,len(categories)):
                 name='mviscorr_qcd',
                 file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
-                vars=['mvis']
+                vars=['lep_pt']
             ),
             Leaf(
                 name='isocorr_qcd',
@@ -327,7 +326,7 @@ for x in range(0,len(categories)):
                 name='mviscorr_tt',
                 file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_MC_TT_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='TT_OS_MC_mvis_correction',
-                vars=['mvis']
+                vars=['lep_pt']
             ),
         ]
     )
@@ -362,7 +361,7 @@ for x in range(0,len(categories)):
                      name='sys_tt_up',
                      file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_TT_MVis_up',
-                     vars=['tau_decay','mvis']
+                     vars=['tau_decay','lep_pt']
                  ),
                  tt.find('ff_tt')
              ]
@@ -380,7 +379,7 @@ for x in range(0,len(categories)):
                      name='sys_tt_down',
                      file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_TT_MVis_down',
-                     vars=['tau_decay','mvis']
+                     vars=['tau_decay','lep_pt']
                  ),
                  tt.find('ff_tt')
              ]
@@ -750,7 +749,7 @@ for x in range(0,len(categories)):
                         name='mviscorr_qcd_temp',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
-                        vars=['mvis']
+                        vars=['lep_pt']
                     ),
                  comb.find('ff_qcd_os')
              ]
@@ -768,7 +767,7 @@ for x in range(0,len(categories)):
                         name='mviscorr_qcd_temp',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
-                        vars=['mvis']
+                        vars=['lep_pt']
                     ),
                  comb.find('ff_qcd_os')
              ]
@@ -1967,7 +1966,7 @@ for x in range(0,len(categories)):
                      name='sys_tt_up',
                      file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_TT_MVis_up',
-                     vars=['tau_decay','mvis']
+                     vars=['tau_decay','lep_pt']
                  ),
                  comb.find('ff_tt')
              ]
@@ -1985,7 +1984,7 @@ for x in range(0,len(categories)):
                         name='mviscorr_tt_temp',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_MC_TT_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='TT_OS_MC_mvis_correction',
-                        vars=['mvis']
+                        vars=['lep_pt']
                     ),
                  comb.find('ff_tt')
              ]
@@ -2003,7 +2002,7 @@ for x in range(0,len(categories)):
                         name='mviscorr_tt_temp',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_MC_TT_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='TT_OS_MC_mvis_correction',
-                        vars=['mvis']
+                        vars=['lep_pt']
                     ),
                  comb.find('ff_tt')
              ]
@@ -2022,7 +2021,7 @@ for x in range(0,len(categories)):
                      name='sys_tt_down',
                      file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_TT_MVis_down',
-                     vars=['tau_decay','mvis']
+                     vars=['tau_decay','lep_pt']
                  ),
                  comb.find('ff_tt')
              ]
@@ -2040,7 +2039,7 @@ for x in range(0,len(categories)):
                      name='sys_tt_morphed_up',
                      file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_TT_MVis_morphed_up',
-                     vars=['mvis']
+                     vars=['lep_pt']
                  ),
                  comb.find('ff_tt')
              ]
@@ -2058,7 +2057,7 @@ for x in range(0,len(categories)):
                      name='sys_tt_morphed_down',
                      file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_TT_MVis_morphed_down',
-                     vars=['mvis']
+                     vars=['lep_pt']
                  ),
                  comb.find('ff_tt')
              ]
@@ -2076,7 +2075,7 @@ for x in range(0,len(categories)):
                      name='sys_tt_sf_up',
                      file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_TT_MVis_sf',
-                     vars=['mvis']
+                     vars=['lep_pt']
                  ),
                  comb.find('ff_tt')
              ]
@@ -2094,7 +2093,7 @@ for x in range(0,len(categories)):
                      name='sys_tt_sf_down',
                      file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_TT{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_TT_MVis_sf',
-                     vars=['mvis']
+                     vars=['lep_pt']
                  ),
                  comb.find('ff_tt')
              ]

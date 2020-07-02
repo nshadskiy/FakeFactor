@@ -9,9 +9,8 @@
 const int CHAN     = kMU;
 // FakeFactor_2016_DeepTauIDv2_v0
 const TString analysis      ="2016";
-const TString output_folder ="/ceph/jbechtel/auto-puppi-fakefactors/2016";
+const TString output_folder ="/ceph/jbechtel/auto-nmssm-fakefactors/2016";
 const TString ver = "2016"; // first time nanoAODv5 with deepTauIDv2 
-
 
 const TString _NtupleTreeName = "TauCheck"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
 const TString _NtupleTreeName_KIT = "mt_nominal/ntuple"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
@@ -72,9 +71,9 @@ const int fit_pT_bins = 1; //use fitted pT bins as input for ff
 // _VVTIGHT        128
 // A WP condition is met if: (Fulfill && !Fail)
 // settings for tight vs vloose&(!tight):
-const int wpTightFulfill = 32; 
+const int  wpTightFulfill = 16; 
 const int wpTightFail    = 0;
-const int wpLooseFulfill = 4;
+const int  wpLooseFulfill = 1;
 const int wpLooseFail    = 32;
 ///////////////////////////////////////////////////
 //MUTAU Settings
