@@ -58,6 +58,7 @@ class FFCalculator : public GlobalClass, public PlotterClass{
 
   void calc_nonclosure(const Int_t mode, const TString raw_ff, const TString compare_file, TString ff_output, const TString tight_cat="", const Int_t doPlot=1, const Int_t subtractMC=1, const Int_t tau_ind=0 );
   void calc_nonclosure_QCD_lepPt(const Int_t mode, const TString raw_ff, const TString compare_file, TString ff_output, const TString tight_cat="", const Int_t doPlot=1, const Int_t subtractMC=1, const Int_t tau_ind=0 );
+  void calc_nonclosure_TT_lepPt(const Int_t mode, const TString raw_ff, const TString compare_file, TString ff_output, const TString tight_cat="", const Int_t doPlot=1, const Int_t subtractMC=1, const Int_t tau_ind=0 );
 
   // void calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff, const TString compare_file, const TString nonclosure_corr, TString ff_output, const TString tight_cat="", const Int_t doPlot=1, const Int_t subtractMC=1, const Int_t tau_ind=0 );
   void calc_nonclosure_lepPt(const Int_t mode, const TString raw_ff, const TString compare_file, const TString nonclosure_corr, TString ff_output, const TString tight_cat="", const Int_t doPlot=1, const Int_t subtractMC=1, const Int_t tau_ind=0 );
