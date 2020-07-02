@@ -186,9 +186,9 @@ void SRHisto() {
   
   Int_t nVARused = nVAR-1; //nVAR = 5 (Globals.h) no muiso is needed here
   
-  const TString r1[nVARused]={"_pt","_mt","_mvis"}; //
-  const TString r2[nVARused]={ "_mt", "_mvis", "_pt"}; //"_mt2","_lepPt","_mvamet","_met","_eta", "_mttot","_mjj"};
-  const TString discrim_var[nVAR] = {"_mt", "_mvis", "_pt","_eta"};
+  const TString r1[nVARused]={"_pt","_mt","_mvis", "_lepPt"}; //
+  const TString r2[nVARused]={ "_mt", "_mvis", "_lepPt", "_pt"}; //"_mt2","_lepPt","_mvamet","_met","_eta", "_mttot","_mjj"};
+  const TString discrim_var[nVAR] = {"_mt", "_mvis", "_lepPt", "_pt","_eta"};
   Int_t n_discrim_var = 4;//sizeof(discrim_var) / sizeof(*discrim_var) -1;
 
   TString tmp;
@@ -204,8 +204,9 @@ void SRHisto() {
     
     Analyzer->calcBgEstSim( ps.at(i), MT|NO_SR, categoryMode, tmp.ReplaceAll(r1[0], r2[0]) ); // MT|NO_SR =   
     Analyzer->calcBgEstSim( ps.at(i), MVIS, categoryMode, tmp.ReplaceAll(r1[1],r2[1]) );
-    Analyzer->calcBgEstSim( ps.at(i), PT, categoryMode, tmp.ReplaceAll(r1[2],r2[2]) );
-    Analyzer->calcBgEstSim( ps.at(i), ETA2, categoryMode, tmp.ReplaceAll(discrim_var[2],discrim_var[3]) );
+    Analyzer->calcBgEstSim( ps.at(i), LEPPT, categoryMode, tmp.ReplaceAll(r1[2],r2[2]) );
+    Analyzer->calcBgEstSim( ps.at(i), PT, categoryMode, tmp.ReplaceAll(r1[3],r2[3]) );
+    // Analyzer->calcBgEstSim( ps.at(i), ETA2, categoryMode, tmp.ReplaceAll(discrim_var[2],discrim_var[3]) );
     
     tmp=fl.at(i); 
     Analyzer->calcBgEstSim( ps.at(i), MVIS|_AI, categoryMode, tmp.ReplaceAll(r2[0], "_mvis_AI") );

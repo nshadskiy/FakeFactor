@@ -13,6 +13,7 @@ GaussianKernelSmoother::GaussianKernelSmoother(){
   this->kernelDistance="lin";
   this->lastBinFrom=-1;
   this->doLastBinFrom=0;
+  this->fixFirstBin=0;
 }
 
 TH1D* GaussianKernelSmoother::fluctuateHisto(){
@@ -114,7 +115,6 @@ void GaussianKernelSmoother::getSmoothHisto(){
     double x = this->h_out->GetBinCenter(ib);
     std::cout << "Bin center at " << x << std::endl;
     double smooth_val = this->getSmoothedValue(this->h_in , x, binWidthforGaussianWindow);
-    std::cout << "Value " << this->h_in->GetBinContent(ib) << " changed to " << smooth_val << std::endl;
     this->h_out->SetBinContent(ib,smooth_val);
     // exit(0);
   }
@@ -169,7 +169,17 @@ void GaussianKernelSmoother::getContSmoothHisto(){
   double binWidthforGaussianWindow = this->getBinWidthForGaussianWindow(this->h_in);
   for (int i=0; i<nbins; i++){
     xs[i] = ( bins[i]+bins[i+1] )/2;
-    ys[i] = this->getSmoothedValue( this->h_in , xs[i], binWidthforGaussianWindow );
+    if (this->fixFirstBin) {
+      if (bins[i]<h_in->GetXaxis()->GetBinUpEdge(1)) {
+        ys[i] = this->h_in->GetBinContent(1);
+      }
+      else {
+        ys[i] = this->getSmoothedValue( this->h_in , xs[i], binWidthforGaussianWindow );
+      }
+    }
+    else {
+      ys[i] = this->getSmoothedValue( this->h_in , xs[i], binWidthforGaussianWindow );
+    }
   } 
   if ( this->doErrors ) {
     const int NTOYS=100;

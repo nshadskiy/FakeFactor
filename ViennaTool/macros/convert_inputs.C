@@ -98,10 +98,10 @@ void convert_inputs(Int_t inclusive=1, Int_t categoryMode=0){
     if(!DOMC){
       if(!CALC_SS_SR){
         if(CHAN==kTAU) {
-          convert_corrections( d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD", o+"Correction_Data_QCD_PT.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction");
+          convert_corrections( d+"FF_corr_QCD_MCsum_noGen_nonclosure.root", "nonclosure_QCD", o+"Correction_Data_QCD_PT.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction");
           if( doNJetBinning ){
-            convert_corrections( d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt_0jet.root", "nonclosure_QCD", o+"Correction_Data_QCD_PT_0jet.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction");
-            convert_corrections( d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt_1jet.root", "nonclosure_QCD", o+"Correction_Data_QCD_PT_1jet.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction");
+            convert_corrections( d+"FF_corr_QCD_MCsum_noGen_nonclosure_0jet.root", "nonclosure_QCD", o+"Correction_Data_QCD_PT_0jet.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction");
+            convert_corrections( d+"FF_corr_QCD_MCsum_noGen_nonclosure_1jet.root", "nonclosure_QCD", o+"Correction_Data_QCD_PT_1jet.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction");
           }
         }
 
@@ -141,11 +141,11 @@ void convert_inputs(Int_t inclusive=1, Int_t categoryMode=0){
       
       if(!CALC_SS_SR){
         if(CHAN==kTAU){
-          combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_QCD_up",    d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD_up",   d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",  o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up");
-          combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_QCD_down",  d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD_down", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_down", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down");
-          combineQCDSystematics_morphed( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_QCD",  d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS");
-          combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_mcup_QCD",    d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_mcup_QCD",   d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",  o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_mcup");
-          combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_mcdown_QCD",  d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_mcdown_QCD", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_down", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_mcdown");
+          combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_QCD_up",    d+"FF_corr_QCD_MCsum_noGen_nonclosure.root", "nonclosure_QCD_up",   d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",  o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up");
+          combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_QCD_down",  d+"FF_corr_QCD_MCsum_noGen_nonclosure.root", "nonclosure_QCD_down", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_down", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down");
+          combineQCDSystematics_morphed( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_QCD",  d+"FF_corr_QCD_MCsum_noGen_nonclosure.root", "nonclosure_QCD", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS");
+          combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_mcup_QCD",    d+"FF_corr_QCD_MCsum_noGen_nonclosure.root", "nonclosure_mcup_QCD",   d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",  o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_mcup");
+          combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_mcdown_QCD",  d+"FF_corr_QCD_MCsum_noGen_nonclosure.root", "nonclosure_mcdown_QCD", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_down", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_mcdown");
         }else{
           combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_QCD_up",    d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_corr_QCD_up",   d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",  o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up");
           combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_QCD_down",  d+FF_corr_QCD_MCsum_noGen_muisocorr, "muiso_corr_QCD_down", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_down", o+"uncertainties_QCD_W.root",  "uncertainties_QCD_MVis_Iso_SS2OS_down");
@@ -1054,9 +1054,9 @@ void combineQCDSystematics_morphed( TString fQCD_nonclosure, TString sys_nonclos
   // std::cout << "fout " << fout << std::endl; 
   // std::cout << "tout " << tout << std::endl;  
   // std::cout << "tight_cat " << tight_cat << std::endl;
-  
-  
+    
   TFile *f_nonclosure=new TFile(fQCD_nonclosure.ReplaceAll(".root",tight_cat+".root"));
+
   TGraphAsymmErrors *sys_nonclosure_t_up=(TGraphAsymmErrors*)f_nonclosure->Get(sys_nonclosure+"_up");
   TGraphAsymmErrors *sys_nonclosure_t_down=(TGraphAsymmErrors*)f_nonclosure->Get(sys_nonclosure+"_down");
   

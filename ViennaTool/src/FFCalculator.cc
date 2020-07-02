@@ -1888,7 +1888,7 @@ void FFCalculator::calc_nonclosure(const Int_t mode, const TString raw_ff, const
 }
 
 
-void FFCalculator::calc_nonclosure_QCD_lepPt(const Int_t mode, const TString raw_ff, const TString compare_file, TString ff_output, const TString tight_cat, const Int_t doPlot, const Int_t subtractMC, const Int_t tau_ind){
+void FFCalculator::calc_nonclosure_TT_lepPt(const Int_t mode, const TString raw_ff, const TString compare_file, TString ff_output, const TString tight_cat, const Int_t doPlot, const Int_t subtractMC, const Int_t tau_ind){
 
   cout << "Calculating corrections for " << ff_output << endl;
   cout << "mode: " << mode << endl;
@@ -1917,15 +1917,12 @@ void FFCalculator::calc_nonclosure_QCD_lepPt(const Int_t mode, const TString raw
 
   
   TH1D *closure_h;
-  closure_h= new TH1D("closure"+sample,"",w_lepPt_n,w_lepPt_v); // closure plot with binning {0,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450}
-  
+  if(mode & _TT) closure_h= new TH1D("closure"+sample,"",w_lepPt_n,w_lepPt_v); // closure plot 15 bins between [0,250]
+  else closure_h= new TH1D("closure"+sample,"",w_mvis_n,w_mvis_v); // closure plot with binning {0,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450}
   
   TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE"); //can be simplified. 
   TH1D *output_h = new TH1D("nonclosure_lepPt","",w_lepPt_n,w_lepPt_v); // output histogram with binning {0,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450}
   TH1D* output_h_mcup; TH1D* output_h_mcdown;
-
-  output_h->Rebin(2);
-  closure_h->Rebin(2);
 
   TFile FF_lookup(raw_ff);
   TH1D* FF_lookup_h = nullptr;
@@ -1949,10 +1946,7 @@ void FFCalculator::calc_nonclosure_QCD_lepPt(const Int_t mode, const TString raw
     TH1D* compare_l              = (TH1D*) compare.Get(ff_inputHist+"_lepPt");
     TH1D* compare_l_MCsubtracted = (TH1D*) compare.Get(ff_inputHist+"_lepPt_MCsubtracted");
     TH1D* compare_l_dataminusMC  = (TH1D*) compare.Get(ff_inputHist+"_lepPt_dataminusMC");
-    compare_l->Rebin(2);
-    compare_l_MCsubtracted->Rebin(2);
-    compare_l_dataminusMC->Rebin(2);
-
+    
     TH1D* ratio_l_mcup                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l_mcup");
     ratio_l_mcup->Scale(1.07);
     TH1D* ratio_l_mcdown                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l_mcdown");
@@ -1965,7 +1959,6 @@ void FFCalculator::calc_nonclosure_QCD_lepPt(const Int_t mode, const TString raw
 
     ///get unity histogram
     TH1D *unity_h = new TH1D("unity","",w_lepPt_n,w_lepPt_v);
-    unity_h->Rebin(2);
     for(int ibin=1; ibin<=unity_h->GetNbinsX(); ibin++) unity_h->SetBinContent(ibin,1.);
     ratio_l->Add(unity_h,-1);ratio_l->Scale(-1);
     ratio_l_mcup->Add(unity_h,-1);ratio_l_mcup->Scale(-1);
@@ -1973,11 +1966,8 @@ void FFCalculator::calc_nonclosure_QCD_lepPt(const Int_t mode, const TString raw
 
     TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_lepPt");
     TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t"+tight_cat+"_lepPt_MCsubtracted");
-    compare_t->Rebin(2);
-    compare_t_MCsubtracted->Rebin(2);
     TH1D* compare_t_MCsubtracted_mcup                = (TH1D*)compare_t_MCsubtracted->Clone("compare_t_MCsubtracted_mcup");
     TH1D* compare_t_MCsubtracted_mcdown                = (TH1D*)compare_t_MCsubtracted->Clone("compare_t_MCsubtracted_mcdown");
-
     compare_t_MCsubtracted_mcup->Scale(1.07);
     compare_t_MCsubtracted_mcdown->Scale(1.0/1.07);
 
@@ -2105,12 +2095,15 @@ void FFCalculator::calc_nonclosure_QCD_lepPt(const Int_t mode, const TString raw
   GaussianKernelSmoother gsk;
   gsk.setInputHisto( output_fit );
   gsk.set_doWeights(1);
+  gsk.set_doWeights(1);
+
   gsk.set_doIgnoreZeroBins(0);
   gsk.set_kernelDistance( "lin" );
   gsk.set_doWidthInBins(1);
   gsk.set_doErrors(1);
   //if(mode & _QCD) gsk.set_lastBinFrom(150);
   gsk.setWidth(fitWidth);
+  gsk.set_fixFirstBin(1);
   gsk.set_widthInBins_sf(3);
   
 
@@ -2124,31 +2117,20 @@ void FFCalculator::calc_nonclosure_QCD_lepPt(const Int_t mode, const TString raw
   gsk.set_doErrors(1);
   gsk.getContSmoothHisto();
   TGraphAsymmErrors *g=   gsk.returnSmoothedGraph();
-
   Double_t x200; Double_t y200;
-  Int_t i_const;
-  Double_t x; Double_t y;
+  if(CHAN==kMU)g->GetPoint(250*4,x200,y200);
+  if(CHAN==kEL)g->GetPoint(250*4,x200,y200); // TODO CHANGE (110*4,x200,y200)
   for(int i=0; i<g->GetN(); i++){
-    g->GetPoint(i,x,y);
-    if(x>80.) {
-      i_const = i;
-      break;
-    }
-  }
-  if(CHAN==kMU)g->GetPoint(i_const,x200,y200);
-  if(CHAN==kEL)g->GetPoint(i_const,x200,y200); // TODO CHANGE (110*4,x200,y200)
-  for(int i=0; i<g->GetN(); i++){
-
-    if(CHAN==kMU && i>i_const){
+    Double_t x; Double_t y;
+    if(CHAN==kMU && i>250*4){
       g->GetPoint(i,x,y);
       g->SetPoint(i,x,y200);
-      std::cout << "Setting point " << x << " to " << y200 << std::endl;
     }
-    else if(CHAN==kEL && i>i_const){ //CHANGE 110
+    else if(CHAN==kEL && i>250*4){ //CHANGE 110
       g->GetPoint(i,x,y);
       g->SetPoint(i,x,y200);
-      std::cout << "Setting point " << x << " to " << y200 << std::endl;
     }
+    
   }
   g->SetTitle("nonclosure"+sample);
   g->SetName("nonclosure"+sample);
@@ -2163,6 +2145,7 @@ void FFCalculator::calc_nonclosure_QCD_lepPt(const Int_t mode, const TString raw
     gsk_mcup.set_doWidthInBins(1);
     gsk_mcup.set_doErrors(1);
     gsk_mcup.setWidth(fitWidth);
+    gsk_mcup.set_fixFirstBin(1);
     gsk_mcup.set_widthInBins_sf(1.115);
     
     gsk_mcup.getSmoothHisto();
@@ -2200,6 +2183,386 @@ void FFCalculator::calc_nonclosure_QCD_lepPt(const Int_t mode, const TString raw
     gsk_mcdown.set_doWidthInBins(1);
     gsk_mcdown.set_doErrors(1);
     gsk_mcdown.setWidth(fitWidth);
+    gsk_mcdown.set_fixFirstBin(1);
+    gsk_mcdown.set_widthInBins_sf(1.115);
+    
+    gsk_mcdown.getSmoothHisto();
+    TH1D *h2_mcdown=gsk_mcdown.returnSmoothedHisto();
+    h2_mcdown->Write();
+
+    gsk_mcdown.set_doErrors(1);
+    //gsk_mcdown.set_lastBinFrom(185);
+    gsk_mcdown.getContSmoothHisto();
+    TGraphAsymmErrors *g_mcdown=   gsk_mcdown.returnSmoothedGraph();
+    if(CHAN==kMU)g_mcdown->GetPoint(250*4,x200,y200);
+    if(CHAN==kEL)g_mcdown->GetPoint(250*4,x200,y200); // TODO CHANGE (110*4,x200,y200)
+    for(int i=0; i<g_mcdown->GetN(); i++){
+      Double_t x; Double_t y;
+      if(CHAN==kMU && i>250*4){
+        g_mcdown->GetPoint(i,x,y);
+        g_mcdown->SetPoint(i,x,y200);
+      }
+      else if(CHAN==kEL && i>250*4){ //CHANGE 110
+        g_mcdown->GetPoint(i,x,y);
+        g_mcdown->SetPoint(i,x,y200);
+      }
+      
+    }
+    g_mcdown->SetTitle("nonclosure_mcdown"+sample);
+    g_mcdown->SetName("nonclosure_mcdown"+sample);
+    g_mcdown->Write();
+  }
+  TGraph *gup = (TGraphAsymmErrors*)g->Clone("nonclosure"+sample+"_up");
+  gup->SetTitle("nonclosure"+sample+"_up");
+  for(Int_t j=0;j<g->GetN();j++) gup->SetPoint(j,g->GetX()[j],g->GetErrorYhigh(j) );
+  gup->Write();
+  TGraph *gdown = (TGraphAsymmErrors*)g->Clone("nonclosure"+sample+"_down");
+  gdown->SetTitle("nonclosure"+sample+"_down");
+  for(Int_t j=0;j<g->GetN();j++) gdown->SetPoint(j,g->GetX()[j],g->GetErrorYlow(j) );
+  gdown->Write();
+  
+
+  // This down here is not necesaairy probably happens again in plotCorrections.py
+  TCanvas *c2=new TCanvas();
+  output_h->Draw("E");
+  g->Draw("same LP");
+
+  output_h->Draw("E same");
+  output_h->SetXTitle("m_{vis}(GeV)");
+  output_h->SetTitle("nonclosure m_{vis}");
+
+  output_h->SetYTitle("Ratio");
+  output_h->SetMaximum(2.);
+  output_h->SetMinimum(0.);
+  c2->SetName("nonclosure"+sample+"_c");
+  c2->Write();
+  // from obove commend to here could be deleted
+  
+  
+  // close everything in RAM
+  FF_lookup.Close();output->Close();
+  delete closure_h;
+  for(int i=0; i<fittedFFs.size();i++){
+    delete fittedFFs.at(i);
+  }
+  
+}
+
+void FFCalculator::calc_nonclosure_QCD_lepPt(const Int_t mode, const TString raw_ff, const TString compare_file, TString ff_output, const TString tight_cat, const Int_t doPlot, const Int_t subtractMC, const Int_t tau_ind){
+
+  cout << "Calculating corrections for " << ff_output << endl;
+  cout << "mode: " << mode << endl;
+  cout << "raw ff: " << raw_ff << endl; // contains dm0_njet0 dm0_njet1 of type TGrapAsymmeErrors
+  cout << "compare_file: " << compare_file << endl; //contains TH1Ds: hh_l_mvis, hh_l_mvis_MCsubtracted, hh_l_mvis_dataminusMC and the same for tight
+  cout << "ff_output: " << ff_output << endl;
+  cout << "tight_cat: " << tight_cat << endl; // always "" since not doing alt anymore
+  cout << "doPlot: " << doPlot << endl; // 
+  cout << "subtractMC: " << subtractMC << endl; // is probably always 1 (default) 
+  cout << "tau_ind: " << tau_ind << endl;
+  
+
+  Int_t nentries = Int_t(event_s->fChain->GetEntries());
+  
+  TString cr_file = compare_file;
+  
+  if(mode & JET0 ) cr_file = cr_file.ReplaceAll("_data","_0jet_data"); // used for dedicated Njet correction
+  if(mode & JET1 ) cr_file = cr_file.ReplaceAll("_data","_1jet_data"); // used for dedicated Njet correction
+  
+  TString sample;
+  if(mode & _QCD) sample="_QCD";
+  if(mode & _W_JETS) sample="_Wjets";
+  if(mode & _TT) sample="_TT";
+  if(!subtractMC) sample+="_MC"; // probably obsolete
+  std::cout << "sample name extension " << sample << std::endl;
+
+  
+  TH1D *closure_h;
+  closure_h= new TH1D("closure"+sample,"",w_lepPt_n,w_lepPt_v); // closure plot with binning {0,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450}
+  
+  
+  TFile *output = new TFile(ff_output.ReplaceAll(".root",tight_cat+".root"),"RECREATE"); //can be simplified. 
+  TH1D *output_h = new TH1D("nonclosure_lepPt","",w_lepPt_n,w_lepPt_v); // output histogram with binning {0,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,225,250,300,350,450}
+  TH1D* output_h_mcup; TH1D* output_h_mcdown;
+
+  // output_h->Rebin(2);
+  // closure_h->Rebin(2);
+
+  TFile FF_lookup(raw_ff);
+  TH1D* FF_lookup_h = nullptr;
+  
+  // fill the fits to the raw FFs in the vector fittedFFs. ToDo: Why is dm1 also needed - without it get segfault
+  vector<TGraphAsymmErrors*> fittedFFs;
+  TGraphAsymmErrors *dm0njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet0"+tight_cat); fittedFFs.push_back(dm0njet0);
+  TGraphAsymmErrors *dm1njet0 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet0"+tight_cat); fittedFFs.push_back(dm1njet0);
+  TGraphAsymmErrors *dm0njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet1"+tight_cat); fittedFFs.push_back(dm0njet1);
+  TGraphAsymmErrors *dm1njet1 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet1"+tight_cat); fittedFFs.push_back(dm1njet1);
+  
+  TGraphAsymmErrors *dm0njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm0_njet2"+tight_cat); fittedFFs.push_back(dm0njet2);
+  TGraphAsymmErrors *dm1njet2 = (TGraphAsymmErrors*) FF_lookup.Get("dm1_njet2"+tight_cat); fittedFFs.push_back(dm1njet2);
+
+  
+  TFile compare(cr_file);
+  Double_t FF_value=0;
+
+  if(subtractMC){ // always true
+    TString ff_inputHist="hh_l"; 
+    TH1D* compare_l              = (TH1D*) compare.Get(ff_inputHist+"_lepPt");
+    TH1D* compare_l_MCsubtracted = (TH1D*) compare.Get(ff_inputHist+"_lepPt_MCsubtracted");
+    TH1D* compare_l_dataminusMC  = (TH1D*) compare.Get(ff_inputHist+"_lepPt_dataminusMC");
+    // compare_l->Rebin(2);
+    // compare_l_MCsubtracted->Rebin(2);
+    // compare_l_dataminusMC->Rebin(2);
+
+    TH1D* ratio_l_mcup                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l_mcup");
+    ratio_l_mcup->Scale(1.07);
+    TH1D* ratio_l_mcdown                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l_mcdown");
+    ratio_l_mcdown->Scale(1.0/1.07);
+    TH1D* ratio_l                = (TH1D*)compare_l_MCsubtracted->Clone("ratio_l");
+  
+    ratio_l->Divide(compare_l);
+    ratio_l_mcup->Divide(compare_l);
+    ratio_l_mcdown->Divide(compare_l);
+
+    ///get unity histogram
+    TH1D *unity_h = new TH1D("unity","",w_lepPt_n,w_lepPt_v);
+    // unity_h->Rebin(2);
+    for(int ibin=1; ibin<=unity_h->GetNbinsX(); ibin++) unity_h->SetBinContent(ibin,1.);
+    ratio_l->Add(unity_h,-1);ratio_l->Scale(-1);
+    ratio_l_mcup->Add(unity_h,-1);ratio_l_mcup->Scale(-1);
+    ratio_l_mcdown->Add(unity_h,-1);ratio_l_mcdown->Scale(-1);
+
+    TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_lepPt");
+    TH1D* compare_t_MCsubtracted = (TH1D*) compare.Get("hh_t"+tight_cat+"_lepPt_MCsubtracted");
+    // compare_t->Rebin(2);
+    // compare_t_MCsubtracted->Rebin(2);
+    TH1D* compare_t_MCsubtracted_mcup                = (TH1D*)compare_t_MCsubtracted->Clone("compare_t_MCsubtracted_mcup");
+    TH1D* compare_t_MCsubtracted_mcdown                = (TH1D*)compare_t_MCsubtracted->Clone("compare_t_MCsubtracted_mcdown");
+
+    compare_t_MCsubtracted_mcup->Scale(1.07);
+    compare_t_MCsubtracted_mcdown->Scale(1.0/1.07);
+
+    for (Int_t jentry=0; jentry<nentries;jentry++) {// Fill lepPt distribution in closure_h where each event in the loose determination region is 
+                                                     // weighted with the measured FF (extracted from the fit) to get its estimate in the tight determination region
+                                                     // entries are looping over preselection data file
+
+      event_s->GetEntry(jentry);
+      if (DEBUG){ 
+        if(jentry % 100000 == 0) {
+          cout << jentry << "/" << nentries << endl;
+          // if (jentry > 0) {
+          //   break;
+          // }
+        }
+      }
+      if (mode & SR){ // happens only for TTbar
+        if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ) {
+          FF_value = this->getFittedBinContent( mode, fittedFFs );
+          closure_h->Fill(event_s->lep_pt,FF_value*event_s->weight_sf );
+        }
+      }
+      else{ // mode is not SR
+        
+        if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+          // cout << "FF_value: " << FF_value << endl;
+          FF_value = this->getFittedBinContent( mode, fittedFFs );
+          closure_h->Fill(event_s->lep_pt,FF_value*event_s->weight_sf );
+        }
+      }
+    }
+    TH1D* closure_h_mcup = (TH1D*)closure_h->Clone("closure_h_mcup");
+    TH1D* closure_h_mcdown = (TH1D*)closure_h->Clone("closure_h_mcdown");
+
+    closure_h->Multiply(ratio_l);
+    closure_h_mcup->Multiply(ratio_l_mcup);
+    closure_h_mcdown->Multiply(ratio_l_mcdown);
+
+    output->cd();
+    closure_h->Write();
+    closure_h_mcup->Write();
+    closure_h_mcdown->Write();
+
+    output_h = (TH1D*)compare_t->Clone("nonclosure");
+    output_h_mcup = (TH1D*)compare_t->Clone("nonclosure_mcup");
+    output_h_mcdown = (TH1D*)compare_t->Clone("nonclosure_mcdown");
+
+    output_h->Add(compare_t_MCsubtracted,-1);
+    output_h_mcup->Add(compare_t_MCsubtracted_mcup,-1);
+    output_h_mcdown->Add(compare_t_MCsubtracted_mcdown,-1);
+
+    compare_t->Add(compare_t_MCsubtracted,-1);
+    compare_t->Write();
+    output_h->Divide(closure_h);
+    output_h_mcup->Divide(closure_h_mcup);
+    output_h_mcdown->Divide(closure_h_mcdown);
+    output_h_mcup->Add(output_h,-1);
+    output_h_mcdown->Add(output_h,-1);
+
+  }
+  else{ //happens for Wjets non closure correction in case of Simulation based correction 
+    TH1D* compare_t              = (TH1D*) compare.Get("hh_t"+tight_cat+"_lepPt");
+    
+    for (Int_t jentry=0; jentry<nentries;jentry++) {
+      event_s->GetEntry(jentry);
+      if (DEBUG){ if(jentry % 100000 == 0) cout << jentry << "/" << nentries << endl; }
+      if (mode & SR){
+        if (  this->isInSR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+          if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
+          else if( raw_ff.Contains("_fitted") ){
+            FF_value = this->getFittedBinContent( mode, fittedFFs );
+          }
+          closure_h->Fill(event_s->lep_pt,FF_value*event_s->weight_sf );
+        }
+      }
+      else{
+        if (  this->isInCR(mode,tau_ind) && this->isLoose(mode,tau_ind) ){
+          if( !raw_ff.Contains("_fitted") ) FF_value = FF_lookup_h->GetBinContent( this->getBin(mode|tau_ind)+1 );
+          else if( raw_ff.Contains("_fitted") ){
+            FF_value = this->getFittedBinContent( mode, fittedFFs );
+          }
+          closure_h->Fill(event_s->lep_pt,FF_value*event_s->weight_sf );
+        }
+      }
+    }
+
+    output->cd();
+    compare_t->Write();
+    closure_h->Write();
+  
+    output_h = (TH1D*)compare_t->Clone("nonclosure");
+    output_h->Divide(closure_h);
+  }
+  
+
+  TH1D* output_fit;  TH1D* output_fit_mcup;  TH1D* output_fit_mcdown;
+  output_fit = (TH1D*)output_h->Clone("nonclosure_fit");
+  if(subtractMC){
+    output_fit_mcup = (TH1D*)output_h_mcup->Clone("nonclosure_fit_mcup");
+    output_fit_mcdown = (TH1D*)output_h_mcdown->Clone("nonclosure_fit_mcdown");
+  //   for(int i=1;i<=output_h->GetNbinsX();i++){
+  //    if( output_h_mcup->GetBinContent(i) < 0 ) output_h_mcup->SetBinContent(i,-output_h_mcup->GetBinContent(i));
+  //    if( output_h_mcdown->GetBinContent(i) < 0 ) output_h_mcdown->SetBinContent(i,-output_h_mcdown->GetBinContent(i));
+  // }
+  }
+  for(int i=1;i<=output_h->GetNbinsX();i++){
+    // std::cout << "correction: " << output_h->GetBinContent(i) << std::endl;
+    if ( output_h->GetBinContent(i) < 0 ) {
+      output_h->SetBinError(i,1.);
+      std::cout << "Found negative correction value !" << std::endl;
+    } 
+  }
+  
+  output->cd();
+  output_fit->Write(); // at this point it is just the ratio of histograms
+  if(subtractMC){
+    output_fit_mcup->Write();  output_fit_mcdown->Write();
+  }
+  Double_t fitWidth;
+
+  fitWidth=0.6;
+  cout << "FitWidth: " << fitWidth << endl;
+
+  // NOMINAL  
+  GaussianKernelSmoother gsk;
+  gsk.setInputHisto( output_fit );
+  gsk.set_doWeights(1);
+  gsk.set_doIgnoreZeroBins(0);
+  gsk.set_kernelDistance( "lin" );
+  gsk.set_doWidthInBins(1);
+  gsk.set_doErrors(1);
+  //if(mode & _QCD) gsk.set_lastBinFrom(150);
+  gsk.setWidth(fitWidth);
+  gsk.set_fixFirstBin(1);
+  gsk.set_widthInBins_sf(3);
+  
+
+  
+  gsk.getSmoothHisto();
+  TH1D *h2=gsk.returnSmoothedHisto(); //nonclosure_fit_smoothed is returned
+  TH1D *h22=gsk.returnWeightHisto(); 
+  h2->Write();
+  h22->Write();
+  
+  gsk.set_doErrors(1);
+  gsk.getContSmoothHisto();
+  TGraphAsymmErrors *g=   gsk.returnSmoothedGraph();
+
+  Double_t x200; Double_t y200;
+  Int_t i_const;
+  Double_t x; Double_t y;
+  for(int i=0; i<g->GetN(); i++){
+    g->GetPoint(i,x,y);
+    if(x>60.) {
+      i_const = i;
+      break;
+    }
+  }
+  if(CHAN==kMU)g->GetPoint(i_const,x200,y200);
+  if(CHAN==kEL)g->GetPoint(i_const,x200,y200); // TODO CHANGE (110*4,x200,y200)
+  for(int i=0; i<g->GetN(); i++){
+
+    if(CHAN==kMU && i>i_const){
+      g->GetPoint(i,x,y);
+      g->SetPoint(i,x,y200);
+      // std::cout << "Setting point " << x << " to " << y200 << std::endl;
+    }
+    else if(CHAN==kEL && i>i_const){ //CHANGE 110
+      g->GetPoint(i,x,y);
+      g->SetPoint(i,x,y200);
+      // std::cout << "Setting point " << x << " to " << y200 << std::endl;
+    }
+  }
+  g->SetTitle("nonclosure"+sample);
+  g->SetName("nonclosure"+sample);
+  g->Write();
+  if(subtractMC){
+    // MC UP
+    GaussianKernelSmoother gsk_mcup;
+    gsk_mcup.setInputHisto( output_fit_mcup );
+    gsk_mcup.set_doWeights(1);
+    gsk_mcup.set_doIgnoreZeroBins(0);
+    gsk_mcup.set_kernelDistance( "lin" );
+    gsk_mcup.set_doWidthInBins(1);
+    gsk_mcup.set_doErrors(1);
+    gsk_mcup.setWidth(fitWidth);
+    gsk_mcup.set_fixFirstBin(1);
+    gsk_mcup.set_widthInBins_sf(1.115);
+    
+    gsk_mcup.getSmoothHisto();
+    TH1D *h2=gsk_mcup.returnSmoothedHisto();
+    h2->Write();
+
+    gsk_mcup.set_doErrors(1);
+    //gsk_mcup.set_lastBinFrom(185);
+    gsk_mcup.getContSmoothHisto();
+    TGraphAsymmErrors *g_mcup=   gsk_mcup.returnSmoothedGraph();
+    if(CHAN==kMU)g_mcup->GetPoint(250*4,x200,y200);
+    if(CHAN==kEL)g_mcup->GetPoint(250*4,x200,y200); // TODO CHANGE (110*4,x200,y200)
+    for(int i=0; i<g_mcup->GetN(); i++){
+      Double_t x; Double_t y;
+      if(CHAN==kMU && i>250*4){
+        g_mcup->GetPoint(i,x,y);
+        g_mcup->SetPoint(i,x,y200);
+      }
+      else if(CHAN==kEL && i>250*4){ //CHANGE 110
+        g_mcup->GetPoint(i,x,y);
+        g_mcup->SetPoint(i,x,y200);
+      }
+      
+    }
+    g_mcup->SetTitle("nonclosure_mcup"+sample);
+    g_mcup->SetName("nonclosure_mcup"+sample);
+    g_mcup->Write();
+
+    // MC DOWN
+    GaussianKernelSmoother gsk_mcdown;
+    gsk_mcdown.setInputHisto( output_fit_mcdown );
+    gsk_mcdown.set_doWeights(1);
+    gsk_mcdown.set_doIgnoreZeroBins(0);
+    gsk_mcdown.set_kernelDistance( "lin" );
+    gsk_mcdown.set_doWidthInBins(1);
+    gsk_mcdown.set_doErrors(1);
+    gsk_mcdown.setWidth(fitWidth);
+    gsk_mcdown.set_fixFirstBin(1);
     gsk_mcdown.set_widthInBins_sf(1.115);
     
     gsk_mcdown.getSmoothHisto();
@@ -2476,6 +2839,7 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
   gsk.set_doWidthInBins(1);
   gsk.set_doErrors(1);
   gsk.setWidth(fitWidth);
+  gsk.set_fixFirstBin(1);
   gsk.set_widthInBins_sf(1.);
   
   gsk.getSmoothHisto();
@@ -2505,12 +2869,12 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
     if(CHAN==kMU && i>i_const){
       g->GetPoint(i,x,y);
       g->SetPoint(i,x,y200);
-      std::cout << "Setting point " << x << " to " << y200 << std::endl;
+      // std::cout << "Setting point " << x << " to " << y200 << std::endl;
     }
     else if(CHAN==kEL && i>i_const){ //CHANGE 110
       g->GetPoint(i,x,y);
       g->SetPoint(i,x,y200);
-      std::cout << "Setting point " << x << " to " << y200 << std::endl;
+      // std::cout << "Setting point " << x << " to " << y200 << std::endl;
     }
   }
 
@@ -2528,6 +2892,7 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
     gsk_mcup.set_doWidthInBins(1);
     gsk_mcup.set_doErrors(1);
     gsk_mcup.setWidth(fitWidth);
+    gsk_mcup.set_fixFirstBin(1);
     gsk_mcup.set_widthInBins_sf(1.);
     
     gsk_mcup.getSmoothHisto();
@@ -2552,6 +2917,7 @@ void FFCalculator::calc_nonclosure_W_lepPt(const Int_t mode, const TString raw_f
     gsk_mcdown.set_doWidthInBins(1);
     gsk_mcdown.set_doErrors(1);
     gsk_mcdown.setWidth(fitWidth);
+    gsk_mcdown.set_fixFirstBin(1);
     gsk_mcdown.set_widthInBins_sf(1.1);
     
     gsk_mcdown.getSmoothHisto();
