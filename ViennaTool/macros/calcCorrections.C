@@ -120,8 +120,7 @@ void calcCorrections() {
     // Analyzer->calc_nonclosure_lepPt(_QCD,                       p+FF_corr_QCD_MCsum_noGen_fitted,        CR_QCD_lepPt_data_MCsubtracted,   p+FF_corr_QCD_MCsum_noGen_nonclosure,    p+FF_corr_QCD_MCsum_noGen_nonclosure_lepPt,"",0);
 
   }
-  else cout << "FIXME: Reasonable corrections for MC closure if enough statistics" << endl;
-  
+
   
   
   if(CHAN!=kTAU){
@@ -137,7 +136,7 @@ void calcCorrections() {
 
   if(CHAN==kTAU){
     Analyzer->loadFile(preselection_data,"Events");
-    Analyzer->calc_nonclosure(_QCD,                             p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_mvis_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure,"",0);
+    Analyzer->calc_nonclosure_QCD_jetPt(_QCD,                             p+FF_corr_QCD_MCsum_noGen_fitted,      CR_QCD_jetPt_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure,"",0);
     
     Analyzer->calc_nonclosure(_QCD|_AI,                         p+FF_corr_QCD_MCsum_noGen_AI_fitted,     CR_QCD_mvis_AI_data_MCsubtracted, p+FF_corr_QCD_MCsum_noGen_nonclosure_AI,"",0);
     

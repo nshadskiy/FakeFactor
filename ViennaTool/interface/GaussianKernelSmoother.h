@@ -35,6 +35,9 @@ class GaussianKernelSmoother
     this->lastBinFrom = m_lastBinFrom; 
     this->doLastBinFrom = 1;
   }
+  void set_fixFirstBin( int m_fixFirstBin ){ this->fixFirstBin = m_fixFirstBin; }
+  void set_fixSecondBin( int m_fixSecondBin ){ this->fixSecondBin = m_fixSecondBin; }
+
   void getSmoothHisto();
   void getContSmoothHisto();
   void createTestHisto();
@@ -85,6 +88,8 @@ class GaussianKernelSmoother
   TString kernelDistance;
   double lastBinFrom;
   int doLastBinFrom;
+  int fixFirstBin;
+  int fixSecondBin;
 
   TRandom3 rand;
   //        self.weights = None

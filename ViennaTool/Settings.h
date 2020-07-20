@@ -5,15 +5,15 @@
 #define kTAU         2
 ///////////////////////////////////////////////////
 #define EMB          1  
-#define selCHAN      kMU
-const int CHAN     = kMU;
+#define selCHAN      kTAU
+const int CHAN     = kTAU;
 // FakeFactor_2016_DeepTauIDv2_v0
 const TString analysis      ="2018";
-const TString output_folder ="/ceph/jbechtel/auto-puppi-fakefactors/2018";
+const TString output_folder ="/ceph/jbechtel/auto-nmssm-jet-fakefactors/2018";
 const TString ver = "2018"; // first time nanoAODv5 with deepTauIDv2 
 
 const TString _NtupleTreeName = "TauCheck"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
-const TString _NtupleTreeName_KIT = "mt_nominal/ntuple"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
+const TString _NtupleTreeName_KIT = "tt_nominal/ntuple"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
 const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; //obsolete
 ///////////////////////////////////////////////////
 const TString user="jbechtel";    
@@ -72,9 +72,9 @@ const int fit_pT_bins = 1; //use fitted pT bins as input for ff
 // _VVTIGHT        128
 // A WP condition is met if: (Fulfill && !Fail)
 // settings for tight vs vloose&(!tight):
-const int wpTightFulfill = 32; 
+const int  wpTightFulfill = 16; 
 const int wpTightFail    = 0;
-const int wpLooseFulfill = 4;
+const int  wpLooseFulfill = 1;
 const int wpLooseFail    = 32;
 ///////////////////////////////////////////////////
 //MUTAU Settings

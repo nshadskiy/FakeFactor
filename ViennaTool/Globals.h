@@ -27,6 +27,7 @@
 #define LEPPT   268435456
 #define MT70    536870912
 #define SVFIT  1073741824
+#define JETPT  2147483648
 
 //int max:     2147483648
 
@@ -101,6 +102,7 @@ const TString s_svfit        ="svfit";
 const TString s_muiso        ="muiso";
 const TString s_mt2          ="mt2";
 const TString s_lepPt        ="lepPt";
+const TString s_jetPt        ="jetPt";
 const TString s_mvamet       ="mvamet";
 const TString s_met          ="met";
 const TString s_mjj          ="mjj";
@@ -122,7 +124,7 @@ const TString s_tight        ="tight";
 
 
 //Output directories
-const TString path_presel        = "/ceph/"+user+"/auto-puppi-fakefactors/"+analysis+"/preselection/"+s_chan[CHAN]+"/";
+const TString path_presel        = "/ceph/"+user+"/auto-nmssm-jet-fakefactors/"+analysis+"/preselection/"+s_chan[CHAN]+"/";
 const TString path_ff            = "ViennaTool/fakefactor/";
 const TString path_ff_data       = path_ff+"data_"+s_chan[CHAN]+"/";
 const TString path_ff_mc         = path_ff+"mc_"+s_chan[CHAN]+"/";
@@ -224,6 +226,7 @@ const TString FF_corr_Wjets_MC_noGen_nonclosure                 = "FF_"+s_corr+"
 const TString FF_corr_Wjets_MC_noGen_nonclosure_0jet            = "FF_"+s_corr+"_Wjets_MC_noGen_nonclosure_0jet.root";
 const TString FF_corr_Wjets_MC_noGen_nonclosure_1jet            = "FF_"+s_corr+"_Wjets_MC_noGen_nonclosure_1jet.root";
 const TString FF_corr_Wjets_MC_noGen_nonclosure_lepPt           = "FF_"+s_corr+"_Wjets_MC_noGen_nonclosure_lepPt.root";
+const TString FF_corr_Wjets_MC_noGen_nonclosure_jetPt           = "FF_"+s_corr+"_Wjets_MC_noGen_nonclosure_jetPt.root";
 
 
 const TString FF_corr_Wjets_MC_noGen_mtcorr                     = "FF_"+s_corr+"_Wjets_MC_noGen_mtcorr.root";
@@ -272,6 +275,8 @@ const TString FF_corr_QCD_MCsum_noGen_nonclosure_AI            = "FF_"+s_corr+"_
 const TString FF_corr_QCD_MCsum_noGen_nonclosure_AI_0jet       = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure_AI_0jet.root";
 const TString FF_corr_QCD_MCsum_noGen_nonclosure_AI_1jet       = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure_AI_1jet.root";
 const TString FF_corr_QCD_MCsum_noGen_nonclosure_lepPt         = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure_lepPt.root";
+const TString FF_corr_QCD_MCsum_noGen_nonclosure_jetPt         = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure_jetPt.root";
+
 const TString FF_corr_QCD_MCsum_noGen_nonclosure_lepPt_0jet    = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure_lepPt_0jet.root";
 const TString FF_corr_QCD_MCsum_noGen_nonclosure_lepPt_1jet    = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_nonclosure_lepPt_1jet.root";
 const TString FF_corr_QCD_MCsum_noGen_OSSScorr                 = "FF_"+s_corr+"_QCD_"+s_MCsum+"_noGen_OSSScorr.root";
@@ -450,6 +455,8 @@ const TString CR_QCD_mvis_AI_data_MCsubtracted   = path_sim+s_CR+"_QCD_"+s_mvis+
 const TString CR_QCD_muiso_data_MCsubtracted     = path_sim+s_CR+"_QCD_muiso_data_MCsubtracted.root";
 const TString CR_Wjets_mvis_data_MCsubtracted    = path_sim+s_CR+"_Wjets_"+s_mvis+"_data_MCsubtracted.root";
 const TString CR_QCD_lepPt_data_MCsubtracted     = path_sim+s_CR+"_QCD_"+s_lepPt+"_data_MCsubtracted.root";
+const TString CR_QCD_jetPt_data_MCsubtracted     = path_sim+s_CR+"_QCD_"+s_jetPt+"_data_MCsubtracted.root";
+
 const TString CR_Wjets_lepPt_data_MCsubtracted     = path_sim+s_CR+"_Wjets_"+s_lepPt+"_data_MCsubtracted.root";
 
 const TString empty_mt="empty_"+s_SR+"_"+s_mt+".root";
@@ -585,6 +592,9 @@ const Int_t w_lepPt_n=(sizeof(w_lepPt_v)/sizeof(Double_t)) -1;
 const Double_t w_lepPt_v[]={40,45,50,55,60,65,70,75,80,85,90,95,100,110,120,250};
 const Int_t w_lepPt_n=(sizeof(w_lepPt_v)/sizeof(Double_t)) -1;
 #endif
+
+const Double_t w_jetPt_v[]={-20,30,40,50,60,80,100,120,250};
+const Int_t w_jetPt_n=(sizeof(w_jetPt_v)/sizeof(Double_t)) -1;
 const Double_t w_muiso_v[]={0.00,0.02,0.05,0.1,0.15,0.2,0.25,0.3,0.4,0.5,0.7};
 const Int_t w_muiso_n=(sizeof(w_muiso_v)/sizeof(Double_t)) -1;
 

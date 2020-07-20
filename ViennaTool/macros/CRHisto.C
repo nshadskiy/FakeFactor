@@ -165,6 +165,8 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   
   if(CHAN==kTAU){
     CallCRHisto_creation(Analyzer, 0, LEPPT|_QCD|_AI|JET0, s_QCD, "lepPt_AI" );
+    CallCRHisto_creation(Analyzer, 0, JETPT|_QCD, s_QCD, "jetPt" );
+
   }
   
   //get SS Wjet histogramms for SS mvis Wjets closure
@@ -201,6 +203,7 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   
   for (int ij=0; ij<=2*(doNJetBinning); ij++){ //loop over inclusive, 0jet, 1jet //Check if Njet binning is implemented
     ProduceMCsubtractedHistos(s_QCD  ,"lepPt",""   ,sjet[ij],0,0); //get QCD      lepPT MC subtracted CRs
+    ProduceMCsubtractedHistos(s_QCD  ,"jetPt",""   ,sjet[ij],0,0); //get QCD      lepPT MC subtracted CRs
     ProduceMCsubtractedHistos(s_Wjets  ,"lepPt",""   ,sjet[ij],0,0); //get QCD      lepPT MC subtracted CRs
     ProduceMCsubtractedHistos(s_QCD  ,s_mvis ,"_AI",sjet[ij],0,0); //get QCD   AI mvis  MC subtracted CRs
     ProduceMCsubtractedHistos(s_Wjets,s_mvis ,"_SS",sjet[ij],0,0); //get Wjets SS mvis  MC subtracted CRs

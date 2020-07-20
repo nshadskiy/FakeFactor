@@ -42,7 +42,7 @@ class TNtupleAnalyzer{
   double mvamet; double met;
   double otherLep_pt,otherLep_eta,otherLep_phi,otherLep_m,otherLep_iso;
   int    otherLep_q;
-  double lep_pt,lep_eta,lep_phi,lep_m,lep_iso;
+  double lep_pt,lep_eta,lep_phi,lep_m,lep_iso,jpt_1,jpt_2;
   double lep_vvvloose,lep_vvloose,lep_vloose,lep_loose,lep_medium; // only needed for tt channel
   int    lep_q, lep_gen_match;
   int n_iso_lep, n_iso_otherLep;
@@ -59,6 +59,9 @@ class TNtupleAnalyzer{
 
   std::vector<TLorentzVector> *m_lep;
   std::vector<Double_t> *m_lep_pt;
+  std::vector<Double_t> *m_jpt_1;
+  std::vector<Double_t> *m_jpt_2;
+
   std::vector<Double_t> *m_lep_eta;
   std::vector<Double_t> *m_lep_phi;
   std::vector<Double_t> *m_lep_m;

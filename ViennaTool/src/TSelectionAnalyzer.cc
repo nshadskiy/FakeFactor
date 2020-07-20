@@ -127,6 +127,10 @@ void TSelectionAnalyzer::getCRHisto(TString preselection,Int_t mode,TString outp
     tightCR = new TH1D("hh_t_lepPt","",w_lepPt_n,w_lepPt_v);
     looseCR = new TH1D("hh_l_lepPt","",w_lepPt_n,w_lepPt_v);
   }
+  else if (mode & JETPT) {
+    tightCR = new TH1D("hh_t_jetPt","",w_jetPt_n,w_jetPt_v);
+    looseCR = new TH1D("hh_l_jetPt","",w_jetPt_n,w_jetPt_v);
+  }
   else {
     std::cout<<"ERROR: no valid mode given. Exiting TNtupleAnalyzer::getCRHisto..."<<std::endl;
     return;
@@ -134,7 +138,7 @@ void TSelectionAnalyzer::getCRHisto(TString preselection,Int_t mode,TString outp
 
   TString cutstring = this->getCRCutString(mode);
   
-  if ( DEBUG ) std::cout << "CR CUT STRING: " << cutstring << endl;
+  std::cout << "CR CUT STRING: " << cutstring << endl;
 
   TString s_selval, s_histoname = "";
   if (mode & MVIS) {      s_selval = "alltau_mvis[0]"; s_histoname = "mvis";  }
@@ -143,13 +147,14 @@ void TSelectionAnalyzer::getCRHisto(TString preselection,Int_t mode,TString outp
   else if (mode & MT) {   s_selval = "alltau_mt[0]";   s_histoname = "mt";    }
   else if (mode & ETA2) {   s_selval = "alltau_eta[0]";   s_histoname = "eta";    }
   else if (mode & LEPPT) {s_selval = "lep_pt";         s_histoname = "lepPt"; }
+  else if (mode & JETPT) {s_selval = "jpt_1";         s_histoname = "jetPt"; }
 
 
   
   event_s->fChain->Draw(s_selval + ">>hh_t_"+s_histoname+"", "weight_sf * "+cutstring + "*" + this->getWPCutString("tight"), "goff");
-   if ( DEBUG ) cout << "hh_t_"<<s_histoname << " DONE " << endl;
+   cout << "hh_t_"<<s_histoname << " DONE " << endl;
   event_s->fChain->Draw(s_selval + ">>hh_l_"+s_histoname+"", "weight_sf * "+cutstring + "*" + this->getWPCutString("loose"), "goff");
-   if ( DEBUG ) cout << "hh_l_"<<s_histoname << " DONE " << endl;
+   cout << "hh_l_"<<s_histoname << " DONE " << endl;
   
   if (DEBUG) {
     std::cout << "***************** CR HISTO STATS ********************" << std::endl;

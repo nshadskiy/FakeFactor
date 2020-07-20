@@ -46,6 +46,9 @@ public :
    Int_t           otherLep_q;
    Double_t        otherLep_iso;
    Double_t        lep_pt;
+   Double_t        jpt_1;
+   Double_t        jpt_2;
+
    Double_t        lep_eta;
    Double_t        lep_phi;
    Int_t           lep_q;
@@ -116,6 +119,8 @@ public :
    TBranch        *b_otherLep_q;   //!
    TBranch        *b_otherLep_iso;   //!
    TBranch        *b_lep_pt;   //!
+   TBranch        *b_jpt_1;   //!
+
    TBranch        *b_lep_eta;   //!
    TBranch        *b_lep_phi;   //!
    TBranch        *b_lep_q;   //!
@@ -291,6 +296,8 @@ void SignalClass::Init(TTree *tree)
    fChain->SetBranchAddress("otherLep_q", &otherLep_q, &b_otherLep_q);
    fChain->SetBranchAddress("otherLep_iso", &otherLep_iso, &b_otherLep_iso);
    fChain->SetBranchAddress("lep_pt", &lep_pt, &b_lep_pt);
+   fChain->SetBranchAddress("jpt_1", &jpt_1, &b_jpt_1);
+
    fChain->SetBranchAddress("lep_eta", &lep_eta, &b_lep_eta);
    fChain->SetBranchAddress("lep_phi", &lep_phi, &b_lep_phi);
    fChain->SetBranchAddress("lep_q", &lep_q, &b_lep_q);

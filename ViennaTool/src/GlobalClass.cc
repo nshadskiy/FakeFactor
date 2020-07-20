@@ -525,6 +525,13 @@ Int_t GlobalClass::getWeightIndex_lepPt(Double_t lepPt){
   return 1; //should never get here
 }
 
+Int_t GlobalClass::getWeightIndex_jetPt(Double_t jetPt){
+  for (int i=0; i<w_jetPt_n; i++){
+    if ( jetPt>w_jetPt_v[i] && jetPt<w_jetPt_v[i+1] ) return i;
+  }
+  return 1; //should never get here
+}
+
 Int_t GlobalClass::getWeightIndex_muiso(Double_t muiso){
   for (int i=0; i<w_muiso_n; i++){
     if ( muiso>w_muiso_v[i] && muiso<w_muiso_v[i+1] ) return i;
@@ -868,6 +875,7 @@ Double_t GlobalClass::selVal(const Int_t mode, const Int_t ind){
   else if (mode & SVFIT) {return event_s->alltau_svfit->at(ind);}
   else if (mode & MT) {return event_s->alltau_mt->at(ind);}
   else if (mode & LEPPT) {return event_s->lep_pt;}
+  else if (mode & JETPT) {return event_s->jpt_1;}
   else{ std::cout << "selVal: Warning: no valid variable given!" << std::endl; return -1; }
 
 }

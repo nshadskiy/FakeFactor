@@ -245,6 +245,9 @@ void TNtupleAnalyzer::SetNewEventInfo() {
   n_iso_otherLep=0;
 
   lep_pt=event->pt_1;
+  jpt_1=event->jpt_1;
+  jpt_2=event->jpt_2;
+
   lep_eta=event->eta_1;
   lep_phi=event->phi_1;
   lep_iso=event->iso_1;
@@ -266,6 +269,9 @@ void TNtupleAnalyzer::SetNewEventInfo() {
   
   m_lep->resize(0);
   m_lep_pt->resize(0);
+  m_jpt_1->resize(0);
+  m_jpt_2->resize(0);
+
   m_lep_eta->resize(0);
   m_lep_phi->resize(0);
   m_lep_m->resize(0);
@@ -784,6 +790,8 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   tree->Branch("otherLep_q"  ,&otherLep_q);
   tree->Branch("otherLep_iso",&otherLep_iso);
   tree->Branch("lep_pt" ,&lep_pt);	//TODO: TLorentzVector
+  tree->Branch("jpt_1" ,&jpt_1);	//TODO: TLorentzVector
+  tree->Branch("jpt_2" ,&jpt_2);	//TODO: TLorentzVector
   tree->Branch("lep_eta",&lep_eta);
   tree->Branch("lep_phi",&lep_phi);
   tree->Branch("lep_q"  ,&lep_q);
@@ -881,6 +889,9 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
 
   m_lep = new vector<TLorentzVector>;
   m_lep_pt  = new vector<Double_t>;;
+  m_jpt_1  = new vector<Double_t>;;
+  m_jpt_2  = new vector<Double_t>;;
+
   m_lep_eta = new vector<Double_t>;;
   m_lep_phi = new vector<Double_t>;;
   m_lep_m = new vector<Double_t>;;

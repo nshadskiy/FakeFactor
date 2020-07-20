@@ -43,6 +43,7 @@ class GlobalClass{
   Int_t getWeightIndex_mttot(const Double_t mttot);
   Int_t getWeightIndex_mvis(const Double_t mvis);
   Int_t getWeightIndex_lepPt(const Double_t lepPt);
+  Int_t getWeightIndex_jetPt(const Double_t jetPt);
   Int_t getWeightIndex_muiso(const Double_t muiso);
   Int_t getWeightIndex_dm(const Int_t dm);
   Int_t getWeightBin(const Double_t pt, Int_t dm);

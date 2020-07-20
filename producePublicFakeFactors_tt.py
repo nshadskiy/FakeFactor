@@ -20,11 +20,11 @@ for category in categories:
 
     print 'Fake factor input file for channel {0} and category {1}'.format(channel,category)
 
-    ff_qcd_os = FakeFactor(vars=['tau_pt', 'tau2_pt', 'tau_decay', 'njets', 'mvis'])
-    ff_w =      FakeFactor(vars=['tau_pt', 'tau2_pt', 'tau_decay', 'njets', 'mvis'])
-    ff_tt =     FakeFactor(vars=['tau_pt', 'tau2_pt', 'tau_decay', 'njets', 'mvis'])
+    ff_qcd_os = FakeFactor(vars=['tau_pt', 'tau2_pt', 'tau_decay', 'njets', 'mvis', 'jet_pt'])
+    ff_w =      FakeFactor(vars=['tau_pt', 'tau2_pt', 'tau_decay', 'njets', 'mvis', 'jet_pt'])
+    ff_tt =     FakeFactor(vars=['tau_pt', 'tau2_pt', 'tau_decay', 'njets', 'mvis', 'jet_pt'])
     # Combined fake factor
-    ff_comb   = FakeFactor(vars=['tau_pt', 'tau2_pt', 'tau_decay', 'njets', 'mvis',  'frac_qcd', 'frac_w', 'frac_tt'])
+    ff_comb   = FakeFactor(vars=['tau_pt', 'tau2_pt', 'tau_decay', 'njets', 'mvis', 'jet_pt', 'frac_qcd', 'frac_w', 'frac_tt'])
     
     
     home = os.getenv('HOME')
@@ -46,7 +46,7 @@ for category in categories:
                 name='mviscorr_qcd',
                 file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
-                vars=['mvis']
+                vars=['jet_pt']
             ),
             Leaf(
                 name='ptcorr_qcd',
@@ -76,7 +76,7 @@ for category in categories:
                 name='mviscorr_qcd_cw',
                 file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
-                vars=['mvis']
+                vars=['jet_pt']
             ),
             Leaf(
                 name='ptcorr_qcd_cw',
@@ -106,7 +106,7 @@ for category in categories:
                 name='mviscorr_qcd_ctt',
                 file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
-                vars=['mvis']
+                vars=['jet_pt']
             ),
             Leaf(
                 name='ptcorr_qcd_ctt',
@@ -658,7 +658,7 @@ for category in categories:
                         name='mviscorr_qcd_temp',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
-                        vars=['mvis']
+                        vars=['jet_pt']
                     ),
                  comb.find('ff_qcd_os')
              ]
@@ -676,7 +676,7 @@ for category in categories:
                         name='mviscorr_qcd_temp',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
-                        vars=['mvis']
+                        vars=['jet_pt']
                     ),
                  comb.find('ff_qcd_os')
              ]
