@@ -235,6 +235,7 @@ void TNtupleAnalyzer::SetNewEventInfo() {
   met=event->met;
   jdeta=event->jdeta;
   njetingap20=event->njetingap20;
+  mt_tot_puppi=event->mt_tot_puppi;
   mu2_iso=-999;  
   m_leplep=-999;  
   lep_dR=-999;
@@ -768,6 +769,7 @@ void TNtupleAnalyzer::initOutfileTree(TTree* tree)
   tree->Branch("mjj",&mjj);
   tree->Branch("jdeta",&jdeta);
   tree->Branch("njetingap20", &njetingap20);
+  tree->Branch("mt_tot_puppi",&mt_tot_puppi);
   tree->Branch("met",&met);
   tree->Branch("m_leplep",&m_leplep);
   tree->Branch("lep_dR",&lep_dR);
