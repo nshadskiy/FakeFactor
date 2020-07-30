@@ -150,6 +150,7 @@ public :
    Float_t         d0_1;
    Float_t         dZ_1;
    Float_t         mt_1;
+   Float_t         mt_tot_puppi;
    Float_t         pfmt_1;
    Float_t         iso_1;
    Float_t           againstElectronLooseMVA6_1;
@@ -603,6 +604,7 @@ public :
    TBranch        *b_d0_1;   //!
    TBranch        *b_dZ_1;   //!
    TBranch        *b_mt_1;   //!
+   TBranch        *b_mt_tot_puppi;
    TBranch        *b_pfmt_1;   //!
    TBranch        *b_iso_1;   //!
    TBranch        *b_againstElectronLooseMVA6_1;   //!
@@ -1175,6 +1177,7 @@ void NtupleClass::Init(TTree *tree)
    fChain->SetBranchAddress("d0_1", &d0_1, &b_d0_1);
    fChain->SetBranchAddress("dZ_1", &dZ_1, &b_dZ_1);
    fChain->SetBranchAddress("mt_1_puppi", &mt_1, &b_mt_1);
+   fChain->SetBranchAddress("mt_tot_puppi", &mt_tot_puppi, &b_mt_tot_puppi);
    fChain->SetBranchAddress("pfmt_1", &pfmt_1, &b_pfmt_1);
    fChain->SetBranchAddress("iso_1", &iso_1, &b_iso_1);
    fChain->SetBranchAddress("againstElectronLooseMVA6_1", &againstElectronLooseMVA6_1, &b_againstElectronLooseMVA6_1);
