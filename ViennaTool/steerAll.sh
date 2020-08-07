@@ -84,6 +84,8 @@ rsync -vhrP ViennaTool/fakefactor/data_${chan}/FF* ${output}/${chan}/.
 rsync -vhrP ViennaTool/sim/${chan}/* ${output}/${chan}/sim/.
 rsync -vhrP ViennaTool/Images_EMB/data_${chan}/ff_* ${output}/${chan}/Images_EMB/.
 rsync -vhrP ViennaTool/Images_EMB/data_${chan}/corr_* ${output}/${chan}/Images_EMB/.
+rsync -vhrP ViennaTool/ff_2d/tt/incl/*  ${output}/${chan}/inclusive/pieces/.
+rsync -vhrP ViennaTool/ff_2d/tt/incl/*  ${output}/${chan}/dummycat/pieces/.
 
 python cpTDHaftPublic.py --destination $output --channel $channel --doNjetBinning $njetbinning
 
