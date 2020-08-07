@@ -21,6 +21,7 @@ TString getCatString(Int_t categoryMode=0);
 void convert_corrections( TString fn, TString gn, TString fout, TString gout, const TString tight_cat="");
 void combineQCDSystematics( TString fQCD_nonclosure, TString sys_nonclosure, TString fQCD_muiso, TString fQCD_OSSS, TString sys_OSSS, TString sys_muiso, TString fout, TString tout, const TString tight_cat="");
 void combineQCDSystematics_morphed( TString fQCD_nonclosure, TString sys_nonclosure, TString fQCD_muiso, TString fQCD_OSSS, TString sys_OSSS, TString sys_muiso, TString fout, TString tout, const TString tight_cat="");
+
 void combineWSystematics( TString fW_nonclosure, TString sys_nonclosure, TString fW_mtcorr, TString sys_mtcorr, TString fout, TString tout, const TString tight_cat="");
 void combineWSystematics_morphed( TString fW_nonclosure, TString sys_nonclosure, TString fW_mtcorr, TString sys_mtcorr, TString fout, TString tout, const TString tight_cat="");
 
@@ -111,6 +112,10 @@ void convert_inputs(Int_t inclusive=1, Int_t categoryMode=0){
           convert_corrections( d+FF_corr_QCD_MCsum_noGen_nonclosure_1jet, "nonclosure_QCD", o+"Correction_Data_QCD_MVis_1jet.root", "QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction");
         }
         convert_corrections( d+FF_corr_QCD_MCsum_noGen_OSSScorr,        "OSSS_corr_QCD",  o+"Correction_Data_QCD_OSSS.root", "QCD_SS_Data_FFSSMuMediumData_OSSS_correction");
+          if( doNJetBinning ){
+        convert_corrections( d+FF_corr_QCD_MCsum_noGen_OSSScorr_0jet,        "OSSS_corr_QCD",  o+"Correction_Data_QCD_OSSS_0jet.root", "QCD_SS_Data_FFSSMuMediumData_OSSS_correction");
+        convert_corrections( d+FF_corr_QCD_MCsum_noGen_OSSScorr_1jet,        "OSSS_corr_QCD",  o+"Correction_Data_QCD_OSSS_1jet.root", "QCD_SS_Data_FFSSMuMediumData_OSSS_correction");
+          }
         if(CHAN!=kTAU){
           convert_corrections( d+FF_corr_QCD_MCsum_noGen_muisocorr,         "muiso_QCD",        o+"Correction_Data_QCD_MuIso.root",      "QCD_SS_Data_FFSSMuMediumData_isomu_correction");
           if( doNJetBinning ){
@@ -144,6 +149,9 @@ void convert_inputs(Int_t inclusive=1, Int_t categoryMode=0){
           combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_QCD_up",    d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD_up",   d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",  o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_up");
           combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_QCD_down",  d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD_down", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_down", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_down");
           combineQCDSystematics_morphed( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_QCD",  d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_QCD", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS");
+          combineQCDSystematics_morphed( d+FF_corr_QCD_MCsum_noGen_nonclosure_0jet,        "nonclosure_QCD",  d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt_0jet.root", "nonclosure_QCD", d+FF_corr_QCD_MCsum_noGen_OSSScorr_0jet, "OSSS_corr_QCD", o+"uncertainties_QCD_W_0jet.root", "uncertainties_QCD_MVis_Iso_SS2OS");
+          combineQCDSystematics_morphed( d+FF_corr_QCD_MCsum_noGen_nonclosure_1jet,        "nonclosure_QCD",  d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt_1jet.root", "nonclosure_QCD", d+FF_corr_QCD_MCsum_noGen_OSSScorr_1jet, "OSSS_corr_QCD", o+"uncertainties_QCD_W_1jet.root", "uncertainties_QCD_MVis_Iso_SS2OS");
+
           combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_mcup_QCD",    d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_mcup_QCD",   d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_up",  o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_mcup");
           combineQCDSystematics( d+FF_corr_QCD_MCsum_noGen_nonclosure,        "nonclosure_mcdown_QCD",  d+"FF_corr_QCD_MCsum_noGen_nonclosure_lepPt.root", "nonclosure_mcdown_QCD", d+FF_corr_QCD_MCsum_noGen_OSSScorr, "OSSS_corr_QCD_down", o+"uncertainties_QCD_W.root", "uncertainties_QCD_MVis_Iso_SS2OS_mcdown");
         }else{

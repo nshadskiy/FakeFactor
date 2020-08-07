@@ -28,7 +28,7 @@ if __name__ == '__main__':
 		channel = "et"
 	elif(args.channel == "kTAU"):
 		channel = "tt"
-
+	print "njetbinning %s"%(args.njetbinning)
 	if( channel == "mt" or channel == "et"):
 		log = open('copy.log', 'a')
 		if( args.njetbinning ):

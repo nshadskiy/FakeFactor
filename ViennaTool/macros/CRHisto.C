@@ -152,12 +152,12 @@ void CRHisto(int doCalc, int nCR, int nQU) {
     }
   }
 
-  CallCRHisto_creation(Analyzer, 0, _W_JETS|MVIS|NO_SR, s_Wjets, "mvis_nosr" );
-  CallCRHisto_creation(Analyzer, 0, _W_JETS|MVIS|NO_SR|MT70, s_Wjets, "mvis_mt70" );
+  // CallCRHisto_creation(Analyzer, 0, _W_JETS|MVIS|NO_SR, s_Wjets, "mvis_nosr" );
+  // CallCRHisto_creation(Analyzer, 0, _W_JETS|MVIS|NO_SR|MT70, s_Wjets, "mvis_mt70" );
   
   //pick only QCD control region - produces ViennaTool/sim/channel/CR_QCD_lepPt_*.root but not the MCsubtracted one
   CallCRHisto_creation(Analyzer, 0, _QCD|LEPPT, s_QCD, "lepPt" );
-  CallCRHisto_creation(Analyzer, 0, _W_JETS|LEPPT, s_Wjets, "lepPt" );
+  // CallCRHisto_creation(Analyzer, 0, _W_JETS|LEPPT, s_Wjets, "lepPt" );
 
   
   //get AI CR histogramms for QCD mvis nonclosure
@@ -168,16 +168,19 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   }
   
   //get SS Wjet histogramms for SS mvis Wjets closure
-  CallCRHisto_creation(Analyzer, MVIS, _W_JETS|_AI, s_Wjets, s_mvis+"_SS" );
+  // CallCRHisto_creation(Analyzer, MVIS, _W_JETS|_AI, s_Wjets, s_mvis+"_SS" );
   
-  CallCRHisto_creation(Analyzer, LEPPT, _W_JETS|_AI, s_Wjets, "lepPt_SS" );
-  CallCRHisto_creation(Analyzer, PT, _W_JETS|_AI, s_Wjets, "pt_SS" );
-
+  // CallCRHisto_creation(Analyzer, LEPPT, _W_JETS|_AI, s_Wjets, "lepPt_SS" );
+  // CallCRHisto_creation(Analyzer, PT, _W_JETS|_AI, s_Wjets, "pt_SS" );
   
+  // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // //get Wjet SS histos for corrections
+  // Analyzer->getCRHisto(preselection_Wjets, MVIS|_W_JETS|_SS , path_sim+s_CR+"_Wjets_mvis_Wjets_SS_SR.root"  );
+  // Analyzer->getCRHisto(preselection_Wjets, MT|NO_SR|_W_JETS|_SS , path_sim+s_CR+"_Wjets_mt_Wjets_SS_SR.root"  );
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //get Wjet SS histos for corrections
-  Analyzer->getCRHisto(preselection_Wjets, MVIS|_W_JETS|_SS , path_sim+s_CR+"_Wjets_mvis_Wjets_SS_SR.root"  );
-  Analyzer->getCRHisto(preselection_Wjets, MT|NO_SR|_W_JETS|_SS , path_sim+s_CR+"_Wjets_mt_Wjets_SS_SR.root"  );
+
+
+// void CallCRHisto_creation (TSelectionAnalyzer* Analyzer, int variable_bitcode, int CR_bitcode, TString control_region, TString variable_name) {
   // for (int ic=0; ic<nCR; ic++){ //loop over CRs
   //   for (int iv=0; iv<nVARused; iv++){ //loop over mt, mvis, pt, muiso
   //       for (int is=0; is<nSA; is++){ 
@@ -199,12 +202,12 @@ void CRHisto(int doCalc, int nCR, int nQU) {
   
   for (int ij=0; ij<=2*(doNJetBinning); ij++){ //loop over inclusive, 0jet, 1jet //Check if Njet binning is implemented
     ProduceMCsubtractedHistos(s_QCD  ,"lepPt",""   ,sjet[ij],0,0); //get QCD      lepPT MC subtracted CRs
-    ProduceMCsubtractedHistos(s_Wjets  ,"lepPt",""   ,sjet[ij],0,0); //get QCD      lepPT MC subtracted CRs
+    // ProduceMCsubtractedHistos(s_Wjets  ,"lepPt",""   ,sjet[ij],0,0); //get QCD      lepPT MC subtracted CRs
     ProduceMCsubtractedHistos(s_QCD  ,s_mvis ,"_AI",sjet[ij],0,0); //get QCD   AI mvis  MC subtracted CRs
-    ProduceMCsubtractedHistos(s_Wjets,s_mvis ,"_SS",sjet[ij],0,1); //get Wjets SS mvis  MC subtracted CRs
-    ProduceMCsubtractedHistos(s_Wjets,"lepPt" ,"_SS",sjet[ij],0,1); //get Wjets SS mvis  MC subtracted CRs
-    ProduceMCsubtractedHistos(s_Wjets,"pt" ,"_SS",sjet[ij],0,1); //get Wjets SS mvis  MC subtracted CRs
-
+    // ProduceMCsubtractedHistos(s_Wjets,s_mvis ,"_SS",sjet[ij],0,1); //get Wjets SS mvis  MC subtracted CRs
+    // ProduceMCsubtractedHistos(s_Wjets,"lepPt" ,"_SS",sjet[ij],0,1); //get Wjets SS mvis  MC subtracted CRs
+    // ProduceMCsubtractedHistos(s_Wjets,"pt" ,"_SS",sjet[ij],0,1); //get Wjets SS mvis  MC subtracted CRs
+  
   }
   
   for (int ic=0; ic<nCR; ic++){ //loop over CRs - Wjets, DY, TT and QCD

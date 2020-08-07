@@ -64,18 +64,18 @@ cp -rs ${output}/preselection/${chan}/preselection_${process}_J_EMB.root  ${outp
 cp -rs ${output}/preselection/${chan}/preselection_${process}_L_EMB.root  ${output}/preselection/${chan}/preselection_${process}_L.root
 done
 
-./SRHisto &
-./CRHisto &
-wait
+#./SRHisto &
+#./CRHisto &
+#wait
 
-./steerFF
-./fitFakeFactors
-cd ViennaTool/Images_EMB/data_$chan
-gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
-cd -
+#./steerFF
+#./fitFakeFactors
+#cd ViennaTool/Images_EMB/data_$chan
+#gs -dSAFER -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=toCheck.pdf $ff_tocheck
+#cd -
 
-./calcCorrections
-python plotCorrections.py --channel $channel  --doNjetBinning $njetbinning --usePt_nonclosure_Wjets $usePt_nonclosure
+# ./calcCorrections
+#python plotCorrections.py --channel $channel  --doNjetBinning $njetbinning --usePt_nonclosure_Wjets $usePt_nonclosure
 
 ./convert_inputs
 
@@ -83,6 +83,8 @@ rsync -vhrP ViennaTool/fakefactor/data_${chan}/FF* ${output}/${chan}/.
 rsync -vhrP ViennaTool/sim/${chan}/* ${output}/${chan}/sim/.
 rsync -vhrP ViennaTool/Images_EMB/data_${chan}/ff_* ${output}/${chan}/Images_EMB/.
 rsync -vhrP ViennaTool/Images_EMB/data_${chan}/corr_* ${output}/${chan}/Images_EMB/.
+rsync -vhrP ViennaTool/ff_2d/tt/incl/*  ${output}/${chan}/inclusive/pieces/.
+rsync -vhrP ViennaTool/ff_2d/tt/incl/*  ${output}/${chan}/dummycat/pieces/.
 
 python cpTDHaftPublic.py --destination $output --channel $channel --doNjetBinning $njetbinning
 

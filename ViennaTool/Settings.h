@@ -5,19 +5,18 @@
 #define kTAU         2
 ///////////////////////////////////////////////////
 #define EMB          1  
-#define selCHAN      kMU
-const int CHAN     = kMU;
+#define selCHAN      kTAU
+const int CHAN     = kTAU;
 // FakeFactor_2016_DeepTauIDv2_v0
 const TString analysis      ="2016";
-const TString output_folder ="/ceph/jandrej/auto-puppi-fakefactors/2016";
+const TString output_folder ="/ceph/jbechtel/auto-testing-fakefactors/2016";
 const TString ver = "2016"; // first time nanoAODv5 with deepTauIDv2 
 
-
 const TString _NtupleTreeName = "TauCheck"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
-const TString _NtupleTreeName_KIT = "mt_nominal/ntuple"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
-const TString DC_folder     ="/afs/hephy.at/work/j/jandrejkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; //obsolete
+const TString _NtupleTreeName_KIT = "tt_nominal/ntuple"; // name of the TTree in the Analysis-Ntuple: mt-nominal/ntuple or TauCheck
+const TString DC_folder     ="/afs/hephy.at/work/j/jbechtelkovic/ff_method/CMSSW_8_0_25/src/HTTutilities/Jet2TauFakes/data"; //obsolete
 ///////////////////////////////////////////////////
-const TString user="jandrej";    
+const TString user="jbechtel";    
 const Double_t luminosity=35.87; //according to GOLDEN JSON see https://twiki.cern.ch/twiki/bin/view/CMS/TWikiLUM    
 const TString ERA = "2016"; // needed for plotting
 const int use_svfit = 0; //set to 1 to change input directory name accordingly
@@ -45,7 +44,7 @@ const int doCRHisto = 1;
 const int doCalc=1; //calc FFs
 ///////////////////////////////////////////////////
 //calcCorrections
-const int doNJetBinning=0; //Calculate separate corrections for 0jet/1jet
+const int doNJetBinning=1; //Calculate separate corrections for 0jet/1jet
 ///////////////////////////////////////////////////
 //No need to change
 const int doDebugPlots=1;    //1 to also calculate FF in SR; and do bkg estimate with unweighted FF per sample ->for control plots
@@ -74,7 +73,7 @@ const int fit_pT_bins = 1; //use fitted pT bins as input for ff
 // settings for tight vs vloose&(!tight):
 const int wpTightFulfill = 32; 
 const int wpTightFail    = 0;
-const int wpLooseFulfill = 4;
+const int wpLooseFulfill  = 4;
 const int wpLooseFail    = 32;
 ///////////////////////////////////////////////////
 //MUTAU Settings
