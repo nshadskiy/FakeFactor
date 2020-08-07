@@ -1048,10 +1048,10 @@ for category in categories:
         {'ff_qcd_os':
          Node(
              name='ff_qcd_tau2_pt_up',
-             formula='(1.+{sys_qcd_tau2_pt_up})*{ff_qcd_os}',
+             formula='(1.+{sys_qcd_tau2_pt_up_0jet})*{ff_qcd_os}',
              leaves=[
                  Leaf(
-                     name='sys_qcd_tau2_pt_up',
+                     name='sys_qcd_tau2_pt_up_0jet',
                      file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_QCD_W{FF}_0jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_QCD_MVis_Iso_SS2OS_pt_up',
                      vars=['tau2_pt']
@@ -1066,10 +1066,10 @@ for category in categories:
         {'ff_qcd_os':
          Node(
              name='ff_qcd_tau2_pt_down',
-             formula='(1.+{sys_qcd_tau2_pt_down})*{ff_qcd_os}',
+             formula='(1.+{sys_qcd_tau2_pt_down_0jet})*{ff_qcd_os}',
              leaves=[
                  Leaf(
-                     name='sys_qcd_tau2_pt_down',
+                     name='sys_qcd_tau2_pt_down_0jet',
                      file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_QCD_W{FF}_0jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_QCD_MVis_Iso_SS2OS_pt_down',
                      vars=['tau2_pt']
@@ -1084,10 +1084,10 @@ for category in categories:
         {'ff_qcd_os':
          Node(
              name='ff_qcd_tau2_pt_up',
-             formula='(1.+{sys_qcd_tau2_pt_up})*{ff_qcd_os}',
+             formula='(1.+{sys_qcd_tau2_pt_up_1jet})*{ff_qcd_os}',
              leaves=[
                  Leaf(
-                     name='sys_qcd_tau2_pt_up',
+                     name='sys_qcd_tau2_pt_up_1jet',
                      file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_QCD_W{FF}_1jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_QCD_MVis_Iso_SS2OS_pt_up',
                      vars=['tau2_pt']
@@ -1102,10 +1102,10 @@ for category in categories:
         {'ff_qcd_os':
          Node(
              name='ff_qcd_tau2_pt_down',
-             formula='(1.+{sys_qcd_tau2_pt_down})*{ff_qcd_os}',
+             formula='(1.+{sys_qcd_tau2_pt_down_1jet})*{ff_qcd_os}',
              leaves=[
                  Leaf(
-                     name='sys_qcd_tau2_pt_down',
+                     name='sys_qcd_tau2_pt_down_1jet',
                      file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/uncertainties_QCD_W{FF}_1jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                      object='uncertainties_QCD_MVis_Iso_SS2OS_pt_down',
                      vars=['tau2_pt']
