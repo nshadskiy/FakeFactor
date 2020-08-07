@@ -34,7 +34,7 @@ for category in categories:
     
     qcd_os = Node(
         name='ff_qcd_os',
-        formula='({njet_hist}==0)*{mviscorr_qcd_0jet}*{ptcorr_qcd_0jet}*{OSSS_corr_qcd_0jet}*{ff_raw_qcd}+({njet_hist}>0)*{mviscorr_qcd_1jet}*{ptcorr_qcd_1jet}*{OSSS_corr_qcd_1jet}*{ff_raw_qcd}', 
+        formula='({njet_hist}==0)*{mviscorr_qcd}*{ptcorr_qcd_0jet}*{OSSS_corr_qcd}*{ff_raw_qcd}+({njet_hist}>0)*{mviscorr_qcd}*{ptcorr_qcd_1jet}*{OSSS_corr_qcd}*{ff_raw_qcd}', 
         leaves=[
             Leaf(
                 name='ff_raw_qcd',
@@ -43,14 +43,8 @@ for category in categories:
                 vars=['tau_pt','tau_decay','njets']
             ),
             Leaf(
-                name='mviscorr_qcd_0jet',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}_0jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
-                object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
-                vars=['mvis']
-            ),
-            Leaf(
-                name='mviscorr_qcd_1jet',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}_1jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                name='mviscorr_qcd',
+                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
                 vars=['mvis']
             ),
@@ -67,14 +61,8 @@ for category in categories:
                 vars=['tau2_pt']
             ),
             Leaf(
-               name='OSSS_corr_qcd_0jet',
-               file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_OSSS{FF}_0jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
-               object='QCD_SS_Data_FFSSMuMediumData_OSSS_correction',
-               vars=['mvis']
-            ),
-            Leaf(
-               name='OSSS_corr_qcd_1jet',
-               file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_OSSS{FF}_1jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+               name='OSSS_corr_qcd',
+               file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_OSSS{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                object='QCD_SS_Data_FFSSMuMediumData_OSSS_correction',
                vars=['mvis']
             ),
@@ -88,7 +76,7 @@ for category in categories:
     )
     w = Node(
         name='ff_w',
-        formula='({njet_hist_cw}==0)*{mviscorr_qcd_0jet_cw}*{ptcorr_qcd_0jet_cw}*{OSSS_corr_qcd_0jet_cw}*{ff_raw_qcd_cw}+({njet_hist_cw}>0)*{mviscorr_qcd_1jet_cw}*{ptcorr_qcd_1jet_cw}*{OSSS_corr_qcd_1jet_cw}*{ff_raw_qcd_cw}', 
+        formula='({njet_hist_cw}==0)*{mviscorr_qcd_cw}*{ptcorr_qcd_0jet_cw}*{OSSS_corr_qcd_cw}*{ff_raw_qcd_cw}+({njet_hist_cw}>0)*{mviscorr_qcd_cw}*{ptcorr_qcd_1jet_cw}*{OSSS_corr_qcd_cw}*{ff_raw_qcd_cw}', 
         leaves=[
             Leaf(
                 name='ff_raw_qcd_cw',
@@ -97,14 +85,8 @@ for category in categories:
                 vars=['tau_pt','tau_decay','njets']
             ),
             Leaf(
-                name='mviscorr_qcd_0jet_cw',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}_0jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
-                object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
-                vars=['mvis']
-            ),
-            Leaf(
-                name='mviscorr_qcd_1jet_cw',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}_1jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                name='mviscorr_qcd_cw',
+                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
                 vars=['mvis']
             ),
@@ -121,14 +103,8 @@ for category in categories:
                 vars=['tau2_pt']
             ),
             Leaf(
-               name='OSSS_corr_qcd_0jet_cw',
-               file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_OSSS{FF}_0jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
-               object='QCD_SS_Data_FFSSMuMediumData_OSSS_correction',
-               vars=['mvis']
-            ),
-            Leaf(
-               name='OSSS_corr_qcd_1jet_cw',
-               file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_OSSS{FF}_1jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+               name='OSSS_corr_qcd_cw',
+               file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_OSSS{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                object='QCD_SS_Data_FFSSMuMediumData_OSSS_correction',
                vars=['mvis']
             ),
@@ -142,7 +118,7 @@ for category in categories:
     )
     tt = Node(
         name='ff_tt',
-        formula='({njet_hist_ctt}==0)*{mviscorr_qcd_0jet_ctt}*{ptcorr_qcd_0jet_ctt}*{OSSS_corr_qcd_0jet_ctt}*{ff_raw_qcd_ctt}+({njet_hist_ctt}>0)*{mviscorr_qcd_1jet_ctt}*{ptcorr_qcd_1jet_ctt}*{OSSS_corr_qcd_1jet_ctt}*{ff_raw_qcd_ctt}', 
+        formula='({njet_hist_ctt}==0)*{mviscorr_qcd_ctt}*{ptcorr_qcd_0jet_ctt}*{OSSS_corr_qcd_ctt}*{ff_raw_qcd_ctt}+({njet_hist_ctt}>0)*{mviscorr_qcd_ctt}*{ptcorr_qcd_1jet_ctt}*{OSSS_corr_qcd_ctt}*{ff_raw_qcd_ctt}', 
         leaves=[
             Leaf(
                 name='ff_raw_qcd_ctt',
@@ -151,14 +127,8 @@ for category in categories:
                 vars=['tau_pt','tau_decay','njets']
             ),
             Leaf(
-                name='mviscorr_qcd_0jet_ctt',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}_0jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
-                object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
-                vars=['mvis']
-            ),
-            Leaf(
-                name='mviscorr_qcd_1jet_ctt',
-                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}_1jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+                name='mviscorr_qcd_ctt',
+                file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_MVis{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                 object='QCD_SS_MuMedium_Data_FFSSMuMediumData_mvis_correction',
                 vars=['mvis']
             ),
@@ -175,14 +145,8 @@ for category in categories:
                 vars=['tau2_pt']
             ),
             Leaf(
-               name='OSSS_corr_qcd_0jet_ctt',
-               file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_OSSS{FF}_0jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
-               object='QCD_SS_Data_FFSSMuMediumData_OSSS_correction',
-               vars=['mvis']
-            ),
-            Leaf(
-               name='OSSS_corr_qcd_1jet_ctt',
-               file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_OSSS{FF}_1jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
+               name='OSSS_corr_qcd_ctt',
+               file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_OSSS{FF}.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                object='QCD_SS_Data_FFSSMuMediumData_OSSS_correction',
                vars=['mvis']
             ),
@@ -1300,10 +1264,10 @@ for category in categories:
         {'ff_qcd_os':
          Node(
              name='ff_corr_qcd_tau2_pt_up',
-             formula='{ff_qcd_os}*({ptcorr_qcd_temp})',
+             formula='{ff_qcd_os}*({ptcorr_qcd_temp_0jet})',
              leaves=[
                     Leaf(
-                        name='ptcorr_qcd_temp',
+                        name='ptcorr_qcd_temp_0jet',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_PT{FF}_0jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction',
                         vars=['tau2_pt']
@@ -1318,10 +1282,10 @@ for category in categories:
         {'ff_qcd_os':
          Node(
              name='ff_corr_qcd_tau2_pt_down',
-             formula='{ff_qcd_os}/({ptcorr_qcd_temp})',
+             formula='{ff_qcd_os}/({ptcorr_qcd_temp_0jet})',
              leaves=[
                     Leaf(
-                        name='ptcorr_qcd_temp',
+                        name='ptcorr_qcd_temp_0jet',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_PT{FF}_0jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction',
                         vars=['tau2_pt']
@@ -1336,10 +1300,10 @@ for category in categories:
         {'ff_qcd_os':
          Node(
              name='ff_corr_qcd_tau2_pt_up',
-             formula='{ff_qcd_os}*({ptcorr_qcd_temp})',
+             formula='{ff_qcd_os}*({ptcorr_qcd_temp_1jet})',
              leaves=[
                     Leaf(
-                        name='ptcorr_qcd_temp',
+                        name='ptcorr_qcd_temp_1jet',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_PT{FF}_1jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction',
                         vars=['tau2_pt']
@@ -1354,10 +1318,10 @@ for category in categories:
         {'ff_qcd_os':
          Node(
              name='ff_corr_qcd_tau2_pt_down',
-             formula='{ff_qcd_os}/({ptcorr_qcd_temp})',
+             formula='{ff_qcd_os}/({ptcorr_qcd_temp_1jet})',
              leaves=[
                     Leaf(
-                        name='ptcorr_qcd_temp',
+                        name='ptcorr_qcd_temp_1jet',
                         file='{INDIR}/{CHANNEL}/{CATEGORY}/pieces/Correction_Data_QCD_PT{FF}_1jet.root'.format(INDIR=indir,CHANNEL=channel,CATEGORY=category,FF=FFtype),
                         object='QCD_SS_MuMedium_Data_FFSSMuMediumData_PT_correction',
                         vars=['tau2_pt']
@@ -1895,30 +1859,30 @@ for category in categories:
     fill(ff_comb, comb_corr_qcd_tau2_pt_down,   sys='ff_corr_qcd_tau2_pt_down')   
     # fill(ff_comb, comb_qcd_0jet_up,   sys='ff_qcd_syst_0jet_up')        
     # fill(ff_comb, comb_qcd_0jet_down,   sys='ff_qcd_syst_0jet_down')
-    fill(ff_comb, comb_qcd_mvis_0jet_up,   sys='ff_qcd_mvis_0jet_up')        
-    fill(ff_comb, comb_qcd_mvis_0jet_down,   sys='ff_qcd_mvis_0jet_down')
-    fill(ff_comb, comb_qcd_mvis_osss_0jet_up,   sys='ff_qcd_mvis_osss_0jet_up')        
-    fill(ff_comb, comb_qcd_mvis_osss_0jet_down,   sys='ff_qcd_mvis_osss_0jet_down')
+    # fill(ff_comb, comb_qcd_mvis_0jet_up,   sys='ff_qcd_mvis_0jet_up')        
+    # fill(ff_comb, comb_qcd_mvis_0jet_down,   sys='ff_qcd_mvis_0jet_down')
+    # fill(ff_comb, comb_qcd_mvis_osss_0jet_up,   sys='ff_qcd_mvis_osss_0jet_up')        
+    # fill(ff_comb, comb_qcd_mvis_osss_0jet_down,   sys='ff_qcd_mvis_osss_0jet_down')
     fill(ff_comb, comb_qcd_tau2_pt_0jet_up,   sys='ff_qcd_tau2_pt_0jet_up')        
     fill(ff_comb, comb_qcd_tau2_pt_0jet_down,   sys='ff_qcd_tau2_pt_0jet_down')        
-    fill(ff_comb, comb_corr_qcd_mvis_0jet_up,   sys='ff_corr_qcd_mvis_0jet_up')        
-    fill(ff_comb, comb_corr_qcd_mvis_0jet_down,   sys='ff_corr_qcd_mvis_0jet_down')
-    fill(ff_comb, comb_corr_qcd_mvis_osss_0jet_up,   sys='ff_corr_qcd_mvis_osss_0jet_up')        
-    fill(ff_comb, comb_corr_qcd_mvis_osss_0jet_down,   sys='ff_corr_qcd_mvis_osss_0jet_down')
+    # fill(ff_comb, comb_corr_qcd_mvis_0jet_up,   sys='ff_corr_qcd_mvis_0jet_up')        
+    # fill(ff_comb, comb_corr_qcd_mvis_0jet_down,   sys='ff_corr_qcd_mvis_0jet_down')
+    # fill(ff_comb, comb_corr_qcd_mvis_osss_0jet_up,   sys='ff_corr_qcd_mvis_osss_0jet_up')        
+    # fill(ff_comb, comb_corr_qcd_mvis_osss_0jet_down,   sys='ff_corr_qcd_mvis_osss_0jet_down')
     fill(ff_comb, comb_corr_qcd_tau2_pt_0jet_up,   sys='ff_corr_qcd_tau2_pt_0jet_up')        
     fill(ff_comb, comb_corr_qcd_tau2_pt_0jet_down,   sys='ff_corr_qcd_tau2_pt_0jet_down')   
     # fill(ff_comb, comb_qcd_1jet_up,   sys='ff_qcd_syst_1jet_up')        
     # fill(ff_comb, comb_qcd_1jet_down,   sys='ff_qcd_syst_1jet_down')
-    fill(ff_comb, comb_qcd_mvis_1jet_up,   sys='ff_qcd_mvis_1jet_up')        
-    fill(ff_comb, comb_qcd_mvis_1jet_down,   sys='ff_qcd_mvis_1jet_down')
-    fill(ff_comb, comb_qcd_mvis_osss_1jet_up,   sys='ff_qcd_mvis_osss_1jet_up')        
-    fill(ff_comb, comb_qcd_mvis_osss_1jet_down,   sys='ff_qcd_mvis_osss_1jet_down')
+    # fill(ff_comb, comb_qcd_mvis_1jet_up,   sys='ff_qcd_mvis_1jet_up')        
+    # fill(ff_comb, comb_qcd_mvis_1jet_down,   sys='ff_qcd_mvis_1jet_down')
+    # fill(ff_comb, comb_qcd_mvis_osss_1jet_up,   sys='ff_qcd_mvis_osss_1jet_up')        
+    # fill(ff_comb, comb_qcd_mvis_osss_1jet_down,   sys='ff_qcd_mvis_osss_1jet_down')
     fill(ff_comb, comb_qcd_tau2_pt_1jet_up,   sys='ff_qcd_tau2_pt_1jet_up')        
     fill(ff_comb, comb_qcd_tau2_pt_1jet_down,   sys='ff_qcd_tau2_pt_1jet_down')        
-    fill(ff_comb, comb_corr_qcd_mvis_1jet_up,   sys='ff_corr_qcd_mvis_1jet_up')        
-    fill(ff_comb, comb_corr_qcd_mvis_1jet_down,   sys='ff_corr_qcd_mvis_1jet_down')
-    fill(ff_comb, comb_corr_qcd_mvis_osss_1jet_up,   sys='ff_corr_qcd_mvis_osss_1jet_up')        
-    fill(ff_comb, comb_corr_qcd_mvis_osss_1jet_down,   sys='ff_corr_qcd_mvis_osss_1jet_down')
+    # fill(ff_comb, comb_corr_qcd_mvis_1jet_up,   sys='ff_corr_qcd_mvis_1jet_up')        
+    # fill(ff_comb, comb_corr_qcd_mvis_1jet_down,   sys='ff_corr_qcd_mvis_1jet_down')
+    # fill(ff_comb, comb_corr_qcd_mvis_osss_1jet_up,   sys='ff_corr_qcd_mvis_osss_1jet_up')        
+    # fill(ff_comb, comb_corr_qcd_mvis_osss_1jet_down,   sys='ff_corr_qcd_mvis_osss_1jet_down')
     fill(ff_comb, comb_corr_qcd_tau2_pt_1jet_up,   sys='ff_corr_qcd_tau2_pt_1jet_up')        
     fill(ff_comb, comb_corr_qcd_tau2_pt_1jet_down,   sys='ff_corr_qcd_tau2_pt_1jet_down')      
     fill(ff_comb, comb_qcd_mc_up,   sys='ff_qcd_mc_up')        
