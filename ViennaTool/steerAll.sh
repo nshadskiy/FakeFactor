@@ -34,7 +34,7 @@ echo doNjetBinning: $njetbinning
 echo NTuples: $ntuples
 echo savework: $saveWork
 
-sed s/fftype=.*/fftype=$analysis/g BuildStructure.sh >/tmp/BuildStructure$USER.sh
+sed 's#output=.*#output='${output}'#g' BuildStructure.sh >/tmp/BuildStructure$USER.sh
 yes | mv /tmp/BuildStructure$USER.sh BuildStructure.sh
 
 

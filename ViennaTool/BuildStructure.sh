@@ -1,6 +1,6 @@
 #!/bin/bash
 user=$USER
-fftype=2017
+output=/ceph/nshadskiy/FFmethod/16_1_2018_v1/
 
 line=" -------------------------------------------"
 echo "###### START of BuildStructure.sh ######"
@@ -12,22 +12,22 @@ echo $line
 
 echo "Buidling folder structure"
 
-if [ -d "/ceph/$user/auto-nmssm-fakefactors/$fftype/preselection" ]; then
-    if [ ! -d "/ceph/$user/auto-nmssm-fakefactors/$fftype/preselection/mt" ]; then
-        mkdir -p /ceph/$user/auto-nmssm-fakefactors/$fftype/preselection/mt
+if [ -d "$output/preselection" ]; then
+    if [ ! -d "$output/preselection/mt" ]; then
+        mkdir -p $output/preselection/mt
     fi
-    if [ ! -d "/ceph/$user/auto-nmssm-fakefactors/$fftype/preselection/et" ]; then
-        mkdir -p /ceph/$user/auto-nmssm-fakefactors/$fftype/preselection/et
+    if [ ! -d "$output/preselection/et" ]; then
+        mkdir -p $output/preselection/et
     fi
-    if [ ! -d "/ceph/$user/auto-nmssm-fakefactors/$fftype/preselection/tt" ]; then
-        mkdir -p /ceph/$user/auto-nmssm-fakefactors/$fftype/preselection/tt
+    if [ ! -d "$output/preselection/tt" ]; then
+        mkdir -p $output/preselection/tt
     fi
 else
-    mkdir -p /ceph/$user/auto-nmssm-fakefactors/$fftype/preselection/mt
-    mkdir -p /ceph/$user/auto-nmssm-fakefactors/$fftype/preselection/et
-    mkdir -p /ceph/$user/auto-nmssm-fakefactors/$fftype/preselection/tt
+    mkdir -p $output/preselection/mt
+    mkdir -p $output/preselection/et
+    mkdir -p $output/preselection/tt
 fi
-mkdir -p /ceph/$user/auto-nmssm-fakefactors/$fftype/preselection/mt
+mkdir -p $output/preselection/mt
 
 if [ -d "sim" ]; then
     if [ ! -d "sim/mt" ]; then

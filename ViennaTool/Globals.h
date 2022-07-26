@@ -122,7 +122,7 @@ const TString s_tight        ="tight";
 
 
 //Output directories
-const TString path_presel        = "/ceph/"+user+"/auto-nmssm-fakefactors/"+analysis+"/preselection/"+s_chan[CHAN]+"/";
+const TString path_presel        = output_folder+"/preselection/"+s_chan[CHAN]+"/";
 const TString path_ff            = "ViennaTool/fakefactor/";
 const TString path_ff_data       = path_ff+"data_"+s_chan[CHAN]+"/";
 const TString path_ff_mc         = path_ff+"mc_"+s_chan[CHAN]+"/";
@@ -134,18 +134,18 @@ const TString path_img_mc        = path_img+"mc_"+s_chan[CHAN]+"/";
 const TString path_img_mc_woQCD  = path_img+"mc_woQCD_"+s_chan[CHAN]+"/";
 
 //Input directories
-const TString indir = "/ceph/jbechtel/fakefactors/"+ver+"/";
-const TString datafile   = indir + s_chan[CHAN] + "-NOMINAL_ntuple_Data.root";
-const TString EMBfile    = indir + s_chan[CHAN] + "-NOMINAL_ntuple_EMB.root";
-const TString DY_NJfile  = indir + s_chan[CHAN] + "-NOMINAL_ntuple_DY.root";
+const TString indir = "/ceph/nshadskiy/FFmethod/ntuple/"+ver+"/";
+const TString datafile   = indir + s_chan[CHAN] + "-ntuple_Data.root";
+const TString EMBfile    = indir + s_chan[CHAN] + "-ntuple_EMB.root";
+const TString DY_NJfile  = indir + s_chan[CHAN] + "-ntuple_DY.root";
 const TString DYfile     = DY_NJfile;
-const TString Wjetsfile  = indir + s_chan[CHAN] + "-NOMINAL_ntuple_WJets.root";
-const TString VVfile     = indir + s_chan[CHAN] + "-NOMINAL_ntuple_VV.root";
-const TString TTfile     = indir + s_chan[CHAN] + "-NOMINAL_ntuple_TT.root";
+const TString Wjetsfile  = indir + s_chan[CHAN] + "-ntuple_Wjets.root";
+const TString VVfile     = indir + s_chan[CHAN] + "-ntuple_VV.root";
+const TString TTfile     = indir + s_chan[CHAN] + "-ntuple_TT.root";
 
 //not used:
-const TString QCDfile    = indir + s_chan[CHAN] + "-NOMINAL_ntuple_QCD.root";
-const TString SIGNALfile = indir + s_chan[CHAN] + "-NOMINAL_ntuple_ggH.root";
+const TString QCDfile    = indir + s_chan[CHAN] + "-ntuple_QCD.root";
+const TString SIGNALfile = indir + s_chan[CHAN] + "-ntuple_ggH.root";
 //
 
 // Preselection files

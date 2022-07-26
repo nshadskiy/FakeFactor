@@ -12,7 +12,7 @@ all: NtupleClass.o SignalClass.o GlobalClass.o TNtupleAnalyzer.o TSelectionAnaly
 	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -fpic -c $<
 
 test: ViennaTool/macros/test.C
-	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ ../tmp/slc6_amd64_gcc530/src/HTTutilities/Jet2TauFakes/src/HTTutilitiesJet2TauFakes/libHTTutilitiesJet2TauFakes.so ViennaTool/macros/test.C
+	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ ../tmp/slc7_amd64_gcc530/src/HTTutilities/Jet2TauFakes/src/HTTutilitiesJet2TauFakes/libHTTutilitiesJet2TauFakes.so ViennaTool/macros/test.C
 
 Preselection: ViennaTool/macros/Preselection.C
 	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ NtupleClass.o TNtupleAnalyzer.o ViennaTool/macros/Preselection.C
@@ -30,10 +30,10 @@ CRHisto: ViennaTool/macros/CRHisto.C
 	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ SignalClass.o GlobalClass.o PlotterClass.o TSelectionAnalyzer.o ViennaTool/macros/CRHisto.C
 
 steerFF: ViennaTool/macros/steerFF.C
-	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ SignalClass.o GlobalClass.o PlotterClass.o ../tmp/slc6_amd64_gcc530/src/HTTutilities/Jet2TauFakes/src/HTTutilitiesJet2TauFakes/libHTTutilitiesJet2TauFakes.so ViennaTool/macros/steerFF.C
+	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ SignalClass.o GlobalClass.o PlotterClass.o ../tmp/slc7_amd64_gcc530/src/HTTutilities/Jet2TauFakes/src/HTTutilitiesJet2TauFakes/libHTTutilitiesJet2TauFakes.so ViennaTool/macros/steerFF.C
 
 calcCorrections: ViennaTool/macros/calcCorrections.C
-	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ SignalClass.o GlobalClass.o PlotterClass.o ../tmp/slc6_amd64_gcc530/src/HTTutilities/Jet2TauFakes/src/HTTutilitiesJet2TauFakes/libHTTutilitiesJet2TauFakes.so ViennaTool/macros/calcCorrections.C
+	$(CXX) -I$(INCDIR) -I$(ROOTINC) $(ROOTLIB) -o $@ SignalClass.o GlobalClass.o PlotterClass.o ../tmp/slc7_amd64_gcc530/src/HTTutilities/Jet2TauFakes/src/HTTutilitiesJet2TauFakes/libHTTutilitiesJet2TauFakes.so ViennaTool/macros/calcCorrections.C
 
 
 convert_inputs: ViennaTool/macros/convert_inputs.C
